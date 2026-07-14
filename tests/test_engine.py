@@ -4,6 +4,9 @@ import unittest
 from backend.core.models import SearchRequest, Track
 from backend.search.engine import SearchEngine
 from backend.sources.base import BaseAdapter
+from backend.sources.soundcloud import SoundCloudAdapter
+from backend.sources.soundcloud import _is_progressive_audio
+from backend.sources.youtube import YouTubeAdapter
 from backend.sources.youtube import _iso_duration
 
 
@@ -84,6 +87,32 @@ class SearchEngineTests(unittest.IsolatedAsyncioTestCase):
             SearchRequest(query="song")
         )
         self.assertIn("Timed out", response.errors["youtube"])
+
+    async def test_legacy_soundcloud_uses_safe_result_window(self) -> None:
+        adapter = SoundCloudAdapter()
+        limits: list[int] = []
+
+        def fake_search(query: str, limit: int) -> list[Track]:
+            limits.append(limit)
+            return []
+
+        adapter._search_legacy = fake_search  # type: ignore[method-assign]
+        await adapter.search("song", 30)
+
+        self.assertEqual(limits, [5])
+        self.assertTrue(adapter._legacy_options["ignoreerrors"])
+
+    async def test_youtube_without_api_key_uses_metadata_fallback(self) -> None:
+        adapter = YouTubeAdapter()
+        expected = [make_track("youtube", title="Fallback", score=84)]
+        adapter._search_flat = lambda query, limit: expected  # type: ignore[method-assign]
+
+        self.assertEqual(await adapter.search("song", 5), expected)
+
+    def test_hls_is_not_marked_as_a_download(self) -> None:
+        self.assertFalse(_is_progressive_audio("https://media.example/playlist.m3u8"))
+        self.assertFalse(_is_progressive_audio("https://media.example/audio", "m3u8_native"))
+        self.assertTrue(_is_progressive_audio("https://media.example/audio.mp3", "https"))
 
 
 if __name__ == "__main__":
