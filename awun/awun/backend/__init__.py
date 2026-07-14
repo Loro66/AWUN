@@ -1,2 +1,0 @@
-"""AWUN backend package."""
-
