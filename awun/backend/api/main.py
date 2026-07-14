@@ -1,10 +1,12 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Annotated
 
 import aiohttp
 from fastapi import Depends, FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
 
 from backend.core.config import Settings, get_settings
 from backend.core.media import InvalidMediaToken, MediaSigner
@@ -46,6 +48,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     Engine = Annotated[SearchEngine, Depends(engine)]
 
+    frontend_dir = Path(__file__).resolve().parents[2] / "frontend"
+    if frontend_dir.is_dir():
+        app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
+
+        @app.get("/", include_in_schema=False)
+        async def frontend() -> FileResponse:
+            return FileResponse(frontend_dir / "index.html")
+
     @app.get("/health", tags=["system"])
     async def health(search_engine: Engine) -> dict[str, object]:
         return {"status": "ok", "sources": search_engine.available_sources}
@@ -55,6 +65,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             return response
         base_url = str(request.base_url).rstrip("/")
         for track in response.tracks:
+            if track.source == "youtube":
+                continue
             token = media_signer.sign(track.stream_url, track.request_headers)
             media_url = f"{base_url}{settings.api_prefix}/media/{token}"
             track.stream_url = media_url

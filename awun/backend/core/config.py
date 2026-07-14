@@ -29,7 +29,10 @@ class Settings(BaseSettings):
     media_connect_timeout_seconds: float = Field(default=15.0, gt=0, le=60)
 
     youtube_enabled: bool = True
+    youtube_api_key: str | None = None
     soundcloud_enabled: bool = True
+    soundcloud_client_id: str | None = None
+    soundcloud_client_secret: str | None = None
     vk_enabled: bool = True
     vk_access_token: str | None = None
     vk_api_version: str = "5.199"

@@ -16,5 +16,11 @@ services:
         value: "2"
       - key: AWUN_MEDIA_SECRET
         generateValue: true
+      - key: AWUN_YOUTUBE_API_KEY
+        sync: false
+      - key: AWUN_SOUNDCLOUD_CLIENT_ID
+        sync: false
+      - key: AWUN_SOUNDCLOUD_CLIENT_SECRET
+        sync: false
       - key: AWUN_VK_ACCESS_TOKEN
         sync: false

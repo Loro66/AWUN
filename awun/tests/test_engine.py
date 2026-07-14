@@ -4,6 +4,7 @@ import unittest
 from backend.core.models import SearchRequest, Track
 from backend.search.engine import SearchEngine
 from backend.sources.base import BaseAdapter
+from backend.sources.youtube import _iso_duration
 
 
 def make_track(source: str, *, title: str, score: float) -> Track:
@@ -41,6 +42,10 @@ class FailingAdapter(FakeAdapter):
 
 
 class SearchEngineTests(unittest.IsolatedAsyncioTestCase):
+    def test_parses_youtube_iso_duration(self) -> None:
+        self.assertEqual(_iso_duration("PT3M42S"), 222)
+        self.assertEqual(_iso_duration("PT1H2M3S"), 3723)
+
     async def test_merges_sorts_and_deduplicates_results(self) -> None:
         youtube = FakeAdapter("youtube", [make_track("youtube", title="Song", score=70)])
         soundcloud = FakeAdapter(

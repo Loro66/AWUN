@@ -1,9 +1,7 @@
-import asyncio
 import re
 from typing import Any
 
-from yt_dlp import YoutubeDL
-from yt_dlp.utils import DownloadError
+import aiohttp
 
 from backend.core.models import Track
 from backend.sources.base import AdapterError, BaseAdapter
@@ -43,56 +41,95 @@ def _request_headers(info: dict[str, Any]) -> dict[str, str]:
     }
 
 
+def _iso_duration(value: str) -> int:
+    match = re.fullmatch(r"P(?:\d+D)?T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?", value or "")
+    if not match:
+        return 0
+    hours, minutes, seconds = (int(part or 0) for part in match.groups())
+    return hours * 3600 + minutes * 60 + seconds
+
+
 class YouTubeAdapter(BaseAdapter):
     source = "youtube"
+    _SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
+    _VIDEOS_URL = "https://www.googleapis.com/youtube/v3/videos"
 
-    def __init__(self, socket_timeout: float = 12.0) -> None:
-        self._options = {
-            "quiet": True,
-            "no_warnings": True,
-            "skip_download": True,
-            "format": "bestaudio/best",
-            "socket_timeout": socket_timeout,
-            "noplaylist": True,
-            "extract_flat": False,
-        }
+    def __init__(self, api_key: str, timeout: float = 12.0) -> None:
+        self._api_key = api_key
+        self._timeout = aiohttp.ClientTimeout(total=timeout)
 
     async def search(self, query: str, limit: int) -> list[Track]:
         try:
-            return await asyncio.to_thread(self._search_sync, query, limit)
-        except DownloadError as exc:
-            raise AdapterError(f"YouTube search failed: {exc}") from exc
-        except Exception as exc:
-            raise AdapterError(f"YouTube adapter error: {exc}") from exc
+            async with aiohttp.ClientSession(timeout=self._timeout) as session:
+                async with session.get(
+                    self._SEARCH_URL,
+                    params={
+                        "part": "snippet",
+                        "q": query,
+                        "type": "video",
+                        "maxResults": min(limit, 50),
+                        "videoEmbeddable": "true",
+                        "videoSyndicated": "true",
+                        "safeSearch": "moderate",
+                        "key": self._api_key,
+                    },
+                ) as response:
+                    payload = await response.json(content_type=None)
+                    if response.status != 200:
+                        raise AdapterError(self._api_error(payload, response.status))
 
-    def _search_sync(self, query: str, limit: int) -> list[Track]:
-        with YoutubeDL(self._options) as ydl:
-            payload = ydl.extract_info(f"ytsearch{limit}:{query}", download=False)
+                items = payload.get("items") or []
+                ids = [str(item.get("id", {}).get("videoId") or "") for item in items]
+                ids = [video_id for video_id in ids if video_id]
+                details: dict[str, dict[str, Any]] = {}
+                if ids:
+                    async with session.get(
+                        self._VIDEOS_URL,
+                        params={
+                            "part": "contentDetails,status",
+                            "id": ",".join(ids),
+                            "key": self._api_key,
+                        },
+                    ) as response:
+                        detail_payload = await response.json(content_type=None)
+                        if response.status == 200:
+                            details = {str(item.get("id")): item for item in detail_payload.get("items") or []}
+        except AdapterError:
+            raise
+        except (aiohttp.ClientError, TimeoutError) as exc:
+            raise AdapterError(f"YouTube API request failed ({type(exc).__name__})") from exc
 
         tracks: list[Track] = []
-        for info in (payload or {}).get("entries") or []:
-            if not info:
+        for item in items:
+            video_id = str(item.get("id", {}).get("videoId") or "")
+            if not video_id:
                 continue
-            direct_url = info.get("url")
-            video_id = str(info.get("id") or "")
-            if not direct_url or not video_id:
+            detail = details.get(video_id) or {}
+            if detail.get("status", {}).get("embeddable") is False:
                 continue
-            quality, score = _quality(info)
-            artist = info.get("artist") or info.get("uploader") or info.get("channel") or "Unknown artist"
-            title = info.get("track") or info.get("title") or "Unknown title"
+            snippet = item.get("snippet") or {}
+            thumbnails = snippet.get("thumbnails") or {}
+            thumbnail = next(
+                (thumbnails.get(size, {}).get("url") for size in ("maxres", "high", "medium", "default") if thumbnails.get(size)),
+                None,
+            )
             tracks.append(
                 Track(
-                    id=f"yt_{re.sub(r'[^A-Za-z0-9_-]', '', video_id)}",
-                    title=title,
-                    artist=artist,
-                    duration=_safe_int(info.get("duration")),
-                    quality=quality,
+                    id=f"yt_{video_id}",
+                    title=snippet.get("title") or "Unknown title",
+                    artist=snippet.get("channelTitle") or "YouTube",
+                    duration=_iso_duration(detail.get("contentDetails", {}).get("duration") or ""),
+                    quality="YT",
                     source=self.source,
-                    stream_url=direct_url,
-                    download_url=direct_url,
-                    score=score,
-                    thumbnail=info.get("thumbnail"),
-                    request_headers=_request_headers(info),
+                    stream_url=f"https://www.youtube.com/watch?v={video_id}",
+                    download_url=None,
+                    score=88.0,
+                    thumbnail=thumbnail,
                 )
             )
         return tracks[:limit]
+
+    @staticmethod
+    def _api_error(payload: dict[str, Any], status: int) -> str:
+        message = payload.get("error", {}).get("message") if isinstance(payload, dict) else None
+        return f"YouTube API returned HTTP {status}: {message or 'unknown error'}"
