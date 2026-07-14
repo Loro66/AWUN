@@ -66,6 +66,42 @@ class SearchEngineTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.tracks[0].source, "soundcloud")
         self.assertEqual(response.total, 2)
 
+    async def test_interleaves_sources_before_applying_global_limit(self) -> None:
+        youtube = FakeAdapter(
+            "youtube",
+            [make_track("youtube", title=f"YouTube {index}", score=84) for index in range(8)],
+        )
+        soundcloud = FakeAdapter(
+            "soundcloud",
+            [make_track("soundcloud", title=f"SoundCloud {index}", score=70) for index in range(3)],
+        )
+
+        response = await SearchEngine([youtube, soundcloud]).search(
+            SearchRequest(query="song", limit=6, sources=["youtube", "soundcloud"])
+        )
+
+        self.assertEqual(
+            [track.source for track in response.tracks],
+            ["youtube", "soundcloud", "youtube", "soundcloud", "youtube", "soundcloud"],
+        )
+
+    async def test_fills_remaining_slots_when_a_source_runs_out(self) -> None:
+        youtube = FakeAdapter(
+            "youtube",
+            [make_track("youtube", title=f"YouTube {index}", score=84) for index in range(5)],
+        )
+        soundcloud = FakeAdapter(
+            "soundcloud",
+            [make_track("soundcloud", title="Only SoundCloud", score=70)],
+        )
+
+        response = await SearchEngine([youtube, soundcloud]).search(
+            SearchRequest(query="song", limit=6, sources=["youtube", "soundcloud"])
+        )
+
+        self.assertEqual(response.total, 6)
+        self.assertEqual([track.source for track in response.tracks].count("soundcloud"), 1)
+
     async def test_one_source_failure_does_not_fail_search(self) -> None:
         good = FakeAdapter("youtube", [make_track("youtube", title="Song", score=70)])
         bad = FailingAdapter("soundcloud", [])
