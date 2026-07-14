@@ -32,14 +32,13 @@ class SearchEngine:
         tasks = [self._safe_search(self._adapters[source], request.query, per_source_limit) for source in selected]
         results = await asyncio.gather(*tasks)
 
-        tracks: list[Track] = []
+        tracks_by_source: dict[str, list[Track]] = {}
         for source, (source_tracks, error) in zip(selected, results, strict=True):
-            tracks.extend(source_tracks)
+            tracks_by_source[source] = source_tracks
             if error:
                 errors[source] = error
 
-        tracks.sort(key=lambda track: (-track.score, track.source, track.title.casefold()))
-        tracks = self._deduplicate(tracks)[: request.limit]
+        tracks = self._merge_balanced(tracks_by_source, selected, request.limit)
         elapsed_ms = round((perf_counter() - started) * 1000)
         return SearchResponse(
             query=request.query,
@@ -69,6 +68,43 @@ class SearchEngine:
                 seen.add(key)
                 unique.append(track)
         return unique
+
+    @classmethod
+    def _merge_balanced(
+        cls,
+        tracks_by_source: dict[str, list[Track]],
+        source_order: list[SourceName],
+        limit: int,
+    ) -> list[Track]:
+        """Keep the strongest duplicate, then fairly interleave active sources."""
+
+        ranked = sorted(
+            (track for tracks in tracks_by_source.values() for track in tracks),
+            key=lambda track: (-track.score, track.source, track.title.casefold()),
+        )
+        unique = cls._deduplicate(ranked)
+
+        queues: dict[str, list[Track]] = {source: [] for source in source_order}
+        for track in unique:
+            queues.setdefault(track.source, []).append(track)
+
+        merged: list[Track] = []
+        positions = {source: 0 for source in source_order}
+        while len(merged) < limit:
+            added = False
+            for source in source_order:
+                position = positions[source]
+                queue = queues[source]
+                if position >= len(queue):
+                    continue
+                merged.append(queue[position])
+                positions[source] = position + 1
+                added = True
+                if len(merged) == limit:
+                    break
+            if not added:
+                break
+        return merged
 
     async def close(self) -> None:
         await asyncio.gather(*(adapter.close() for adapter in self._adapters.values()))
