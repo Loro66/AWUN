@@ -1,7 +1,10 @@
+import asyncio
 import re
 from typing import Any
 
 import aiohttp
+from yt_dlp import YoutubeDL
+from yt_dlp.utils import DownloadError
 
 from backend.core.models import Track
 from backend.sources.base import AdapterError, BaseAdapter
@@ -54,11 +57,35 @@ class YouTubeAdapter(BaseAdapter):
     _SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
     _VIDEOS_URL = "https://www.googleapis.com/youtube/v3/videos"
 
-    def __init__(self, api_key: str, timeout: float = 12.0) -> None:
+    def __init__(self, api_key: str | None = None, timeout: float = 12.0) -> None:
         self._api_key = api_key
         self._timeout = aiohttp.ClientTimeout(total=timeout)
+        self._flat_options = {
+            "quiet": True,
+            "no_warnings": True,
+            "skip_download": True,
+            "extract_flat": "in_playlist",
+            "socket_timeout": timeout,
+            "noplaylist": True,
+        }
 
     async def search(self, query: str, limit: int) -> list[Track]:
+        api_error: AdapterError | None = None
+        if self._api_key:
+            try:
+                return await self._search_api(query, limit)
+            except AdapterError as exc:
+                api_error = exc
+        try:
+            return await asyncio.to_thread(self._search_flat, query, limit)
+        except DownloadError as exc:
+            detail = f"; Data API: {api_error}" if api_error else ""
+            raise AdapterError(f"YouTube search fallback failed{detail}") from exc
+        except Exception as exc:
+            detail = f"; Data API: {api_error}" if api_error else ""
+            raise AdapterError(f"YouTube adapter error: {exc}{detail}") from exc
+
+    async def _search_api(self, query: str, limit: int) -> list[Track]:
         try:
             async with aiohttp.ClientSession(timeout=self._timeout) as session:
                 async with session.get(
@@ -124,6 +151,42 @@ class YouTubeAdapter(BaseAdapter):
                     stream_url=f"https://www.youtube.com/watch?v={video_id}",
                     download_url=None,
                     score=88.0,
+                    thumbnail=thumbnail,
+                )
+            )
+        return tracks[:limit]
+
+    def _search_flat(self, query: str, limit: int) -> list[Track]:
+        """Search public YouTube metadata without resolving media URLs.
+
+        This is deliberately metadata-only: playback stays in the official
+        YouTube iframe player and no protected YouTube media URL is exposed.
+        """
+        with YoutubeDL(self._flat_options) as ydl:
+            payload = ydl.extract_info(f"ytsearch{min(limit, 50)}:{query}", download=False)
+
+        tracks: list[Track] = []
+        for info in (payload or {}).get("entries") or []:
+            if not info:
+                continue
+            video_id = str(info.get("id") or "")
+            if not re.fullmatch(r"[A-Za-z0-9_-]{6,20}", video_id):
+                continue
+            thumbnails = info.get("thumbnails") or []
+            thumbnail = info.get("thumbnail")
+            if not thumbnail and thumbnails:
+                thumbnail = thumbnails[-1].get("url")
+            tracks.append(
+                Track(
+                    id=f"yt_{video_id}",
+                    title=info.get("title") or "Unknown title",
+                    artist=info.get("channel") or info.get("uploader") or "YouTube",
+                    duration=_safe_int(info.get("duration")),
+                    quality="YT",
+                    source=self.source,
+                    stream_url=f"https://www.youtube.com/watch?v={video_id}",
+                    download_url=None,
+                    score=84.0,
                     thumbnail=thumbnail,
                 )
             )

@@ -3,6 +3,7 @@ import base64
 import hashlib
 from time import monotonic
 from typing import Any
+from urllib.parse import urlparse
 
 import aiohttp
 from yt_dlp import YoutubeDL
@@ -11,6 +12,15 @@ from yt_dlp.utils import DownloadError
 from backend.core.models import Track
 from backend.sources.base import AdapterError, BaseAdapter
 from backend.sources.youtube import _quality, _request_headers, _safe_int
+
+
+def _is_progressive_audio(url: str, protocol: str | None = None) -> bool:
+    """Return true only for a single downloadable HTTP audio resource."""
+    normalized_protocol = str(protocol or "").lower()
+    if "m3u8" in normalized_protocol or "dash" in normalized_protocol:
+        return False
+    path = urlparse(url).path.lower()
+    return not path.endswith((".m3u8", ".mpd")) and "playlist.m3u8" not in path
 
 
 class SoundCloudAdapter(BaseAdapter):
@@ -92,11 +102,27 @@ class SoundCloudAdapter(BaseAdapter):
                 *(self._resolve_stream(session, stream_url, headers) for _, _, stream_url in candidates[:limit]),
                 return_exceptions=True,
             )
+            downloads = await asyncio.gather(
+                *(
+                    self._authorized_url(session, str(item["download_url"]), headers)
+                    if item.get("downloadable") and item.get("download_url")
+                    else asyncio.sleep(0, result=None)
+                    for item, _, _ in candidates[:limit]
+                ),
+                return_exceptions=True,
+            )
 
         tracks: list[Track] = []
-        for (item, track_id, _), direct_url in zip(candidates[:limit], resolved, strict=True):
+        for (item, track_id, _), direct_url, download_url in zip(
+            candidates[:limit], resolved, downloads, strict=True
+        ):
             if isinstance(direct_url, Exception) or not direct_url:
                 continue
+            official_download = (
+                download_url
+                if isinstance(download_url, str) and _is_progressive_audio(download_url)
+                else None
+            )
             artist = (item.get("user") or {}).get("username") or item.get("publisher_metadata", {}).get("artist") or "Unknown artist"
             tracks.append(
                 Track(
@@ -107,7 +133,7 @@ class SoundCloudAdapter(BaseAdapter):
                     quality="128",
                     source=self.source,
                     stream_url=direct_url,
-                    download_url=direct_url,
+                    download_url=official_download,
                     score=76.0,
                     thumbnail=item.get("artwork_url") or (item.get("user") or {}).get("avatar_url"),
                 )
@@ -213,7 +239,10 @@ class SoundCloudAdapter(BaseAdapter):
                     quality=quality,
                     source=self.source,
                     stream_url=info["url"],
-                    download_url=info["url"],
+                    # Unauthenticated search does not prove that the uploader
+                    # enabled downloads. Keep it playable, but do not expose a
+                    # misleading HLS/token "download" button.
+                    download_url=None,
                     score=score,
                     thumbnail=info.get("thumbnail"),
                     request_headers=_request_headers(info),

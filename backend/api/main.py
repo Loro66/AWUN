@@ -1,6 +1,8 @@
 from contextlib import asynccontextmanager
 from pathlib import Path
+import re
 from typing import Annotated
+from urllib.parse import quote, urlencode, urlparse
 
 import aiohttp
 from fastapi import Depends, FastAPI, HTTPException, Query, Request
@@ -13,6 +15,46 @@ from backend.core.media import InvalidMediaToken, MediaSigner
 from backend.core.models import SearchRequest, SearchResponse, SourceName
 from backend.search.engine import SearchEngine
 from backend.sources.factory import build_adapters
+
+
+_CONTENT_EXTENSIONS = {
+    "audio/aac": "aac",
+    "audio/flac": "flac",
+    "audio/mp4": "m4a",
+    "audio/mpeg": "mp3",
+    "audio/ogg": "ogg",
+    "audio/wav": "wav",
+    "audio/x-wav": "wav",
+    "audio/webm": "webm",
+}
+_PLAYLIST_CONTENT_TYPES = {
+    "application/dash+xml",
+    "application/mpegurl",
+    "application/vnd.apple.mpegurl",
+    "audio/mpegurl",
+    "audio/x-mpegurl",
+}
+
+
+def _safe_filename_stem(value: str) -> str:
+    value = re.sub(r"[\\/:*?\"<>|\x00-\x1f]", " ", value)
+    value = re.sub(r"\s+", " ", value).strip(" .")
+    return (value or "AWUN track")[:120].rstrip(" .")
+
+
+def _is_playlist(url: str, content_type: str) -> bool:
+    media_type = content_type.partition(";")[0].strip().lower()
+    path = urlparse(url).path.lower()
+    return media_type in _PLAYLIST_CONTENT_TYPES or path.endswith((".m3u8", ".mpd"))
+
+
+def _download_filename(stem: str, content_type: str, url: str) -> str:
+    media_type = content_type.partition(";")[0].strip().lower()
+    extension = _CONTENT_EXTENSIONS.get(media_type)
+    if not extension:
+        suffix = Path(urlparse(url).path).suffix.lower().lstrip(".")
+        extension = suffix if suffix in {"aac", "flac", "m4a", "mp3", "ogg", "opus", "wav", "webm"} else "audio"
+    return f"{_safe_filename_stem(stem)}.{extension}"
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -58,7 +100,26 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     @app.get("/health", tags=["system"])
     async def health(search_engine: Engine) -> dict[str, object]:
-        return {"status": "ok", "sources": search_engine.available_sources}
+        return {
+            "status": "ok",
+            "version": settings.app_version,
+            "sources": search_engine.available_sources,
+            "providers": {
+                "youtube": {
+                    "enabled": settings.youtube_enabled,
+                    "api_key": bool(settings.youtube_api_key),
+                    "fallback": settings.youtube_enabled,
+                },
+                "soundcloud": {
+                    "enabled": settings.soundcloud_enabled,
+                    "oauth": bool(settings.soundcloud_client_id and settings.soundcloud_client_secret),
+                },
+                "vk": {
+                    "enabled": settings.vk_enabled,
+                    "access_token": bool(settings.vk_access_token),
+                },
+            },
+        }
 
     def proxied(response: SearchResponse, request: Request) -> SearchResponse:
         if not settings.media_proxy_enabled:
@@ -67,11 +128,17 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         for track in response.tracks:
             if track.source == "youtube":
                 continue
-            token = media_signer.sign(track.stream_url, track.request_headers)
-            media_url = f"{base_url}{settings.api_prefix}/media/{token}"
-            track.stream_url = media_url
-            if track.download_url:
-                track.download_url = media_url
+            stream_token = media_signer.sign(track.stream_url, track.request_headers)
+            track.stream_url = f"{base_url}{settings.api_prefix}/media/{stream_token}"
+            if download_target := track.download_url:
+                download_token = media_signer.sign(download_target, track.request_headers)
+                query = urlencode(
+                    {
+                        "download": "1",
+                        "filename": _safe_filename_stem(f"{track.artist} - {track.title}"),
+                    }
+                )
+                track.download_url = f"{base_url}{settings.api_prefix}/media/{download_token}?{query}"
         return response
 
     @app.post(f"{settings.api_prefix}/search", response_model=SearchResponse, tags=["search"])
@@ -92,7 +159,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         return proxied(response, request)
 
     @app.get(f"{settings.api_prefix}/media/{{token}}", tags=["media"])
-    async def media(token: str, request: Request) -> StreamingResponse:
+    async def media(
+        token: str,
+        request: Request,
+        download: Annotated[bool, Query()] = False,
+        filename: Annotated[str | None, Query(max_length=160)] = None,
+    ) -> StreamingResponse:
         try:
             target = media_signer.verify(token)
         except InvalidMediaToken as exc:
@@ -120,6 +192,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             await session.close()
             raise HTTPException(502, f"Media source returned HTTP {upstream.status}")
 
+        content_type = upstream.headers.get("content-type", "audio/mpeg")
+        if download and _is_playlist(str(upstream.url), content_type):
+            upstream.release()
+            await session.close()
+            raise HTTPException(409, "This source provides a streaming playlist, not a downloadable audio file")
+
         async def chunks():
             try:
                 async for chunk in upstream.content.iter_chunked(64 * 1024):
@@ -128,14 +206,24 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 upstream.release()
                 await session.close()
 
-        response_headers = {"Cache-Control": "private, no-store", "Accept-Ranges": "bytes"}
+        response_headers = {
+            "Cache-Control": "private, no-store",
+            "Accept-Ranges": "bytes",
+            "X-Content-Type-Options": "nosniff",
+        }
+        if download:
+            resolved_name = _download_filename(filename or "AWUN track", content_type, str(upstream.url))
+            response_headers["Content-Disposition"] = (
+                f"attachment; filename=\"awun-audio.{resolved_name.rsplit('.', 1)[-1]}\"; "
+                f"filename*=UTF-8''{quote(resolved_name)}"
+            )
         for header in ("content-length", "content-range", "etag", "last-modified"):
             if value := upstream.headers.get(header):
                 response_headers[header.title()] = value
         return StreamingResponse(
             chunks(),
             status_code=upstream.status,
-            media_type=upstream.headers.get("content-type", "audio/mpeg"),
+            media_type=content_type,
             headers=response_headers,
         )
 

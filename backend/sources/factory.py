@@ -7,7 +7,7 @@ from backend.sources.youtube import YouTubeAdapter
 
 def build_adapters(settings: Settings) -> list[BaseAdapter]:
     adapters: list[BaseAdapter] = []
-    if settings.youtube_enabled and settings.youtube_api_key:
+    if settings.youtube_enabled:
         adapters.append(
             YouTubeAdapter(
                 api_key=settings.youtube_api_key,
