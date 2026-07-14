@@ -32,6 +32,7 @@ class SoundCloudAdapter(BaseAdapter):
         self._legacy_options = {
             "quiet": True,
             "no_warnings": True,
+            "ignoreerrors": True,
             "skip_download": True,
             "format": "bestaudio/best",
             "socket_timeout": timeout,
@@ -43,7 +44,10 @@ class SoundCloudAdapter(BaseAdapter):
         if self._client_id and self._client_secret:
             return await self._search_api(query, limit)
         try:
-            return await asyncio.to_thread(self._search_legacy, query, min(limit, 20))
+            # Unauthenticated SoundCloud search can abort when a later result is
+            # DRM-only. A small window is much more reliable; official OAuth
+            # credentials automatically unlock the full requested limit above.
+            return await asyncio.to_thread(self._search_legacy, query, min(limit, 5))
         except DownloadError as exc:
             raise AdapterError("SoundCloud needs API credentials for this query") from exc
         except Exception as exc:

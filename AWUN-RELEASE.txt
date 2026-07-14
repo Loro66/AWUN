@@ -1,4 +1,5 @@
-AWUN official YouTube API release
+AWUN 1.1 public beta release
 Release date: 2026-07-14
 
 This build uses YouTube Data API v3 and serves the frontend from FastAPI.
+It includes the redesigned player, responsive UI and resilient source search.
