@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#11110f">
+  <title>AWUN — all music, one search</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main>
+    <header>
+      <a class="logo" href="/">AWUN<span>.</span></a>
+      <div class="top-actions">
+        <span id="status" class="status"><i></i>CONNECTING</span>
+        <button id="libraryButton" class="library" type="button">LIBRARY <b>00</b></button>
+      </div>
+    </header>
+
+    <section class="search-stage">
+      <p>ONE SEARCH · EVERY SOUND</p>
+      <form id="searchForm">
+        <input id="query" aria-label="Search music" autocomplete="off" placeholder="What do you want to hear?" autofocus>
+        <button aria-label="Search" type="submit">↗</button>
+      </form>
+      <div id="sources" class="sources">
+        <button type="button" data-source="youtube" class="on"><i></i>YOUTUBE</button>
+        <button type="button" data-source="soundcloud" class="on"><i></i>SOUNDCLOUD</button>
+        <button type="button" data-source="vk" class="on"><i></i>VK</button>
+        <span>REAL RESULTS · OFFICIAL PLAYBACK</span>
+      </div>
+    </section>
+
+    <section id="results" class="results" aria-live="polite">
+      <p id="message" class="message"></p>
+      <div id="resultHeader" class="result-header" hidden><span id="resultTitle"></span><span id="resultCount"></span></div>
+      <ol id="trackList"></ol>
+    </section>
+
+    <footer><span>AWUN / PUBLIC BETA</span><span>ALL MUSIC. ONE PLACE.</span></footer>
+  </main>
+
+  <aside id="player" class="player" hidden>
+    <div id="youtubePlayer" class="youtube-player" hidden></div>
+    <button id="playPause" type="button" aria-label="Pause">Ⅱ</button>
+    <div class="now"><strong id="nowTitle"></strong><span id="nowArtist"></span></div>
+    <audio id="audio" controls></audio>
+    <button id="closePlayer" class="close" type="button" aria-label="Close">×</button>
+  </aside>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
