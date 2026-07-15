@@ -1,6 +1,8 @@
 import asyncio
 import unittest
 
+from pydantic import ValidationError
+
 from backend.core.models import SearchRequest, Track
 from backend.search.engine import SearchEngine
 from backend.sources.base import BaseAdapter
@@ -110,12 +112,9 @@ class SearchEngineTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.total, 1)
         self.assertIn("soundcloud", response.errors)
 
-    async def test_unconfigured_requested_source_is_reported(self) -> None:
-        response = await SearchEngine([]).search(
-            SearchRequest(query="song", sources=["vk"])
-        )
-        self.assertEqual(response.searched_sources, [])
-        self.assertEqual(response.errors["vk"], "Source is not configured")
+    def test_unknown_source_is_rejected(self) -> None:
+        with self.assertRaises(ValidationError):
+            SearchRequest(query="song", sources=["spotify"])
 
     async def test_slow_source_times_out(self) -> None:
         slow = FakeAdapter("youtube", [], delay=0.05)
