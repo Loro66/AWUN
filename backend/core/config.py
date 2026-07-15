@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     )
 
     app_name: str = "AWUN"
-    app_version: str = "1.3.1"
+    app_version: str = "1.4.0"
     debug: bool = False
     api_prefix: str = "/api/v1"
 
@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     media_secret: str = Field(default="dev-only-change-me", min_length=16)
     media_token_ttl_seconds: int = Field(default=1800, ge=60, le=86400)
     media_connect_timeout_seconds: float = Field(default=15.0, gt=0, le=60)
+    query_expansion_limit: int = Field(default=6, ge=1, le=10)
 
     youtube_enabled: bool = True
     youtube_api_key: str | None = None
@@ -38,6 +39,10 @@ class Settings(BaseSettings):
     audius_app_name: str = "AWUN"
     jamendo_enabled: bool = True
     jamendo_client_id: str | None = None
+    internet_archive_enabled: bool = True
+    internet_archive_max_items: int = Field(default=8, ge=1, le=20)
+    musicbrainz_enabled: bool = True
+    musicbrainz_contact: str = "https://github.com/Loro66/AWUN"
 
     cors_origins: list[str] = Field(default_factory=lambda: ["*"])
 

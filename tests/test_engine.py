@@ -36,13 +36,13 @@ class FakeAdapter(BaseAdapter):
     def source(self):
         return self._source
 
-    async def search(self, query: str, limit: int) -> list[Track]:
+    async def search(self, query: str, limit: int, *, region=None) -> list[Track]:
         await asyncio.sleep(self.delay)
         return self.tracks[:limit]
 
 
 class FailingAdapter(FakeAdapter):
-    async def search(self, query: str, limit: int) -> list[Track]:
+    async def search(self, query: str, limit: int, *, region=None) -> list[Track]:
         raise RuntimeError("source unavailable")
 
 
@@ -67,6 +67,9 @@ class SearchEngineTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual([track.title for track in response.tracks], ["Song", "Other"])
         self.assertEqual(response.tracks[0].source, "soundcloud")
         self.assertEqual(response.total, 2)
+        self.assertEqual(response.region, "AUTO")
+        self.assertIn("spotify", response.tracks[0].catalog_links)
+        self.assertIn("apple_music", response.tracks[0].catalog_links)
 
     async def test_interleaves_sources_before_applying_global_limit(self) -> None:
         youtube = FakeAdapter(

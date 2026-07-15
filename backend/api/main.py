@@ -13,8 +13,9 @@ from fastapi.staticfiles import StaticFiles
 from backend.core.config import Settings, get_settings
 from backend.core.media import InvalidMediaToken, MediaSigner
 from backend.core.models import SearchRequest, SearchResponse, SourceName
+from backend.core.regions import REGION_NAMES, RegionName
 from backend.search.engine import SearchEngine
-from backend.sources.factory import build_adapters
+from backend.sources.factory import build_adapters, build_enricher
 
 
 _CONTENT_EXTENSIONS = {
@@ -67,6 +68,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             build_adapters(settings),
             timeout_seconds=settings.search_timeout_seconds,
             max_limit=settings.max_limit,
+            enricher=build_enricher(settings),
         )
         yield
         await app.state.search_engine.close()
@@ -74,7 +76,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app = FastAPI(
         title=settings.app_name,
         version=settings.app_version,
-        description="Federated music search across YouTube, SoundCloud, Audius and Jamendo.",
+        description=(
+            "Region-aware federated music search across YouTube, SoundCloud, "
+            "Audius, Jamendo and Internet Archive, enriched by MusicBrainz."
+        ),
         lifespan=lifespan,
     )
     app.add_middleware(
@@ -104,6 +109,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "status": "ok",
             "version": settings.app_version,
             "sources": search_engine.available_sources,
+            "regions": list(REGION_NAMES),
             "providers": {
                 "youtube": {
                     "enabled": settings.youtube_enabled,
@@ -122,6 +128,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 "jamendo": {
                     "enabled": settings.jamendo_enabled,
                     "client_id": bool(settings.jamendo_client_id),
+                },
+                "internet_archive": {
+                    "enabled": settings.internet_archive_enabled,
+                    "downloadable_files": settings.internet_archive_enabled,
+                },
+                "musicbrainz": {
+                    "enabled": settings.musicbrainz_enabled,
+                    "query_expansion": settings.musicbrainz_enabled,
                 },
             },
         }
@@ -159,8 +173,18 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         q: Annotated[str, Query(min_length=1, max_length=200)],
         limit: Annotated[int, Query(ge=1, le=settings.max_limit)] = settings.default_limit,
         sources: Annotated[list[SourceName] | None, Query()] = None,
+        region: Annotated[RegionName, Query()] = "AUTO",
+        locale: Annotated[str | None, Query(max_length=35)] = None,
     ) -> SearchResponse:
-        response = await search_engine.search(SearchRequest(query=q, limit=limit, sources=sources))
+        response = await search_engine.search(
+            SearchRequest(
+                query=q,
+                limit=limit,
+                sources=sources,
+                region=region,
+                locale=locale,
+            )
+        )
         return proxied(response, request)
 
     @app.get(f"{settings.api_prefix}/media/{{token}}", tags=["media"])

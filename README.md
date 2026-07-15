@@ -1,11 +1,14 @@
 # AWUN
 
 AWUN is a FastAPI music-search aggregator with a responsive web interface. It
-searches YouTube, SoundCloud, Audius and Jamendo in parallel, then fairly
-interleaves the connected catalogs. YouTube playback stays inside the official
-embedded player; other full tracks use short-lived signed AWUN media routes.
+searches YouTube, SoundCloud, Audius, Jamendo and Internet Archive in parallel,
+then fairly interleaves the connected catalogs. MusicBrainz expands human
+queries into canonical artist/track, local alias, release, transliteration and
+ISRC variants. YouTube playback stays inside the official embedded player;
+other full tracks use short-lived signed AWUN media routes.
 
-The 1.3 beta interface includes source-aware search, partial-failure handling,
+The 1.4 beta interface includes AUTO/CIS/EUROPE/USA/LATAM/ASIA/GLOBAL search,
+source-aware discovery, partial-failure handling,
 a local library, shareable search URLs and a unified responsive player with
 custom waveform seeking, volume, previous/next controls and browser Media
 Session integration. Its visual system includes Acid, Ultraviolet, Cobalt and
@@ -36,6 +39,7 @@ For a hosted beta, deploy the included `Dockerfile` to any container host. A
 `AWUN_YOUTUBE_API_KEY` (recommended), the two SoundCloud credentials, and optionally
 `AWUN_JAMENDO_CLIENT_ID` in the host dashboard. Audius
 read-only search works without a secret; `AWUN_AUDIUS_API_KEY` is optional.
+MusicBrainz and Internet Archive work without secrets.
 
 See `RELEASE.md` for the production deployment and verification checklist.
 
@@ -47,17 +51,36 @@ POST `/api/v1/search`:
 {
   "query": "Daft Punk Around the World",
   "limit": 100,
-  "sources": ["youtube", "soundcloud", "audius", "jamendo"]
+  "sources": ["youtube", "soundcloud", "audius", "jamendo", "internet_archive"],
+  "region": "GLOBAL",
+  "locale": "en-US"
 }
 ```
 
 Or use GET:
 
 ```text
-/api/v1/search?q=Daft%20Punk&limit=10&sources=youtube&sources=soundcloud
+/api/v1/search?q=Daft%20Punk&limit=10&sources=youtube&sources=internet_archive&region=EUROPE&locale=de-DE
 ```
 
-The response contains combined results sorted by quality score. An unavailable source appears in `errors`; successful sources still return results.
+The response contains combined results, the applied region and `query_variants`
+used for discovery. An unavailable source appears in `errors`; successful
+sources still return results. Every playable result also includes official
+Apple Music and Spotify catalog-search links; those services are navigation
+targets and are never proxied as AWUN audio.
+
+## Discovery coverage
+
+| Capability | What it adds | Full playback | Download |
+| --- | --- | --- | --- |
+| Internet Archive | Archival, independent and rare public audio | Yes | When a public media file exists |
+| MusicBrainz | Aliases, scripts, ISRCs and release names | Metadata only | No |
+| Apple Music / Spotify | Large region-aware catalogs via official links | On the official service | No |
+| Regional YouTube | Results relevant to CIS, Europe, USA, LATAM and Asia | Official YouTube player | No |
+
+Region mode changes discovery relevance; it does not bypass provider licensing
+or geographic restrictions. In AUTO mode the browser locale selects a country
+and language. GLOBAL removes the YouTube country/language preference.
 
 ## Configuration
 
@@ -67,6 +90,9 @@ Copy `.env.example` to `.env`. YouTube uses the Data API when
 `AWUN_SOUNDCLOUD_CLIENT_ID` and `AWUN_SOUNDCLOUD_CLIENT_SECRET` are set, with a
 limited legacy fallback otherwise. Audius is enabled by default and uses its
 read-only REST API. Jamendo is added only when `AWUN_JAMENDO_CLIENT_ID` is set.
+Internet Archive is enabled by default and exposes only public audio files.
+MusicBrainz is enabled by default; set `AWUN_MUSICBRAINZ_CONTACT` to a project
+URL or contact address and adjust `AWUN_QUERY_EXPANSION_LIMIT` if needed.
 
 Direct media URLs are provider-issued and normally expire. Clients should search again instead of storing them. Some providers may require their usual request headers, authentication, or region access. Use AWUN only for media you are authorized to access and in accordance with each provider's terms.
 
@@ -85,7 +111,7 @@ starts, then opens the hosted beta in its own application window.
 
 For a reproducible cloud build, open **Actions → Windows desktop build → Run
 workflow**. Every pull request also creates an `AWUN-Windows-x64` test artifact.
-Download it from the completed run. Pushing a tag such as `v1.3.0` creates a
+Download it from the completed run. Pushing a tag such as `v1.4.0` creates a
 GitHub Release containing the executable and
 checksum. The executable is currently unsigned, so Windows SmartScreen may
 show a warning until a code-signing certificate is added.

@@ -10,6 +10,7 @@ from yt_dlp import YoutubeDL
 from yt_dlp.utils import DownloadError
 
 from backend.core.models import Track
+from backend.core.regions import RegionProfile
 from backend.sources.base import AdapterError, BaseAdapter
 from backend.sources.youtube import _quality, _request_headers, _safe_int
 
@@ -50,7 +51,13 @@ class SoundCloudAdapter(BaseAdapter):
             "extract_flat": False,
         }
 
-    async def search(self, query: str, limit: int) -> list[Track]:
+    async def search(
+        self,
+        query: str,
+        limit: int,
+        *,
+        region: RegionProfile | None = None,
+    ) -> list[Track]:
         if self._client_id and self._client_secret:
             return await self._search_api(query, limit)
         try:

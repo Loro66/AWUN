@@ -28,7 +28,18 @@ def test_visual_controls_have_unique_ids() -> None:
         "motionToggle",
         "decorToggle",
         "telemetryClock",
+        "regionSelect",
     }.issubset(parser.ids)
+
+
+def test_region_archive_and_catalog_controls_are_wired() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+
+    assert 'data-source="internet_archive"' in html
+    assert all(f"<option>{region}</option>" in html for region in ("AUTO", "CIS", "EUROPE", "USA", "LATAM", "ASIA", "GLOBAL"))
+    assert "catalog_links" in script
+    assert "navigator.language" in script
 
 
 def test_every_visual_theme_has_css_and_javascript_metadata() -> None:

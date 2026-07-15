@@ -5,6 +5,7 @@ from urllib.parse import urlencode
 import aiohttp
 
 from backend.core.models import Track
+from backend.core.regions import RegionProfile
 from backend.sources.base import AdapterError, BaseAdapter
 
 
@@ -27,7 +28,7 @@ class AudiusAdapter(BaseAdapter):
 
     async def _get_session(self) -> aiohttp.ClientSession:
         if self._session is None or self._session.closed:
-            headers = {"Accept": "application/json", "User-Agent": "AWUN/1.3"}
+            headers = {"Accept": "application/json", "User-Agent": "AWUN/1.4"}
             if self.api_key:
                 headers["x-api-key"] = self.api_key
             self._session = aiohttp.ClientSession(
@@ -36,7 +37,13 @@ class AudiusAdapter(BaseAdapter):
             )
         return self._session
 
-    async def search(self, query: str, limit: int) -> list[Track]:
+    async def search(
+        self,
+        query: str,
+        limit: int,
+        *,
+        region: RegionProfile | None = None,
+    ) -> list[Track]:
         session = await self._get_session()
         params = {"query": query, "limit": str(limit), "app_name": self.app_name}
         try:

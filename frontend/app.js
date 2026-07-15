@@ -1,18 +1,20 @@
-const sourceLabels={youtube:'YouTube',soundcloud:'SoundCloud',audius:'Audius',jamendo:'Jamendo'};
+const sourceLabels={youtube:'YouTube',soundcloud:'SoundCloud',audius:'Audius',jamendo:'Jamendo',internet_archive:'Internet Archive'};
+const regions=['AUTO','CIS','EUROPE','USA','LATAM','ASIA','GLOBAL'];
 const $=id=>document.getElementById(id);
 const ui={
   status:$('status'),libraryButton:$('libraryButton'),searchForm:$('searchForm'),searchInput:$('searchInput'),searchButton:$('searchButton'),
-  sources:$('sources'),results:$('results'),trackList:$('trackList'),message:$('message'),resultTitle:$('resultTitle'),resultCount:$('resultCount'),resultTime:$('resultTime'),searchMeta:$('searchMeta'),
+  sources:$('sources'),regionSelect:$('regionSelect'),results:$('results'),trackList:$('trackList'),message:$('message'),resultTitle:$('resultTitle'),resultCount:$('resultCount'),resultTime:$('resultTime'),searchMeta:$('searchMeta'),
   player:$('player'),playerArtwork:$('playerArtwork'),nowTitle:$('nowTitle'),nowArtist:$('nowArtist'),nowSource:$('nowSource'),audio:$('audio'),youtubeDock:$('youtubeDock'),youtubePlayer:$('youtubePlayer'),
   previousTrack:$('previousTrack'),playPause:$('playPause'),nextTrack:$('nextTrack'),progress:$('progress'),elapsed:$('elapsed'),totalTime:$('totalTime'),volume:$('volume'),muteButton:$('muteButton'),closePlayer:$('closePlayer'),minimizeVideo:$('minimizeVideo'),
   themeButton:$('themeButton'),themeLabel:$('themeLabel'),themePanel:$('themePanel'),themeClose:$('themeClose'),themeBackdrop:$('themeBackdrop'),themeColor:$('themeColor'),motionToggle:$('motionToggle'),motionValue:$('motionValue'),decorToggle:$('decorToggle'),decorValue:$('decorValue'),telemetryClock:$('telemetryClock')
 };
 
 function loadLibrary(){try{const value=JSON.parse(localStorage.getItem('awun-library')||'[]');return Array.isArray(value)?value:[]}catch{return[]}}
+function loadRegion(){const value=localStorage.getItem('awun-region')||'AUTO';return regions.includes(value)?value:'AUTO'}
 function loadVisual(){try{const value=JSON.parse(localStorage.getItem('awun-visual')||'{}');return{theme:['acid','ultraviolet','cobalt','ember'].includes(value.theme)?value.theme:'acid',motion:value.motion==='off'?'off':'on',decor:value.decor==='minimal'?'minimal':'full'}}catch{return{theme:'acid',motion:'on',decor:'full'}}}
 const visualThemes={acid:{label:'ACID',color:'#10110e'},ultraviolet:{label:'ULTRAVIOLET',color:'#0d0718'},cobalt:{label:'COBALT',color:'#07111f'},ember:{label:'EMBER',color:'#160b07'}};
 const state={
-  tracks:[],saved:loadLibrary(),available:new Set(),sources:new Set(),library:false,active:null,controller:null,
+  tracks:[],saved:loadLibrary(),available:new Set(),sources:new Set(),region:loadRegion(),library:false,active:null,controller:null,
   youtube:null,youtubeApi:null,youtubeTicker:null,seeking:false,recovering:false,lastVolume:.82,...loadVisual()
 };
 
@@ -112,6 +114,9 @@ function render(){
     const actions=document.createElement('div');actions.className='actions';
     const save=document.createElement('button');save.className=`save ${saved.has(track.id)?'saved':''}`;save.type='button';save.textContent=saved.has(track.id)?'✓ SAVED':'+ LIBRARY';save.onclick=()=>toggleSave(track);actions.append(save);
     if(track.download_url){const download=document.createElement('a');download.className='download';download.href=track.download_url;download.download='';download.rel='noopener';download.textContent='DOWNLOAD';actions.append(download)}
+    const catalog=document.createElement('div');catalog.className='catalog-links';
+    [['spotify','SPOTIFY'],['apple_music','APPLE']].forEach(([provider,label])=>{const href=track.catalog_links?.[provider];if(!href)return;const link=document.createElement('a');link.className='catalog-link';link.href=href;link.target='_blank';link.rel='noopener noreferrer';link.textContent=`${label} ↗`;link.setAttribute('aria-label',`Find ${decodeText(track.title)} on ${label}`);catalog.append(link)});
+    if(catalog.childElementCount)actions.append(catalog);
     row.append(cover,play,name,source,quality,duration,actions);ui.trackList.append(row);
   });
 }
@@ -129,14 +134,14 @@ async function search(query=ui.searchInput.value.trim()){
   ui.results.setAttribute('aria-busy','true');ui.searchButton.classList.add('searching');document.body.classList.add('is-searching');setMessage('SEARCHING CONNECTED SOURCES…','loading');loadingRows();ui.resultTitle.textContent='SEARCHING';ui.resultCount.textContent='—';ui.resultTime.textContent='PLEASE WAIT';
   const started=performance.now();
   try{
-    const response=await fetch('/api/v1/search',{method:'POST',headers:{'Content-Type':'application/json'},signal:state.controller.signal,body:JSON.stringify({query,limit:24,sources:[...state.sources]})});
+    const response=await fetch('/api/v1/search',{method:'POST',headers:{'Content-Type':'application/json'},signal:state.controller.signal,body:JSON.stringify({query,limit:24,sources:[...state.sources],region:state.region,locale:navigator.language||null})});
     const data=await response.json();if(!response.ok)throw new Error(data.detail||'Search failed');
     state.tracks=data.tracks||[];
     const failures=Object.keys(data.errors||{}).map(source=>sourceLabels[source]||source);
     if(state.tracks.length){setMessage(failures.length?`Showing real results. Temporarily unavailable: ${failures.join(', ')}.`:'Select a track to play it instantly.',failures.length?'notice':'');}
     else setMessage(failures.length?`No playable results. Unavailable: ${failures.join(', ')}.`:'Nothing found. Try the artist and track title.','error');
-    ui.resultTime.textContent=`${data.elapsed_ms??Math.round(performance.now()-started)} MS`;
-    history.replaceState(null,'',`${location.pathname}?q=${encodeURIComponent(query)}`);
+    const variants=Math.max(1,data.query_variants?.length||1);ui.resultTime.textContent=`${data.elapsed_ms??Math.round(performance.now()-started)} MS · ${variants} QUER${variants===1?'Y':'IES'}`;
+    const params=new URLSearchParams({q:query});if(state.region!=='AUTO')params.set('region',state.region);history.replaceState(null,'',`${location.pathname}?${params}`);
     render();
   }catch(error){
     if(error.name==='AbortError')return;
@@ -220,13 +225,14 @@ async function recoverAudio(){
   if(!state.active||state.active.source==='youtube'||state.recovering||!state.available.has(state.active.source))return;
   state.recovering=true;setMessage('Refreshing an expired playback link…','loading');
   try{
-    const response=await fetch('/api/v1/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:`${state.active.artist} ${state.active.title}`,limit:5,sources:[state.active.source]})});const data=await response.json();
+    const response=await fetch('/api/v1/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:`${state.active.artist} ${state.active.title}`,limit:5,sources:[state.active.source],region:state.region,locale:navigator.language||null})});const data=await response.json();
     const fresh=(data.tracks||[]).find(track=>track.id===state.active.id)||(data.tracks||[])[0];if(!fresh)throw new Error();
     const savedIndex=state.saved.findIndex(track=>track.id===state.active.id);if(savedIndex>=0){state.saved[savedIndex]=fresh;persist()}state.active=fresh;await playAudio(fresh,true);setMessage('Playback link refreshed.','notice');
   }catch{setMessage('This saved link expired and could not be refreshed. Search for the track again.','error')}
 }
 
 sourceButtons().forEach(button=>button.addEventListener('click',()=>{const source=button.dataset.source;if(!state.available.has(source))return;if(state.sources.has(source))state.sources.delete(source);else state.sources.add(source);button.classList.toggle('on',state.sources.has(source))}));
+ui.regionSelect.addEventListener('change',()=>{state.region=regions.includes(ui.regionSelect.value)?ui.regionSelect.value:'AUTO';localStorage.setItem('awun-region',state.region)});
 ui.themeButton.addEventListener('click',()=>ui.themePanel.hidden?openThemePanel():closeThemePanel());ui.themeClose.addEventListener('click',closeThemePanel);ui.themeBackdrop.addEventListener('click',closeThemePanel);
 document.querySelectorAll('[data-theme-choice]').forEach(button=>button.addEventListener('click',()=>{state.theme=button.dataset.themeChoice;applyVisual()}));
 ui.motionToggle.addEventListener('click',()=>{state.motion=state.motion==='on'?'off':'on';applyVisual()});ui.decorToggle.addEventListener('click',()=>{state.decor=state.decor==='full'?'minimal':'full';applyVisual()});
@@ -242,7 +248,8 @@ ui.audio.addEventListener('timeupdate',()=>updateTimeline(ui.audio.currentTime,u
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!ui.themePanel.hidden){closeThemePanel();return}if(event.code==='Space'&&!['INPUT','TEXTAREA','BUTTON'].includes(document.activeElement?.tagName)&&!ui.player.hidden){event.preventDefault();togglePlayback()}});
 
 async function bootstrap(){
+  const url=new URLSearchParams(location.search),requestedRegion=url.get('region')?.toUpperCase();if(regions.includes(requestedRegion)){state.region=requestedRegion;localStorage.setItem('awun-region',state.region)}ui.regionSelect.value=state.region;
   applyVisual(false);updateClock();setInterval(updateClock,1000);persist();setRange(ui.volume,82);setRange(ui.progress,0);render();await refreshStatus();
-  const query=new URLSearchParams(location.search).get('q');if(query){ui.searchInput.value=query;search(query)}
+  const query=url.get('q');if(query){ui.searchInput.value=query;search(query)}
 }
 bootstrap();

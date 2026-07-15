@@ -3,6 +3,7 @@ from typing import Any
 import aiohttp
 
 from backend.core.models import Track
+from backend.core.regions import RegionProfile
 from backend.sources.base import AdapterError, BaseAdapter
 
 
@@ -21,11 +22,17 @@ class JamendoAdapter(BaseAdapter):
         if self._session is None or self._session.closed:
             self._session = aiohttp.ClientSession(
                 timeout=aiohttp.ClientTimeout(total=self.timeout),
-                headers={"Accept": "application/json", "User-Agent": "AWUN/1.3"},
+                headers={"Accept": "application/json", "User-Agent": "AWUN/1.4"},
             )
         return self._session
 
-    async def search(self, query: str, limit: int) -> list[Track]:
+    async def search(
+        self,
+        query: str,
+        limit: int,
+        *,
+        region: RegionProfile | None = None,
+    ) -> list[Track]:
         params = {
             "client_id": self.client_id,
             "format": "json",

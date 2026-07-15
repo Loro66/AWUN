@@ -17,6 +17,11 @@ Jamendo is optional and is activated only when its client ID is present. Audius
 search is enabled by default; `AWUN_AUDIUS_API_KEY` may be added for a registered
 Audius application.
 
+MusicBrainz and Internet Archive need no secret. Keep
+`AWUN_MUSICBRAINZ_CONTACT` set to the public project URL or a monitored contact
+address. The included Render configuration enables six query variants and up
+to eight Internet Archive items per provider query.
+
 The deployed service is ready when this endpoint returns JSON:
 
 ```text
@@ -32,8 +37,13 @@ Open `https://YOUR-AWUN-API/` after deployment.
 
 - `/health` reports every configured provider.
 - A search returns only real provider results.
-- SoundCloud, Audius and Jamendo audio use the signed `/api/v1/media/`
+- SoundCloud, Audius, Jamendo and Internet Archive audio use the signed `/api/v1/media/`
   route; YouTube uses its official embedded player.
+- Region controls cover AUTO, CIS, EUROPE, USA, LATAM, ASIA and GLOBAL.
+- `/health` reports MusicBrainz enrichment and Internet Archive availability.
+- Search responses include canonical/local/release/ISRC query variants.
+- Apple Music and Spotify buttons open official catalog searches and never
+  masquerade as downloadable or proxied audio.
 - Starting a track returns HTTP 200 or 206.
 - Seeking sends a Range request and playback resumes from the selected point.
 - Saved tracks reappear after a page reload.

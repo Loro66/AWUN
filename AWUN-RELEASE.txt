@@ -1,6 +1,6 @@
-AWUN 1.3.1 public beta release
-Release date: 2026-07-15
+AWUN 1.4.0 regional discovery release
+Release date: 2026-07-16
 
-This build removes the retired provider integration and adds a compact DECOR
-mode that hides section numbering, vertical search telemetry, results headings
-and helper copy while preserving the search and playback controls.
+This build adds AUTO/CIS/EUROPE/USA/LATAM/ASIA/GLOBAL discovery, MusicBrainz
+query enrichment, public Internet Archive audio with real file downloads,
+regional YouTube search and official Apple Music/Spotify catalog navigation.
