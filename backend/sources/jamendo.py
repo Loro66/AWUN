@@ -21,7 +21,7 @@ class JamendoAdapter(BaseAdapter):
         if self._session is None or self._session.closed:
             self._session = aiohttp.ClientSession(
                 timeout=aiohttp.ClientTimeout(total=self.timeout),
-                headers={"Accept": "application/json", "User-Agent": "AWUN/1.2"},
+                headers={"Accept": "application/json", "User-Agent": "AWUN/1.3"},
             )
         return self._session
 
@@ -88,4 +88,3 @@ class JamendoAdapter(BaseAdapter):
     async def close(self) -> None:
         if self._session and not self._session.closed:
             await self._session.close()
-
