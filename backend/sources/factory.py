@@ -2,8 +2,10 @@ from backend.core.config import Settings
 from backend.sources.audius import AudiusAdapter
 from backend.sources.base import BaseAdapter
 from backend.sources.jamendo import JamendoAdapter
+from backend.sources.internet_archive import InternetArchiveAdapter
 from backend.sources.soundcloud import SoundCloudAdapter
 from backend.sources.youtube import YouTubeAdapter
+from backend.search.enrichment import BasicQueryEnricher, MusicBrainzEnricher, QueryEnricher
 
 
 def build_adapters(settings: Settings) -> list[BaseAdapter]:
@@ -38,4 +40,21 @@ def build_adapters(settings: Settings) -> list[BaseAdapter]:
                 timeout=settings.ytdlp_socket_timeout_seconds,
             )
         )
+    if settings.internet_archive_enabled:
+        adapters.append(
+            InternetArchiveAdapter(
+                timeout=settings.ytdlp_socket_timeout_seconds,
+                max_items=settings.internet_archive_max_items,
+            )
+        )
     return adapters
+
+
+def build_enricher(settings: Settings) -> QueryEnricher:
+    if settings.musicbrainz_enabled:
+        return MusicBrainzEnricher(
+            contact=settings.musicbrainz_contact,
+            limit=settings.query_expansion_limit,
+            timeout=min(8.0, settings.search_timeout_seconds / 3),
+        )
+    return BasicQueryEnricher(settings.query_expansion_limit)
