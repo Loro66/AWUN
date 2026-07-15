@@ -12,6 +12,12 @@ services:
         value: "30"
       - key: AWUN_SEARCH_TIMEOUT_SECONDS
         value: "35"
+      - key: AWUN_QUERY_EXPANSION_LIMIT
+        value: "6"
+      - key: AWUN_INTERNET_ARCHIVE_MAX_ITEMS
+        value: "8"
+      - key: AWUN_MUSICBRAINZ_CONTACT
+        value: "https://github.com/Loro66/AWUN"
       - key: WEB_CONCURRENCY
         value: "2"
       - key: AWUN_MEDIA_SECRET
