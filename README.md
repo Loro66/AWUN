@@ -5,10 +5,12 @@ searches YouTube, SoundCloud, VK, Audius and Jamendo in parallel, then fairly
 interleaves the connected catalogs. YouTube playback stays inside the official
 embedded player; other full tracks use short-lived signed AWUN media routes.
 
-The 1.1 beta interface includes source-aware search, partial-failure handling,
+The 1.3 beta interface includes source-aware search, partial-failure handling,
 a local library, shareable search URLs and a unified responsive player with
-custom seeking, volume, previous/next controls and browser Media Session
-integration. YouTube playback stays inside the official embedded player.
+custom waveform seeking, volume, previous/next controls and browser Media
+Session integration. Its visual system includes Acid, Ultraviolet, Cobalt and
+Ember themes, optional ambient decoration and motion controls. Visual settings
+are saved locally and work across desktop and mobile layouts.
 
 In production, provider URLs are wrapped in short-lived signed AWUN media URLs.
 The media endpoint supports HTTP Range requests for full-track playback and
@@ -83,7 +85,8 @@ SHA256 checksum. The desktop shell shows an AWUN wake-up screen while Render
 starts, then opens the hosted beta in its own application window.
 
 For a reproducible cloud build, open **Actions → Windows desktop build → Run
-workflow**. Download `AWUN-Windows-x64` from the completed run. Pushing a tag
-such as `v1.2.0` also creates a GitHub Release containing the executable and
+workflow**. Every pull request also creates an `AWUN-Windows-x64` test artifact.
+Download it from the completed run. Pushing a tag such as `v1.3.0` creates a
+GitHub Release containing the executable and
 checksum. The executable is currently unsigned, so Windows SmartScreen may
 show a warning until a code-signing certificate is added.
