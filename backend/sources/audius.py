@@ -27,7 +27,7 @@ class AudiusAdapter(BaseAdapter):
 
     async def _get_session(self) -> aiohttp.ClientSession:
         if self._session is None or self._session.closed:
-            headers = {"Accept": "application/json", "User-Agent": "AWUN/1.2"}
+            headers = {"Accept": "application/json", "User-Agent": "AWUN/1.3"}
             if self.api_key:
                 headers["x-api-key"] = self.api_key
             self._session = aiohttp.ClientSession(
@@ -96,4 +96,3 @@ class AudiusAdapter(BaseAdapter):
     async def close(self) -> None:
         if self._session and not self._session.closed:
             await self._session.close()
-
