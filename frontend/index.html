@@ -9,7 +9,7 @@
   <script>
     try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');document.documentElement.dataset.theme=v.theme||'acid';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full'}catch{}
   </script>
-  <link rel="stylesheet" href="/static/styles.css?v=20260715.3">
+  <link rel="stylesheet" href="/static/styles.css?v=20260716.1">
 </head>
 <body>
   <a class="skip-link" href="#searchInput">Skip to search</a>
@@ -62,11 +62,26 @@
             <button type="button" data-source="soundcloud" class="on"><i></i><span>SOUNDCLOUD</span><small>CONNECTING</small></button>
             <button type="button" data-source="audius" class="on"><i></i><span>AUDIUS</span><small>CONNECTING</small></button>
             <button type="button" data-source="jamendo" class="on"><i></i><span>JAMENDO</span><small>CONNECTING</small></button>
+            <button type="button" data-source="internet_archive" class="on"><i></i><span>ARCHIVE</span><small>CONNECTING</small></button>
           </div>
-          <kbd>ENTER ↵</kbd>
+          <div class="search-options">
+            <label class="region-control" for="regionSelect">
+              <span>REGION</span>
+              <select id="regionSelect" name="region">
+                <option>AUTO</option>
+                <option>CIS</option>
+                <option>EUROPE</option>
+                <option>USA</option>
+                <option>LATAM</option>
+                <option>ASIA</option>
+                <option>GLOBAL</option>
+              </select>
+            </label>
+            <kbd>ENTER ↵</kbd>
+          </div>
         </div>
         <div class="network-strip" aria-hidden="true">
-          <span>FEDERATED SEARCH</span><i></i><span>FAIR SOURCE MIX</span><i></i><span>FULL-TRACK PLAYBACK</span>
+          <span>MUSICBRAINZ QUERY EXPANSION</span><i></i><span>REGIONAL SOURCE MIX</span><i></i><span>FULL-TRACK PLAYBACK</span>
         </div>
         <div class="hero-telemetry" aria-hidden="true">
           <span>QUERY SIGNAL</span>
@@ -155,9 +170,9 @@
       <button id="motionToggle" type="button"><span>MOTION</span><b id="motionValue">ON</b></button>
       <button id="decorToggle" type="button"><span>DECOR</span><b id="decorValue">FULL</b></button>
     </div>
-    <footer><span>AWUN / VISUAL OS</span><span>V1.3.1</span></footer>
+    <footer><span>AWUN / VISUAL OS</span><span>V1.4</span></footer>
   </aside>
 
-  <script src="/static/app.js?v=20260715.3" defer></script>
+  <script src="/static/app.js?v=20260716.1" defer></script>
 </body>
 </html>
