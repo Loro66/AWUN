@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     )
 
     app_name: str = "AWUN"
-    app_version: str = "1.3.0"
+    app_version: str = "1.3.1"
     debug: bool = False
     api_prefix: str = "/api/v1"
 
@@ -33,9 +33,6 @@ class Settings(BaseSettings):
     soundcloud_enabled: bool = True
     soundcloud_client_id: str | None = None
     soundcloud_client_secret: str | None = None
-    vk_enabled: bool = True
-    vk_access_token: str | None = None
-    vk_api_version: str = "5.199"
     audius_enabled: bool = True
     audius_api_key: str | None = None
     audius_app_name: str = "AWUN"

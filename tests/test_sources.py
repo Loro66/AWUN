@@ -63,7 +63,6 @@ class ProviderAdapterTests(unittest.TestCase):
         settings = Settings(
             youtube_enabled=False,
             soundcloud_enabled=False,
-            vk_enabled=False,
             jamendo_client_id=None,
             _env_file=None,
         )

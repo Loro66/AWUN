@@ -1,5 +1,6 @@
 from html.parser import HTMLParser
 from pathlib import Path
+import re
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,5 +43,9 @@ def test_every_visual_theme_has_css_and_javascript_metadata() -> None:
 def test_frontend_assets_share_cache_version() -> None:
     html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
 
-    assert "/static/styles.css?v=20260715.2" in html
-    assert "/static/app.js?v=20260715.2" in html
+    style_version = re.search(r'/static/styles\.css\?v=([\d.]+)', html)
+    script_version = re.search(r'/static/app\.js\?v=([\d.]+)', html)
+
+    assert style_version is not None
+    assert script_version is not None
+    assert style_version.group(1) == script_version.group(1)

@@ -1,7 +1,7 @@
 # AWUN
 
 AWUN is a FastAPI music-search aggregator with a responsive web interface. It
-searches YouTube, SoundCloud, VK, Audius and Jamendo in parallel, then fairly
+searches YouTube, SoundCloud, Audius and Jamendo in parallel, then fairly
 interleaves the connected catalogs. YouTube playback stays inside the official
 embedded player; other full tracks use short-lived signed AWUN media routes.
 
@@ -34,7 +34,7 @@ Open `http://127.0.0.1:8000/` for AWUN or `/docs` for API documentation.
 For a hosted beta, deploy the included `Dockerfile` to any container host. A
 `render.yaml` Blueprint is included for Render. Configure
 `AWUN_YOUTUBE_API_KEY` (recommended), the two SoundCloud credentials, and optionally
-`AWUN_VK_ACCESS_TOKEN` and `AWUN_JAMENDO_CLIENT_ID` in the host dashboard. Audius
+`AWUN_JAMENDO_CLIENT_ID` in the host dashboard. Audius
 read-only search works without a secret; `AWUN_AUDIUS_API_KEY` is optional.
 
 See `RELEASE.md` for the production deployment and verification checklist.
@@ -47,7 +47,7 @@ POST `/api/v1/search`:
 {
   "query": "Daft Punk Around the World",
   "limit": 100,
-  "sources": ["youtube", "soundcloud", "vk", "audius", "jamendo"]
+  "sources": ["youtube", "soundcloud", "audius", "jamendo"]
 }
 ```
 
@@ -65,8 +65,7 @@ Copy `.env.example` to `.env`. YouTube uses the Data API when
 `AWUN_YOUTUBE_API_KEY` is set and otherwise falls back to metadata-only
 `yt-dlp` search; playback always stays in the official embedded player. SoundCloud uses OAuth when
 `AWUN_SOUNDCLOUD_CLIENT_ID` and `AWUN_SOUNDCLOUD_CLIENT_SECRET` are set, with a
-limited legacy fallback otherwise. VK is added only when
-`AWUN_VK_ACCESS_TOKEN` is set. Audius is enabled by default and uses its
+limited legacy fallback otherwise. Audius is enabled by default and uses its
 read-only REST API. Jamendo is added only when `AWUN_JAMENDO_CLIENT_ID` is set.
 
 Direct media URLs are provider-issued and normally expire. Clients should search again instead of storing them. Some providers may require their usual request headers, authentication, or region access. Use AWUN only for media you are authorized to access and in accordance with each provider's terms.
