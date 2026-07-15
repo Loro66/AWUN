@@ -1,15 +1,25 @@
 import asyncio
 from time import perf_counter
+from urllib.parse import quote, quote_plus
 
 from backend.core.models import SearchRequest, SearchResponse, SourceName, Track
+from backend.core.regions import RegionProfile, resolve_region
+from backend.search.enrichment import BasicQueryEnricher, QueryEnricher
 from backend.sources.base import BaseAdapter
 
 
 class SearchEngine:
-    def __init__(self, adapters: list[BaseAdapter], timeout_seconds: float = 20.0, max_limit: int = 30) -> None:
+    def __init__(
+        self,
+        adapters: list[BaseAdapter],
+        timeout_seconds: float = 20.0,
+        max_limit: int = 30,
+        enricher: QueryEnricher | None = None,
+    ) -> None:
         self._adapters = {adapter.source: adapter for adapter in adapters}
         self._timeout = timeout_seconds
         self._max_limit = max_limit
+        self._enricher = enricher or BasicQueryEnricher()
 
     @property
     def available_sources(self) -> list[SourceName]:
@@ -20,6 +30,14 @@ class SearchEngine:
         requested = request.sources or self.available_sources
         selected = [source for source in requested if source in self._adapters]
         per_source_limit = min(request.limit, self._max_limit)
+        region = resolve_region(request.region, request.locale)
+        try:
+            query_variants = await asyncio.wait_for(
+                self._enricher.expand(request.query, region),
+                timeout=min(10.0, self._timeout / 2),
+            )
+        except Exception:
+            query_variants = [request.query]
 
         errors: dict[str, str] = {
             source: "Source is not configured"
@@ -29,7 +47,10 @@ class SearchEngine:
         if not requested:
             errors["engine"] = "No search sources are configured"
 
-        tasks = [self._safe_search(self._adapters[source], request.query, per_source_limit) for source in selected]
+        tasks = [
+            self._safe_search(self._adapters[source], query_variants, per_source_limit, region)
+            for source in selected
+        ]
         results = await asyncio.gather(*tasks)
 
         tracks_by_source: dict[str, list[Track]] = {}
@@ -39,24 +60,48 @@ class SearchEngine:
                 errors[source] = error
 
         tracks = self._merge_balanced(tracks_by_source, selected, request.limit)
+        for track in tracks:
+            track.catalog_links = self._catalog_links(track, region)
         elapsed_ms = round((perf_counter() - started) * 1000)
         return SearchResponse(
             query=request.query,
             tracks=tracks,
             total=len(tracks),
             searched_sources=selected,
+            region=request.region,
+            query_variants=query_variants,
             errors=errors,
             elapsed_ms=elapsed_ms,
         )
 
-    async def _safe_search(self, adapter: BaseAdapter, query: str, limit: int) -> tuple[list[Track], str | None]:
+    async def _safe_search(
+        self,
+        adapter: BaseAdapter,
+        queries: list[str],
+        limit: int,
+        region: RegionProfile,
+    ) -> tuple[list[Track], str | None]:
         try:
-            tracks = await asyncio.wait_for(adapter.search(query, limit), timeout=self._timeout)
+            tracks = await asyncio.wait_for(
+                adapter.search_many(queries, limit, region=region),
+                timeout=self._timeout,
+            )
             return tracks, None
         except TimeoutError:
             return [], f"Timed out after {self._timeout:g} seconds"
         except Exception as exc:
             return [], str(exc)
+
+    @staticmethod
+    def _catalog_links(track: Track, region: RegionProfile) -> dict[str, str]:
+        query = f"{track.artist} {track.title}".strip()
+        return {
+            "spotify": f"https://open.spotify.com/search/{quote(query, safe='')}",
+            "apple_music": (
+                f"https://music.apple.com/{region.apple_storefront}/search"
+                f"?term={quote_plus(query)}"
+            ),
+        }
 
     @staticmethod
     def _deduplicate(tracks: list[Track]) -> list[Track]:
@@ -107,4 +152,7 @@ class SearchEngine:
         return merged
 
     async def close(self) -> None:
-        await asyncio.gather(*(adapter.close() for adapter in self._adapters.values()))
+        await asyncio.gather(
+            *(adapter.close() for adapter in self._adapters.values()),
+            self._enricher.close(),
+        )
