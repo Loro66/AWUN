@@ -7,6 +7,7 @@ from yt_dlp import YoutubeDL
 from yt_dlp.utils import DownloadError
 
 from backend.core.models import Track
+from backend.core.regions import RegionProfile
 from backend.sources.base import AdapterError, BaseAdapter
 
 
@@ -69,11 +70,17 @@ class YouTubeAdapter(BaseAdapter):
             "noplaylist": True,
         }
 
-    async def search(self, query: str, limit: int) -> list[Track]:
+    async def search(
+        self,
+        query: str,
+        limit: int,
+        *,
+        region: RegionProfile | None = None,
+    ) -> list[Track]:
         api_error: AdapterError | None = None
         if self._api_key:
             try:
-                return await self._search_api(query, limit)
+                return await self._search_api(query, limit, region=region)
             except AdapterError as exc:
                 api_error = exc
         try:
@@ -85,21 +92,57 @@ class YouTubeAdapter(BaseAdapter):
             detail = f"; Data API: {api_error}" if api_error else ""
             raise AdapterError(f"YouTube adapter error: {exc}{detail}") from exc
 
-    async def _search_api(self, query: str, limit: int) -> list[Track]:
+    async def search_many(
+        self,
+        queries: list[str],
+        limit: int,
+        *,
+        region: RegionProfile | None = None,
+    ) -> list[Track]:
+        if not self._api_key:
+            return await super().search_many(queries[:2], limit, region=region)
+        combined: list[str] = []
+        for query in queries[:4]:
+            candidate = " | ".join([*combined, query])
+            if len(candidate) > 200:
+                break
+            combined.append(query)
+        return await self.search(" | ".join(combined) or queries[0], limit, region=region)
+
+    def _api_params(
+        self,
+        query: str,
+        limit: int,
+        region: RegionProfile | None,
+    ) -> dict[str, str | int]:
+        params: dict[str, str | int] = {
+            "part": "snippet",
+            "q": query,
+            "type": "video",
+            "maxResults": min(limit, 50),
+            "videoEmbeddable": "true",
+            "videoSyndicated": "true",
+            "safeSearch": "moderate",
+            "key": self._api_key or "",
+        }
+        if region and region.country:
+            params["regionCode"] = region.country
+        if region and region.language:
+            params["relevanceLanguage"] = region.language
+        return params
+
+    async def _search_api(
+        self,
+        query: str,
+        limit: int,
+        *,
+        region: RegionProfile | None = None,
+    ) -> list[Track]:
         try:
             async with aiohttp.ClientSession(timeout=self._timeout) as session:
                 async with session.get(
                     self._SEARCH_URL,
-                    params={
-                        "part": "snippet",
-                        "q": query,
-                        "type": "video",
-                        "maxResults": min(limit, 50),
-                        "videoEmbeddable": "true",
-                        "videoSyndicated": "true",
-                        "safeSearch": "moderate",
-                        "key": self._api_key,
-                    },
+                    params=self._api_params(query, limit, region),
                 ) as response:
                     payload = await response.json(content_type=None)
                     if response.status != 200:
