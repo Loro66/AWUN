@@ -1,4 +1,4 @@
-const sourceLabels={youtube:'YouTube',soundcloud:'SoundCloud',vk:'VK',audius:'Audius',jamendo:'Jamendo'};
+const sourceLabels={youtube:'YouTube',soundcloud:'SoundCloud',audius:'Audius',jamendo:'Jamendo'};
 const $=id=>document.getElementById(id);
 const ui={
   status:$('status'),libraryButton:$('libraryButton'),searchForm:$('searchForm'),searchInput:$('searchInput'),searchButton:$('searchButton'),
