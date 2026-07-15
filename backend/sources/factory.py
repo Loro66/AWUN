@@ -3,7 +3,6 @@ from backend.sources.audius import AudiusAdapter
 from backend.sources.base import BaseAdapter
 from backend.sources.jamendo import JamendoAdapter
 from backend.sources.soundcloud import SoundCloudAdapter
-from backend.sources.vk import VKAdapter
 from backend.sources.youtube import YouTubeAdapter
 
 
@@ -22,14 +21,6 @@ def build_adapters(settings: Settings) -> list[BaseAdapter]:
                 timeout=settings.ytdlp_socket_timeout_seconds,
                 client_id=settings.soundcloud_client_id,
                 client_secret=settings.soundcloud_client_secret,
-            )
-        )
-    if settings.vk_enabled and settings.vk_access_token:
-        adapters.append(
-            VKAdapter(
-                access_token=settings.vk_access_token,
-                api_version=settings.vk_api_version,
-                timeout=settings.ytdlp_socket_timeout_seconds,
             )
         )
     if settings.audius_enabled:
