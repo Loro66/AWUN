@@ -66,17 +66,25 @@ class ProviderAdapterTests(unittest.TestCase):
             jamendo_client_id=None,
             _env_file=None,
         )
-        self.assertEqual([adapter.source for adapter in build_adapters(settings)], ["audius"])
+        self.assertEqual(
+            [adapter.source for adapter in build_adapters(settings)],
+            ["audius", "internet_archive"],
+        )
 
         settings.jamendo_client_id = "client"
         self.assertEqual(
             [adapter.source for adapter in build_adapters(settings)],
-            ["audius", "jamendo"],
+            ["audius", "jamendo", "internet_archive"],
         )
 
     def test_request_model_accepts_new_sources(self) -> None:
-        request = SearchRequest(query="signal", sources=["audius", "jamendo"])
-        self.assertEqual(request.sources, ["audius", "jamendo"])
+        request = SearchRequest(
+            query="signal",
+            sources=["audius", "jamendo", "internet_archive"],
+            region="latam",
+        )
+        self.assertEqual(request.sources, ["audius", "jamendo", "internet_archive"])
+        self.assertEqual(request.region, "LATAM")
 
 
 if __name__ == "__main__":
