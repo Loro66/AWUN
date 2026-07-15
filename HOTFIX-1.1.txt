@@ -1,0 +1,12 @@
+AWUN 1.1 hotfix
+
+Upload the CONTENTS of this folder to the repository root.
+GitHub must show these files as modified:
+- frontend/app.js
+- frontend/index.html
+- frontend/styles.css
+- backend/sources/soundcloud.py
+- backend/api/main.py
+- backend/core/config.py
+
+After commit, clear the Render build cache and deploy the latest commit.
