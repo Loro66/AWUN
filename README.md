@@ -90,3 +90,11 @@ Download it from the completed run. Pushing a tag such as `v1.3.0` creates a
 GitHub Release containing the executable and
 checksum. The executable is currently unsigned, so Windows SmartScreen may
 show a warning until a code-signing certificate is added.
+
+## Android and iOS beta apps
+
+The native mobile shells live in `mobile/android` and `mobile/ios`. Open a pull
+request or run **Actions → Mobile beta builds** to create an installable Android
+APK, an unsigned iOS IPA and an iOS Simulator archive. See `mobile/README.md`
+for installation and signing details. A physical-device iOS release requires
+Apple signing credentials; the repository never stores those secrets.
