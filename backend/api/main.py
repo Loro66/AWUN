@@ -74,7 +74,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app = FastAPI(
         title=settings.app_name,
         version=settings.app_version,
-        description="Federated music search across YouTube, SoundCloud and VK.",
+        description="Federated music search across YouTube, SoundCloud, VK, Audius and Jamendo.",
         lifespan=lifespan,
     )
     app.add_middleware(
@@ -117,6 +117,15 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 "vk": {
                     "enabled": settings.vk_enabled,
                     "access_token": bool(settings.vk_access_token),
+                },
+                "audius": {
+                    "enabled": settings.audius_enabled,
+                    "api_key": bool(settings.audius_api_key),
+                    "legacy_read_only": settings.audius_enabled and not settings.audius_api_key,
+                },
+                "jamendo": {
+                    "enabled": settings.jamendo_enabled,
+                    "client_id": bool(settings.jamendo_client_id),
                 },
             },
         }

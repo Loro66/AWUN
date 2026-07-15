@@ -3,7 +3,7 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
-SourceName = Literal["youtube", "soundcloud", "vk"]
+SourceName = Literal["youtube", "soundcloud", "vk", "audius", "jamendo"]
 
 
 class Track(BaseModel):

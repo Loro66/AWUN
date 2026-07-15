@@ -1,9 +1,9 @@
 # AWUN
 
 AWUN is a FastAPI music-search aggregator with a responsive web interface. It
-uses the official YouTube Data API when configured (with a metadata-only
-fallback) and embedded player, the SoundCloud API when
-OAuth credentials are configured, and optionally the VK API.
+searches YouTube, SoundCloud, VK, Audius and Jamendo in parallel, then fairly
+interleaves the connected catalogs. YouTube playback stays inside the official
+embedded player; other full tracks use short-lived signed AWUN media routes.
 
 The 1.1 beta interface includes source-aware search, partial-failure handling,
 a local library, shareable search URLs and a unified responsive player with
@@ -32,7 +32,8 @@ Open `http://127.0.0.1:8000/` for AWUN or `/docs` for API documentation.
 For a hosted beta, deploy the included `Dockerfile` to any container host. A
 `render.yaml` Blueprint is included for Render. Configure
 `AWUN_YOUTUBE_API_KEY` (recommended), the two SoundCloud credentials, and optionally
-`AWUN_VK_ACCESS_TOKEN` in the host dashboard.
+`AWUN_VK_ACCESS_TOKEN` and `AWUN_JAMENDO_CLIENT_ID` in the host dashboard. Audius
+read-only search works without a secret; `AWUN_AUDIUS_API_KEY` is optional.
 
 See `RELEASE.md` for the production deployment and verification checklist.
 
@@ -44,7 +45,7 @@ POST `/api/v1/search`:
 {
   "query": "Daft Punk Around the World",
   "limit": 100,
-  "sources": ["youtube", "soundcloud", "vk"]
+  "sources": ["youtube", "soundcloud", "vk", "audius", "jamendo"]
 }
 ```
 
@@ -63,7 +64,8 @@ Copy `.env.example` to `.env`. YouTube uses the Data API when
 `yt-dlp` search; playback always stays in the official embedded player. SoundCloud uses OAuth when
 `AWUN_SOUNDCLOUD_CLIENT_ID` and `AWUN_SOUNDCLOUD_CLIENT_SECRET` are set, with a
 limited legacy fallback otherwise. VK is added only when
-`AWUN_VK_ACCESS_TOKEN` is set.
+`AWUN_VK_ACCESS_TOKEN` is set. Audius is enabled by default and uses its
+read-only REST API. Jamendo is added only when `AWUN_JAMENDO_CLIENT_ID` is set.
 
 Direct media URLs are provider-issued and normally expire. Clients should search again instead of storing them. Some providers may require their usual request headers, authentication, or region access. Use AWUN only for media you are authorized to access and in accordance with each provider's terms.
 
@@ -76,6 +78,12 @@ five results per query for reliability; configure OAuth for the full range.
 
 ## Windows desktop app
 
-Run `build-windows.bat` on Windows 10 or 11 to create `dist\\AWUN.exe`. The
-desktop shell opens the hosted AWUN beta in its own application window. A
-manual GitHub Actions workflow is also included for repeatable Windows builds.
+Run `build-windows.bat` on Windows 10 or 11 to create `dist\\AWUN.exe` and its
+SHA256 checksum. The desktop shell shows an AWUN wake-up screen while Render
+starts, then opens the hosted beta in its own application window.
+
+For a reproducible cloud build, open **Actions → Windows desktop build → Run
+workflow**. Download `AWUN-Windows-x64` from the completed run. Pushing a tag
+such as `v1.2.0` also creates a GitHub Release containing the executable and
+checksum. The executable is currently unsigned, so Windows SmartScreen may
+show a warning until a code-signing certificate is added.
