@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     )
 
     app_name: str = "AWUN"
-    app_version: str = "1.1.2"
+    app_version: str = "1.2.0"
     debug: bool = False
     api_prefix: str = "/api/v1"
 
@@ -36,6 +36,11 @@ class Settings(BaseSettings):
     vk_enabled: bool = True
     vk_access_token: str | None = None
     vk_api_version: str = "5.199"
+    audius_enabled: bool = True
+    audius_api_key: str | None = None
+    audius_app_name: str = "AWUN"
+    jamendo_enabled: bool = True
+    jamendo_client_id: str | None = None
 
     cors_origins: list[str] = Field(default_factory=lambda: ["*"])
 

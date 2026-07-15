@@ -1,4 +1,4 @@
-const sourceLabels={youtube:'YouTube',soundcloud:'SoundCloud',vk:'VK'};
+const sourceLabels={youtube:'YouTube',soundcloud:'SoundCloud',vk:'VK',audius:'Audius',jamendo:'Jamendo'};
 const $=id=>document.getElementById(id);
 const ui={
   status:$('status'),libraryButton:$('libraryButton'),searchForm:$('searchForm'),searchInput:$('searchInput'),searchButton:$('searchButton'),
@@ -34,6 +34,7 @@ function setRange(range,value){
   const percent=Math.max(0,Math.min(100,((Number(value)-min)/(max-min))*100));
   range.value=String(value);
   range.style.setProperty('--value',`${percent}%`);
+  if(range.classList.contains('progress'))range.parentElement?.style.setProperty('--value',`${percent}%`);
 }
 
 function sourceButtons(){return [...document.querySelectorAll('[data-source]')]}

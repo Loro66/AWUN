@@ -1,5 +1,5 @@
-AWUN 1.1 public beta release
-Release date: 2026-07-14
+AWUN 1.2 public beta release
+Release date: 2026-07-15
 
-This build uses YouTube Data API v3 and serves the frontend from FastAPI.
-It includes the redesigned player, responsive UI and resilient source search.
+This build adds Audius and Jamendo, a five-source network UI, a custom waveform
+player timeline, and a reproducible Windows executable workflow.

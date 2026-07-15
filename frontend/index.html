@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#10110e">
   <meta name="description" content="AWUN searches real music across connected sources and plays it instantly.">
   <title>AWUN — one search, every sound</title>
-  <link rel="stylesheet" href="/static/styles.css?v=20260714.3">
+  <link rel="stylesheet" href="/static/styles.css?v=20260715.1">
 </head>
 <body>
   <a class="skip-link" href="#searchInput">Skip to search</a>
@@ -49,8 +49,13 @@
             <button type="button" data-source="youtube" class="on"><i></i><span>YOUTUBE</span><small>CONNECTING</small></button>
             <button type="button" data-source="soundcloud" class="on"><i></i><span>SOUNDCLOUD</span><small>CONNECTING</small></button>
             <button type="button" data-source="vk" class="on"><i></i><span>VK</span><small>CONNECTING</small></button>
+            <button type="button" data-source="audius" class="on"><i></i><span>AUDIUS</span><small>CONNECTING</small></button>
+            <button type="button" data-source="jamendo" class="on"><i></i><span>JAMENDO</span><small>CONNECTING</small></button>
           </div>
           <kbd>ENTER ↵</kbd>
+        </div>
+        <div class="network-strip" aria-hidden="true">
+          <span>FEDERATED SEARCH</span><i></i><span>FAIR SOURCE MIX</span><i></i><span>FULL-TRACK PLAYBACK</span>
         </div>
       </div>
     </section>
@@ -99,7 +104,9 @@
       </div>
       <div class="timeline">
         <span id="elapsed">0:00</span>
-        <input id="progress" class="range progress" type="range" min="0" max="1000" value="0" aria-label="Playback position">
+        <div class="wave-progress">
+          <input id="progress" class="range progress" type="range" min="0" max="1000" value="0" aria-label="Playback position">
+        </div>
         <span id="totalTime">0:00</span>
       </div>
     </div>
@@ -113,6 +120,6 @@
     <audio id="audio" preload="metadata"></audio>
   </aside>
 
-  <script src="/static/app.js?v=20260714.3" defer></script>
+  <script src="/static/app.js?v=20260715.1" defer></script>
 </body>
 </html>

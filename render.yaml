@@ -24,3 +24,7 @@ services:
         sync: false
       - key: AWUN_VK_ACCESS_TOKEN
         sync: false
+      - key: AWUN_AUDIUS_API_KEY
+        sync: false
+      - key: AWUN_JAMENDO_CLIENT_ID
+        sync: false
