@@ -100,7 +100,13 @@ Region mode changes discovery relevance; it does not bypass provider licensing
 or geographic restrictions. In AUTO mode the browser locale selects a country
 and language. GLOBAL removes the YouTube country/language preference.
 
-## Yandex Music library transfer
+## Public playlist and library transfer
+
+`POST /api/v1/library/import-url` accepts a public HTTPS playlist URL and returns track metadata for automatic matching in AWUN. YouTube playlists use the official YouTube Data API when `AWUN_YOUTUBE_API_KEY` is configured. Other sites are supported only when they publish standard JSON-LD `MusicPlaylist`/`MusicRecording` metadata.
+
+Private libraries, login-protected pages, account tokens and undocumented private APIs are deliberately unsupported. Yandex Music exports can still be imported as CSV, JSON, M3U or TXT. The browser matches up to 100 entries per run against the enabled playable sources, adds only playable matches, and reports the rest.
+
+### Yandex Music export
 
 Click **IMPORT → YM** and upload a CSV, JSON, M3U/M3U8 or TXT file, or paste one
 `Artist — Track` per line. AWUN stores only normalized track metadata in the

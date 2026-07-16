@@ -8,7 +8,7 @@ const ui={
   player:$('player'),playerArtwork:$('playerArtwork'),nowTitle:$('nowTitle'),nowArtist:$('nowArtist'),nowSource:$('nowSource'),audio:$('audio'),youtubeDock:$('youtubeDock'),youtubePlayer:$('youtubePlayer'),
   previousTrack:$('previousTrack'),playPause:$('playPause'),nextTrack:$('nextTrack'),repeatMode:$('repeatMode'),progress:$('progress'),elapsed:$('elapsed'),totalTime:$('totalTime'),volume:$('volume'),muteButton:$('muteButton'),closePlayer:$('closePlayer'),minimizeVideo:$('minimizeVideo'),
   themeButton:$('themeButton'),themeLabel:$('themeLabel'),themePanel:$('themePanel'),themeClose:$('themeClose'),themeBackdrop:$('themeBackdrop'),themeColor:$('themeColor'),motionToggle:$('motionToggle'),motionValue:$('motionValue'),decorToggle:$('decorToggle'),decorValue:$('decorValue'),densityToggle:$('densityToggle'),densityValue:$('densityValue'),telemetryClock:$('telemetryClock'),
-  importButton:$('importButton'),importPanel:$('importPanel'),importClose:$('importClose'),importBackdrop:$('importBackdrop'),libraryFile:$('libraryFile'),importFileButton:$('importFileButton'),importFileName:$('importFileName'),importText:$('importText'),importStatus:$('importStatus'),importSubmit:$('importSubmit')
+  importButton:$('importButton'),importPanel:$('importPanel'),importClose:$('importClose'),importBackdrop:$('importBackdrop'),libraryFile:$('libraryFile'),importFileButton:$('importFileButton'),importFileName:$('importFileName'),importText:$('importText'),importStatus:$('importStatus'),importSubmit:$('importSubmit'),importUrl:$('importUrl'),importUrlSubmit:$('importUrlSubmit'),importProgress:$('importProgress')
 };
 
 function loadLibrary(){try{const value=JSON.parse(localStorage.getItem('awun-library')||'[]');return Array.isArray(value)?value:[]}catch{return[]}}
@@ -105,11 +105,10 @@ function parseImportedLibrary(raw,fileName=''){
   if(!tracks.length)tracks=parseTextLibrary(raw);
   const unique=new Map();tracks.forEach(track=>unique.set(importKey(track.artist==='Yandex Music'?'':track.artist,track.title),track));return [...unique.values()].slice(0,1000);
 }
-function importLibrary(){
+async function importLibrary(){
   try{
     const tracks=parseImportedLibrary(ui.importText.value,ui.libraryFile.files?.[0]?.name||'');if(!tracks.length)throw new Error('No “Artist — Track” entries were found.');
-    const existing=new Set(state.saved.map(track=>importKey(track.artist,track.title)));const additions=tracks.filter(track=>!existing.has(importKey(track.artist,track.title)));
-    state.saved=[...additions,...state.saved].slice(0,1500);persist();state.library=true;ui.libraryButton.classList.add('active');ui.libraryButton.setAttribute('aria-pressed','true');render();closeImportPanel();setMessage(`${additions.length} Yandex Music track${additions.length===1?'':'s'} imported. Press play to match each track across connected AWUN sources.`,'notice');
+    await matchAndSaveImported(tracks);
   }catch(error){ui.importStatus.textContent=error.message||'The library could not be imported.'}
 }
 
@@ -347,6 +346,33 @@ async function matchImportedTrack(track){
   }catch(error){setMessage(error.message||'This imported track could not be matched.','error')}
 }
 
+function directImportedTrack(entry){
+  if(entry.source!=='youtube'||!entry.external_id)return null;
+  return{id:`yt_${entry.external_id}`,title:entry.title,artist:entry.artist||'YouTube',duration:0,quality:'VIDEO',source:'youtube',stream_url:entry.external_url||`https://www.youtube.com/watch?v=${entry.external_id}`,download_url:null,thumbnail:entry.thumbnail||null,score:82,catalog_links:{youtube:entry.external_url||`https://www.youtube.com/watch?v=${entry.external_id}`}};
+}
+async function findImportedMatch(track){
+  if(track.source==='youtube'&&track.external_id)return directImportedTrack(track);
+  const sources=[...state.sources].filter(source=>state.available.has(source));
+  const response=await fetch('/api/v1/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:`${track.artist==='Yandex Music'?'':track.artist} ${track.title}`.trim(),limit:8,sources:sources.length?sources:[...state.available],region:state.region,locale:navigator.language||null})});
+  const data=await response.json();if(!response.ok)throw new Error(data.detail||'Matching failed');
+  return [...(data.tracks||[])].sort((left,right)=>matchScore(right,track)-matchScore(left,track))[0]||null;
+}
+async function matchAndSaveImported(tracks){
+  if(!tracks.length)throw new Error('No tracks were found in this library.');
+  const queue=tracks.slice(0,100),matched=[],missed=[];let cursor=0,done=0;
+  ui.importSubmit.disabled=true;ui.importUrlSubmit.disabled=true;ui.importProgress.hidden=false;ui.importProgress.max=queue.length;ui.importProgress.value=0;
+  const worker=async()=>{while(cursor<queue.length){const track=queue[cursor++];try{const result=await findImportedMatch(track);if(result){result.import_origin='library_link';matched.push(result)}else missed.push(track)}catch{missed.push(track)}finally{done+=1;ui.importProgress.value=done;ui.importStatus.textContent=`MATCHING ${done} / ${queue.length} · ${matched.length} FOUND`;}}};
+  try{await Promise.all(Array.from({length:Math.min(3,queue.length)},worker));const existing=new Set(state.saved.map(track=>track.id));const additions=matched.filter(track=>!existing.has(track.id));state.saved=[...additions,...state.saved].slice(0,1500);persist();state.library=true;ui.libraryButton.classList.add('active');ui.libraryButton.setAttribute('aria-pressed','true');render();ui.importStatus.textContent=`DONE · ${additions.length} ADDED · ${missed.length} NOT FOUND${tracks.length>100?' · FIRST 100 PROCESSED':''}`;setMessage(`${additions.length} playable tracks added. ${missed.length} could not be matched and were skipped.`,'notice');}
+  finally{ui.importSubmit.disabled=false;ui.importUrlSubmit.disabled=false;}
+}
+async function importLibraryUrl(){
+  const url=ui.importUrl.value.trim();if(!url){ui.importStatus.textContent='Paste a public playlist link first.';return}
+  ui.importUrlSubmit.disabled=true;ui.importStatus.textContent='READING PUBLIC PLAYLIST…';
+  try{const response=await fetch('/api/v1/library/import-url',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url,max_tracks:100})});const data=await response.json();if(!response.ok)throw new Error(data.detail||'The playlist could not be read.');ui.importStatus.textContent=`${data.tracks.length} TRACKS READ · MATCHING NOW`;await matchAndSaveImported(data.tracks||[])}
+  catch(error){ui.importStatus.textContent=error.message||'The playlist could not be imported.'}
+  finally{ui.importUrlSubmit.disabled=false}
+}
+
 async function playTrack(track){
   if(track.source==='yandex_music'){await matchImportedTrack(track);return}
   const previous=state.active;state.active=track;state.recovering=false;ui.player.hidden=false;ui.nowTitle.textContent=decodeText(track.title);ui.nowArtist.textContent=`${decodeText(track.artist)} · ${sourceLabels[track.source]||track.source}`;ui.nowSource.textContent=track.source;
@@ -387,7 +413,7 @@ sourceButtons().forEach(button=>button.addEventListener('click',()=>{const sourc
 ui.regionSelect.addEventListener('change',()=>{state.region=regions.includes(ui.regionSelect.value)?ui.regionSelect.value:'AUTO';localStorage.setItem('awun-region',state.region)});
 ui.limitSelect.addEventListener('change',()=>{const value=Number(ui.limitSelect.value);state.resultLimit=resultLimits.includes(value)?value:60;localStorage.setItem('awun-result-limit',String(state.resultLimit))});
 ui.themeButton.addEventListener('click',()=>ui.themePanel.hidden?openThemePanel():closeThemePanel());ui.themeClose.addEventListener('click',closeThemePanel);ui.themeBackdrop.addEventListener('click',closeThemePanel);
-ui.importButton.addEventListener('click',()=>ui.importPanel.hidden?openImportPanel():closeImportPanel());ui.importClose.addEventListener('click',closeImportPanel);ui.importBackdrop.addEventListener('click',closeImportPanel);ui.importFileButton.addEventListener('click',()=>ui.libraryFile.click());ui.importSubmit.addEventListener('click',importLibrary);
+ui.importButton.addEventListener('click',()=>ui.importPanel.hidden?openImportPanel():closeImportPanel());ui.importClose.addEventListener('click',closeImportPanel);ui.importBackdrop.addEventListener('click',closeImportPanel);ui.importFileButton.addEventListener('click',()=>ui.libraryFile.click());ui.importSubmit.addEventListener('click',importLibrary);ui.importUrlSubmit.addEventListener('click',importLibraryUrl);
 ui.libraryFile.addEventListener('change',async()=>{const file=ui.libraryFile.files?.[0];if(!file)return;if(file.size>2*1024*1024){ui.importStatus.textContent='Choose a file smaller than 2 MB.';return}try{ui.importText.value=await file.text();ui.importFileName.textContent=file.name;const count=parseImportedLibrary(ui.importText.value,file.name).length;ui.importStatus.textContent=`${count} unique track${count===1?'':'s'} ready to import.`}catch(error){ui.importStatus.textContent=error.message||'The selected file could not be read.'}});
 document.querySelectorAll('[data-theme-choice]').forEach(button=>button.addEventListener('click',()=>{state.theme=button.dataset.themeChoice;applyVisual()}));
 ui.motionToggle.addEventListener('click',()=>{state.motion=state.motion==='on'?'off':'on';applyVisual()});ui.decorToggle.addEventListener('click',()=>{state.decor=state.decor==='full'?'minimal':'full';applyVisual()});ui.densityToggle.addEventListener('click',()=>{const modes=['compact','standard','airy'];state.density=modes[(modes.indexOf(state.density)+1)%modes.length];applyVisual()});

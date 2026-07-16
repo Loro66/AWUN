@@ -56,6 +56,30 @@ class SearchResponse(BaseModel):
     elapsed_ms: int = Field(ge=0)
 
 
+class LibraryImportRequest(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    url: str = Field(min_length=8, max_length=2048)
+    max_tracks: int = Field(default=100, ge=1, le=500)
+
+
+class LibraryImportEntry(BaseModel):
+    artist: str = ""
+    title: str
+    source: str | None = None
+    external_id: str | None = None
+    external_url: str | None = None
+    thumbnail: str | None = None
+
+
+class LibraryImportResponse(BaseModel):
+    provider: str
+    title: str | None = None
+    source_url: str
+    tracks: list[LibraryImportEntry]
+    warnings: list[str] = Field(default_factory=list)
+
+
 class TrackAnnotation(BaseModel):
     id: str
     text: str

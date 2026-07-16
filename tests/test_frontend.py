@@ -43,6 +43,11 @@ def test_visual_controls_have_unique_ids() -> None:
         "flowStart",
         "flowLike",
         "flowDislike",
+        "flowBlockArtist",
+        "flowLanguage",
+        "flowEra",
+        "importUrl",
+        "importUrlSubmit",
     }.issubset(parser.ids)
 
 
@@ -118,11 +123,21 @@ def test_flow_recommendations_are_local_persistent_and_feedback_driven() -> None
     app = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
     styles = (ROOT / "frontend" / "styles.css").read_text(encoding="utf-8")
 
-    assert "AWUN / PERSONAL RADIO" in html
-    assert all(value in html for value in ("FAMILIAR", "BALANCED", "NEW", "MOOD", "ACTIVITY"))
-    assert "awun-flow-profile-v1" in script
+    assert "AWUN / PERSONAL RADIO" in html and "MY WAVE" in html
+    assert all(value in html for value in ("FAMILIAR", "BALANCED", "NEW", "MOOD", "ACTIVITY", "LANGUAGE", "ERA"))
+    assert "awun-wave-profile-v2" in script
     assert "candidateScore" in script and "rankCandidates" in script
     assert all(signal in script for signal in ("'play'", "'skip'", "'listen30'", "'complete'", "'like'", "'dislike'"))
     assert "Promise.allSettled" in script and "/api/v1/search" in script
     assert "window.awunApp" in app and "emitAwun('play'" in app and "emitAwun('complete'" in app
     assert ".flow-panel" in styles and ".flow-feedback.active" in styles
+
+
+def test_public_url_import_is_automatic_and_account_safe() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    api = (ROOT / "backend" / "api" / "main.py").read_text(encoding="utf-8")
+
+    assert 'id="importUrl"' in html and "PUBLIC PLAYLIST LINK" in html
+    assert "/api/v1/library/import-url" in script and "matchAndSaveImported" in script
+    assert 'f"{settings.api_prefix}/library/import-url"' in api

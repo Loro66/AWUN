@@ -12,8 +12,16 @@ from fastapi.staticfiles import StaticFiles
 
 from backend.core.config import Settings, get_settings
 from backend.core.media import InvalidMediaToken, MediaSigner
-from backend.core.models import SearchRequest, SearchResponse, SourceName, TrackDetailsResponse
+from backend.core.models import (
+    LibraryImportRequest,
+    LibraryImportResponse,
+    SearchRequest,
+    SearchResponse,
+    SourceName,
+    TrackDetailsResponse,
+)
 from backend.core.regions import REGION_NAMES, RegionName
+from backend.importers.library_url import LibraryImportError, LibraryUrlImporter
 from backend.metadata.lyrics import TrackDetailsService
 from backend.search.engine import SearchEngine
 from backend.sources.factory import build_adapters, build_enricher
@@ -72,6 +80,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             enricher=build_enricher(settings),
         )
         app.state.track_details = TrackDetailsService(settings)
+        app.state.library_importer = LibraryUrlImporter(
+            settings.youtube_api_key,
+            timeout_seconds=min(settings.search_timeout_seconds, 30),
+        )
         yield
         await app.state.search_engine.close()
         await app.state.track_details.close()
@@ -193,6 +205,19 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         if body.limit > settings.max_limit:
             raise HTTPException(422, f"limit must not exceed {settings.max_limit}")
         return proxied(await search_engine.search(body), request)
+
+    @app.post(
+        f"{settings.api_prefix}/library/import-url",
+        response_model=LibraryImportResponse,
+        tags=["library"],
+    )
+    async def import_library_url(body: LibraryImportRequest, request: Request) -> LibraryImportResponse:
+        """Read metadata from a public playlist; private-account access is deliberately unsupported."""
+        importer: LibraryUrlImporter = request.app.state.library_importer
+        try:
+            return await importer.import_url(body.url, body.max_tracks)
+        except LibraryImportError as exc:
+            raise HTTPException(422, str(exc)) from exc
 
     @app.get(f"{settings.api_prefix}/search", response_model=SearchResponse, tags=["search"])
     async def search_get(

@@ -11,7 +11,7 @@
   <script>
     try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');document.documentElement.dataset.theme=v.theme||'black';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full';document.documentElement.dataset.density=v.density||'standard'}catch{}
   </script>
-  <link rel="stylesheet" href="/static/styles.css?v=20260717.1">
+  <link rel="stylesheet" href="/static/styles.css?v=20260717.2">
 </head>
 <body>
   <a class="skip-link" href="#searchInput">Skip to search</a>
@@ -34,7 +34,7 @@
       <div class="top-actions">
         <span id="status" class="status"><i></i><b>CONNECTING</b></span>
         <button id="flowButton" class="library flow-button" type="button" aria-expanded="false" aria-controls="flowPanel">
-          <span>FLOW</span><b id="flowBadge">READY</b>
+          <span>MY WAVE</span><b id="flowBadge">READY</b>
         </button>
         <button id="themeButton" class="theme-button" type="button" aria-expanded="false" aria-controls="themePanel">
           <span>VISUAL</span><b id="themeLabel">ACID</b>
@@ -126,10 +126,10 @@
 
     <section id="flowPanel" class="flow-panel" hidden aria-labelledby="flowTitle">
       <header>
-        <div><span>AWUN / PERSONAL RADIO</span><h2 id="flowTitle">FLOW</h2></div>
+        <div><span>AWUN / PERSONAL RADIO</span><h2 id="flowTitle">MY WAVE</h2></div>
         <button id="flowClose" type="button" aria-label="Close Flow settings">×</button>
       </header>
-      <p>An endless personal queue that learns from every play, skip, save, like and dislike. Your taste profile stays on this device.</p>
+      <p>An endless personal station: choose how familiar it feels, set a mood, language and era, then tune it with every like, skip and blocked artist.</p>
       <div class="flow-controls">
         <fieldset>
           <legend>DISCOVERY</legend>
@@ -141,10 +141,12 @@
         </fieldset>
         <label><span>MOOD</span><select id="flowMood"><option value="any">ANY</option><option value="calm">CALM</option><option value="energy">ENERGY</option><option value="focus">FOCUS</option><option value="happy">HAPPY</option><option value="sad">SAD</option><option value="night">NIGHT</option></select></label>
         <label><span>ACTIVITY</span><select id="flowActivity"><option value="any">ANY</option><option value="work">WORK</option><option value="drive">DRIVE</option><option value="training">TRAINING</option><option value="relax">RELAX</option></select></label>
+        <label><span>LANGUAGE</span><select id="flowLanguage"><option value="any">ANY</option><option value="ru">RUSSIAN</option><option value="foreign">FOREIGN</option><option value="instrumental">INSTRUMENTAL</option></select></label>
+        <label><span>ERA</span><select id="flowEra"><option value="any">ANY ERA</option><option value="fresh">NEW RELEASES</option><option value="2010s">2010s</option><option value="2000s">2000s</option><option value="classics">CLASSICS</option></select></label>
       </div>
       <div class="flow-start-row">
         <span id="flowSeed">Seed: current search or your library</span>
-        <button id="flowStart" type="button">START FLOW ↗</button>
+        <button id="flowStart" type="button">START MY WAVE ↗</button>
       </div>
       <footer><span id="flowStats">0 signals learned</span><button id="flowReset" type="button">RESET TASTE PROFILE</button></footer>
     </section>
@@ -176,6 +178,7 @@
         <button id="flowDislike" class="flow-feedback" type="button" aria-label="Dislike this track" title="Less like this">−</button>
         <button id="playPause" class="play-pause" type="button" aria-label="Play"><span>▶</span></button>
         <button id="flowLike" class="flow-feedback" type="button" aria-label="Like this track" title="More like this">+</button>
+        <button id="flowBlockArtist" class="flow-feedback flow-block" type="button" aria-label="Do not recommend this artist" title="Block artist">ART−</button>
         <button id="nextTrack" type="button" aria-label="Next track">›</button>
         <button id="repeatMode" class="repeat-mode" type="button" aria-label="Repeat off" aria-pressed="false"><span>↻</span><small>OFF</small></button>
       </div>
@@ -223,10 +226,12 @@
   <div id="importBackdrop" class="theme-backdrop" hidden></div>
   <aside id="importPanel" class="theme-panel import-panel" hidden aria-label="Import music library">
     <div class="theme-panel-head">
-      <div><span>04</span><strong>YANDEX LIBRARY TRANSFER</strong></div>
+      <div><span>04</span><strong>LIBRARY TRANSFER</strong></div>
       <button id="importClose" type="button" aria-label="Close library import">×</button>
     </div>
-    <p>Import track metadata without sharing your Yandex password or account token. Upload CSV, JSON, M3U or TXT, or paste one “Artist — Track” per line.</p>
+    <p>Paste a public playlist link and AWUN will read its public metadata, find playable matches and add every match to your library. Private account access is never requested.</p>
+    <label class="import-copy import-link" for="importUrl"><span>PUBLIC PLAYLIST LINK</span><div><input id="importUrl" type="url" inputmode="url" placeholder="https://www.youtube.com/playlist?list=…"><button id="importUrlSubmit" type="button">FIND + ADD ↗</button></div></label>
+    <div class="import-divider"><span>OR IMPORT AN EXPORT FILE</span></div>
     <input id="libraryFile" type="file" accept=".csv,.json,.m3u,.m3u8,.txt,text/csv,application/json,audio/x-mpegurl,text/plain" hidden>
     <button id="importFileButton" class="import-file" type="button"><span>CHOOSE LIBRARY FILE</span><b id="importFileName">CSV / JSON / M3U / TXT</b></button>
     <label class="import-copy" for="importText"><span>OR PASTE TRACKS</span><textarea id="importText" rows="9" placeholder="Artist — Track&#10;Another Artist — Another Track"></textarea></label>
@@ -234,10 +239,11 @@
       <span id="importStatus">Nothing leaves this device until a track is matched for playback.</span>
       <button id="importSubmit" type="button">IMPORT TO AWUN ↗</button>
     </div>
-    <footer><span>LOCAL METADATA / ON-DEMAND MATCHING</span><span>NO YANDEX TOKEN</span></footer>
+    <progress id="importProgress" class="import-progress" value="0" max="100" hidden></progress>
+    <footer><span>PUBLIC METADATA / AUTOMATIC MATCHING</span><span>NO ACCOUNT TOKEN</span></footer>
   </aside>
 
-  <script src="/static/app.js?v=20260717.1" defer></script>
-  <script src="/static/flow.js?v=20260717.1" defer></script>
+  <script src="/static/app.js?v=20260717.2" defer></script>
+  <script src="/static/flow.js?v=20260717.2" defer></script>
 </body>
 </html>
