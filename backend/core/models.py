@@ -54,3 +54,30 @@ class SearchResponse(BaseModel):
     query_variants: list[str] = Field(default_factory=list)
     errors: dict[str, str] = Field(default_factory=dict)
     elapsed_ms: int = Field(ge=0)
+
+
+class TrackAnnotation(BaseModel):
+    id: str
+    text: str
+    source: Literal["genius"] = "genius"
+    author: str | None = None
+    url: str | None = None
+    votes: int = 0
+
+
+class LyricLine(BaseModel):
+    index: int = Field(ge=0)
+    time: float | None = Field(default=None, ge=0)
+    text: str
+    annotations: list[TrackAnnotation] = Field(default_factory=list)
+
+
+class TrackDetailsResponse(BaseModel):
+    artist: str
+    title: str
+    lyrics_source: Literal["lrclib"] | None = None
+    synced: bool = False
+    lines: list[LyricLine] = Field(default_factory=list)
+    genius_url: str | None = None
+    genius_enabled: bool = False
+    message: str | None = None
