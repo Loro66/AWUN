@@ -34,3 +34,7 @@ services:
         sync: false
       - key: AWUN_JAMENDO_CLIENT_ID
         sync: false
+      - key: AWUN_LYRICS_ENABLED
+        value: "true"
+      - key: AWUN_GENIUS_ACCESS_TOKEN
+        sync: false
