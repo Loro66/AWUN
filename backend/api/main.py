@@ -137,6 +137,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                     "enabled": settings.musicbrainz_enabled,
                     "query_expansion": settings.musicbrainz_enabled,
                 },
+                "yandex_music": {
+                    "mode": "local_library_import_and_official_catalog_links",
+                    "account_token_required": False,
+                    "direct_audio": False,
+                },
             },
         }
 
