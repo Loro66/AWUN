@@ -70,6 +70,10 @@ class SearchEngineTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.region, "AUTO")
         self.assertIn("spotify", response.tracks[0].catalog_links)
         self.assertIn("apple_music", response.tracks[0].catalog_links)
+        self.assertIn("yandex_music", response.tracks[0].catalog_links)
+
+    def test_default_search_window_is_above_twenty_four(self) -> None:
+        self.assertEqual(SearchRequest(query="song").limit, 30)
 
     async def test_interleaves_sources_before_applying_global_limit(self) -> None:
         youtube = FakeAdapter(
