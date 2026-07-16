@@ -9,7 +9,7 @@
   <script>
     try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');document.documentElement.dataset.theme=v.theme||'acid';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full'}catch{}
   </script>
-  <link rel="stylesheet" href="/static/styles.css?v=20260716.1">
+  <link rel="stylesheet" href="/static/styles.css?v=20260716.2">
 </head>
 <body>
   <a class="skip-link" href="#searchInput">Skip to search</a>
@@ -33,6 +33,9 @@
         <span id="status" class="status"><i></i><b>CONNECTING</b></span>
         <button id="themeButton" class="theme-button" type="button" aria-expanded="false" aria-controls="themePanel">
           <span>VISUAL</span><b id="themeLabel">ACID</b>
+        </button>
+        <button id="importButton" class="library import-button" type="button" aria-expanded="false" aria-controls="importPanel">
+          <span>IMPORT</span><b>YM</b>
         </button>
         <button id="libraryButton" class="library" type="button" aria-pressed="false">
           <span>LIBRARY</span><b>00</b>
@@ -65,6 +68,14 @@
             <button type="button" data-source="internet_archive" class="on"><i></i><span>ARCHIVE</span><small>CONNECTING</small></button>
           </div>
           <div class="search-options">
+            <label class="region-control limit-control" for="limitSelect">
+              <span>RESULTS</span>
+              <select id="limitSelect" name="limit">
+                <option value="30">30</option>
+                <option value="60" selected>60</option>
+                <option value="100">100</option>
+              </select>
+            </label>
             <label class="region-control" for="regionSelect">
               <span>REGION</span>
               <select id="regionSelect" name="region">
@@ -81,7 +92,7 @@
           </div>
         </div>
         <div class="network-strip" aria-hidden="true">
-          <span>MUSICBRAINZ QUERY EXPANSION</span><i></i><span>REGIONAL SOURCE MIX</span><i></i><span>FULL-TRACK PLAYBACK</span>
+          <span>MUSICBRAINZ QUERY EXPANSION</span><i></i><span>30 / 60 / 100 RESULTS</span><i></i><span>YANDEX LIBRARY TRANSFER</span>
         </div>
         <div class="hero-telemetry" aria-hidden="true">
           <span>QUERY SIGNAL</span>
@@ -170,9 +181,26 @@
       <button id="motionToggle" type="button"><span>MOTION</span><b id="motionValue">ON</b></button>
       <button id="decorToggle" type="button"><span>DECOR</span><b id="decorValue">FULL</b></button>
     </div>
-    <footer><span>AWUN / VISUAL OS</span><span>V1.4</span></footer>
+    <footer><span>AWUN / VISUAL OS</span><span>V1.5</span></footer>
   </aside>
 
-  <script src="/static/app.js?v=20260716.1" defer></script>
+  <div id="importBackdrop" class="theme-backdrop" hidden></div>
+  <aside id="importPanel" class="theme-panel import-panel" hidden aria-label="Import music library">
+    <div class="theme-panel-head">
+      <div><span>04</span><strong>YANDEX LIBRARY TRANSFER</strong></div>
+      <button id="importClose" type="button" aria-label="Close library import">×</button>
+    </div>
+    <p>Import track metadata without sharing your Yandex password or account token. Upload CSV, JSON, M3U or TXT, or paste one “Artist — Track” per line.</p>
+    <input id="libraryFile" type="file" accept=".csv,.json,.m3u,.m3u8,.txt,text/csv,application/json,audio/x-mpegurl,text/plain" hidden>
+    <button id="importFileButton" class="import-file" type="button"><span>CHOOSE LIBRARY FILE</span><b id="importFileName">CSV / JSON / M3U / TXT</b></button>
+    <label class="import-copy" for="importText"><span>OR PASTE TRACKS</span><textarea id="importText" rows="9" placeholder="Artist — Track&#10;Another Artist — Another Track"></textarea></label>
+    <div class="import-actions">
+      <span id="importStatus">Nothing leaves this device until a track is matched for playback.</span>
+      <button id="importSubmit" type="button">IMPORT TO AWUN ↗</button>
+    </div>
+    <footer><span>LOCAL METADATA / ON-DEMAND MATCHING</span><span>NO YANDEX TOKEN</span></footer>
+  </aside>
+
+  <script src="/static/app.js?v=20260716.2" defer></script>
 </body>
 </html>
