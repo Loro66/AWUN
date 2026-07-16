@@ -17,6 +17,14 @@ and mobile shells. Its visual system includes Acid, Ultraviolet, Cobalt and
 Ember themes, Editorial and music-first Minimal layouts, plus motion controls. Visual settings
 are saved locally and work across desktop and mobile layouts.
 
+**AWUN FLOW** builds an endless personal queue from the current search, active
+track and local library. It learns from plays, 30% listens, completions, skips,
+likes and dislikes, then re-ranks fresh results from every connected source.
+Familiar/Balanced/New discovery, mood and activity controls change each refill
+without uploading the taste profile: the beta stores at most 800 compact
+signals in browser `localStorage`. Likes also save the track to the local
+library; dislikes remove it from future Flow queues on that device.
+
 Click any result (or its **STORY** button) to open a Track Story. AWUN requests
 plain or time-synced lyrics from LRCLIB on demand and, when
 `AWUN_GENIUS_ACCESS_TOKEN` is configured, attaches official Genius annotations
