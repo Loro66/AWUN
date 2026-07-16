@@ -15,10 +15,11 @@ function loadLibrary(){try{const value=JSON.parse(localStorage.getItem('awun-lib
 function loadRegion(){const value=localStorage.getItem('awun-region')||'AUTO';return regions.includes(value)?value:'AUTO'}
 function loadResultLimit(){const value=Number(localStorage.getItem('awun-result-limit')||60);return resultLimits.includes(value)?value:60}
 function loadVisual(){try{const value=JSON.parse(localStorage.getItem('awun-visual')||'{}');return{theme:['acid','ultraviolet','cobalt','ember'].includes(value.theme)?value.theme:'acid',motion:value.motion==='off'?'off':'on',decor:value.decor==='minimal'?'minimal':'full'}}catch{return{theme:'acid',motion:'on',decor:'full'}}}
+function loadLineComments(){try{const value=JSON.parse(localStorage.getItem('awun-line-comments-v1')||'{}');return value&&typeof value==='object'&&!Array.isArray(value)?value:{}}catch{return{}}}
 const visualThemes={acid:{label:'ACID',color:'#10110e'},ultraviolet:{label:'ULTRAVIOLET',color:'#0d0718'},cobalt:{label:'COBALT',color:'#07111f'},ember:{label:'EMBER',color:'#160b07'}};
 const state={
   tracks:[],saved:loadLibrary(),available:new Set(),sources:new Set(),region:loadRegion(),resultLimit:loadResultLimit(),library:false,active:null,controller:null,
-  youtube:null,youtubeApi:null,youtubeTicker:null,seeking:false,recovering:false,lastVolume:.82,...loadVisual()
+  youtube:null,youtubeApi:null,youtubeTicker:null,seeking:false,recovering:false,lastVolume:.82,expanded:null,details:new Map(),detailsController:null,openLines:new Set(),lineComments:loadLineComments(),geniusEnabled:false,...loadVisual()
 };
 
 const formatTime=value=>{const seconds=Math.max(0,Math.floor(Number(value)||0));return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`};
@@ -45,7 +46,7 @@ function applyVisual(save=true){
   ui.themeLabel.textContent=theme.label;
   ui.themeColor.content=theme.color;
   ui.motionValue.textContent=state.motion.toUpperCase();
-  ui.decorValue.textContent=state.decor.toUpperCase();
+  ui.decorValue.textContent=state.decor==='minimal'?'MINIMAL':'EDITORIAL';
   document.querySelectorAll('[data-theme-choice]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.themeChoice===state.theme)));
   if(save)localStorage.setItem('awun-visual',JSON.stringify({theme:state.theme,motion:state.motion,decor:state.decor}));
 }
@@ -123,6 +124,7 @@ async function refreshStatus(){
     if(!response.ok)throw new Error('Health check failed');
     const data=await response.json();
     state.available=new Set(data.sources||[]);
+    state.geniusEnabled=Boolean(data.providers?.track_stories?.genius_annotations);
     state.sources=new Set([...state.sources].filter(source=>state.available.has(source)));
     if(!state.sources.size)state.available.forEach(source=>state.sources.add(source));
     sourceButtons().forEach(button=>{
@@ -161,21 +163,75 @@ function render(){
 
   list.forEach((track,index)=>{
     const needsMatch=track.source==='yandex_music';
-    const row=document.createElement('li');row.className=`track ${state.active?.id===track.id?'active':''}`;row.dataset.source=track.source;row.style.setProperty('--i',index);
+    const row=document.createElement('li');row.className=`track ${state.active?.id===track.id?'active':''} ${state.expanded===track.id?'expanded':''}`.trim();row.dataset.source=track.source;row.style.setProperty('--i',index);row.setAttribute('aria-expanded',String(state.expanded===track.id));
     const cover=document.createElement('div');cover.className='cover';const image=safeImage(track.thumbnail);if(image)cover.style.backgroundImage=`url("${image}")`;else cover.textContent=decodeText(track.title||'?').slice(0,2).toUpperCase();
-    const play=document.createElement('button');play.className='play';play.type='button';play.textContent=needsMatch?'↻':state.active?.id===track.id?'Ⅱ':'▶';play.setAttribute('aria-label',needsMatch?`Match and play ${decodeText(track.title)}`:`Play ${decodeText(track.title)}`);play.onclick=()=>state.active?.id===track.id?togglePlayback():playTrack(track);
-    const name=document.createElement('div');name.className='name';const title=document.createElement('strong');title.textContent=decodeText(track.title)||'Unknown title';const artist=document.createElement('span');artist.textContent=decodeText(track.artist)||'Unknown artist';name.append(title,artist);
+    const play=document.createElement('button');play.className='play';play.type='button';play.textContent=needsMatch?'↻':state.active?.id===track.id?'Ⅱ':'▶';play.setAttribute('aria-label',needsMatch?`Match and play ${decodeText(track.title)}`:`Play ${decodeText(track.title)}`);play.onclick=event=>{event.stopPropagation();state.active?.id===track.id?togglePlayback():playTrack(track)};
+    const name=document.createElement('button');name.className='name';name.type='button';name.setAttribute('aria-expanded',String(state.expanded===track.id));name.setAttribute('aria-label',`${state.expanded===track.id?'Close':'Open'} story for ${decodeText(track.title)}`);const title=document.createElement('strong');title.textContent=decodeText(track.title)||'Unknown title';const artist=document.createElement('span');artist.textContent=decodeText(track.artist)||'Unknown artist';name.append(title,artist);name.onclick=event=>{event.stopPropagation();toggleStory(track)};
     const source=document.createElement('span');source.className=`tag ${track.source}`;source.textContent=sourceLabels[track.source]||track.source;
     const quality=document.createElement('span');quality.className='quality';quality.textContent=track.quality||'—';
     const duration=document.createElement('span');duration.className='duration';duration.textContent=formatTime(track.duration);
     const actions=document.createElement('div');actions.className='actions';
-    const save=document.createElement('button');save.className=`save ${saved.has(track.id)?'saved':''}`;save.type='button';save.textContent=saved.has(track.id)?'✓ SAVED':'+ LIBRARY';save.onclick=()=>toggleSave(track);actions.append(save);
-    if(track.download_url){const download=document.createElement('a');download.className='download';download.href=track.download_url;download.download='';download.rel='noopener';download.textContent='DOWNLOAD';actions.append(download)}
+    const story=document.createElement('button');story.className='story-button';story.type='button';story.textContent=state.expanded===track.id?'CLOSE':'STORY';story.setAttribute('aria-expanded',String(state.expanded===track.id));story.onclick=event=>{event.stopPropagation();toggleStory(track)};actions.append(story);
+    const save=document.createElement('button');save.className=`save ${saved.has(track.id)?'saved':''}`;save.type='button';save.textContent=saved.has(track.id)?'✓ SAVED':'+ LIBRARY';save.onclick=event=>{event.stopPropagation();toggleSave(track)};actions.append(save);
+    if(track.download_url){const download=document.createElement('a');download.className='download';download.href=track.download_url;download.download='';download.rel='noopener';download.textContent='DOWNLOAD';download.onclick=event=>event.stopPropagation();actions.append(download)}
     const catalog=document.createElement('div');catalog.className='catalog-links';
     [['spotify','SPOTIFY'],['apple_music','APPLE'],['yandex_music','YANDEX']].forEach(([provider,label])=>{const href=track.catalog_links?.[provider];if(!href)return;const link=document.createElement('a');link.className='catalog-link';link.href=href;link.target='_blank';link.rel='noopener noreferrer';link.textContent=`${label} ↗`;link.setAttribute('aria-label',`Find ${decodeText(track.title)} on ${label}`);catalog.append(link)});
     if(catalog.childElementCount)actions.append(catalog);
-    row.append(cover,play,name,source,quality,duration,actions);ui.trackList.append(row);
+    row.addEventListener('click',event=>{if(!event.target.closest('button,a,input,textarea,select'))toggleStory(track)});
+    row.append(cover,play,name,source,quality,duration,actions);
+    if(state.expanded===track.id)row.append(renderStory(track));
+    ui.trackList.append(row);
   });
+}
+
+function commentKey(track,line){return `${track.id}\u0000${line.index}\u0000${matchText(line.text).slice(0,80)}`}
+function persistLineComments(){localStorage.setItem('awun-line-comments-v1',JSON.stringify(state.lineComments))}
+function localComments(track,line){const value=state.lineComments[commentKey(track,line)];return Array.isArray(value)?value:[]}
+
+function addLineComment(track,line,value){
+  const text=String(value||'').trim().slice(0,500);if(!text)return;
+  const key=commentKey(track,line),comments=localComments(track,line);
+  state.lineComments[key]=[...comments,{id:`local_${Date.now()}`,text,created_at:new Date().toISOString()}].slice(-20);
+  state.openLines.add(`${track.id}:${line.index}`);persistLineComments();render();
+}
+
+function removeLineComment(track,line,id){
+  const key=commentKey(track,line);state.lineComments[key]=localComments(track,line).filter(comment=>comment.id!==id);persistLineComments();render();
+}
+
+function toggleLine(track,line){const key=`${track.id}:${line.index}`;state.openLines.has(key)?state.openLines.delete(key):state.openLines.add(key);render()}
+
+function renderStory(track){
+  const panel=document.createElement('section');panel.className='track-story';panel.setAttribute('aria-label',`Track story for ${decodeText(track.title)}`);panel.onclick=event=>event.stopPropagation();
+  const heading=document.createElement('header');heading.className='story-head';const label=document.createElement('div');const kicker=document.createElement('span');kicker.textContent='TRACK STORY';const title=document.createElement('h2');title.textContent=decodeText(track.title);const artist=document.createElement('p');artist.textContent=decodeText(track.artist);label.append(kicker,title,artist);const close=document.createElement('button');close.type='button';close.textContent='×';close.setAttribute('aria-label','Close track story');close.onclick=()=>toggleStory(track);heading.append(label,close);panel.append(heading);
+  const details=state.details.get(track.id);
+  if(!details||details.loading){const loading=document.createElement('div');loading.className='story-loading';loading.textContent='Finding lyrics and annotations…';panel.append(loading);return panel}
+  if(details.error){const error=document.createElement('p');error.className='story-empty';error.textContent=details.error;panel.append(error);return panel}
+  const meta=document.createElement('div');meta.className='story-meta';const source=document.createElement('span');source.textContent=details.lyrics_source?'LYRICS · LRCLIB':'LYRICS · UNAVAILABLE';const sync=document.createElement('span');sync.textContent=details.synced?'TIME-SYNCED':'PLAIN TEXT';const annotations=document.createElement('span');annotations.textContent=state.geniusEnabled?'GENIUS · CONNECTED':'GENIUS · OPTIONAL';meta.append(source,sync,annotations);panel.append(meta);
+  if(details.message){const note=document.createElement('p');note.className='story-note';note.textContent=details.message;panel.append(note)}
+  if(!details.lines?.length){const empty=document.createElement('p');empty.className='story-empty';empty.textContent='No lyrics were returned for this recording. You can still play it or open the official catalog links.';panel.append(empty)}
+  const lyrics=document.createElement('div');lyrics.className='lyrics';
+  (details.lines||[]).forEach(line=>{
+    const lineKey=`${track.id}:${line.index}`,comments=localComments(track,line),open=state.openLines.has(lineKey);const row=document.createElement('article');row.className=`lyric-line ${open?'open':''}`;
+    const time=document.createElement('button');time.type='button';time.className='lyric-time';time.textContent=line.time==null?'·':formatTime(line.time);time.disabled=line.time==null;time.title=line.time==null?'No timestamp':'Play from this line';time.onclick=()=>{if(state.active?.id!==track.id)playTrack(track).then(()=>setTimeout(()=>seekTo(line.time||0,true),650));else seekTo(line.time||0,true)};
+    const text=document.createElement('button');text.type='button';text.className='lyric-text';text.textContent=decodeText(line.text);text.setAttribute('aria-expanded',String(open));text.onclick=()=>toggleLine(track,line);
+    const count=document.createElement('button');count.type='button';count.className='annotation-count';count.textContent=`${(line.annotations?.length||0)+comments.length}`;count.setAttribute('aria-label',`${(line.annotations?.length||0)+comments.length} comments`);count.onclick=()=>toggleLine(track,line);row.append(time,text,count);
+    if(open){const thread=document.createElement('div');thread.className='line-thread';
+      (line.annotations||[]).forEach(annotation=>{const item=document.createElement('blockquote');const body=document.createElement('p');body.textContent=decodeText(annotation.text);const footer=document.createElement('footer');const by=document.createElement('span');by.textContent=`GENIUS${annotation.author?` · ${decodeText(annotation.author)}`:''}${annotation.votes?` · ${annotation.votes} VOTES`:''}`;footer.append(by);if(annotation.url){const link=document.createElement('a');link.href=annotation.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='OPEN ↗';footer.append(link)}item.append(body,footer);thread.append(item)});
+      comments.forEach(comment=>{const item=document.createElement('blockquote');item.className='local-comment';const body=document.createElement('p');body.textContent=comment.text;const footer=document.createElement('footer');const by=document.createElement('span');by.textContent='YOUR NOTE · THIS DEVICE';const remove=document.createElement('button');remove.type='button';remove.textContent='DELETE';remove.onclick=()=>removeLineComment(track,line,comment.id);footer.append(by,remove);item.append(body,footer);thread.append(item)});
+      const form=document.createElement('form');form.className='line-comment-form';const input=document.createElement('input');input.maxLength=500;input.placeholder='Add a note to this line…';input.setAttribute('aria-label','Add a note to this lyric line');const submit=document.createElement('button');submit.type='submit';submit.textContent='ADD';form.append(input,submit);form.onsubmit=event=>{event.preventDefault();addLineComment(track,line,input.value)};thread.append(form);row.append(thread)}
+    lyrics.append(row)
+  });panel.append(lyrics);
+  const footer=document.createElement('footer');footer.className='story-footer';const attribution=document.createElement('span');attribution.textContent='Lyrics are requested on demand and are not cached by AWUN.';footer.append(attribution);if(details.genius_url){const link=document.createElement('a');link.href=details.genius_url;link.target='_blank';link.rel='noopener noreferrer';link.textContent='VIEW ON GENIUS ↗';footer.append(link)}panel.append(footer);return panel;
+}
+
+async function loadStory(track){
+  state.detailsController?.abort();state.detailsController=new AbortController();state.details.set(track.id,{loading:true});render();
+  try{const params=new URLSearchParams({artist:decodeText(track.artist),title:decodeText(track.title),duration:String(track.duration||0)});const response=await fetch(`/api/v1/track-details?${params}`,{signal:state.detailsController.signal});const data=await response.json();if(!response.ok)throw new Error(data.detail||'Track story is unavailable');state.details.set(track.id,data);render()}catch(error){if(error.name==='AbortError')return;state.details.set(track.id,{error:error.message||'Track story is temporarily unavailable'});render()}
+}
+
+function toggleStory(track){
+  const opening=state.expanded!==track.id;state.expanded=opening?track.id:null;render();if(opening&&!state.details.has(track.id))loadStory(track);
 }
 
 function toggleSave(track){
