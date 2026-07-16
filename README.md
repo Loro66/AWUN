@@ -152,12 +152,13 @@ five results per query for reliability; configure OAuth for the full range.
 ## Windows desktop app
 
 Run `build-windows.bat` on Windows 10 or 11 to create `dist\\AWUN.exe` and its
-SHA256 checksum. The desktop shell shows an AWUN wake-up screen while Render
+SHA256 checksum. The AWUN icon is embedded in the executable and is used by
+Explorer, shortcuts and the taskbar. The desktop shell shows an AWUN wake-up screen while Render
 starts, then opens the hosted beta in its own application window.
 
 For a reproducible cloud build, open **Actions → Windows desktop build → Run
 workflow**. Every pull request also creates an `AWUN-Windows-x64` test artifact.
-Download it from the completed run. Pushing a tag such as `v1.6.0` creates a
+Download it from the completed run. Pushing a tag such as `v1.6.2` creates a
 GitHub Release containing the executable and
 checksum. The executable is currently unsigned, so Windows SmartScreen may
 show a warning until a code-signing certificate is added.
