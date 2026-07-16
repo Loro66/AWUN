@@ -29,6 +29,11 @@ def test_visual_controls_have_unique_ids() -> None:
         "decorToggle",
         "telemetryClock",
         "regionSelect",
+        "limitSelect",
+        "importButton",
+        "importPanel",
+        "libraryFile",
+        "importText",
     }.issubset(parser.ids)
 
 
@@ -39,6 +44,9 @@ def test_region_archive_and_catalog_controls_are_wired() -> None:
     assert 'data-source="internet_archive"' in html
     assert all(f"<option>{region}</option>" in html for region in ("AUTO", "CIS", "EUROPE", "USA", "LATAM", "ASIA", "GLOBAL"))
     assert "catalog_links" in script
+    assert "yandex_music" in script
+    assert "parseImportedLibrary" in script
+    assert "resultLimits=[30,60,100]" in script
     assert "navigator.language" in script
 
 
