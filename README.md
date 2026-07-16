@@ -8,7 +8,7 @@ ISRC variants. Yandex Music libraries can be transferred as metadata and
 matched to connected playable sources on demand. YouTube playback stays inside the official embedded player;
 other full tracks use short-lived signed AWUN media routes.
 
-The 1.6 beta interface includes AUTO/CIS/EUROPE/USA/LATAM/ASIA/GLOBAL search,
+The 1.7 beta interface includes AUTO/CIS/EUROPE/USA/LATAM/ASIA/GLOBAL search,
 source-aware discovery, partial-failure handling,
 a 30/60/100 result selector, Yandex library import, a local library, shareable search URLs and a unified responsive player with
 custom waveform seeking, volume, previous/next controls and browser Media
@@ -158,7 +158,7 @@ starts, then opens the hosted beta in its own application window.
 
 For a reproducible cloud build, open **Actions → Windows desktop build → Run
 workflow**. Every pull request also creates an `AWUN-Windows-x64` test artifact.
-Download it from the completed run. Pushing a tag such as `v1.6.2` creates a
+Download it from the completed run. Pushing a tag such as `v1.7.0` creates a
 GitHub Release containing the executable and
 checksum. The executable is currently unsigned, so Windows SmartScreen may
 show a warning until a code-signing certificate is added.

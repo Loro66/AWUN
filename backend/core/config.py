@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     )
 
     app_name: str = "AWUN"
-    app_version: str = "1.6.2"
+    app_version: str = "1.7.0"
     debug: bool = False
     api_prefix: str = "/api/v1"
 

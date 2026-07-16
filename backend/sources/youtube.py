@@ -53,6 +53,25 @@ def _iso_duration(value: str) -> int:
     return hours * 3600 + minutes * 60 + seconds
 
 
+_LONG_FORM_TITLE = re.compile(
+    r"(?:"
+    r"\b(?:full\s+album|non[ -]?stop|playlist|compilation|music\s+(?:for|to)|"
+    r"\d{1,2}\s*(?:hours?|hrs?)|\d{2,3}\s*(?:minutes?|mins?))\b|"
+    r"(?:сборник|подборка|плейлист|полный\s+альбом|без\s+остановки|"
+    r"музык[аи]\s+(?:в|для)|в\s+машину|для\s+машины|\d{1,2}\s*час(?:а|ов)?|"
+    r"\d{2,3}\s*минут)"
+    r")",
+    re.IGNORECASE,
+)
+
+
+def _looks_like_track(title: str, duration: int, *, live: bool = False) -> bool:
+    """Keep song-sized, on-demand videos and reject obvious long-form mixes."""
+    if live or duration > 20 * 60:
+        return False
+    return not _LONG_FORM_TITLE.search(str(title or ""))
+
+
 class YouTubeAdapter(BaseAdapter):
     source = "youtube"
     _SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
@@ -129,6 +148,7 @@ class YouTubeAdapter(BaseAdapter):
             "videoEmbeddable": "true",
             "videoSyndicated": "true",
             "safeSearch": "moderate",
+            "videoCategoryId": "10",
             "key": self._api_key or "",
         }
         if region and region.country:
@@ -201,6 +221,13 @@ class YouTubeAdapter(BaseAdapter):
             if detail.get("status", {}).get("embeddable") is False:
                 continue
             snippet = item.get("snippet") or {}
+            duration = _iso_duration(detail.get("contentDetails", {}).get("duration") or "")
+            if not _looks_like_track(
+                str(snippet.get("title") or ""),
+                duration,
+                live=str(snippet.get("liveBroadcastContent") or "none") != "none",
+            ):
+                continue
             thumbnails = snippet.get("thumbnails") or {}
             thumbnail = next(
                 (thumbnails.get(size, {}).get("url") for size in ("maxres", "high", "medium", "default") if thumbnails.get(size)),
@@ -211,7 +238,7 @@ class YouTubeAdapter(BaseAdapter):
                     id=f"yt_{video_id}",
                     title=snippet.get("title") or "Unknown title",
                     artist=snippet.get("channelTitle") or "YouTube",
-                    duration=_iso_duration(detail.get("contentDetails", {}).get("duration") or ""),
+                    duration=duration,
                     quality="YT",
                     source=self.source,
                     stream_url=f"https://www.youtube.com/watch?v={video_id}",
@@ -242,12 +269,20 @@ class YouTubeAdapter(BaseAdapter):
             thumbnail = info.get("thumbnail")
             if not thumbnail and thumbnails:
                 thumbnail = thumbnails[-1].get("url")
+            duration = _safe_int(info.get("duration"))
+            title = info.get("title") or "Unknown title"
+            if not _looks_like_track(
+                str(title),
+                duration,
+                live=bool(info.get("is_live") or info.get("live_status") == "is_live"),
+            ):
+                continue
             tracks.append(
                 Track(
                     id=f"yt_{video_id}",
-                    title=info.get("title") or "Unknown title",
+                    title=title,
                     artist=info.get("channel") or info.get("uploader") or "YouTube",
-                    duration=_safe_int(info.get("duration")),
+                    duration=duration,
                     quality="YT",
                     source=self.source,
                     stream_url=f"https://www.youtube.com/watch?v={video_id}",

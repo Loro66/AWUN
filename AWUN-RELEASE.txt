@@ -1,6 +1,8 @@
-AWUN 1.6.2 repeat and Windows identity update
+AWUN 1.7.0 identity, customization and search precision update
 Release date: 2026-07-16
 
-This build adds persistent OFF / ALL / ONE repeat modes to audio and YouTube
-playback. Windows builds now embed the high-resolution AWUN application icon
-for Explorer, shortcuts and the taskbar.
+This build installs the new AWUN geometric mark across web, Windows, Android
+and iOS. The visual system adds BLACK and WHITE themes plus compact, standard
+and airy density. YouTube search now stays in the music category and rejects
+obvious live streams, playlists and long-form mixes. Native apps can optionally
+fail over to a regional mirror while YouTube remains in its official player.

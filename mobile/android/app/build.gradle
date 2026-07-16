@@ -1,5 +1,10 @@
 plugins { id "com.android.application" }
 
+def envValue = { String name, String fallback ->
+    def value = System.getenv(name)
+    return value == null || value.trim().isEmpty() ? fallback : value.trim()
+}
+
 android {
     namespace "com.awun.beta"
     compileSdk 35
@@ -8,8 +13,10 @@ android {
         applicationId "com.awun.beta"
         minSdk 24
         targetSdk 35
-        versionCode 17
-        versionName "1.6.1"
+        versionCode 18
+        versionName "1.7.0"
+        buildConfigField "String", "AWUN_PRIMARY_URL", "\"${envValue('AWUN_PRIMARY_URL', 'https://awun-api1.onrender.com')}\""
+        buildConfigField "String", "AWUN_MIRROR_URL", "\"${envValue('AWUN_MIRROR_URL', '')}\""
     }
 
     buildTypes {
@@ -27,4 +34,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
+    buildFeatures { buildConfig true }
 }

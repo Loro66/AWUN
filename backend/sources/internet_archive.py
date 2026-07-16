@@ -55,7 +55,7 @@ class InternetArchiveAdapter(BaseAdapter):
         if self._session is None or self._session.closed:
             self._session = aiohttp.ClientSession(
                 timeout=self.timeout,
-                headers={"Accept": "application/json", "User-Agent": "AWUN/1.6 (+https://github.com/Loro66/AWUN)"},
+                headers={"Accept": "application/json", "User-Agent": "AWUN/1.7 (+https://github.com/Loro66/AWUN)"},
             )
         return self._session
 
