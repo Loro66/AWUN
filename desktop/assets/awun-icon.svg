@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">AWUN desktop icon</title>
+  <desc id="desc">The AWUN sound gate on a dark rounded tile.</desc>
+  <defs>
+    <linearGradient id="tile" x1="24" y1="232" x2="232" y2="24" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#080b11"/>
+      <stop offset="1" stop-color="#171027"/>
+    </linearGradient>
+    <linearGradient id="signal" x1="42" y1="205" x2="214" y2="48" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#b7ff19"/>
+      <stop offset="1" stop-color="#b46cff"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect x="8" y="8" width="240" height="240" rx="54" fill="url(#tile)" stroke="#303844" stroke-width="8"/>
+  <path d="M43 190 91 62l37 98 37-98 48 128" fill="none" stroke="url(#signal)" stroke-width="23" stroke-linecap="square" stroke-linejoin="miter" filter="url(#glow)"/>
+  <path d="M63 191h130" fill="none" stroke="#f5f5ef" stroke-width="14" stroke-linecap="square"/>
+  <circle cx="207" cy="51" r="13" fill="#b7ff19"/>
+</svg>
