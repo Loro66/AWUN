@@ -38,6 +38,11 @@ def test_visual_controls_have_unique_ids() -> None:
         "densityToggle",
         "densityValue",
         "repeatMode",
+        "flowButton",
+        "flowPanel",
+        "flowStart",
+        "flowLike",
+        "flowDislike",
     }.issubset(parser.ids)
 
 
@@ -68,10 +73,13 @@ def test_frontend_assets_share_cache_version() -> None:
 
     style_version = re.search(r'/static/styles\.css\?v=([\d.]+)', html)
     script_version = re.search(r'/static/app\.js\?v=([\d.]+)', html)
+    flow_version = re.search(r'/static/flow\.js\?v=([\d.]+)', html)
 
     assert style_version is not None
     assert script_version is not None
+    assert flow_version is not None
     assert style_version.group(1) == script_version.group(1)
+    assert style_version.group(1) == flow_version.group(1)
 
 
 def test_identity_minimal_mode_and_track_stories_are_wired() -> None:
@@ -102,3 +110,19 @@ def test_repeat_modes_are_persistent_and_handle_track_endings() -> None:
     assert "handleTrackEnded" in script
     assert "YT.PlayerState.ENDED)handleTrackEnded()" in script
     assert "addEventListener('ended',handleTrackEnded)" in script
+
+
+def test_flow_recommendations_are_local_persistent_and_feedback_driven() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "frontend" / "flow.js").read_text(encoding="utf-8")
+    app = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    styles = (ROOT / "frontend" / "styles.css").read_text(encoding="utf-8")
+
+    assert "AWUN / PERSONAL RADIO" in html
+    assert all(value in html for value in ("FAMILIAR", "BALANCED", "NEW", "MOOD", "ACTIVITY"))
+    assert "awun-flow-profile-v1" in script
+    assert "candidateScore" in script and "rankCandidates" in script
+    assert all(signal in script for signal in ("'play'", "'skip'", "'listen30'", "'complete'", "'like'", "'dislike'"))
+    assert "Promise.allSettled" in script and "/api/v1/search" in script
+    assert "window.awunApp" in app and "emitAwun('play'" in app and "emitAwun('complete'" in app
+    assert ".flow-panel" in styles and ".flow-feedback.active" in styles
