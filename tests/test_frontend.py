@@ -34,6 +34,7 @@ def test_visual_controls_have_unique_ids() -> None:
         "importPanel",
         "libraryFile",
         "importText",
+        "decorValue",
     }.issubset(parser.ids)
 
 
@@ -68,3 +69,19 @@ def test_frontend_assets_share_cache_version() -> None:
     assert style_version is not None
     assert script_version is not None
     assert style_version.group(1) == script_version.group(1)
+
+
+def test_identity_minimal_mode_and_track_stories_are_wired() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    styles = (ROOT / "frontend" / "styles.css").read_text(encoding="utf-8")
+    mark = (ROOT / "frontend" / "awun-mark.svg").read_text(encoding="utf-8")
+
+    assert '/static/awun-mark.svg' in html
+    assert 'INTERFACE' in html and 'MINIMAL' in html
+    assert 'viewBox="0 0 64 64"' in mark
+    assert "/api/v1/track-details" in script
+    assert "awun-line-comments-v1" in script
+    assert "TRACK STORY" in script
+    assert 'html[data-decor="minimal"] .source-row' in styles
+    assert ".lyric-line" in styles and ".line-comment-form" in styles
