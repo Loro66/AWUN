@@ -58,8 +58,14 @@ class YouTubeAdapter(BaseAdapter):
     _SEARCH_URL = "https://www.googleapis.com/youtube/v3/search"
     _VIDEOS_URL = "https://www.googleapis.com/youtube/v3/videos"
 
-    def __init__(self, api_key: str | None = None, timeout: float = 12.0) -> None:
+    def __init__(
+        self,
+        api_key: str | None = None,
+        timeout: float = 12.0,
+        max_pages: int = 2,
+    ) -> None:
         self._api_key = api_key
+        self._max_pages = max(1, min(max_pages, 2))
         self._timeout = aiohttp.ClientTimeout(total=timeout)
         self._flat_options = {
             "quiet": True,
@@ -140,30 +146,47 @@ class YouTubeAdapter(BaseAdapter):
     ) -> list[Track]:
         try:
             async with aiohttp.ClientSession(timeout=self._timeout) as session:
-                async with session.get(
-                    self._SEARCH_URL,
-                    params=self._api_params(query, limit, region),
-                ) as response:
-                    payload = await response.json(content_type=None)
-                    if response.status != 200:
-                        raise AdapterError(self._api_error(payload, response.status))
+                items: list[dict[str, Any]] = []
+                page_token: str | None = None
+                pages = 0
+                while len(items) < limit and pages < self._max_pages:
+                    params = self._api_params(query, limit - len(items), region)
+                    if page_token:
+                        params["pageToken"] = page_token
+                    async with session.get(self._SEARCH_URL, params=params) as response:
+                        payload = await response.json(content_type=None)
+                        if response.status != 200:
+                            raise AdapterError(self._api_error(payload, response.status))
+                    page_items = payload.get("items") or []
+                    if not isinstance(page_items, list):
+                        break
+                    items.extend(item for item in page_items if isinstance(item, dict))
+                    pages += 1
+                    page_token = str(payload.get("nextPageToken") or "") or None
+                    if not page_token or not page_items:
+                        break
 
-                items = payload.get("items") or []
                 ids = [str(item.get("id", {}).get("videoId") or "") for item in items]
-                ids = [video_id for video_id in ids if video_id]
+                ids = list(dict.fromkeys(video_id for video_id in ids if video_id))
                 details: dict[str, dict[str, Any]] = {}
-                if ids:
+                for offset in range(0, len(ids), 50):
+                    batch = ids[offset:offset + 50]
                     async with session.get(
                         self._VIDEOS_URL,
                         params={
                             "part": "contentDetails,status",
-                            "id": ",".join(ids),
+                            "id": ",".join(batch),
                             "key": self._api_key,
                         },
                     ) as response:
                         detail_payload = await response.json(content_type=None)
                         if response.status == 200:
-                            details = {str(item.get("id")): item for item in detail_payload.get("items") or []}
+                            details.update(
+                                {
+                                    str(item.get("id")): item
+                                    for item in detail_payload.get("items") or []
+                                }
+                            )
         except AdapterError:
             raise
         except (aiohttp.ClientError, TimeoutError) as exc:
@@ -206,7 +229,7 @@ class YouTubeAdapter(BaseAdapter):
         YouTube iframe player and no protected YouTube media URL is exposed.
         """
         with YoutubeDL(self._flat_options) as ydl:
-            payload = ydl.extract_info(f"ytsearch{min(limit, 50)}:{query}", download=False)
+            payload = ydl.extract_info(f"ytsearch{min(limit, 100)}:{query}", download=False)
 
         tracks: list[Track] = []
         for info in (payload or {}).get("entries") or []:

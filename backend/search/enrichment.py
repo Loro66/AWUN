@@ -87,7 +87,7 @@ class MusicBrainzEnricher(BasicQueryEnricher):
                 timeout=self.timeout,
                 headers={
                     "Accept": "application/json",
-                    "User-Agent": f"AWUN/1.4 ({self.contact})",
+                    "User-Agent": f"AWUN/1.5 ({self.contact})",
                 },
             )
         return self._session

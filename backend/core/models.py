@@ -29,7 +29,7 @@ class SearchRequest(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
 
     query: str = Field(min_length=1, max_length=200)
-    limit: int = Field(default=10, ge=1, le=100)
+    limit: int = Field(default=30, ge=1, le=100)
     sources: list[SourceName] | None = None
     region: RegionName = "AUTO"
     locale: str | None = Field(default=None, max_length=35, pattern=r"^[A-Za-z]{2,3}(?:[-_][A-Za-z]{2,4})?$")

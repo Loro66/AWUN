@@ -101,6 +101,7 @@ class SearchEngine:
                 f"https://music.apple.com/{region.apple_storefront}/search"
                 f"?term={quote_plus(query)}"
             ),
+            "yandex_music": f"https://music.yandex.ru/search?text={quote_plus(query)}",
         }
 
     @staticmethod

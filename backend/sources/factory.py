@@ -15,6 +15,7 @@ def build_adapters(settings: Settings) -> list[BaseAdapter]:
             YouTubeAdapter(
                 api_key=settings.youtube_api_key,
                 timeout=settings.ytdlp_socket_timeout_seconds,
+                max_pages=settings.youtube_max_pages,
             )
         )
     if settings.soundcloud_enabled:

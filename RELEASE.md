@@ -20,7 +20,8 @@ Audius application.
 MusicBrainz and Internet Archive need no secret. Keep
 `AWUN_MUSICBRAINZ_CONTACT` set to the public project URL or a monitored contact
 address. The included Render configuration enables six query variants and up
-to eight Internet Archive items per provider query.
+to eight Internet Archive items per provider query. It also enables at most two
+YouTube Search API pages so the 100-result UI option remains bounded.
 
 The deployed service is ready when this endpoint returns JSON:
 
@@ -42,7 +43,9 @@ Open `https://YOUR-AWUN-API/` after deployment.
 - Region controls cover AUTO, CIS, EUROPE, USA, LATAM, ASIA and GLOBAL.
 - `/health` reports MusicBrainz enrichment and Internet Archive availability.
 - Search responses include canonical/local/release/ISRC query variants.
-- Apple Music and Spotify buttons open official catalog searches and never
+- The result selector requests 30, 60 or 100 balanced results.
+- Yandex CSV/JSON/M3U/TXT import stays local until an imported track is matched.
+- Apple Music, Spotify and Yandex Music buttons open official catalog searches and never
   masquerade as downloadable or proxied audio.
 - Starting a track returns HTTP 200 or 206.
 - Seeking sends a Range request and playback resumes from the selected point.

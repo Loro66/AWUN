@@ -1,6 +1,6 @@
-AWUN 1.4.0 regional discovery release
+AWUN 1.5.0 Yandex library transfer release
 Release date: 2026-07-16
 
-This build adds AUTO/CIS/EUROPE/USA/LATAM/ASIA/GLOBAL discovery, MusicBrainz
-query enrichment, public Internet Archive audio with real file downloads,
-regional YouTube search and official Apple Music/Spotify catalog navigation.
+This build adds local Yandex Music metadata import, on-demand matching to
+playable AWUN sources, official Yandex catalog navigation, selectable 30/60/100
+result windows and bounded two-page YouTube Data API search.
