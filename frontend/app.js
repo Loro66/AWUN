@@ -23,6 +23,8 @@ const state={
   youtube:null,youtubeApi:null,youtubeTicker:null,seeking:false,recovering:false,lastVolume:.82,expanded:null,details:new Map(),detailsController:null,openLines:new Set(),lineComments:loadLineComments(),geniusEnabled:false,...loadVisual()
 };
 
+function emitAwun(type,detail={}){document.dispatchEvent(new CustomEvent(`awun:${type}`,{detail}))}
+
 const formatTime=value=>{const seconds=Math.max(0,Math.floor(Number(value)||0));return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`};
 const decodeText=value=>{const node=document.createElement('textarea');node.innerHTML=String(value||'');return node.value};
 const safeImage=value=>{try{const url=new URL(value);return ['http:','https:'].includes(url.protocol)?url.href:''}catch{return''}};
@@ -241,7 +243,7 @@ function toggleStory(track){
 function toggleSave(track){
   const index=state.saved.findIndex(item=>item.id===track.id);
   if(index>=0)state.saved.splice(index,1);else state.saved.unshift({...track,title:decodeText(track.title),artist:decodeText(track.artist)});
-  persist();render();
+  persist();render();emitAwun('library',{track,saved:index<0});
 }
 
 async function search(query=ui.searchInput.value.trim()){
@@ -347,9 +349,9 @@ async function matchImportedTrack(track){
 
 async function playTrack(track){
   if(track.source==='yandex_music'){await matchImportedTrack(track);return}
-  state.active=track;state.recovering=false;ui.player.hidden=false;ui.nowTitle.textContent=decodeText(track.title);ui.nowArtist.textContent=`${decodeText(track.artist)} · ${sourceLabels[track.source]||track.source}`;ui.nowSource.textContent=track.source;
+  const previous=state.active;state.active=track;state.recovering=false;ui.player.hidden=false;ui.nowTitle.textContent=decodeText(track.title);ui.nowArtist.textContent=`${decodeText(track.artist)} · ${sourceLabels[track.source]||track.source}`;ui.nowSource.textContent=track.source;
   const image=safeImage(track.thumbnail);ui.playerArtwork.style.backgroundImage=image?`url("${image}")`:'';ui.playerArtwork.querySelector?.('span')?.remove();if(!image)ui.playerArtwork.textContent=(decodeText(track.title)||'AW').slice(0,2).toUpperCase();else ui.playerArtwork.textContent='';
-  updateTimeline(0,track.duration||0);updateMediaSession(track);render();
+  updateTimeline(0,track.duration||0);updateMediaSession(track);render();emitAwun('play',{track,previous});
   if(track.source==='youtube')await playYouTube(track);else await playAudio(track);
 }
 
@@ -359,10 +361,11 @@ function togglePlayback(){if(!state.active)return;const playing=state.active.sou
 
 function adjacentTrack(direction){const list=currentList();if(!list.length)return null;const index=Math.max(0,list.findIndex(track=>track.id===state.active?.id));return list[(index+direction+list.length)%list.length]}
 function previousTrack(){const track=adjacentTrack(-1);if(track)playTrack(track)}
-function nextTrack(){const track=adjacentTrack(1);if(track)playTrack(track)}
+function nextTrack(){const track=adjacentTrack(1);if(track){emitAwun('skip',{track:state.active,next:track});playTrack(track)}}
 function handleTrackEnded(){
   if(!state.active)return;
   if(state.repeatMode==='one'){seekTo(0,true);resumePlayback();return}
+  emitAwun('complete',{track:state.active});
   const list=currentList(),index=list.findIndex(track=>track.id===state.active.id);
   if(state.repeatMode==='all'||(index>=0&&index<list.length-1)){const track=state.repeatMode==='all'?adjacentTrack(1):list[index+1];if(track)playTrack(track);return}
   setPlaying(false);const duration=state.active.source==='youtube'?state.youtube?.getDuration?.():ui.audio.duration;updateTimeline(duration||state.active.duration||0,duration||state.active.duration||0);
@@ -404,4 +407,5 @@ async function bootstrap(){
   applyVisual(false);applyRepeatMode(false);updateClock();setInterval(updateClock,1000);persist();setRange(ui.volume,82);setRange(ui.progress,0);render();await refreshStatus();
   const query=url.get('q');if(query){ui.searchInput.value=query;search(query)}
 }
+window.awunApp={state,ui,playTrack,render,search,toggleSave,currentList,setMessage,sourceLabels,decodeText,matchText,loadingRows};
 bootstrap();
