@@ -4,12 +4,13 @@ AWUN is a FastAPI music-search aggregator with a responsive web interface. It
 searches YouTube, SoundCloud, Audius, Jamendo and Internet Archive in parallel,
 then fairly interleaves the connected catalogs. MusicBrainz expands human
 queries into canonical artist/track, local alias, release, transliteration and
-ISRC variants. YouTube playback stays inside the official embedded player;
+ISRC variants. Yandex Music libraries can be transferred as metadata and
+matched to connected playable sources on demand. YouTube playback stays inside the official embedded player;
 other full tracks use short-lived signed AWUN media routes.
 
-The 1.4 beta interface includes AUTO/CIS/EUROPE/USA/LATAM/ASIA/GLOBAL search,
+The 1.5 beta interface includes AUTO/CIS/EUROPE/USA/LATAM/ASIA/GLOBAL search,
 source-aware discovery, partial-failure handling,
-a local library, shareable search URLs and a unified responsive player with
+a 30/60/100 result selector, Yandex library import, a local library, shareable search URLs and a unified responsive player with
 custom waveform seeking, volume, previous/next controls and browser Media
 Session integration. Its visual system includes Acid, Ultraviolet, Cobalt and
 Ember themes, optional ambient decoration and motion controls. Visual settings
@@ -50,7 +51,7 @@ POST `/api/v1/search`:
 ```json
 {
   "query": "Daft Punk Around the World",
-  "limit": 100,
+  "limit": 60,
   "sources": ["youtube", "soundcloud", "audius", "jamendo", "internet_archive"],
   "region": "GLOBAL",
   "locale": "en-US"
@@ -66,7 +67,7 @@ Or use GET:
 The response contains combined results, the applied region and `query_variants`
 used for discovery. An unavailable source appears in `errors`; successful
 sources still return results. Every playable result also includes official
-Apple Music and Spotify catalog-search links; those services are navigation
+Apple Music, Spotify and Yandex Music catalog-search links; those services are navigation
 targets and are never proxied as AWUN audio.
 
 ## Discovery coverage
@@ -76,17 +77,35 @@ targets and are never proxied as AWUN audio.
 | Internet Archive | Archival, independent and rare public audio | Yes | When a public media file exists |
 | MusicBrainz | Aliases, scripts, ISRCs and release names | Metadata only | No |
 | Apple Music / Spotify | Large region-aware catalogs via official links | On the official service | No |
+| Yandex Music | Local import of library metadata and official catalog links | Imported tracks are matched to connected AWUN sources; Yandex playback stays official | No |
 | Regional YouTube | Results relevant to CIS, Europe, USA, LATAM and Asia | Official YouTube player | No |
 
 Region mode changes discovery relevance; it does not bypass provider licensing
 or geographic restrictions. In AUTO mode the browser locale selects a country
 and language. GLOBAL removes the YouTube country/language preference.
 
+## Yandex Music library transfer
+
+Click **IMPORT → YM** and upload a CSV, JSON, M3U/M3U8 or TXT file, or paste one
+`Artist — Track` per line. AWUN stores only normalized track metadata in the
+browser library. The first time an imported item is played, AWUN searches the
+currently connected sources, selects the closest playable match and replaces
+the placeholder with that live result. Every item retains an official Yandex
+Music catalog link.
+
+AWUN does not ask for a Yandex password or account token and does not call
+undocumented private endpoints or extract protected Yandex media URLs. Yandex
+documents its own supported inbound collection transfer at
+<https://yandex.ru/support/music/ru/collection/transfer>; exporting a library
+for AWUN currently requires a user-provided metadata file or pasted track list.
+
 ## Configuration
 
 Copy `.env.example` to `.env`. YouTube uses the Data API when
 `AWUN_YOUTUBE_API_KEY` is set and otherwise falls back to metadata-only
-`yt-dlp` search; playback always stays in the official embedded player. SoundCloud uses OAuth when
+`yt-dlp` search; playback always stays in the official embedded player. With
+an API key AWUN follows up to `AWUN_YOUTUBE_MAX_PAGES=2`, allowing as many as
+100 YouTube candidates while keeping quota use bounded. SoundCloud uses OAuth when
 `AWUN_SOUNDCLOUD_CLIENT_ID` and `AWUN_SOUNDCLOUD_CLIENT_SECRET` are set, with a
 limited legacy fallback otherwise. Audius is enabled by default and uses its
 read-only REST API. Jamendo is added only when `AWUN_JAMENDO_CLIENT_ID` is set.
@@ -111,7 +130,7 @@ starts, then opens the hosted beta in its own application window.
 
 For a reproducible cloud build, open **Actions → Windows desktop build → Run
 workflow**. Every pull request also creates an `AWUN-Windows-x64` test artifact.
-Download it from the completed run. Pushing a tag such as `v1.4.0` creates a
+Download it from the completed run. Pushing a tag such as `v1.5.0` creates a
 GitHub Release containing the executable and
 checksum. The executable is currently unsigned, so Windows SmartScreen may
 show a warning until a code-signing certificate is added.
