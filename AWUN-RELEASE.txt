@@ -1,6 +1,6 @@
-AWUN 1.6.1 track matching hotfix
+AWUN 1.6.2 repeat and Windows identity update
 Release date: 2026-07-16
 
-This build normalizes noisy cover/remix video titles, falls back to a verified
-canonical LRCLIB match, and reports Genius MATCHED / NO MATCH / ERROR honestly.
-It also exposes the matched song identity and attached annotation count.
+This build adds persistent OFF / ALL / ONE repeat modes to audio and YouTube
+playback. Windows builds now embed the high-resolution AWUN application icon
+for Explorer, shortcuts and the taskbar.

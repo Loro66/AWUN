@@ -35,6 +35,7 @@ def test_visual_controls_have_unique_ids() -> None:
         "libraryFile",
         "importText",
         "decorValue",
+        "repeatMode",
     }.issubset(parser.ids)
 
 
@@ -85,3 +86,15 @@ def test_identity_minimal_mode_and_track_stories_are_wired() -> None:
     assert "TRACK STORY" in script
     assert 'html[data-decor="minimal"] .source-row' in styles
     assert ".lyric-line" in styles and ".line-comment-form" in styles
+
+
+def test_repeat_modes_are_persistent_and_handle_track_endings() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+
+    assert 'id="repeatMode"' in html
+    assert "awun-repeat-mode" in script
+    assert "['off','all','one']" in script
+    assert "handleTrackEnded" in script
+    assert "YT.PlayerState.ENDED)handleTrackEnded()" in script
+    assert "addEventListener('ended',handleTrackEnded)" in script

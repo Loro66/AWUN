@@ -10,7 +10,7 @@
   <script>
     try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');document.documentElement.dataset.theme=v.theme||'acid';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full'}catch{}
   </script>
-  <link rel="stylesheet" href="/static/styles.css?v=20260716.4">
+  <link rel="stylesheet" href="/static/styles.css?v=20260716.5">
 </head>
 <body>
   <a class="skip-link" href="#searchInput">Skip to search</a>
@@ -146,6 +146,7 @@
         <button id="previousTrack" type="button" aria-label="Previous track">‹</button>
         <button id="playPause" class="play-pause" type="button" aria-label="Play"><span>▶</span></button>
         <button id="nextTrack" type="button" aria-label="Next track">›</button>
+        <button id="repeatMode" class="repeat-mode" type="button" aria-label="Repeat off" aria-pressed="false"><span>↻</span><small>OFF</small></button>
       </div>
       <div class="timeline">
         <span id="elapsed">0:00</span>
@@ -202,6 +203,6 @@
     <footer><span>LOCAL METADATA / ON-DEMAND MATCHING</span><span>NO YANDEX TOKEN</span></footer>
   </aside>
 
-  <script src="/static/app.js?v=20260716.4" defer></script>
+  <script src="/static/app.js?v=20260716.5" defer></script>
 </body>
 </html>

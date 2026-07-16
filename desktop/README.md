@@ -5,7 +5,8 @@ keeps its browser session between launches. It uses the Microsoft Edge WebView2
 runtime included with current Windows 10 and Windows 11 installations.
 
 On Windows, run `build-windows.bat`. The generated executable is written to
-`dist\\AWUN.exe`.
+`dist\\AWUN.exe`. Its taskbar, Explorer and shortcut icon is embedded from
+`desktop\\assets\\awun.ico` during the PyInstaller build.
 
 The included GitHub Actions workflow produces the same executable and a SHA256
 checksum on a Windows runner. Use **Actions → Windows desktop build → Run

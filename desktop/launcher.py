@@ -25,12 +25,12 @@ h1{margin:0;font-size:84px;font-style:italic;letter-spacing:-7px}h1 i{color:#b7f
 p{color:#8b8d82;font-size:9px;font-weight:800;letter-spacing:3px}.meta{display:flex;justify-content:space-between;margin-top:34px;color:#55574f;font-size:7px;font-weight:900;letter-spacing:1.5px}
 .line{height:2px;margin-top:14px;background:#30322c;overflow:hidden}.line:after{content:"";display:block;width:34%;height:100%;background:#b7ff19;box-shadow:0 0 20px rgba(183,255,25,.4);animation:scan 1.2s ease-in-out infinite alternate}
 @keyframes scan{to{transform:translateX(195%)}}@keyframes orbit{50%{transform:translate(-18px,14px) rotate(12deg)}}
-</style></head><body><main><section><h1>AWUN<i>.</i></h1><p>WAKING THE SEARCH NETWORK</p><div class="meta"><span>PUBLIC BETA / 1.6</span><span>ONE SEARCH · EVERY SOUND</span></div><div class="line"></div></section></main></body></html>
+</style></head><body><main><section><h1>AWUN<i>.</i></h1><p>WAKING THE SEARCH NETWORK</p><div class="meta"><span>PUBLIC BETA / 1.6.2</span><span>ONE SEARCH · EVERY SOUND</span></div><div class="line"></div></section></main></body></html>
 """
 
 
 def open_hosted_app(window: webview.Window) -> None:
-    request = Request(f"{AWUN_URL.rstrip('/')}/health", headers={"User-Agent": "AWUN-Desktop/1.6"})
+    request = Request(f"{AWUN_URL.rstrip('/')}/health", headers={"User-Agent": "AWUN-Desktop/1.6.2"})
     try:
         with urlopen(request, timeout=70):
             pass

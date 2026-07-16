@@ -23,7 +23,7 @@ jobs:
       - name: Install desktop dependencies
         run: python -m pip install -r requirements-desktop.txt
       - name: Build AWUN.exe
-        run: pyinstaller --noconfirm --clean --onefile --windowed --name AWUN desktop/launcher.py
+        run: pyinstaller --noconfirm --clean --onefile --windowed --name AWUN --icon desktop/assets/awun.ico desktop/launcher.py
       - name: Create SHA256 checksum
         shell: pwsh
         run: |
