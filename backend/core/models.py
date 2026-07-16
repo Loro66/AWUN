@@ -76,8 +76,13 @@ class TrackDetailsResponse(BaseModel):
     artist: str
     title: str
     lyrics_source: Literal["lrclib"] | None = None
+    match_type: Literal["exact", "canonical", "none"] = "none"
+    matched_artist: str | None = None
+    matched_title: str | None = None
     synced: bool = False
     lines: list[LyricLine] = Field(default_factory=list)
     genius_url: str | None = None
     genius_enabled: bool = False
+    genius_status: Literal["disabled", "matched", "not_found", "error"] = "disabled"
+    annotation_count: int = Field(default=0, ge=0)
     message: str | None = None

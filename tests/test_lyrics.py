@@ -1,6 +1,12 @@
 import unittest
 
-from backend.metadata.lyrics import attach_genius_referents, parse_plain_lyrics, parse_synced_lyrics
+from backend.metadata.lyrics import (
+    attach_genius_referents,
+    canonical_track_title,
+    parse_plain_lyrics,
+    parse_synced_lyrics,
+    select_lyric_candidate,
+)
 
 
 class LyricsTests(unittest.TestCase):
@@ -41,6 +47,24 @@ class LyricsTests(unittest.TestCase):
         self.assertEqual(lines[0].annotations[0].author, "Listener")
         self.assertEqual(lines[0].annotations[0].votes, 7)
         self.assertEqual(lines[1].annotations, [])
+
+    def test_reduces_long_youtube_cover_title_to_canonical_song(self) -> None:
+        title = "Bad Romance - Vintage 1920's Gatsby Style Lady Gaga Cover Ft. Ariana Savalas & Sarah Reich"
+        self.assertEqual(canonical_track_title(title), "Bad Romance")
+
+    def test_removes_official_video_noise_without_damaging_title(self) -> None:
+        self.assertEqual(canonical_track_title("Bad Romance (Official Music Video)"), "Bad Romance")
+        self.assertEqual(canonical_track_title("Love - Hate"), "Love - Hate")
+
+    def test_selects_matching_lrclib_song_instead_of_first_result(self) -> None:
+        candidates = [
+            {"trackName": "A Bad Dream", "artistName": "Artist A", "duration": 250},
+            {"trackName": "Bad Romance", "artistName": "Lady Gaga", "duration": 295},
+            {"trackName": "Romance", "artistName": "Artist B", "duration": 240},
+        ]
+        selected = select_lyric_candidate(candidates, "Bad Romance", 292)
+        self.assertIsNotNone(selected)
+        self.assertEqual(selected["artistName"], "Lady Gaga")
 
 
 if __name__ == "__main__":

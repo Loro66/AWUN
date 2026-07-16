@@ -1,6 +1,6 @@
-AWUN 1.6.0 track stories and identity release
+AWUN 1.6.1 track matching hotfix
 Release date: 2026-07-16
 
-This build introduces the AWUN vector mark, a true music-first Minimal mode,
-expandable Track Stories, on-demand LRCLIB lyrics, optional official Genius
-annotations and private per-line notes stored on the user's device.
+This build normalizes noisy cover/remix video titles, falls back to a verified
+canonical LRCLIB match, and reports Genius MATCHED / NO MATCH / ERROR honestly.
+It also exposes the matched song identity and attached annotation count.
