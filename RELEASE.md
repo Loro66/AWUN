@@ -11,11 +11,14 @@ AWUN_YOUTUBE_API_KEY
 AWUN_SOUNDCLOUD_CLIENT_ID
 AWUN_SOUNDCLOUD_CLIENT_SECRET
 AWUN_JAMENDO_CLIENT_ID
+AWUN_GENIUS_ACCESS_TOKEN
 ```
 
 Jamendo is optional and is activated only when its client ID is present. Audius
 search is enabled by default; `AWUN_AUDIUS_API_KEY` may be added for a registered
 Audius application.
+The Genius token is optional: LRCLIB lyrics and private on-device line notes
+continue to work without it.
 
 MusicBrainz and Internet Archive need no secret. Keep
 `AWUN_MUSICBRAINZ_CONTACT` set to the public project URL or a monitored contact
@@ -54,6 +57,13 @@ Open `https://YOUR-AWUN-API/` after deployment.
 - Disabled providers are visibly marked `NOT CONNECTED` and are not sent in a
   search request.
 - Opening `/?q=artist%20track` runs a shareable search.
+- The header renders `/static/awun-mark.svg` and remains crisp at mobile and desktop sizes.
+- Switching **INTERFACE → MINIMAL** removes telemetry and source chrome while keeping search, results and playback usable.
+- Clicking a result opens a Track Story without starting or interrupting playback.
+- A known LRCLIB song displays plain or synced lyrics from `/api/v1/track-details`.
+- A timed lyric line seeks the active player; a lyric line opens its annotations and notes.
+- With `AWUN_GENIUS_ACCESS_TOKEN`, `/health` reports Genius annotations as connected.
+- Added lyric notes survive reload on the same device and can be deleted.
 
 Provider media links are short-lived. AWUN signs them for immediate playback;
 users should run a fresh search when an older saved link expires.

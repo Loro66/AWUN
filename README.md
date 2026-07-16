@@ -8,13 +8,20 @@ ISRC variants. Yandex Music libraries can be transferred as metadata and
 matched to connected playable sources on demand. YouTube playback stays inside the official embedded player;
 other full tracks use short-lived signed AWUN media routes.
 
-The 1.5 beta interface includes AUTO/CIS/EUROPE/USA/LATAM/ASIA/GLOBAL search,
+The 1.6 beta interface includes AUTO/CIS/EUROPE/USA/LATAM/ASIA/GLOBAL search,
 source-aware discovery, partial-failure handling,
 a 30/60/100 result selector, Yandex library import, a local library, shareable search URLs and a unified responsive player with
 custom waveform seeking, volume, previous/next controls and browser Media
-Session integration. Its visual system includes Acid, Ultraviolet, Cobalt and
-Ember themes, optional ambient decoration and motion controls. Visual settings
+Session integration. A new geometric SVG mark stays sharp in the web, desktop
+and mobile shells. Its visual system includes Acid, Ultraviolet, Cobalt and
+Ember themes, Editorial and music-first Minimal layouts, plus motion controls. Visual settings
 are saved locally and work across desktop and mobile layouts.
+
+Click any result (or its **STORY** button) to open a Track Story. AWUN requests
+plain or time-synced lyrics from LRCLIB on demand and, when
+`AWUN_GENIUS_ACCESS_TOKEN` is configured, attaches official Genius annotations
+to the closest lyric line. Each line also accepts private AWUN notes stored only
+in that browser. AWUN does not scrape Genius pages and does not cache lyrics.
 
 In production, provider URLs are wrapped in short-lived signed AWUN media URLs.
 The media endpoint supports HTTP Range requests for full-track playback and
@@ -38,9 +45,10 @@ Open `http://127.0.0.1:8000/` for AWUN or `/docs` for API documentation.
 For a hosted beta, deploy the included `Dockerfile` to any container host. A
 `render.yaml` Blueprint is included for Render. Configure
 `AWUN_YOUTUBE_API_KEY` (recommended), the two SoundCloud credentials, and optionally
-`AWUN_JAMENDO_CLIENT_ID` in the host dashboard. Audius
+`AWUN_JAMENDO_CLIENT_ID` and `AWUN_GENIUS_ACCESS_TOKEN` in the host dashboard. Audius
 read-only search works without a secret; `AWUN_AUDIUS_API_KEY` is optional.
 MusicBrainz and Internet Archive work without secrets.
+LRCLIB lyrics also work without a secret; the Genius token only adds annotations.
 
 See `RELEASE.md` for the production deployment and verification checklist.
 
@@ -99,6 +107,23 @@ documents its own supported inbound collection transfer at
 <https://yandex.ru/support/music/ru/collection/transfer>; exporting a library
 for AWUN currently requires a user-provided metadata file or pasted track list.
 
+## Track Stories, lyrics and comments
+
+`GET /api/v1/track-details?artist=...&title=...&duration=...` returns an ordered
+list of lyric lines. When LRCLIB provides LRC timestamps, selecting a timestamp
+seeks the active track to that line. Selecting the lyric itself opens its
+thread: official Genius annotations appear first and the listener can add or
+delete local notes beneath them.
+
+The beta intentionally separates provider content from AWUN user data:
+
+- lyrics are requested from <https://lrclib.net/docs> and not persisted by the API;
+- Genius referents use <https://docs.genius.com/> only when a server-side token exists;
+- personal line notes live in browser `localStorage` and are not public or synced.
+
+A public multi-user comment network will require authenticated accounts,
+moderation and persistent storage; it is not silently simulated in this release.
+
 ## Configuration
 
 Copy `.env.example` to `.env`. YouTube uses the Data API when
@@ -112,6 +137,8 @@ read-only REST API. Jamendo is added only when `AWUN_JAMENDO_CLIENT_ID` is set.
 Internet Archive is enabled by default and exposes only public audio files.
 MusicBrainz is enabled by default; set `AWUN_MUSICBRAINZ_CONTACT` to a project
 URL or contact address and adjust `AWUN_QUERY_EXPANSION_LIMIT` if needed.
+LRCLIB is enabled by default. Add `AWUN_GENIUS_ACCESS_TOKEN` for Genius
+referents; never expose this value to the frontend or commit it to the repository.
 
 Direct media URLs are provider-issued and normally expire. Clients should search again instead of storing them. Some providers may require their usual request headers, authentication, or region access. Use AWUN only for media you are authorized to access and in accordance with each provider's terms.
 
@@ -130,7 +157,7 @@ starts, then opens the hosted beta in its own application window.
 
 For a reproducible cloud build, open **Actions → Windows desktop build → Run
 workflow**. Every pull request also creates an `AWUN-Windows-x64` test artifact.
-Download it from the completed run. Pushing a tag such as `v1.5.0` creates a
+Download it from the completed run. Pushing a tag such as `v1.6.0` creates a
 GitHub Release containing the executable and
 checksum. The executable is currently unsigned, so Windows SmartScreen may
 show a warning until a code-signing certificate is added.

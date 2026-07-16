@@ -1,6 +1,6 @@
-AWUN 1.5.0 Yandex library transfer release
+AWUN 1.6.0 track stories and identity release
 Release date: 2026-07-16
 
-This build adds local Yandex Music metadata import, on-demand matching to
-playable AWUN sources, official Yandex catalog navigation, selectable 30/60/100
-result windows and bounded two-page YouTube Data API search.
+This build introduces the AWUN vector mark, a true music-first Minimal mode,
+expandable Track Stories, on-demand LRCLIB lyrics, optional official Genius
+annotations and private per-line notes stored on the user's device.
