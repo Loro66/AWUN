@@ -12,8 +12,9 @@ from fastapi.staticfiles import StaticFiles
 
 from backend.core.config import Settings, get_settings
 from backend.core.media import InvalidMediaToken, MediaSigner
-from backend.core.models import SearchRequest, SearchResponse, SourceName
+from backend.core.models import SearchRequest, SearchResponse, SourceName, TrackDetailsResponse
 from backend.core.regions import REGION_NAMES, RegionName
+from backend.metadata.lyrics import TrackDetailsService
 from backend.search.engine import SearchEngine
 from backend.sources.factory import build_adapters, build_enricher
 
@@ -70,8 +71,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             max_limit=settings.max_limit,
             enricher=build_enricher(settings),
         )
+        app.state.track_details = TrackDetailsService(settings)
         yield
         await app.state.search_engine.close()
+        await app.state.track_details.close()
 
     app = FastAPI(
         title=settings.app_name,
@@ -142,8 +145,28 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                     "account_token_required": False,
                     "direct_audio": False,
                 },
+                "track_stories": {
+                    "lyrics": settings.lyrics_enabled,
+                    "lyrics_source": "lrclib" if settings.lyrics_enabled else None,
+                    "genius_annotations": bool(settings.genius_access_token),
+                    "local_line_comments": True,
+                },
             },
         }
+
+    @app.get(
+        f"{settings.api_prefix}/track-details",
+        response_model=TrackDetailsResponse,
+        tags=["metadata"],
+    )
+    async def track_details(
+        request: Request,
+        artist: Annotated[str, Query(min_length=1, max_length=200)],
+        title: Annotated[str, Query(min_length=1, max_length=200)],
+        duration: Annotated[int, Query(ge=0, le=24 * 60 * 60)] = 0,
+    ) -> TrackDetailsResponse:
+        service: TrackDetailsService = request.app.state.track_details
+        return await service.get(artist=artist, title=title, duration=duration)
 
     def proxied(response: SearchResponse, request: Request) -> SearchResponse:
         if not settings.media_proxy_enabled:
