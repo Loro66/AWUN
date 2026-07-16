@@ -5,9 +5,21 @@ from backend.core.models import SearchRequest
 from backend.sources.audius import AudiusAdapter
 from backend.sources.factory import build_adapters
 from backend.sources.jamendo import JamendoAdapter
+from backend.sources.youtube import YouTubeAdapter, _looks_like_track
 
 
 class ProviderAdapterTests(unittest.TestCase):
+    def test_youtube_filters_long_form_mixes_but_keeps_normal_tracks(self) -> None:
+        self.assertTrue(_looks_like_track("Artist — Track (Official Audio)", 248))
+        self.assertTrue(_looks_like_track("Long classical movement", 1199))
+        self.assertFalse(_looks_like_track("Крутая музыка в машину на 3 часа", 10800))
+        self.assertFalse(_looks_like_track("Best songs playlist 2026", 540))
+        self.assertFalse(_looks_like_track("Artist live now", 0, live=True))
+
+    def test_youtube_api_is_scoped_to_music_category(self) -> None:
+        params = YouTubeAdapter(api_key="key")._api_params("track", 10, None)
+        self.assertEqual(params["videoCategoryId"], "10")
+
     def test_audius_maps_stream_and_authorized_download(self) -> None:
         track = AudiusAdapter(app_name="AWUN Test")._track_from_item(
             {

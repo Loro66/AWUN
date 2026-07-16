@@ -20,12 +20,15 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public final class MainActivity extends Activity {
-    private static final String AWUN_URL = "https://awun-api1.onrender.com";
     private WebView webView;
+    private ImageView splash;
+    private String[] endpoints;
+    private int endpointIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,9 @@ public final class MainActivity extends Activity {
         root.setBackgroundColor(Color.rgb(16, 17, 14));
         webView = new WebView(this);
         webView.setBackgroundColor(Color.rgb(16, 17, 14));
+        endpoints = BuildConfig.AWUN_MIRROR_URL.isEmpty()
+                ? new String[]{BuildConfig.AWUN_PRIMARY_URL}
+                : new String[]{BuildConfig.AWUN_PRIMARY_URL, BuildConfig.AWUN_MIRROR_URL};
 
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -44,7 +50,7 @@ public final class MainActivity extends Activity {
         settings.setDatabaseEnabled(true);
         settings.setMediaPlaybackRequiresUserGesture(false);
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
-        settings.setUserAgentString(settings.getUserAgentString() + " AWUN-Android/1.6");
+        settings.setUserAgentString(settings.getUserAgentString() + " AWUN-Android/1.7");
 
         ProgressBar progress = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
         progress.setMax(100);
@@ -54,6 +60,17 @@ public final class MainActivity extends Activity {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
         ));
+        splash = new ImageView(this);
+        splash.setImageResource(com.awun.beta.R.mipmap.ic_launcher);
+        splash.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        splash.setBackgroundColor(Color.rgb(5, 5, 5));
+        int splashSize = Math.round(156 * getResources().getDisplayMetrics().density);
+        FrameLayout.LayoutParams splashParams = new FrameLayout.LayoutParams(
+                splashSize,
+                splashSize,
+                Gravity.CENTER
+        );
+        root.addView(splash, splashParams);
         root.addView(progress, new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 5,
@@ -61,7 +78,37 @@ public final class MainActivity extends Activity {
         ));
         setContentView(root);
 
-        webView.setWebViewClient(new WebViewClient());
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                if (splash != null) {
+                    ((ViewGroup) splash.getParent()).removeView(splash);
+                    splash = null;
+                }
+            }
+
+            @Override
+            public void onReceivedError(WebView view, android.webkit.WebResourceRequest request, android.webkit.WebResourceError error) {
+                if (request.isForMainFrame() && endpointIndex + 1 < endpoints.length) {
+                    endpointIndex += 1;
+                    view.loadUrl(endpoints[endpointIndex]);
+                    Toast.makeText(MainActivity.this, "Switching to AWUN mirror", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                super.onReceivedError(view, request, error);
+            }
+
+            @Override
+            public void onReceivedHttpError(WebView view, android.webkit.WebResourceRequest request, android.webkit.WebResourceResponse response) {
+                if (request.isForMainFrame() && response.getStatusCode() >= 400 && endpointIndex + 1 < endpoints.length) {
+                    endpointIndex += 1;
+                    view.loadUrl(endpoints[endpointIndex]);
+                    Toast.makeText(MainActivity.this, "Switching to AWUN mirror", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                super.onReceivedHttpError(view, request, response);
+            }
+        });
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int value) {
@@ -74,7 +121,7 @@ public final class MainActivity extends Activity {
         if (!hasNetwork()) {
             Toast.makeText(this, "AWUN will reconnect when the network is available", Toast.LENGTH_LONG).show();
         }
-        webView.loadUrl(AWUN_URL);
+        webView.loadUrl(endpoints[endpointIndex]);
     }
 
     private DownloadListener downloadListener() {

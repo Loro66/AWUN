@@ -237,8 +237,8 @@ class TrackDetailsService:
             params["duration"] = round(duration)
         headers = {
             "Accept": "application/json",
-            "User-Agent": "AWUN/1.6.2 (+https://github.com/Loro66/AWUN)",
-            "Lrclib-Client": "AWUN/1.6.2",
+            "User-Agent": "AWUN/1.7.0 (+https://github.com/Loro66/AWUN)",
+            "Lrclib-Client": "AWUN/1.7.0",
         }
         try:
             async with session.get(f"{self.lrclib_base_url}/api/get", params=params, headers=headers) as response:

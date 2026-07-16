@@ -35,6 +35,8 @@ def test_visual_controls_have_unique_ids() -> None:
         "libraryFile",
         "importText",
         "decorValue",
+        "densityToggle",
+        "densityValue",
         "repeatMode",
     }.issubset(parser.ids)
 
@@ -56,7 +58,7 @@ def test_every_visual_theme_has_css_and_javascript_metadata() -> None:
     styles = (ROOT / "frontend" / "styles.css").read_text(encoding="utf-8")
     script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
 
-    for theme in ("acid", "ultraviolet", "cobalt", "ember"):
+    for theme in ("black", "white", "acid", "ultraviolet", "cobalt", "ember"):
         assert f'data-theme="{theme}"' in styles or theme == "acid"
         assert f"{theme}:{{label:" in script
 
@@ -78,7 +80,7 @@ def test_identity_minimal_mode_and_track_stories_are_wired() -> None:
     styles = (ROOT / "frontend" / "styles.css").read_text(encoding="utf-8")
     mark = (ROOT / "frontend" / "awun-mark.svg").read_text(encoding="utf-8")
 
-    assert '/static/awun-mark.svg' in html
+    assert '/static/brand/awun-logo-white.png' in html
     assert 'INTERFACE' in html and 'MINIMAL' in html
     assert 'viewBox="0 0 64 64"' in mark
     assert "/api/v1/track-details" in script
@@ -86,6 +88,8 @@ def test_identity_minimal_mode_and_track_stories_are_wired() -> None:
     assert "TRACK STORY" in script
     assert 'html[data-decor="minimal"] .source-row' in styles
     assert ".lyric-line" in styles and ".line-comment-form" in styles
+    assert "awun-logo-black.png" in styles
+    assert 'data-density="compact"' in styles and 'data-density="airy"' in styles
 
 
 def test_repeat_modes_are_persistent_and_handle_track_endings() -> None:

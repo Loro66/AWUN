@@ -6,11 +6,12 @@
   <meta id="themeColor" name="theme-color" content="#10110e">
   <meta name="description" content="AWUN searches real music across connected sources and plays it instantly.">
   <title>AWUN — one search, every sound</title>
-  <link rel="icon" href="/static/awun-mark.svg" type="image/svg+xml">
+  <link rel="icon" href="/static/brand/awun-icon-black.png" type="image/png">
+  <link rel="apple-touch-icon" href="/static/brand/awun-icon-black.png">
   <script>
-    try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');document.documentElement.dataset.theme=v.theme||'acid';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full'}catch{}
+    try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');document.documentElement.dataset.theme=v.theme||'black';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full';document.documentElement.dataset.density=v.density||'standard'}catch{}
   </script>
-  <link rel="stylesheet" href="/static/styles.css?v=20260716.5">
+  <link rel="stylesheet" href="/static/styles.css?v=20260716.6">
 </head>
 <body>
   <a class="skip-link" href="#searchInput">Skip to search</a>
@@ -28,7 +29,7 @@
 
   <main class="app-shell">
     <header class="site-header">
-      <a class="logo" href="/" aria-label="AWUN home"><img src="/static/awun-mark.svg" alt=""><strong>AWUN</strong><i>.</i></a>
+      <a class="logo" href="/" aria-label="AWUN home"><img src="/static/brand/awun-logo-white.png" alt=""><strong>AWUN</strong><i>.</i></a>
       <span class="edition">PUBLIC BETA / 01</span>
       <div class="top-actions">
         <span id="status" class="status"><i></i><b>CONNECTING</b></span>
@@ -174,7 +175,9 @@
     </div>
     <p>Choose a live color system. Set INTERFACE to MINIMAL for a calm, music-first layout. Your setup stays on this device.</p>
     <div class="theme-grid" role="group" aria-label="Color theme">
-      <button type="button" data-theme-choice="acid" aria-pressed="true"><i></i><span>ACID</span><small>01 / SIGNAL</small></button>
+      <button type="button" data-theme-choice="black" aria-pressed="true"><i></i><span>BLACK</span><small>00 / PURE</small></button>
+      <button type="button" data-theme-choice="white" aria-pressed="false"><i></i><span>WHITE</span><small>01 / PAPER</small></button>
+      <button type="button" data-theme-choice="acid" aria-pressed="false"><i></i><span>ACID</span><small>02 / SIGNAL</small></button>
       <button type="button" data-theme-choice="ultraviolet" aria-pressed="false"><i></i><span>ULTRAVIOLET</span><small>02 / NIGHT</small></button>
       <button type="button" data-theme-choice="cobalt" aria-pressed="false"><i></i><span>COBALT</span><small>03 / DIGITAL</small></button>
       <button type="button" data-theme-choice="ember" aria-pressed="false"><i></i><span>EMBER</span><small>04 / HEAT</small></button>
@@ -182,8 +185,9 @@
     <div class="visual-toggles">
       <button id="motionToggle" type="button"><span>MOTION</span><b id="motionValue">ON</b></button>
       <button id="decorToggle" type="button"><span>INTERFACE</span><b id="decorValue">EDITORIAL</b></button>
+      <button id="densityToggle" type="button"><span>DENSITY</span><b id="densityValue">STANDARD</b></button>
     </div>
-    <footer><span>AWUN / VISUAL OS</span><span>V1.6</span></footer>
+    <footer><span>AWUN / VISUAL OS</span><span>V1.7</span></footer>
   </aside>
 
   <div id="importBackdrop" class="theme-backdrop" hidden></div>
@@ -203,6 +207,6 @@
     <footer><span>LOCAL METADATA / ON-DEMAND MATCHING</span><span>NO YANDEX TOKEN</span></footer>
   </aside>
 
-  <script src="/static/app.js?v=20260716.5" defer></script>
+  <script src="/static/app.js?v=20260716.6" defer></script>
 </body>
 </html>
