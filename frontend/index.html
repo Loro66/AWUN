@@ -11,7 +11,7 @@
   <script>
     try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');document.documentElement.dataset.theme=v.theme||'black';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full';document.documentElement.dataset.density=v.density||'standard'}catch{}
   </script>
-  <link rel="stylesheet" href="/static/styles.css?v=20260716.6">
+  <link rel="stylesheet" href="/static/styles.css?v=20260717.1">
 </head>
 <body>
   <a class="skip-link" href="#searchInput">Skip to search</a>
@@ -33,6 +33,9 @@
       <span class="edition">PUBLIC BETA / 01</span>
       <div class="top-actions">
         <span id="status" class="status"><i></i><b>CONNECTING</b></span>
+        <button id="flowButton" class="library flow-button" type="button" aria-expanded="false" aria-controls="flowPanel">
+          <span>FLOW</span><b id="flowBadge">READY</b>
+        </button>
         <button id="themeButton" class="theme-button" type="button" aria-expanded="false" aria-controls="themePanel">
           <span>VISUAL</span><b id="themeLabel">ACID</b>
         </button>
@@ -121,6 +124,31 @@
       <ol id="trackList" class="track-list"></ol>
     </section>
 
+    <section id="flowPanel" class="flow-panel" hidden aria-labelledby="flowTitle">
+      <header>
+        <div><span>AWUN / PERSONAL RADIO</span><h2 id="flowTitle">FLOW</h2></div>
+        <button id="flowClose" type="button" aria-label="Close Flow settings">×</button>
+      </header>
+      <p>An endless personal queue that learns from every play, skip, save, like and dislike. Your taste profile stays on this device.</p>
+      <div class="flow-controls">
+        <fieldset>
+          <legend>DISCOVERY</legend>
+          <div id="flowDiscovery" class="flow-segments">
+            <button type="button" data-flow-discovery="familiar">FAMILIAR</button>
+            <button type="button" data-flow-discovery="balanced" aria-pressed="true">BALANCED</button>
+            <button type="button" data-flow-discovery="new">NEW</button>
+          </div>
+        </fieldset>
+        <label><span>MOOD</span><select id="flowMood"><option value="any">ANY</option><option value="calm">CALM</option><option value="energy">ENERGY</option><option value="focus">FOCUS</option><option value="happy">HAPPY</option><option value="sad">SAD</option><option value="night">NIGHT</option></select></label>
+        <label><span>ACTIVITY</span><select id="flowActivity"><option value="any">ANY</option><option value="work">WORK</option><option value="drive">DRIVE</option><option value="training">TRAINING</option><option value="relax">RELAX</option></select></label>
+      </div>
+      <div class="flow-start-row">
+        <span id="flowSeed">Seed: current search or your library</span>
+        <button id="flowStart" type="button">START FLOW ↗</button>
+      </div>
+      <footer><span id="flowStats">0 signals learned</span><button id="flowReset" type="button">RESET TASTE PROFILE</button></footer>
+    </section>
+
     <footer class="site-footer">
       <span>AWUN / PUBLIC BETA</span>
       <span class="footer-line"></span>
@@ -145,7 +173,9 @@
     <div class="transport">
       <div class="transport-buttons">
         <button id="previousTrack" type="button" aria-label="Previous track">‹</button>
+        <button id="flowDislike" class="flow-feedback" type="button" aria-label="Dislike this track" title="Less like this">−</button>
         <button id="playPause" class="play-pause" type="button" aria-label="Play"><span>▶</span></button>
+        <button id="flowLike" class="flow-feedback" type="button" aria-label="Like this track" title="More like this">+</button>
         <button id="nextTrack" type="button" aria-label="Next track">›</button>
         <button id="repeatMode" class="repeat-mode" type="button" aria-label="Repeat off" aria-pressed="false"><span>↻</span><small>OFF</small></button>
       </div>
@@ -207,6 +237,7 @@
     <footer><span>LOCAL METADATA / ON-DEMAND MATCHING</span><span>NO YANDEX TOKEN</span></footer>
   </aside>
 
-  <script src="/static/app.js?v=20260716.6" defer></script>
+  <script src="/static/app.js?v=20260717.1" defer></script>
+  <script src="/static/flow.js?v=20260717.1" defer></script>
 </body>
 </html>
