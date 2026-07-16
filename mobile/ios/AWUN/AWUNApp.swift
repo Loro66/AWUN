@@ -27,7 +27,7 @@ struct AWUNWebView: UIViewRepresentable {
         view.backgroundColor = UIColor(red: 16 / 255, green: 17 / 255, blue: 14 / 255, alpha: 1)
         view.isOpaque = false
         view.allowsBackForwardNavigationGestures = true
-        view.customUserAgent = "AWUN-iOS/1.5"
+        view.customUserAgent = "AWUN-iOS/1.6"
         view.navigationDelegate = context.coordinator
 
         let refresh = UIRefreshControl()
