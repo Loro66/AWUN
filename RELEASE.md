@@ -53,6 +53,9 @@ Open `https://YOUR-AWUN-API/` after deployment.
 - Starting a track returns HTTP 200 or 206.
 - Seeking sends a Range request and playback resumes from the selected point.
 - Saved tracks reappear after a page reload.
+- FLOW starts from a search, active track or local library and keeps refilling the queue.
+- FLOW likes, dislikes and listening signals survive reload only on the same device.
+- Familiar/Balanced/New, mood and activity controls change recommendation ranking.
 - The player progress line supports click/drag seeking on desktop and mobile.
 - Disabled providers are visibly marked `NOT CONNECTED` and are not sent in a
   search request.
