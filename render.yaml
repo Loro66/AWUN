@@ -18,6 +18,8 @@ services:
         value: "8"
       - key: AWUN_MUSICBRAINZ_CONTACT
         value: "https://github.com/Loro66/AWUN"
+      - key: AWUN_YOUTUBE_MAX_PAGES
+        value: "2"
       - key: WEB_CONCURRENCY
         value: "2"
       - key: AWUN_MEDIA_SECRET
