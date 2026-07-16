@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     )
 
     app_name: str = "AWUN"
-    app_version: str = "1.4.0"
+    app_version: str = "1.5.0"
     debug: bool = False
     api_prefix: str = "/api/v1"
 
@@ -31,6 +31,7 @@ class Settings(BaseSettings):
 
     youtube_enabled: bool = True
     youtube_api_key: str | None = None
+    youtube_max_pages: int = Field(default=2, ge=1, le=2)
     soundcloud_enabled: bool = True
     soundcloud_client_id: str | None = None
     soundcloud_client_secret: str | None = None
