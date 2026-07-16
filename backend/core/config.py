@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     )
 
     app_name: str = "AWUN"
-    app_version: str = "1.5.0"
+    app_version: str = "1.6.0"
     debug: bool = False
     api_prefix: str = "/api/v1"
 
@@ -44,6 +44,10 @@ class Settings(BaseSettings):
     internet_archive_max_items: int = Field(default=8, ge=1, le=20)
     musicbrainz_enabled: bool = True
     musicbrainz_contact: str = "https://github.com/Loro66/AWUN"
+    lyrics_enabled: bool = True
+    lrclib_base_url: str = "https://lrclib.net"
+    genius_access_token: str | None = None
+    track_details_timeout_seconds: float = Field(default=10.0, gt=0, le=30)
 
     cors_origins: list[str] = Field(default_factory=lambda: ["*"])
 
