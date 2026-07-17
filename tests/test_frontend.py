@@ -141,3 +141,15 @@ def test_public_url_import_is_automatic_and_account_safe() -> None:
     assert 'id="importUrl"' in html and "PUBLIC PLAYLIST LINK" in html
     assert "/api/v1/library/import-url" in script and "matchAndSaveImported" in script
     assert 'f"{settings.api_prefix}/library/import-url"' in api
+
+
+def test_installable_pwa_is_wired() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    manifest = (ROOT / "frontend" / "manifest.webmanifest").read_text(encoding="utf-8")
+    worker = (ROOT / "frontend" / "service-worker.js").read_text(encoding="utf-8")
+
+    assert 'rel="manifest"' in html and 'id="installButton"' in html
+    assert "beforeinstallprompt" in script and "serviceWorker.register('/service-worker.js')" in script
+    assert '"display": "standalone"' in manifest and '"start_url": "/"' in manifest
+    assert "awun-shell-1.7.3" in worker and "startsWith('/api/')" in worker

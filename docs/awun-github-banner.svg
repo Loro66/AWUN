@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="420" viewBox="0 0 1280 420" role="img" aria-labelledby="title desc">
+  <title id="title">AWUN — one search, every sound</title><desc id="desc">Black geometric AWUN product banner with a lime signal accent.</desc>
+  <defs><pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse"><path d="M42 0H0V42" fill="none" stroke="#23251f" stroke-width="1"/></pattern><linearGradient id="fade" x1="0" x2="1"><stop stop-color="#0a0b09"/><stop offset="1" stop-color="#11140c"/></linearGradient></defs>
+  <rect width="1280" height="420" fill="url(#fade)"/><rect width="1280" height="420" fill="url(#grid)" opacity=".7"/>
+  <path d="M0 64H1280M0 356H1280" stroke="#34372f"/><path d="M75 84V336M1205 84V336" stroke="#b7ff19" opacity=".32"/>
+  <g transform="translate(92 116) scale(2.7)" fill="none" stroke="#f5f5ee" stroke-width="8" stroke-linejoin="miter"><path d="M8 47 27 8h25l19 39M8 52l13 25h19l12-24 12 24h19l13-25"/></g>
+  <text x="398" y="198" fill="#f5f5ee" font-family="Arial,Helvetica,sans-serif" font-size="91" font-weight="900" letter-spacing="-5">AWUN<tspan fill="#b7ff19">.</tspan></text>
+  <text x="404" y="242" fill="#8d9184" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700" letter-spacing="5">ONE SEARCH · EVERY SOUND</text>
+  <g transform="translate(404 292)" font-family="Arial,Helvetica,sans-serif" font-size="10" font-weight="700" letter-spacing="2"><circle cx="4" cy="-4" r="4" fill="#b7ff19"/><text x="18" fill="#e9eadf">PUBLIC BETA</text><text x="175" fill="#696d62">MY WAVE</text><text x="300" fill="#696d62">5 SOURCES</text><text x="445" fill="#696d62">WEB · WINDOWS · MOBILE</text></g>
+  <text x="92" y="380" fill="#5b5f54" font-family="monospace" font-size="9" letter-spacing="2">AWUN / OPEN BETA / 01</text><text x="1025" y="380" fill="#5b5f54" font-family="monospace" font-size="9" letter-spacing="2">SEARCH NETWORK / LIVE</text>
+</svg>

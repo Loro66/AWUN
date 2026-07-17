@@ -1,0 +1,15 @@
+{
+  "name": "AWUN — one search, every sound",
+  "short_name": "AWUN",
+  "description": "Search connected music catalogs, build a local library and launch My Wave.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "categories": ["music", "entertainment"],
+  "icons": [
+    {"src": "/static/brand/awun-icon-black.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"},
+    {"src": "/static/brand/awun-icon-white.png", "sizes": "512x512", "type": "image/png", "purpose": "monochrome"}
+  ]
+}

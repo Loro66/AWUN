@@ -8,10 +8,11 @@
   <title>AWUN — one search, every sound</title>
   <link rel="icon" href="/static/brand/awun-icon-black.png" type="image/png">
   <link rel="apple-touch-icon" href="/static/brand/awun-icon-black.png">
+  <link rel="manifest" href="/static/manifest.webmanifest">
   <script>
     try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');document.documentElement.dataset.theme=v.theme||'black';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full';document.documentElement.dataset.density=v.density||'standard'}catch{}
   </script>
-  <link rel="stylesheet" href="/static/styles.css?v=20260717.2">
+  <link rel="stylesheet" href="/static/styles.css?v=20260717.3">
 </head>
 <body>
   <a class="skip-link" href="#searchInput">Skip to search</a>
@@ -32,6 +33,7 @@
       <a class="logo" href="/" aria-label="AWUN home"><img src="/static/brand/awun-logo-white.png" alt=""><strong>AWUN</strong><i>.</i></a>
       <span class="edition">PUBLIC BETA / 01</span>
       <div class="top-actions">
+        <button id="installButton" class="library install-button" type="button" hidden><span>INSTALL</span><b>APP</b></button>
         <span id="status" class="status"><i></i><b>CONNECTING</b></span>
         <button id="flowButton" class="library flow-button" type="button" aria-expanded="false" aria-controls="flowPanel">
           <span>MY WAVE</span><b id="flowBadge">READY</b>
@@ -243,7 +245,7 @@
     <footer><span>PUBLIC METADATA / AUTOMATIC MATCHING</span><span>NO ACCOUNT TOKEN</span></footer>
   </aside>
 
-  <script src="/static/app.js?v=20260717.2" defer></script>
-  <script src="/static/flow.js?v=20260717.2" defer></script>
+  <script src="/static/app.js?v=20260717.3" defer></script>
+  <script src="/static/flow.js?v=20260717.3" defer></script>
 </body>
 </html>

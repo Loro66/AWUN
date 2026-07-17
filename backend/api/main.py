@@ -118,6 +118,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         async def frontend() -> FileResponse:
             return FileResponse(frontend_dir / "index.html", headers={"Cache-Control": "no-cache"})
 
+        @app.get("/service-worker.js", include_in_schema=False)
+        async def service_worker() -> FileResponse:
+            return FileResponse(
+                frontend_dir / "service-worker.js",
+                media_type="application/javascript",
+                headers={"Cache-Control": "no-cache", "Service-Worker-Allowed": "/"},
+            )
+
     @app.get("/health", tags=["system"])
     async def health(search_engine: Engine) -> dict[str, object]:
         return {

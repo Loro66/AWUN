@@ -1,4 +1,19 @@
+![AWUN — one search, every sound](docs/awun-github-banner.svg)
+
+<div align="center">
+
+[English](README.md) · [Русский](README.ru.md) · [Open AWUN](https://awun-api1.onrender.com) · [Windows builds](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml) · [Support the project](SUPPORT.md)
+
+[![Tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&label=Windows%20build&style=flat-square)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
+![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-live-009688?style=flat-square&logo=fastapi&logoColor=white)
+![Public beta](https://img.shields.io/badge/status-public%20beta-b7ff19?style=flat-square&labelColor=10110e)
+
+</div>
+
 # AWUN
+
+> A music discovery workspace that searches connected catalogs, keeps your library local and turns your taste into an endless personal station.
 
 AWUN is a FastAPI music-search aggregator with a responsive web interface. It
 searches YouTube, SoundCloud, Audius, Jamendo and Internet Archive in parallel,
@@ -16,6 +31,14 @@ Session integration. A new geometric SVG mark stays sharp in the web, desktop
 and mobile shells. Its visual system includes Acid, Ultraviolet, Cobalt and
 Ember themes, Editorial and music-first Minimal layouts, plus motion controls. Visual settings
 are saved locally and work across desktop and mobile layouts.
+
+## Try and install
+
+- **Web / PWA:** open [awun-api1.onrender.com](https://awun-api1.onrender.com). In Chrome or Edge choose **INSTALL APP** to add AWUN to the Start menu, desktop or phone home screen.
+- **Windows:** download the latest `AWUN-Windows-x64` artifact from [Windows desktop builds](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml). The executable is unsigned during beta, so SmartScreen may ask for confirmation.
+- **Android / iOS beta:** reproducible shells live in [`mobile/`](mobile/README.md). A physical iOS release requires Apple signing.
+
+AWUN is free to try. Donations support development and infrastructure; they do not purchase music, provider access or copyrighted downloads. See [SUPPORT.md](SUPPORT.md).
 
 **AWUN FLOW** builds an endless personal queue from the current search, active
 track and local library. It learns from plays, 30% listens, completions, skips,
