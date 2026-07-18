@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[English](README.md) · [Русский](README.ru.md) · [Open AWUN](https://awun-api1.onrender.com) · [Windows builds](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml) · [Support the project](SUPPORT.md)
+[English](README.md) · [Русский](README.ru.md) · [Open AWUN](https://awun-api1.onrender.com) · [Windows builds](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml) · [Support the project](SUPPORT.md) · [Freeware license](LICENSE.md)
 
 [![Tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&label=Windows%20build&style=flat-square)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)
@@ -38,7 +38,14 @@ are saved locally and work across desktop and mobile layouts.
 - **Windows:** download the latest `AWUN-Windows-x64` artifact from [Windows desktop builds](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml). The executable is unsigned during beta, so SmartScreen may ask for confirmation.
 - **Android / iOS beta:** reproducible shells live in [`mobile/`](mobile/README.md). A physical iOS release requires Apple signing.
 
-AWUN is free to try. Donations support development and infrastructure; they do not purchase music, provider access or copyrighted downloads. See [SUPPORT.md](SUPPORT.md).
+AWUN is free to use. Donations support development and infrastructure; they do not purchase music, provider access or copyrighted downloads. See [SUPPORT.md](SUPPORT.md).
+
+AWUN is **proprietary, source-visible freeware**, not open-source software. You
+may use official unmodified builds free of charge and redistribute an exact
+official package under the stated conditions. Selling, repackaging, publishing
+modified builds, operating hosted clones and reusing the source in another
+product require prior written permission. See [LICENSE.md](LICENSE.md) and
+[EULA.md](EULA.md).
 
 **AWUN FLOW** builds an endless personal queue from the current search, active
 track and local library. It learns from plays, 30% listens, completions, skips,
@@ -200,6 +207,9 @@ GitHub Release containing the executable and
 checksum. The executable is currently unsigned, so Windows SmartScreen may
 show a warning until a code-signing certificate is added.
 
+The Windows artifact and tagged releases include `LICENSE.md` and `EULA.md`.
+Installing or using an official build means accepting those terms.
+
 ## Android and iOS beta apps
 
 The native mobile shells live in `mobile/android` and `mobile/ios`. Open a pull
@@ -207,3 +217,12 @@ request or run **Actions → Mobile beta builds** to create an installable Andro
 APK, an unsigned iOS IPA and an iOS Simulator archive. See `mobile/README.md`
 for installation and signing details. A physical-device iOS release requires
 Apple signing credentials; the repository never stores those secrets.
+
+## License
+
+Copyright © 2026 Loro66. All rights reserved.
+
+AWUN uses the bilingual [AWUN Proprietary Freeware License 1.0](LICENSE.md).
+The repository is public for transparency and contribution, but its source is
+not open source. Contributors must accept the
+[AWUN Contributor License Agreement](CONTRIBUTOR_LICENSE_AGREEMENT.md).

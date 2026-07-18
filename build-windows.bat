@@ -10,6 +10,8 @@ pyinstaller --noconfirm --clean --onefile --windowed --name AWUN --icon desktop\
 if errorlevel 1 exit /b 1
 
 powershell -NoProfile -Command "$hash=(Get-FileHash 'dist\AWUN.exe' -Algorithm SHA256).Hash.ToLower(); Set-Content -Encoding ascii 'dist\AWUN.exe.sha256' ($hash + ' *AWUN.exe')"
+copy /Y LICENSE.md dist\LICENSE.md >nul
+copy /Y EULA.md dist\EULA.md >nul
 
-echo AWUN.exe and its SHA256 checksum are ready in the dist folder.
+echo AWUN.exe, its checksum, license and EULA are ready in the dist folder.
 pause

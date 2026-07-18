@@ -30,6 +30,7 @@ jobs:
           mkdir -p dist/android
           cp mobile/android/app/build/outputs/apk/debug/app-debug.apk dist/android/AWUN-Android-beta.apk
           sha256sum dist/android/AWUN-Android-beta.apk > dist/android/AWUN-Android-beta.apk.sha256
+          cp LICENSE.md EULA.md dist/android/
       - uses: actions/upload-artifact@v4
         with:
           name: AWUN-Android-beta
@@ -65,6 +66,7 @@ jobs:
           ditto -c -k --sequesterRsrc --keepParent dist/ios/Payload dist/ios/AWUN-iOS-unsigned.ipa
           ditto -c -k --sequesterRsrc --keepParent build/ios/Build/Products/Release-iphonesimulator/AWUN.app dist/ios/AWUN-iOS-Simulator.zip
           shasum -a 256 dist/ios/AWUN-iOS-unsigned.ipa dist/ios/AWUN-iOS-Simulator.zip > dist/ios/SHA256SUMS.txt
+          cp LICENSE.md EULA.md dist/ios/
           rm -rf dist/ios/Payload
       - uses: actions/upload-artifact@v4
         with:

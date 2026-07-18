@@ -111,6 +111,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     Engine = Annotated[SearchEngine, Depends(engine)]
 
     frontend_dir = Path(__file__).resolve().parents[2] / "frontend"
+    project_dir = frontend_dir.parent
     if frontend_dir.is_dir():
         app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
 
@@ -125,6 +126,20 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 media_type="application/javascript",
                 headers={"Cache-Control": "no-cache", "Service-Worker-Allowed": "/"},
             )
+
+    @app.get("/license", include_in_schema=False)
+    async def license_document() -> FileResponse:
+        return FileResponse(
+            project_dir / "LICENSE.md",
+            media_type="text/markdown; charset=utf-8",
+        )
+
+    @app.get("/eula", include_in_schema=False)
+    async def eula_document() -> FileResponse:
+        return FileResponse(
+            project_dir / "EULA.md",
+            media_type="text/markdown; charset=utf-8",
+        )
 
     @app.get("/health", tags=["system"])
     async def health(search_engine: Engine) -> dict[str, object]:
