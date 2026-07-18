@@ -152,4 +152,15 @@ def test_installable_pwa_is_wired() -> None:
     assert 'rel="manifest"' in html and 'id="installButton"' in html
     assert "beforeinstallprompt" in script and "serviceWorker.register('/service-worker.js')" in script
     assert '"display": "standalone"' in manifest and '"start_url": "/"' in manifest
-    assert "awun-shell-1.7.3" in worker and "startsWith('/api/')" in worker
+    assert "awun-shell-1.8.0" in worker and "startsWith('/api/')" in worker
+
+
+def test_listener_first_onboarding_and_language_switch_are_wired() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    styles = (ROOT / "frontend" / "styles.css").read_text(encoding="utf-8")
+
+    assert 'id="languageButton"' in html and 'id="advancedSearch"' in html
+    assert 'id="emptyGuide"' in html and "data-search-suggestion" in html
+    assert "awun-language" in script and "translations=" in script
+    assert ".empty-guide" in styles and ".advanced-search" in styles and ".suggestions" in styles

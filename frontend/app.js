@@ -3,7 +3,7 @@ const regions=['AUTO','CIS','EUROPE','USA','LATAM','ASIA','GLOBAL'];
 const resultLimits=[30,60,100];
 const $=id=>document.getElementById(id);
 const ui={
-  status:$('status'),libraryButton:$('libraryButton'),installButton:$('installButton'),searchForm:$('searchForm'),searchInput:$('searchInput'),searchButton:$('searchButton'),
+  status:$('status'),libraryButton:$('libraryButton'),installButton:$('installButton'),languageButton:$('languageButton'),languageLabel:$('languageLabel'),emptyGuide:$('emptyGuide'),guideSearch:$('guideSearch'),guideWave:$('guideWave'),guideImport:$('guideImport'),searchForm:$('searchForm'),searchInput:$('searchInput'),searchButton:$('searchButton'),
   sources:$('sources'),regionSelect:$('regionSelect'),limitSelect:$('limitSelect'),results:$('results'),trackList:$('trackList'),message:$('message'),resultTitle:$('resultTitle'),resultCount:$('resultCount'),resultTime:$('resultTime'),searchMeta:$('searchMeta'),
   player:$('player'),playerArtwork:$('playerArtwork'),nowTitle:$('nowTitle'),nowArtist:$('nowArtist'),nowSource:$('nowSource'),audio:$('audio'),youtubeDock:$('youtubeDock'),youtubePlayer:$('youtubePlayer'),
   previousTrack:$('previousTrack'),playPause:$('playPause'),nextTrack:$('nextTrack'),repeatMode:$('repeatMode'),progress:$('progress'),elapsed:$('elapsed'),totalTime:$('totalTime'),volume:$('volume'),muteButton:$('muteButton'),closePlayer:$('closePlayer'),minimizeVideo:$('minimizeVideo'),
@@ -23,6 +23,12 @@ const state={
   youtube:null,youtubeApi:null,youtubeTicker:null,seeking:false,recovering:false,lastVolume:.82,expanded:null,details:new Map(),detailsController:null,openLines:new Set(),lineComments:loadLineComments(),geniusEnabled:false,...loadVisual()
 };
 let installPrompt=null;
+const translations={
+  en:{wave:'MY WAVE',appearance:'APPEARANCE',import:'IMPORT',library:'LIBRARY',tagline:'ONE SEARCH · EVERY SOUND',searchPlaceholder:'Artist or track',trySearch:'TRY',searchSettings:'SEARCH SETTINGS',searchSettingsHint:'sources, region and result count',guideSearchTitle:'SEARCH ANY TRACK',guideSearchBody:'Type an artist and title. AWUN checks every connected catalog.',guideWaveTitle:'START MY WAVE',guideWaveBody:'Get an endless station and improve it with likes and skips.',guideImportTitle:'MOVE YOUR PLAYLIST',guideImportBody:'Paste a public link. AWUN finds playable matches automatically.'},
+  ru:{wave:'МОЯ ВОЛНА',appearance:'ВИД',import:'ПЕРЕНОС',library:'МОЯ МУЗЫКА',tagline:'ОДИН ПОИСК · ВСЯ МУЗЫКА',searchPlaceholder:'Исполнитель или трек',trySearch:'ПОПРОБУЙ',searchSettings:'НАСТРОЙКИ ПОИСКА',searchSettingsHint:'источники, регион и число результатов',guideSearchTitle:'НАЙДИ ЛЮБОЙ ТРЕК',guideSearchBody:'Напиши исполнителя и название. AWUN проверит все подключённые каталоги.',guideWaveTitle:'ЗАПУСТИ МОЮ ВОЛНУ',guideWaveBody:'Бесконечная музыка, которая учится на лайках и пропусках.',guideImportTitle:'ПЕРЕНЕСИ ПЛЕЙЛИСТ',guideImportBody:'Вставь публичную ссылку. AWUN сам найдёт доступные совпадения.'}
+};
+let language=localStorage.getItem('awun-language')||(navigator.language.toLowerCase().startsWith('ru')?'ru':'en');
+function applyLanguage(){const words=translations[language]||translations.en;document.documentElement.lang=language;ui.languageLabel.textContent=language.toUpperCase();document.querySelectorAll('[data-i18n]').forEach(node=>{const value=words[node.dataset.i18n];if(value)node.textContent=value});document.querySelectorAll('[data-i18n-placeholder]').forEach(node=>{const value=words[node.dataset.i18nPlaceholder];if(value)node.placeholder=value});localStorage.setItem('awun-language',language)}
 
 function emitAwun(type,detail={}){document.dispatchEvent(new CustomEvent(`awun:${type}`,{detail}))}
 
@@ -162,6 +168,7 @@ function loadingRows(){
 
 function render(){
   const list=currentList(),saved=selectedIds();
+  ui.emptyGuide.hidden=Boolean(list.length);
   ui.trackList.replaceChildren();
   ui.resultTitle.textContent=state.library?'YOUR LIBRARY':state.tracks.length?'SEARCH RESULTS':'DISCOVER';
   ui.resultCount.textContent=`${list.length} ${state.library?'SAVED':'FOUND'}`;
@@ -250,7 +257,7 @@ async function search(query=ui.searchInput.value.trim()){
   if(!query)return;
   if(!state.sources.size){setMessage('No search source is connected. Add a provider key in Render.','error');return}
   state.controller?.abort();state.controller=new AbortController();state.library=false;ui.libraryButton.classList.remove('active');ui.libraryButton.setAttribute('aria-pressed','false');
-  ui.results.setAttribute('aria-busy','true');ui.searchButton.classList.add('searching');document.body.classList.add('is-searching');setMessage('SEARCHING CONNECTED SOURCES…','loading');loadingRows();ui.resultTitle.textContent='SEARCHING';ui.resultCount.textContent='—';ui.resultTime.textContent='PLEASE WAIT';
+  ui.results.setAttribute('aria-busy','true');ui.emptyGuide.hidden=true;ui.searchButton.classList.add('searching');document.body.classList.add('is-searching');setMessage(language==='ru'?'ИЩЕМ ВО ВСЕХ ИСТОЧНИКАХ…':'SEARCHING CONNECTED SOURCES…','loading');loadingRows();ui.resultTitle.textContent=language==='ru'?'ПОИСК':'SEARCHING';ui.resultCount.textContent='—';ui.resultTime.textContent=language==='ru'?'ПОДОЖДИ':'PLEASE WAIT';
   const started=performance.now();
   try{
     const response=await fetch('/api/v1/search',{method:'POST',headers:{'Content-Type':'application/json'},signal:state.controller.signal,body:JSON.stringify({query,limit:state.resultLimit,sources:[...state.sources],region:state.region,locale:navigator.language||null})});
@@ -419,6 +426,7 @@ ui.libraryFile.addEventListener('change',async()=>{const file=ui.libraryFile.fil
 document.querySelectorAll('[data-theme-choice]').forEach(button=>button.addEventListener('click',()=>{state.theme=button.dataset.themeChoice;applyVisual()}));
 ui.motionToggle.addEventListener('click',()=>{state.motion=state.motion==='on'?'off':'on';applyVisual()});ui.decorToggle.addEventListener('click',()=>{state.decor=state.decor==='full'?'minimal':'full';applyVisual()});ui.densityToggle.addEventListener('click',()=>{const modes=['compact','standard','airy'];state.density=modes[(modes.indexOf(state.density)+1)%modes.length];applyVisual()});
 ui.searchForm.addEventListener('submit',event=>{event.preventDefault();search()});
+ui.languageButton.addEventListener('click',()=>{language=language==='en'?'ru':'en';applyLanguage()});document.querySelectorAll('[data-search-suggestion]').forEach(button=>button.addEventListener('click',()=>{ui.searchInput.value=button.dataset.searchSuggestion;search(button.dataset.searchSuggestion)}));ui.guideSearch.addEventListener('click',()=>ui.searchInput.focus());ui.guideWave.addEventListener('click',()=>document.getElementById('flowButton').click());ui.guideImport.addEventListener('click',()=>ui.importButton.click());
 ui.libraryButton.addEventListener('click',()=>{state.library=!state.library;ui.libraryButton.classList.toggle('active',state.library);ui.libraryButton.setAttribute('aria-pressed',String(state.library));setMessage(state.library?(state.saved.length?'Saved tracks stay on this device.':'Your library is empty. Save a result to keep it here.'):'');render()});
 ui.playPause.addEventListener('click',togglePlayback);ui.previousTrack.addEventListener('click',previousTrack);ui.nextTrack.addEventListener('click',nextTrack);ui.repeatMode.addEventListener('click',cycleRepeatMode);
 ui.closePlayer.addEventListener('click',()=>{pausePlayback();stopYouTube();ui.player.hidden=true;state.active=null;render()});
@@ -432,7 +440,7 @@ document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!ui.importP
 
 async function bootstrap(){
   const url=new URLSearchParams(location.search),requestedRegion=url.get('region')?.toUpperCase(),requestedLimit=Number(url.get('limit'));if(regions.includes(requestedRegion)){state.region=requestedRegion;localStorage.setItem('awun-region',state.region)}if(resultLimits.includes(requestedLimit)){state.resultLimit=requestedLimit;localStorage.setItem('awun-result-limit',String(requestedLimit))}ui.regionSelect.value=state.region;ui.limitSelect.value=String(state.resultLimit);
-  if('serviceWorker'in navigator)navigator.serviceWorker.register('/service-worker.js').catch(()=>{});applyVisual(false);applyRepeatMode(false);updateClock();setInterval(updateClock,1000);persist();setRange(ui.volume,82);setRange(ui.progress,0);render();await refreshStatus();
+  if('serviceWorker'in navigator)navigator.serviceWorker.register('/service-worker.js').catch(()=>{});applyLanguage();applyVisual(false);applyRepeatMode(false);updateClock();setInterval(updateClock,1000);persist();setRange(ui.volume,82);setRange(ui.progress,0);render();await refreshStatus();
   const query=url.get('q');if(query){ui.searchInput.value=query;search(query)}
 }
 window.awunApp={state,ui,playTrack,render,search,toggleSave,currentList,setMessage,sourceLabels,decodeText,matchText,loadingRows};

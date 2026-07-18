@@ -10,9 +10,9 @@
   <link rel="apple-touch-icon" href="/static/brand/awun-icon-black.png">
   <link rel="manifest" href="/static/manifest.webmanifest">
   <script>
-    try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');document.documentElement.dataset.theme=v.theme||'black';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full';document.documentElement.dataset.density=v.density||'standard'}catch{}
+    try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');document.documentElement.dataset.theme=v.theme||'black';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full';document.documentElement.dataset.density=v.density||'standard';document.documentElement.lang=localStorage.getItem('awun-language')||(navigator.language.toLowerCase().startsWith('ru')?'ru':'en')}catch{}
   </script>
-  <link rel="stylesheet" href="/static/styles.css?v=20260717.3">
+  <link rel="stylesheet" href="/static/styles.css?v=20260718.1">
 </head>
 <body>
   <a class="skip-link" href="#searchInput">Skip to search</a>
@@ -33,19 +33,20 @@
       <a class="logo" href="/" aria-label="AWUN home"><img src="/static/brand/awun-logo-white.png" alt=""><strong>AWUN</strong><i>.</i></a>
       <span class="edition">PUBLIC BETA / 01</span>
       <div class="top-actions">
+        <button id="languageButton" class="library language-button" type="button" aria-label="Switch language"><span>LANG</span><b id="languageLabel">EN</b></button>
         <button id="installButton" class="library install-button" type="button" hidden><span>INSTALL</span><b>APP</b></button>
         <span id="status" class="status"><i></i><b>CONNECTING</b></span>
         <button id="flowButton" class="library flow-button" type="button" aria-expanded="false" aria-controls="flowPanel">
-          <span>MY WAVE</span><b id="flowBadge">READY</b>
+          <span data-i18n="wave">MY WAVE</span><b id="flowBadge">READY</b>
         </button>
         <button id="themeButton" class="theme-button" type="button" aria-expanded="false" aria-controls="themePanel">
-          <span>VISUAL</span><b id="themeLabel">ACID</b>
+          <span data-i18n="appearance">APPEARANCE</span><b id="themeLabel">ACID</b>
         </button>
         <button id="importButton" class="library import-button" type="button" aria-expanded="false" aria-controls="importPanel">
-          <span>IMPORT</span><b>YM</b>
+          <span data-i18n="import">IMPORT</span><b>LINK</b>
         </button>
         <button id="libraryButton" class="library" type="button" aria-pressed="false">
-          <span>LIBRARY</span><b>00</b>
+          <span data-i18n="library">LIBRARY</span><b>00</b>
         </button>
       </div>
     </header>
@@ -54,19 +55,23 @@
       <div class="hero-index" aria-hidden="true"><span>01</span><i></i><span>SEARCH</span></div>
       <div class="hero-content">
         <div class="eyebrow-row">
-          <p id="heroLabel">ONE SEARCH <i></i> EVERY SOUND</p>
+          <p id="heroLabel"><span data-i18n="tagline">ONE SEARCH · EVERY SOUND</span></p>
           <span id="searchMeta">REAL RESULTS / OFFICIAL PLAYBACK</span>
         </div>
 
         <form id="searchForm" class="search-form">
           <label class="sr-only" for="searchInput">Search music</label>
-          <input id="searchInput" name="q" autocomplete="off" spellcheck="false" maxlength="200" placeholder="What do you want to hear?" autofocus>
+          <input id="searchInput" name="q" autocomplete="off" spellcheck="false" maxlength="200" placeholder="Artist or track" data-i18n-placeholder="searchPlaceholder" autofocus>
           <button id="searchButton" type="submit" aria-label="Search">
             <span>↗</span><i aria-hidden="true"></i>
           </button>
         </form>
 
-        <div class="source-row">
+        <div class="suggestions" aria-label="Quick searches"><span data-i18n="trySearch">TRY</span><button type="button" data-search-suggestion="new music">NEW MUSIC</button><button type="button" data-search-suggestion="focus instrumental">FOCUS</button><button type="button" data-search-suggestion="русский рок">РУССКИЙ РОК</button><button type="button" data-search-suggestion="electronic classics">ELECTRONIC</button></div>
+
+        <details id="advancedSearch" class="advanced-search">
+          <summary><span data-i18n="searchSettings">SEARCH SETTINGS</span><small data-i18n="searchSettingsHint">sources, region and result count</small></summary>
+          <div class="source-row">
           <div id="sources" class="sources" aria-label="Search sources">
             <button type="button" data-source="youtube" class="on"><i></i><span>YOUTUBE</span><small>CONNECTING</small></button>
             <button type="button" data-source="soundcloud" class="on"><i></i><span>SOUNDCLOUD</span><small>CONNECTING</small></button>
@@ -97,16 +102,17 @@
             </label>
             <kbd>ENTER ↵</kbd>
           </div>
-        </div>
-        <div class="network-strip" aria-hidden="true">
+          </div>
+          <div class="network-strip" aria-hidden="true">
           <span>MUSICBRAINZ QUERY EXPANSION</span><i></i><span>30 / 60 / 100 RESULTS</span><i></i><span>YANDEX LIBRARY TRANSFER</span>
-        </div>
-        <div class="hero-telemetry" aria-hidden="true">
+          </div>
+          <div class="hero-telemetry" aria-hidden="true">
           <span>QUERY SIGNAL</span>
           <div class="signal-array"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
           <span id="telemetryClock">00:00:00</span>
           <span>UTC+02 / BERLIN</span>
-        </div>
+          </div>
+        </details>
       </div>
     </section>
 
@@ -123,6 +129,11 @@
       </div>
 
       <p id="message" class="message">Connect a source, type an artist or track, and press enter.</p>
+      <div id="emptyGuide" class="empty-guide">
+        <button id="guideSearch" type="button"><b>1</b><strong data-i18n="guideSearchTitle">SEARCH ANY TRACK</strong><span data-i18n="guideSearchBody">Type an artist and title. AWUN checks every connected catalog.</span></button>
+        <button id="guideWave" type="button"><b>2</b><strong data-i18n="guideWaveTitle">START MY WAVE</strong><span data-i18n="guideWaveBody">Get an endless station and improve it with likes and skips.</span></button>
+        <button id="guideImport" type="button"><b>3</b><strong data-i18n="guideImportTitle">MOVE YOUR PLAYLIST</strong><span data-i18n="guideImportBody">Paste a public link. AWUN finds playable matches automatically.</span></button>
+      </div>
       <ol id="trackList" class="track-list"></ol>
     </section>
 
@@ -245,7 +256,7 @@
     <footer><span>PUBLIC METADATA / AUTOMATIC MATCHING</span><span>NO ACCOUNT TOKEN</span></footer>
   </aside>
 
-  <script src="/static/app.js?v=20260717.3" defer></script>
-  <script src="/static/flow.js?v=20260717.3" defer></script>
+  <script src="/static/app.js?v=20260718.1" defer></script>
+  <script src="/static/flow.js?v=20260718.1" defer></script>
 </body>
 </html>
