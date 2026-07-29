@@ -1,17 +1,29 @@
-# AWUN Desktop
+# AWUN Desktop 1.8 Local
 
-The desktop shell opens the hosted AWUN beta in a dedicated Windows window and
-keeps its browser session between launches. It uses the Microsoft Edge WebView2
-runtime included with current Windows 10 and Windows 11 installations.
+Windows-версия AWUN больше не открывает сайт Render. `AWUN.exe` содержит
+интерфейс, FastAPI и адаптеры источников. При запуске приложение:
 
-On Windows, run `build-windows.bat`. The generated executable is written to
-`dist\\AWUN.exe`. Its taskbar, Explorer and shortcut icon is embedded from
-`desktop\\assets\\awun.ico` during the PyInstaller build.
+1. выбирает свободный случайный порт на `127.0.0.1`;
+2. запускает локальный backend внутри процесса AWUN;
+3. открывает встроенный русский интерфейс через Microsoft Edge WebView2;
+4. отправляет поисковые запросы к музыкальным источникам с компьютера
+   пользователя;
+5. останавливает локальный сервер при закрытии окна.
 
-The included GitHub Actions workflow produces the same executable and a SHA256
-checksum on a Windows runner. Use **Actions → Windows desktop build → Run
-workflow**, or download the `AWUN-Windows-x64` artifact created for a pull
-request. Version tags (`v*`) publish both files to GitHub Releases.
+Render и работающий сайт для Windows-приложения не нужны. Полностью офлайн
+приложение работать не может: для поиска и воспроизведения требуется интернет.
+Медиатека, настройки и профиль «Моей волны» сохраняются в
+`%APPDATA%\\AWUN\\desktop-state.json`, поэтому случайный порт при следующем
+запуске не сбрасывает данные.
+Ключи API можно передать через обычные переменные `AWUN_*`; они не вшиваются в
+общедоступный EXE.
 
-The default hosted URL is `https://awun-api1.onrender.com`. Set
-`AWUN_DESKTOP_URL` before building to target a different deployment.
+На Windows 10 или 11 запусти `build-windows.bat`. Готовые файлы появятся в
+`dist\\`: `AWUN.exe`, контрольная сумма SHA256, лицензия и пользовательское
+соглашение. Значок из `desktop\\assets\\awun.ico` встраивается через
+`AWUN.spec`.
+
+GitHub Actions создаёт такую же сборку. Открой
+**Actions → Windows desktop build → Run workflow** или скачай артефакт
+`AWUN-Windows-x64` из завершённого запуска. Теги `v*` публикуют файлы в GitHub
+Releases.

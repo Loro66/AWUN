@@ -8,3 +8,10 @@ __pycache__/
 build/
 dist/
 *.spec
+!AWUN.spec
+*.jks
+*.keystore
+keystore.properties
+local.properties
+mobile/android/.gradle/
+mobile/android/app/build/
