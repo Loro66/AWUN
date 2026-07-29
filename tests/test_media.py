@@ -1,7 +1,8 @@
 import unittest
 
 from backend.core.media import InvalidMediaToken, MediaSigner
-from backend.api.main import _download_filename, _is_playlist, _safe_filename_stem
+from backend.core.models import SearchResponse, Track
+from backend.api.main import _apply_client_policy, _download_filename, _is_playlist, _safe_filename_stem
 
 
 class MediaSignerTests(unittest.TestCase):
@@ -17,7 +18,7 @@ class MediaSignerTests(unittest.TestCase):
 
     def test_rejects_expired_token(self) -> None:
         token = self.signer.sign("https://media.example.com/audio.mp3", now=100)
-        with self.assertRaisesRegex(InvalidMediaToken, "expired"):
+        with self.assertRaisesRegex(InvalidMediaToken, "устарела"):
             self.signer.verify(token, now=161)
 
     def test_rejects_tampering(self) -> None:
@@ -41,6 +42,61 @@ class MediaSignerTests(unittest.TestCase):
         self.assertTrue(_is_playlist("https://media.example/playlist.m3u8", "application/octet-stream"))
         self.assertTrue(_is_playlist("https://media.example/audio", "application/vnd.apple.mpegurl"))
         self.assertFalse(_is_playlist("https://media.example/audio.mp3", "audio/mpeg"))
+
+    def test_google_play_client_never_receives_download_url(self) -> None:
+        track = Track(
+            id="a1",
+            title="Signal",
+            artist="Neon Echo",
+            duration=200,
+            quality="320",
+            source="audius",
+            stream_url="https://media.example/signal.mp3",
+            download_url="https://media.example/signal.mp3",
+            score=90,
+        )
+        response = SearchResponse(
+            query="Signal",
+            tracks=[track],
+            total=1,
+            searched_sources=["audius"],
+            region="AUTO",
+            elapsed_ms=1,
+        )
+
+        protected = _apply_client_policy(response, "android-play")
+
+        self.assertIsNone(protected.tracks[0].download_url)
+        self.assertEqual(protected.tracks[0].stream_url, "https://media.example/signal.mp3")
+        self.assertEqual(protected.tracks[0].rights_status, "play_store_stream_only")
+        self.assertIn("audius", protected.tracks[0].rights_terms_url or "")
+
+    def test_desktop_policy_keeps_provider_download_and_marks_it(self) -> None:
+        track = Track(
+            id="archive-1",
+            title="Public recording",
+            artist="Archive artist",
+            duration=180,
+            quality="vbr",
+            source="internet_archive",
+            stream_url="https://archive.org/audio.mp3",
+            download_url="https://archive.org/audio.mp3",
+            score=80,
+        )
+        response = SearchResponse(
+            query="Public recording",
+            tracks=[track],
+            total=1,
+            searched_sources=["internet_archive"],
+            region="AUTO",
+            elapsed_ms=1,
+        )
+
+        protected = _apply_client_policy(response, "desktop")
+
+        self.assertEqual(protected.tracks[0].download_url, track.download_url)
+        self.assertEqual(protected.tracks[0].rights_status, "provider_supplied_download")
+        self.assertIn("archive.org", protected.tracks[0].rights_terms_url or "")
 
 
 if __name__ == "__main__":

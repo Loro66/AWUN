@@ -22,6 +22,8 @@ class Track(BaseModel):
     score: float = Field(ge=0, le=100)
     thumbnail: str | None = None
     catalog_links: dict[str, str] = Field(default_factory=dict)
+    rights_status: str = "stream_only"
+    rights_terms_url: str | None = None
     request_headers: dict[str, str] = Field(default_factory=dict, exclude=True)
 
 

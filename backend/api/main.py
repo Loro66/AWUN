@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 import re
 from typing import Annotated
-from urllib.parse import quote, urlencode, urlparse
+from urllib.parse import quote, urlencode, urljoin, urlparse
 
 import aiohttp
 from fastapi import Depends, FastAPI, HTTPException, Query, Request
@@ -23,7 +23,11 @@ from backend.core.models import (
 from backend.core.regions import REGION_NAMES, RegionName
 from backend.importers.library_url import LibraryImportError, LibraryUrlImporter
 from backend.metadata.lyrics import TrackDetailsService
+from backend.policy.client_capabilities import capabilities_for
+from backend.policy.rights import SOURCE_RIGHTS
 from backend.search.engine import SearchEngine
+from backend.security.media_headers import sanitize_media_headers
+from backend.security.safe_url import UnsafeUrl, validate_outbound_url
 from backend.sources.factory import build_adapters, build_enricher
 
 
@@ -49,7 +53,7 @@ _PLAYLIST_CONTENT_TYPES = {
 def _safe_filename_stem(value: str) -> str:
     value = re.sub(r"[\\/:*?\"<>|\x00-\x1f]", " ", value)
     value = re.sub(r"\s+", " ", value).strip(" .")
-    return (value or "AWUN track")[:120].rstrip(" .")
+    return (value or "трек AWUN")[:120].rstrip(" .")
 
 
 def _is_playlist(url: str, content_type: str) -> bool:
@@ -65,6 +69,50 @@ def _download_filename(stem: str, content_type: str, url: str) -> str:
         suffix = Path(urlparse(url).path).suffix.lower().lstrip(".")
         extension = suffix if suffix in {"aac", "flac", "m4a", "mp3", "ogg", "opus", "wav", "webm"} else "audio"
     return f"{_safe_filename_stem(stem)}.{extension}"
+
+
+def _apply_client_policy(response: SearchResponse, client_id: str | None) -> SearchResponse:
+    capabilities = capabilities_for(client_id)
+    for track in response.tracks:
+        source_policy = SOURCE_RIGHTS.get(track.source)
+        track.rights_terms_url = source_policy.terms_url if source_policy else None
+        if capabilities.is_play_store:
+            track.download_url = None
+            track.rights_status = "play_store_stream_only"
+        elif track.download_url:
+            track.rights_status = "provider_supplied_download"
+        else:
+            track.rights_status = "stream_only"
+    return response
+
+
+async def _open_safe_media(
+    session: aiohttp.ClientSession,
+    url: str,
+    *,
+    headers: dict[str, str],
+    max_redirects: int = 3,
+):
+    """Open public media while validating every redirect target."""
+
+    current = url
+    for redirect_index in range(max_redirects + 1):
+        validated = validate_outbound_url(current)
+        response = await session.get(
+            validated.url,
+            headers=headers,
+            allow_redirects=False,
+        )
+        if response.status not in {301, 302, 303, 307, 308}:
+            return response
+        location = response.headers.get("location")
+        response.release()
+        if not location:
+            raise UnsafeUrl("Media redirect does not contain a location")
+        if redirect_index >= max_redirects:
+            raise UnsafeUrl("Media source returned too many redirects")
+        current = urljoin(validated.url, location)
+    raise UnsafeUrl("Media redirect validation failed")
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -92,8 +140,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         title=settings.app_name,
         version=settings.app_version,
         description=(
-            "Region-aware federated music search across YouTube, SoundCloud, "
-            "Audius, Jamendo and Internet Archive, enriched by MusicBrainz."
+            "Региональный поиск музыки по YouTube, SoundCloud, Audius, "
+            "Jamendo и Internet Archive с обогащением данных через MusicBrainz."
         ),
         lifespan=lifespan,
     )
@@ -127,6 +175,22 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 headers={"Cache-Control": "no-cache", "Service-Worker-Allowed": "/"},
             )
 
+        @app.get("/privacy", include_in_schema=False)
+        async def privacy_document() -> FileResponse:
+            return FileResponse(
+                frontend_dir / "privacy.html",
+                media_type="text/html; charset=utf-8",
+                headers={"Cache-Control": "public, max-age=3600"},
+            )
+
+        @app.get("/support", include_in_schema=False)
+        async def support_document() -> FileResponse:
+            return FileResponse(
+                frontend_dir / "support.html",
+                media_type="text/html; charset=utf-8",
+                headers={"Cache-Control": "public, max-age=3600"},
+            )
+
     @app.get("/license", include_in_schema=False)
     async def license_document() -> FileResponse:
         return FileResponse(
@@ -141,7 +205,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             media_type="text/markdown; charset=utf-8",
         )
 
-    @app.get("/health", tags=["system"])
+    @app.get("/health", tags=["система"])
     async def health(search_engine: Engine) -> dict[str, object]:
         return {
             "status": "ok",
@@ -192,7 +256,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.get(
         f"{settings.api_prefix}/track-details",
         response_model=TrackDetailsResponse,
-        tags=["metadata"],
+        tags=["метаданные"],
     )
     async def track_details(
         request: Request,
@@ -204,10 +268,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         return await service.get(artist=artist, title=title, duration=duration)
 
     def proxied(response: SearchResponse, request: Request) -> SearchResponse:
-        if not settings.media_proxy_enabled:
-            return response
+        response = _apply_client_policy(response, request.headers.get("x-awun-client"))
         base_url = str(request.base_url).rstrip("/")
         for track in response.tracks:
+            if not settings.media_proxy_enabled:
+                continue
             if track.source == "youtube":
                 continue
             stream_token = media_signer.sign(track.stream_url, track.request_headers)
@@ -223,16 +288,16 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 track.download_url = f"{base_url}{settings.api_prefix}/media/{download_token}?{query}"
         return response
 
-    @app.post(f"{settings.api_prefix}/search", response_model=SearchResponse, tags=["search"])
+    @app.post(f"{settings.api_prefix}/search", response_model=SearchResponse, tags=["поиск"])
     async def search(body: SearchRequest, request: Request, search_engine: Engine) -> SearchResponse:
         if body.limit > settings.max_limit:
-            raise HTTPException(422, f"limit must not exceed {settings.max_limit}")
+            raise HTTPException(422, f"Количество результатов не может превышать {settings.max_limit}")
         return proxied(await search_engine.search(body), request)
 
     @app.post(
         f"{settings.api_prefix}/library/import-url",
         response_model=LibraryImportResponse,
-        tags=["library"],
+        tags=["медиатека"],
     )
     async def import_library_url(body: LibraryImportRequest, request: Request) -> LibraryImportResponse:
         """Read metadata from a public playlist; private-account access is deliberately unsupported."""
@@ -242,7 +307,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         except LibraryImportError as exc:
             raise HTTPException(422, str(exc)) from exc
 
-    @app.get(f"{settings.api_prefix}/search", response_model=SearchResponse, tags=["search"])
+    @app.get(f"{settings.api_prefix}/search", response_model=SearchResponse, tags=["поиск"])
     async def search_get(
         search_engine: Engine,
         request: Request,
@@ -263,7 +328,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         )
         return proxied(response, request)
 
-    @app.get(f"{settings.api_prefix}/media/{{token}}", tags=["media"])
+    @app.get(f"{settings.api_prefix}/media/{{token}}", tags=["медиа"])
     async def media(
         token: str,
         request: Request,
@@ -275,33 +340,39 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         except InvalidMediaToken as exc:
             raise HTTPException(403, str(exc)) from exc
 
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131 Safari/537.36",
+        outbound_headers = {
             "Accept": "*/*",
             **target.headers,
         }
         if byte_range := request.headers.get("range"):
-            headers["Range"] = byte_range
+            outbound_headers["Range"] = byte_range
+        headers = sanitize_media_headers(
+            outbound_headers,
+            default_user_agent=(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 Chrome/131 Safari/537.36"
+            ),
+        )
 
         session = aiohttp.ClientSession(
             timeout=aiohttp.ClientTimeout(total=None, connect=settings.media_connect_timeout_seconds)
         )
         try:
-            upstream = await session.get(target.url, headers=headers, allow_redirects=True)
-        except (aiohttp.ClientError, TimeoutError) as exc:
+            upstream = await _open_safe_media(session, target.url, headers=headers)
+        except (aiohttp.ClientError, TimeoutError, UnsafeUrl) as exc:
             await session.close()
-            raise HTTPException(502, "Media source is unavailable") from exc
+            raise HTTPException(502, "Источник аудио сейчас недоступен") from exc
 
         if upstream.status not in {200, 206}:
             upstream.release()
             await session.close()
-            raise HTTPException(502, f"Media source returned HTTP {upstream.status}")
+            raise HTTPException(502, f"Источник аудио вернул ошибку HTTP {upstream.status}")
 
         content_type = upstream.headers.get("content-type", "audio/mpeg")
         if download and _is_playlist(str(upstream.url), content_type):
             upstream.release()
             await session.close()
-            raise HTTPException(409, "This source provides a streaming playlist, not a downloadable audio file")
+            raise HTTPException(409, "Источник предоставляет потоковый плейлист, а не скачиваемый аудиофайл")
 
         async def chunks():
             try:
@@ -317,7 +388,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "X-Content-Type-Options": "nosniff",
         }
         if download:
-            resolved_name = _download_filename(filename or "AWUN track", content_type, str(upstream.url))
+            resolved_name = _download_filename(filename or "трек AWUN", content_type, str(upstream.url))
             response_headers["Content-Disposition"] = (
                 f"attachment; filename=\"awun-audio.{resolved_name.rsplit('.', 1)[-1]}\"; "
                 f"filename*=UTF-8''{quote(resolved_name)}"
