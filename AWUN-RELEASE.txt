@@ -1,8 +1,15 @@
-AWUN 1.7.0 identity, customization and search precision update
-Release date: 2026-07-16
+AWUN 1.8.0 local desktop, Russian interface and Google Play preparation
+Release date: 2026-07-23
 
-This build installs the new AWUN geometric mark across web, Windows, Android
-and iOS. The visual system adds BLACK and WHITE themes plus compact, standard
-and airy density. YouTube search now stays in the music category and rejects
-obvious live streams, playlists and long-form mixes. Native apps can optionally
-fail over to a regional mirror while YouTube remains in its official player.
+The Windows application now bundles FastAPI and the complete frontend, starts
+on an ephemeral loopback port and no longer depends on Render. The desktop
+launcher, static interface, search states, errors, player, library import,
+track stories, settings and My Wave now have complete Russian localization.
+English remains available from the language switch.
+
+The Android app is now prepared for Google Play as com.loro66.awun. It targets
+API 36, builds a signed Android App Bundle from a manual workflow, has Russian
+and English store metadata, original store artwork, privacy/support pages and
+prepared Data safety/App content answers. The Play client has no storage
+permission or download listener, strips all download URLs and pauses media when
+the app leaves the foreground.

@@ -197,12 +197,16 @@ five results per query for reliability; configure OAuth for the full range.
 
 Run `build-windows.bat` on Windows 10 or 11 to create `dist\\AWUN.exe` and its
 SHA256 checksum. The AWUN icon is embedded in the executable and is used by
-Explorer, shortcuts and the taskbar. The desktop shell shows an AWUN wake-up screen while Render
-starts, then opens the hosted beta in its own application window.
+Explorer, shortcuts and the taskbar. The executable bundles the FastAPI backend
+and web interface, starts them on a random `127.0.0.1` port, and sends source
+requests directly from the user's computer. It does not depend on Render or the
+AWUN website, but music search and playback still require internet access.
+The desktop interface opens in Russian by default and retains the English
+language switch.
 
 For a reproducible cloud build, open **Actions → Windows desktop build → Run
 workflow**. Every pull request also creates an `AWUN-Windows-x64` test artifact.
-Download it from the completed run. Pushing a tag such as `v1.7.0` creates a
+Download it from the completed run. Pushing a tag such as `v1.8.0` creates a
 GitHub Release containing the executable and
 checksum. The executable is currently unsigned, so Windows SmartScreen may
 show a warning until a code-signing certificate is added.
@@ -210,13 +214,19 @@ show a warning until a code-signing certificate is added.
 The Windows artifact and tagged releases include `LICENSE.md` and `EULA.md`.
 Installing or using an official build means accepting those terms.
 
-## Android and iOS beta apps
+## Android Google Play and iOS beta
 
-The native mobile shells live in `mobile/android` and `mobile/ios`. Open a pull
-request or run **Actions → Mobile beta builds** to create an installable Android
-APK, an unsigned iOS IPA and an iOS Simulator archive. See `mobile/README.md`
-for installation and signing details. A physical-device iOS release requires
-Apple signing credentials; the repository never stores those secrets.
+Android 1.8 is prepared for Google Play with the permanent application ID
+`com.loro66.awun`, API 36, a signed-AAB workflow, localized store metadata,
+privacy/support pages and a Play-specific client mode that removes every music
+download control. Run **Actions → Mobile test builds** for an internal APK or
+**Actions → Android Google Play release** for a signed AAB after the account
+owner configures the upload-key secrets. The workflow never publishes
+automatically.
+
+The iOS project remains an unsigned beta. See `mobile/README.md` and
+`mobile/android/play-store/RELEASE_CHECKLIST.md` for signing, testing and store
+submission details. No signing credentials are stored in the repository.
 
 ## License
 

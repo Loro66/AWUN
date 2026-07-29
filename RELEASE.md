@@ -77,6 +77,10 @@ Open **GitHub → Actions → Windows desktop build → Run workflow**. The comp
 run contains an `AWUN-Windows-x64` artifact with `AWUN.exe` and
 `AWUN.exe.sha256`. A `v*` tag publishes both files in GitHub Releases.
 
+Version 1.8 is self-contained: the executable bundles the FastAPI backend and
+frontend, starts a random loopback port, and does not open or depend on Render.
+The interface defaults to Russian in the desktop build.
+
 The binary is not code-signed yet. Treat code signing as a release requirement
 before broad public distribution.
 
@@ -87,3 +91,21 @@ The Render service uses `awun` as its root directory. Upload release files into
 `/awun/AWUN-RELEASE.txt`, `/awun/backend`, `/awun/frontend` and
 `/awun/Dockerfile`. After the GitHub commit, choose **Manual Deploy → Deploy
 latest commit** in Render if auto-deploy does not start.
+
+## 6. Build the Google Play Android release
+
+The Android release is `com.loro66.awun`, version `1.8.0` / code `18000`, and
+targets Android 16 API 36. Before building, the verified Play Console account
+owner must configure the four upload-key repository secrets documented in
+`mobile/android/play-store/RELEASE_CHECKLIST.md`.
+
+Run **GitHub → Actions → Android Google Play release → Run workflow**. The
+artifact contains a signed `.aab`, SHA-256 checksum, R8 mapping file and the
+localized store-listing package. This workflow deliberately does not upload or
+publish the app.
+
+Before any Play submission, verify the deployed `/privacy` and `/support`
+routes, run an internal Play install on a physical device, and complete the
+App content and Data safety declarations. The Play client disables downloading,
+uses only the visible official YouTube player and pauses playback in the
+background.

@@ -23,13 +23,14 @@ AWUN параллельно ищет музыку в YouTube, SoundCloud, Audius
 - официальный YouTube Player, перемотка, повтор трека/очереди и Media Session;
 - тексты LRCLIB, Genius-аннотации при наличии серверного токена и личные комментарии к строкам;
 - шесть тем, минимальный режим и адаптивный интерфейс;
-- web/PWA, Windows, Android и iOS beta shells.
+- web/PWA, автономная Windows-версия, Android-сборка для Google Play и iOS beta.
 
 ## Попробовать и установить
 
 - **Web / PWA:** открой [awun-api1.onrender.com](https://awun-api1.onrender.com). В Chrome или Edge нажми **INSTALL APP** — AWUN появится в меню «Пуск», на рабочем столе или домашнем экране телефона.
-- **Windows:** скачай артефакт `AWUN-Windows-x64` в [Windows desktop builds](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml). Бета пока не подписана коммерческим сертификатом, поэтому SmartScreen может показать предупреждение.
-- **Мобильная beta:** инструкции и воспроизводимые оболочки находятся в [`mobile/`](mobile/README.md). Для установки на физический iPhone нужна подпись Apple.
+- **Windows:** скачай артефакт `AWUN-Windows-x64` в [Windows desktop builds](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml). Версия 1.8 содержит интерфейс и FastAPI внутри EXE, запускает случайный локальный адрес `127.0.0.1` и сама обращается к музыкальным источникам — Render и работающий сайт ей не нужны. Интернет для поиска и воспроизведения всё равно требуется. Бета пока не подписана коммерческим сертификатом, поэтому SmartScreen может показать предупреждение.
+- **Android / Google Play:** версия 1.8 подготовлена как `com.loro66.awun`, использует API 36, собирается в подписанный AAB и не показывает скачивание музыки. Карточка магазина, privacy/Data safety и точный чек-лист находятся в [`mobile/android/play-store/`](mobile/android/play-store/RELEASE_CHECKLIST.md). Владелец Play Console должен отдельно настроить ключ загрузки и пройти обязательное тестирование.
+- **iOS beta:** инструкции и воспроизводимая неподписанная сборка находятся в [`mobile/`](mobile/README.md). Для установки на физический iPhone нужна подпись Apple.
 
 ## Быстрый запуск сервера
 
@@ -64,7 +65,7 @@ AWUN — **закрытое проприетарное freeware-приложен
 
 Python 3.11+, FastAPI, aiohttp, Pydantic, yt-dlp, Web Audio/Media Session, pywebview, GitHub Actions.
 
-Техническая документация, API и условия запуска подробно описаны в [английском README](README.md). Ошибки и предложения можно оставить в [Issues](https://github.com/Loro66/AWUN/issues).
+Интерфейс, динамические сообщения, ошибки поиска, настройки, импорт, плеер и «Моя волна» полностью переведены на русский; английский можно включить кнопкой языка. Техническая документация, API и условия запуска подробно описаны в [английском README](README.md). Ошибки и предложения можно оставить в [Issues](https://github.com/Loro66/AWUN/issues).
 
 ## Лицензия
 
