@@ -11,6 +11,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY backend ./backend
 COPY frontend ./frontend
+COPY LICENSE.md EULA.md ./
 
 EXPOSE 8000
 

@@ -39,8 +39,10 @@ def test_eula_and_contributor_terms_are_shipped_and_linked() -> None:
 def test_hosted_application_exposes_license_and_eula() -> None:
     api = (ROOT / "backend" / "api" / "main.py").read_text(encoding="utf-8")
     html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    dockerfile = (ROOT / "Dockerfile").read_text(encoding="utf-8")
 
     assert '@app.get("/license"' in api
     assert '@app.get("/eula"' in api
     assert 'href="/license"' in html
     assert 'href="/eula"' in html
+    assert "COPY LICENSE.md EULA.md ./" in dockerfile
