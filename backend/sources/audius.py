@@ -49,16 +49,16 @@ class AudiusAdapter(BaseAdapter):
         try:
             async with session.get(f"{self.api_url}/tracks/search", params=params) as response:
                 if response.status != 200:
-                    raise AdapterError(f"Audius API returned HTTP {response.status}")
+                    raise AdapterError(f"API Audius вернул ошибку HTTP {response.status}")
                 payload = await response.json(content_type=None)
         except AdapterError:
             raise
         except (aiohttp.ClientError, TimeoutError, ValueError) as exc:
-            raise AdapterError(f"Audius search failed: {exc}") from exc
+            raise AdapterError(f"Поиск Audius не выполнен: {exc}") from exc
 
         entries = payload.get("data") if isinstance(payload, dict) else None
         if not isinstance(entries, list):
-            raise AdapterError("Audius returned an invalid response")
+            raise AdapterError("Audius вернул некорректный ответ")
         return [track for item in entries if (track := self._track_from_item(item))][:limit]
 
     def _track_from_item(self, item: Any) -> Track | None:
@@ -83,7 +83,7 @@ class AudiusAdapter(BaseAdapter):
         return Track(
             id=f"audius_{track_id}",
             title=title,
-            artist=str(user.get("name") or user.get("handle") or "Unknown artist"),
+            artist=str(user.get("name") or user.get("handle") or "Неизвестный исполнитель"),
             duration=self._integer(item.get("duration")),
             quality="MP3",
             source=self.source,

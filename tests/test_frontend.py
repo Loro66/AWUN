@@ -56,7 +56,7 @@ def test_region_archive_and_catalog_controls_are_wired() -> None:
     script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
 
     assert 'data-source="internet_archive"' in html
-    assert all(f"<option>{region}</option>" in html for region in ("AUTO", "CIS", "EUROPE", "USA", "LATAM", "ASIA", "GLOBAL"))
+    assert all(f'value="{region}"' in html for region in ("AUTO", "CIS", "EUROPE", "USA", "LATAM", "ASIA", "GLOBAL"))
     assert "catalog_links" in script
     assert "yandex_music" in script
     assert "parseImportedLibrary" in script
@@ -70,7 +70,7 @@ def test_every_visual_theme_has_css_and_javascript_metadata() -> None:
 
     for theme in ("black", "white", "acid", "ultraviolet", "cobalt", "ember"):
         assert f'data-theme="{theme}"' in styles or theme == "acid"
-        assert f"{theme}:{{label:" in script
+        assert f"{theme}:{{labelKey:" in script
 
 
 def test_frontend_assets_share_cache_version() -> None:
@@ -94,11 +94,11 @@ def test_identity_minimal_mode_and_track_stories_are_wired() -> None:
     mark = (ROOT / "frontend" / "awun-mark.svg").read_text(encoding="utf-8")
 
     assert '/static/brand/awun-logo-white.png' in html
-    assert 'INTERFACE' in html and 'MINIMAL' in html
+    assert 'data-i18n="interface"' in html and "state.decor==='minimal'" in script
     assert 'viewBox="0 0 64 64"' in mark
     assert "/api/v1/track-details" in script
     assert "awun-line-comments-v1" in script
-    assert "TRACK STORY" in script
+    assert "t('trackStory')" in script
     assert 'html[data-decor="minimal"] .source-row' in styles
     assert ".lyric-line" in styles and ".line-comment-form" in styles
     assert "awun-logo-black.png" in styles
@@ -123,8 +123,11 @@ def test_flow_recommendations_are_local_persistent_and_feedback_driven() -> None
     app = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
     styles = (ROOT / "frontend" / "styles.css").read_text(encoding="utf-8")
 
-    assert "AWUN / PERSONAL RADIO" in html and "MY WAVE" in html
-    assert all(value in html for value in ("FAMILIAR", "BALANCED", "NEW", "MOOD", "ACTIVITY", "LANGUAGE", "ERA"))
+    assert 'data-i18n="personalRadio"' in html and 'data-i18n="wave"' in html
+    assert all(
+        f'data-i18n="{value}"' in html
+        for value in ("familiar", "balanced", "newOnly", "mood", "activity", "language", "era")
+    )
     assert "awun-wave-profile-v2" in script
     assert "candidateScore" in script and "rankCandidates" in script
     assert all(signal in script for signal in ("'play'", "'skip'", "'listen30'", "'complete'", "'like'", "'dislike'"))
@@ -138,7 +141,7 @@ def test_public_url_import_is_automatic_and_account_safe() -> None:
     script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
     api = (ROOT / "backend" / "api" / "main.py").read_text(encoding="utf-8")
 
-    assert 'id="importUrl"' in html and "PUBLIC PLAYLIST LINK" in html
+    assert 'id="importUrl"' in html and 'data-i18n="publicPlaylistLink"' in html
     assert "/api/v1/library/import-url" in script and "matchAndSaveImported" in script
     assert 'f"{settings.api_prefix}/library/import-url"' in api
 
@@ -148,19 +151,40 @@ def test_installable_pwa_is_wired() -> None:
     script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
     manifest = (ROOT / "frontend" / "manifest.webmanifest").read_text(encoding="utf-8")
     worker = (ROOT / "frontend" / "service-worker.js").read_text(encoding="utf-8")
+    bridge = (ROOT / "frontend" / "desktop-bridge.js").read_text(encoding="utf-8")
 
     assert 'rel="manifest"' in html and 'id="installButton"' in html
     assert "beforeinstallprompt" in script and "serviceWorker.register('/service-worker.js')" in script
     assert '"display": "standalone"' in manifest and '"start_url": "/"' in manifest
-    assert "awun-shell-1.8.0" in worker and "startsWith('/api/')" in worker
+    assert "awun-shell-1.8.2" in worker and "startsWith('/api/')" in worker
+    assert "/static/desktop-bridge.js" in html and "desktop-bridge.js" in worker
+    assert "pywebviewready" in bridge and "save_state" in bridge and "load_state" in bridge
 
 
 def test_listener_first_onboarding_and_language_switch_are_wired() -> None:
     html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
     script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    i18n = (ROOT / "frontend" / "i18n.js").read_text(encoding="utf-8")
     styles = (ROOT / "frontend" / "styles.css").read_text(encoding="utf-8")
 
     assert 'id="languageButton"' in html and 'id="advancedSearch"' in html
     assert 'id="emptyGuide"' in html and "data-search-suggestion" in html
-    assert "awun-language" in script and "translations=" in script
+    assert "awunI18n" in script
+    assert "awun-language" in i18n and "dictionaries" in i18n
     assert ".empty-guide" in styles and ".advanced-search" in styles and ".suggestions" in styles
+
+
+def test_russian_translation_covers_static_and_dynamic_ui() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    flow = (ROOT / "frontend" / "flow.js").read_text(encoding="utf-8")
+    i18n = (ROOT / "frontend" / "i18n.js").read_text(encoding="utf-8")
+
+    assert '<html lang="ru">' in html
+    assert "/static/i18n.js" in html
+    assert "AWUN — один поиск, вся музыка" in html
+    assert "const t=(key,values={})" in script
+    assert "window.awunI18n.t" in flow
+    assert "ИЩЕМ ВО ВСЕХ ИСТОЧНИКАХ" in i18n
+    assert "ПЕРЕНОС МЕДИАТЕКИ" in i18n
+    assert "МОЯ ВОЛНА остановлена" in i18n

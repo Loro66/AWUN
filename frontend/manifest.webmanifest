@@ -1,7 +1,7 @@
 {
-  "name": "AWUN — one search, every sound",
+  "name": "AWUN — один поиск, вся музыка",
   "short_name": "AWUN",
-  "description": "Search connected music catalogs, build a local library and launch My Wave.",
+  "description": "Ищи музыку во всех подключённых каталогах, собирай локальную медиатеку и запускай Мою волну.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

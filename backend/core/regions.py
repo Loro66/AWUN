@@ -80,5 +80,5 @@ def resolve_region(name: RegionName, locale: str | None = None) -> RegionProfile
 def normalize_region(value: str) -> RegionName:
     normalized = value.strip().upper()
     if normalized not in REGION_NAMES:
-        raise ValueError(f"region must be one of: {', '.join(REGION_NAMES)}")
+        raise ValueError(f"Регион должен быть одним из: {', '.join(REGION_NAMES)}")
     return cast(RegionName, normalized)

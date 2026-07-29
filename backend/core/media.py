@@ -42,17 +42,17 @@ class MediaSigner:
             expected = hmac.new(self._secret, encoded.encode(), hashlib.sha256).digest()
             supplied = self._decode(supplied_signature)
             if not hmac.compare_digest(expected, supplied):
-                raise InvalidMediaToken("Invalid signature")
+                raise InvalidMediaToken("Неверная подпись ссылки")
             payload = json.loads(self._decode(encoded))
             if int(payload["expires"]) < (now or int(time.time())):
-                raise InvalidMediaToken("Media link expired")
+                raise InvalidMediaToken("Ссылка на аудио устарела")
             url = str(payload["url"])
             self._validate_url(url)
             return MediaTarget(url=url, headers=self._safe_headers(payload.get("headers") or {}))
         except InvalidMediaToken:
             raise
         except (ValueError, KeyError, TypeError, json.JSONDecodeError) as exc:
-            raise InvalidMediaToken("Invalid media token") from exc
+            raise InvalidMediaToken("Некорректный токен аудио") from exc
 
     @staticmethod
     def _decode(value: str) -> bytes:
@@ -62,7 +62,7 @@ class MediaSigner:
     def _validate_url(url: str) -> None:
         parsed = urlparse(url)
         if parsed.scheme not in {"http", "https"} or not parsed.hostname:
-            raise InvalidMediaToken("Invalid media URL")
+            raise InvalidMediaToken("Некорректная ссылка на аудио")
 
     @staticmethod
     def _safe_headers(headers: dict[str, str]) -> dict[str, str]:

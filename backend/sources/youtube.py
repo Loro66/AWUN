@@ -111,11 +111,11 @@ class YouTubeAdapter(BaseAdapter):
         try:
             return await asyncio.to_thread(self._search_flat, query, limit)
         except DownloadError as exc:
-            detail = f"; Data API: {api_error}" if api_error else ""
-            raise AdapterError(f"YouTube search fallback failed{detail}") from exc
+            detail = f"; API данных: {api_error}" if api_error else ""
+            raise AdapterError(f"Резервный поиск YouTube не выполнен{detail}") from exc
         except Exception as exc:
-            detail = f"; Data API: {api_error}" if api_error else ""
-            raise AdapterError(f"YouTube adapter error: {exc}{detail}") from exc
+            detail = f"; API данных: {api_error}" if api_error else ""
+            raise AdapterError(f"Ошибка адаптера YouTube: {exc}{detail}") from exc
 
     async def search_many(
         self,
@@ -210,7 +210,7 @@ class YouTubeAdapter(BaseAdapter):
         except AdapterError:
             raise
         except (aiohttp.ClientError, TimeoutError) as exc:
-            raise AdapterError(f"YouTube API request failed ({type(exc).__name__})") from exc
+            raise AdapterError(f"Запрос API YouTube не выполнен ({type(exc).__name__})") from exc
 
         tracks: list[Track] = []
         for item in items:
@@ -236,7 +236,7 @@ class YouTubeAdapter(BaseAdapter):
             tracks.append(
                 Track(
                     id=f"yt_{video_id}",
-                    title=snippet.get("title") or "Unknown title",
+                    title=snippet.get("title") or "Без названия",
                     artist=snippet.get("channelTitle") or "YouTube",
                     duration=duration,
                     quality="YT",
@@ -270,7 +270,7 @@ class YouTubeAdapter(BaseAdapter):
             if not thumbnail and thumbnails:
                 thumbnail = thumbnails[-1].get("url")
             duration = _safe_int(info.get("duration"))
-            title = info.get("title") or "Unknown title"
+            title = info.get("title") or "Без названия"
             if not _looks_like_track(
                 str(title),
                 duration,
@@ -296,4 +296,4 @@ class YouTubeAdapter(BaseAdapter):
     @staticmethod
     def _api_error(payload: dict[str, Any], status: int) -> str:
         message = payload.get("error", {}).get("message") if isinstance(payload, dict) else None
-        return f"YouTube API returned HTTP {status}: {message or 'unknown error'}"
+        return f"API YouTube вернул ошибку HTTP {status}: {message or 'неизвестная ошибка'}"

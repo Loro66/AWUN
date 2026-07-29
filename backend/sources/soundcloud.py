@@ -66,9 +66,9 @@ class SoundCloudAdapter(BaseAdapter):
             # credentials automatically unlock the full requested limit above.
             return await asyncio.to_thread(self._search_legacy, query, min(limit, 5))
         except DownloadError as exc:
-            raise AdapterError("SoundCloud needs API credentials for this query") from exc
+            raise AdapterError("Для этого запроса SoundCloud нужны ключи API") from exc
         except Exception as exc:
-            raise AdapterError(f"SoundCloud adapter error: {exc}") from exc
+            raise AdapterError(f"Ошибка адаптера SoundCloud: {exc}") from exc
 
     async def _search_api(self, query: str, limit: int) -> list[Track]:
         token = await self._access_token()
@@ -87,11 +87,11 @@ class SoundCloudAdapter(BaseAdapter):
                 ) as response:
                     payload = await response.json(content_type=None)
                     if response.status != 200:
-                        raise AdapterError(f"SoundCloud API returned HTTP {response.status}")
+                        raise AdapterError(f"API SoundCloud вернул ошибку HTTP {response.status}")
         except AdapterError:
             raise
         except (aiohttp.ClientError, TimeoutError) as exc:
-            raise AdapterError(f"SoundCloud request failed ({type(exc).__name__})") from exc
+            raise AdapterError(f"Запрос SoundCloud не выполнен ({type(exc).__name__})") from exc
 
         items = payload.get("collection", payload if isinstance(payload, list) else [])
         candidates = []
@@ -130,11 +130,11 @@ class SoundCloudAdapter(BaseAdapter):
                 if isinstance(download_url, str) and _is_progressive_audio(download_url)
                 else None
             )
-            artist = (item.get("user") or {}).get("username") or item.get("publisher_metadata", {}).get("artist") or "Unknown artist"
+            artist = (item.get("user") or {}).get("username") or item.get("publisher_metadata", {}).get("artist") or "Неизвестный исполнитель"
             tracks.append(
                 Track(
                     id=f"sc_{track_id}",
-                    title=item.get("title") or "Unknown title",
+                    title=item.get("title") or "Без названия",
                     artist=artist,
                     duration=max(0, int((item.get("duration") or 0) / 1000)),
                     quality="128",
@@ -217,11 +217,11 @@ class SoundCloudAdapter(BaseAdapter):
                 ) as response:
                     payload = await response.json(content_type=None)
                     if response.status != 200 or not payload.get("access_token"):
-                        raise AdapterError(f"SoundCloud OAuth returned HTTP {response.status}")
+                        raise AdapterError(f"OAuth SoundCloud вернул ошибку HTTP {response.status}")
         except AdapterError:
             raise
         except (aiohttp.ClientError, TimeoutError) as exc:
-            raise AdapterError(f"SoundCloud OAuth failed ({type(exc).__name__})") from exc
+            raise AdapterError(f"Авторизация OAuth SoundCloud не выполнена ({type(exc).__name__})") from exc
         self._token = str(payload["access_token"])
         self._token_expires_at = monotonic() + max(60, int(payload.get("expires_in") or 3600) - 60)
         return self._token
@@ -240,8 +240,8 @@ class SoundCloudAdapter(BaseAdapter):
             tracks.append(
                 Track(
                     id=f"sc_{stable_id}",
-                    title=info.get("track") or info.get("title") or "Unknown title",
-                    artist=info.get("artist") or info.get("uploader") or "Unknown artist",
+                    title=info.get("track") or info.get("title") or "Без названия",
+                    artist=info.get("artist") or info.get("uploader") or "Неизвестный исполнитель",
                     duration=_safe_int(info.get("duration")),
                     quality=quality,
                     source=self.source,

@@ -104,7 +104,7 @@ class MusicBrainzEnricher(BasicQueryEnricher):
                 ) as response:
                     payload = await response.json(content_type=None)
                     if response.status != 200 or not isinstance(payload, dict):
-                        raise RuntimeError(f"MusicBrainz returned HTTP {response.status}")
+                        raise RuntimeError(f"MusicBrainz вернул ошибку HTTP {response.status}")
                     return payload
             finally:
                 self._last_request = monotonic()

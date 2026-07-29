@@ -198,7 +198,7 @@ html[data-theme="white"] .logo img{content:url('/static/brand/awun-logo-black.pn
 .skeleton i:nth-child(2){height:48px}
 .skeleton i:nth-child(4){height:31px}
 
-.site-footer{display:flex;align-items:center;gap:20px;margin-top:auto;padding-top:80px;color:var(--faint);font-size:7px;font-weight:700;letter-spacing:1.45px}
+.site-footer{display:flex;align-items:center;flex-wrap:wrap;gap:20px;margin-top:auto;padding-top:80px;color:var(--faint);font-size:7px;font-weight:700;letter-spacing:1.45px}
 .site-footer a{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}.site-footer a:hover,.site-footer a:focus-visible{color:var(--text);border-color:var(--accent)}
 .footer-line{height:1px;flex:1;background:var(--line)}
 

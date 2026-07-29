@@ -46,19 +46,19 @@ class JamendoAdapter(BaseAdapter):
         try:
             async with (await self._get_session()).get(self.api_url, params=params) as response:
                 if response.status != 200:
-                    raise AdapterError(f"Jamendo API returned HTTP {response.status}")
+                    raise AdapterError(f"API Jamendo вернул ошибку HTTP {response.status}")
                 payload = await response.json(content_type=None)
         except AdapterError:
             raise
         except (aiohttp.ClientError, TimeoutError, ValueError) as exc:
-            raise AdapterError(f"Jamendo search failed: {exc}") from exc
+            raise AdapterError(f"Поиск Jamendo не выполнен: {exc}") from exc
 
         headers = payload.get("headers") if isinstance(payload, dict) else None
         if isinstance(headers, dict) and headers.get("status") == "failed":
-            raise AdapterError(str(headers.get("error_message") or "Jamendo request failed"))
+            raise AdapterError(str(headers.get("error_message") or "Запрос Jamendo не выполнен"))
         entries = payload.get("results") if isinstance(payload, dict) else None
         if not isinstance(entries, list):
-            raise AdapterError("Jamendo returned an invalid response")
+            raise AdapterError("Jamendo вернул некорректный ответ")
         return [track for item in entries if (track := self._track_from_item(item))][:limit]
 
     def _track_from_item(self, item: Any) -> Track | None:
@@ -75,7 +75,7 @@ class JamendoAdapter(BaseAdapter):
         return Track(
             id=f"jamendo_{track_id}",
             title=title,
-            artist=str(item.get("artist_name") or "Unknown artist"),
+            artist=str(item.get("artist_name") or "Неизвестный исполнитель"),
             duration=self._integer(item.get("duration")),
             quality="VBR",
             source=self.source,

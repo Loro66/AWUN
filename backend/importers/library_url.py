@@ -100,15 +100,15 @@ def structured_tracks(documents: list[Any], limit: int) -> list[LibraryImportEnt
 
 async def _public_host(hostname: str) -> None:
     if not hostname or hostname.lower() == "localhost":
-        raise LibraryImportError("Only public HTTPS links can be imported.")
+        raise LibraryImportError("Можно переносить только публичные ссылки HTTPS.")
     try:
         addresses = await asyncio.to_thread(socket.getaddrinfo, hostname, 443, type=socket.SOCK_STREAM)
     except socket.gaierror as exc:
-        raise LibraryImportError("The playlist host could not be resolved.") from exc
+        raise LibraryImportError("Не удалось найти сервер плейлиста.") from exc
     for address in addresses:
         ip = ipaddress.ip_address(address[4][0])
         if not ip.is_global:
-            raise LibraryImportError("Private or local network links are not allowed.")
+            raise LibraryImportError("Ссылки на приватную или локальную сеть запрещены.")
 
 
 class LibraryUrlImporter:
@@ -119,7 +119,7 @@ class LibraryUrlImporter:
     async def import_url(self, url: str, max_tracks: int) -> LibraryImportResponse:
         parsed = urlparse(url)
         if parsed.scheme != "https":
-            raise LibraryImportError("Use a public HTTPS playlist link.")
+            raise LibraryImportError("Используй публичную HTTPS-ссылку на плейлист.")
         await _public_host(parsed.hostname or "")
         host = (parsed.hostname or "").lower()
         playlist_id = parse_qs(parsed.query).get("list", [""])[0]
@@ -129,7 +129,7 @@ class LibraryUrlImporter:
 
     async def _youtube(self, source_url: str, playlist_id: str, limit: int) -> LibraryImportResponse:
         if not self.youtube_api_key:
-            raise LibraryImportError("YouTube playlist import needs AWUN_YOUTUBE_API_KEY on the server.")
+            raise LibraryImportError("Для переноса плейлиста YouTube нужен локальный ключ AWUN_YOUTUBE_API_KEY.")
         tracks: list[LibraryImportEntry] = []
         token = ""
         title = None
@@ -146,7 +146,7 @@ class LibraryUrlImporter:
                 async with session.get("https://www.googleapis.com/youtube/v3/playlistItems", params=params) as response:
                     payload = await response.json(content_type=None)
                     if response.status != 200:
-                        message = payload.get("error", {}).get("message", "YouTube rejected the playlist request.")
+                        message = payload.get("error", {}).get("message", "YouTube отклонил запрос плейлиста.")
                         raise LibraryImportError(message)
                 for item in payload.get("items", []):
                     snippet = item.get("snippet") or {}
@@ -175,21 +175,21 @@ class LibraryUrlImporter:
             async with session.get(url, headers=headers, allow_redirects=True, max_redirects=4) as response:
                 final = urlparse(str(response.url))
                 if final.scheme != "https":
-                    raise LibraryImportError("The playlist redirected to a non-HTTPS address.")
+                    raise LibraryImportError("Плейлист перенаправил запрос на адрес без HTTPS.")
                 await _public_host(final.hostname or "")
                 if response.status != 200:
-                    raise LibraryImportError(f"The playlist page returned HTTP {response.status}.")
+                    raise LibraryImportError(f"Страница плейлиста вернула ошибку HTTP {response.status}.")
                 if int(response.headers.get("content-length") or 0) > 2_000_000:
-                    raise LibraryImportError("The playlist page is too large to import safely.")
+                    raise LibraryImportError("Страница плейлиста слишком большая для безопасного переноса.")
                 raw = await response.content.read(2_000_001)
                 if len(raw) > 2_000_000:
-                    raise LibraryImportError("The playlist page is too large to import safely.")
+                    raise LibraryImportError("Страница плейлиста слишком большая для безопасного переноса.")
         parser = _StructuredDataParser()
         parser.feed(raw.decode(response.charset or "utf-8", errors="replace"))
         tracks = structured_tracks(parser.documents, limit)
         if not tracks:
             host = (urlparse(url).hostname or "").lower()
             if host.endswith("music.yandex.ru"):
-                raise LibraryImportError("Yandex does not expose this library through a supported public API. Export it as CSV/JSON/M3U/TXT instead.")
-            raise LibraryImportError("No public structured track list was found. Try an official public playlist link or upload an export file.")
+                raise LibraryImportError("Яндекс Музыка не отдаёт эту медиатеку через поддерживаемый публичный API. Загрузи экспорт в формате CSV, JSON, M3U или TXT.")
+            raise LibraryImportError("Открытый список треков не найден. Попробуй официальную публичную ссылку или загрузи файл экспорта.")
         return LibraryImportResponse(provider="structured_web", title=parser.title.strip() or None, source_url=url, tracks=tracks)

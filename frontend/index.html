@@ -1,21 +1,21 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta id="themeColor" name="theme-color" content="#10110e">
-  <meta name="description" content="AWUN searches real music across connected sources and plays it instantly.">
-  <title>AWUN — one search, every sound</title>
+  <meta name="description" content="AWUN ищет настоящую музыку во всех подключённых источниках и сразу запускает воспроизведение.">
+  <title>AWUN — один поиск, вся музыка</title>
   <link rel="icon" href="/static/brand/awun-icon-black.png" type="image/png">
   <link rel="apple-touch-icon" href="/static/brand/awun-icon-black.png">
   <link rel="manifest" href="/static/manifest.webmanifest">
   <script>
-    try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');document.documentElement.dataset.theme=v.theme||'black';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full';document.documentElement.dataset.density=v.density||'standard';document.documentElement.lang=localStorage.getItem('awun-language')||(navigator.language.toLowerCase().startsWith('ru')?'ru':'en')}catch{}
+    try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');const p=new URLSearchParams(location.search);document.documentElement.dataset.theme=v.theme||'black';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full';document.documentElement.dataset.density=v.density||'standard';document.documentElement.lang=p.get('lang')||localStorage.getItem('awun-language')||(navigator.language.toLowerCase().startsWith('ru')?'ru':'en')}catch{}
   </script>
-  <link rel="stylesheet" href="/static/styles.css?v=20260718.1">
+  <link rel="stylesheet" href="/static/styles.css?v=20260723.2">
 </head>
 <body>
-  <a class="skip-link" href="#searchInput">Skip to search</a>
+  <a class="skip-link" href="#searchInput" data-i18n="skipSearch">Перейти к поиску</a>
   <div class="ambient" aria-hidden="true">
     <i class="ambient-orb orb-one"></i>
     <i class="ambient-orb orb-two"></i>
@@ -24,64 +24,64 @@
     <i class="ambient-scan"></i>
     <i class="ambient-ring ring-one"></i>
     <i class="ambient-ring ring-two"></i>
-    <span class="coordinate coordinate-one">55°45′21″N / SEARCH</span>
-    <span class="coordinate coordinate-two">NODE / AWUN-01</span>
+    <span class="coordinate coordinate-one" data-i18n="coordinateSearch">59°56′15″N / ПОИСК</span>
+    <span class="coordinate coordinate-two" data-i18n="coordinateNode">УЗЕЛ / AWUN-01</span>
   </div>
 
   <main class="app-shell">
     <header class="site-header">
-      <a class="logo" href="/" aria-label="AWUN home"><img src="/static/brand/awun-logo-white.png" alt=""><strong>AWUN</strong><i>.</i></a>
-      <span class="edition">PUBLIC BETA / 01</span>
+      <a class="logo" href="/" aria-label="Главная AWUN" data-i18n-aria-label="homeAria"><img src="/static/brand/awun-logo-white.png" alt=""><strong>AWUN</strong><i>.</i></a>
+      <span class="edition" data-i18n="edition">ЛОКАЛЬНАЯ БЕТА / 01</span>
       <div class="top-actions">
-        <button id="languageButton" class="library language-button" type="button" aria-label="Switch language"><span>LANG</span><b id="languageLabel">EN</b></button>
-        <button id="installButton" class="library install-button" type="button" hidden><span>INSTALL</span><b>APP</b></button>
-        <span id="status" class="status"><i></i><b>CONNECTING</b></span>
+        <button id="languageButton" class="library language-button" type="button" aria-label="Сменить язык" data-i18n-aria-label="switchLanguageAria"><span data-i18n="language">ЯЗЫК</span><b id="languageLabel">RU</b></button>
+        <button id="installButton" class="library install-button" type="button" hidden><span data-i18n="install">УСТАНОВИТЬ</span><b data-i18n="app">AWUN</b></button>
+        <span id="status" class="status"><i></i><b data-i18n="connecting">ПОДКЛЮЧЕНИЕ</b></span>
         <button id="flowButton" class="library flow-button" type="button" aria-expanded="false" aria-controls="flowPanel">
-          <span data-i18n="wave">MY WAVE</span><b id="flowBadge">READY</b>
+          <span data-i18n="wave">МОЯ ВОЛНА</span><b id="flowBadge" data-i18n="ready">ГОТОВО</b>
         </button>
         <button id="themeButton" class="theme-button" type="button" aria-expanded="false" aria-controls="themePanel">
-          <span data-i18n="appearance">APPEARANCE</span><b id="themeLabel">ACID</b>
+          <span data-i18n="appearance">ВНЕШНИЙ ВИД</span><b id="themeLabel">ЧЁРНАЯ</b>
         </button>
         <button id="importButton" class="library import-button" type="button" aria-expanded="false" aria-controls="importPanel">
-          <span data-i18n="import">IMPORT</span><b>LINK</b>
+          <span data-i18n="import">ПЕРЕНОС</span><b data-i18n="link">ССЫЛКА</b>
         </button>
         <button id="libraryButton" class="library" type="button" aria-pressed="false">
-          <span data-i18n="library">LIBRARY</span><b>00</b>
+          <span data-i18n="library">МОЯ МУЗЫКА</span><b>00</b>
         </button>
       </div>
     </header>
 
     <section class="hero" aria-labelledby="heroLabel">
-      <div class="hero-index" aria-hidden="true"><span>01</span><i></i><span>SEARCH</span></div>
+      <div class="hero-index" aria-hidden="true"><span>01</span><i></i><span data-i18n="search">ПОИСК</span></div>
       <div class="hero-content">
         <div class="eyebrow-row">
           <p id="heroLabel"><span data-i18n="tagline">ONE SEARCH · EVERY SOUND</span></p>
-          <span id="searchMeta">REAL RESULTS / OFFICIAL PLAYBACK</span>
+          <span id="searchMeta" data-i18n="searchMetaInitial">НАСТОЯЩИЕ РЕЗУЛЬТАТЫ / ОФИЦИАЛЬНОЕ ВОСПРОИЗВЕДЕНИЕ</span>
         </div>
 
         <form id="searchForm" class="search-form">
-          <label class="sr-only" for="searchInput">Search music</label>
-          <input id="searchInput" name="q" autocomplete="off" spellcheck="false" maxlength="200" placeholder="Artist or track" data-i18n-placeholder="searchPlaceholder" autofocus>
-          <button id="searchButton" type="submit" aria-label="Search">
+          <label class="sr-only" for="searchInput" data-i18n="searchMusic">Поиск музыки</label>
+          <input id="searchInput" name="q" autocomplete="off" spellcheck="false" maxlength="200" placeholder="Исполнитель или трек" data-i18n-placeholder="searchPlaceholder" autofocus>
+          <button id="searchButton" type="submit" aria-label="Найти" data-i18n-aria-label="searchAria">
             <span>↗</span><i aria-hidden="true"></i>
           </button>
         </form>
 
-        <div class="suggestions" aria-label="Quick searches"><span data-i18n="trySearch">TRY</span><button type="button" data-search-suggestion="new music">NEW MUSIC</button><button type="button" data-search-suggestion="focus instrumental">FOCUS</button><button type="button" data-search-suggestion="русский рок">РУССКИЙ РОК</button><button type="button" data-search-suggestion="electronic classics">ELECTRONIC</button></div>
+        <div class="suggestions" aria-label="Быстрый поиск" data-i18n-aria-label="quickSearchAria"><span data-i18n="trySearch">ПОПРОБУЙ</span><button type="button" data-search-suggestion="новая музыка" data-search-suggestion-ru="новая музыка" data-search-suggestion-en="new music" data-i18n="newMusic">НОВАЯ МУЗЫКА</button><button type="button" data-search-suggestion="инструментальная музыка для концентрации" data-search-suggestion-ru="инструментальная музыка для концентрации" data-search-suggestion-en="focus instrumental" data-i18n="focus">КОНЦЕНТРАЦИЯ</button><button type="button" data-search-suggestion="русский рок" data-search-suggestion-ru="русский рок" data-search-suggestion-en="Russian rock">РУССКИЙ РОК</button><button type="button" data-search-suggestion="классика электронной музыки" data-search-suggestion-ru="классика электронной музыки" data-search-suggestion-en="electronic classics" data-i18n="electronic">ЭЛЕКТРОНИКА</button></div>
 
         <details id="advancedSearch" class="advanced-search">
           <summary><span data-i18n="searchSettings">SEARCH SETTINGS</span><small data-i18n="searchSettingsHint">sources, region and result count</small></summary>
           <div class="source-row">
-          <div id="sources" class="sources" aria-label="Search sources">
-            <button type="button" data-source="youtube" class="on"><i></i><span>YOUTUBE</span><small>CONNECTING</small></button>
-            <button type="button" data-source="soundcloud" class="on"><i></i><span>SOUNDCLOUD</span><small>CONNECTING</small></button>
-            <button type="button" data-source="audius" class="on"><i></i><span>AUDIUS</span><small>CONNECTING</small></button>
-            <button type="button" data-source="jamendo" class="on"><i></i><span>JAMENDO</span><small>CONNECTING</small></button>
-            <button type="button" data-source="internet_archive" class="on"><i></i><span>ARCHIVE</span><small>CONNECTING</small></button>
+          <div id="sources" class="sources" aria-label="Источники поиска" data-i18n-aria-label="sourcesAria">
+            <button type="button" data-source="youtube" class="on"><i></i><span>YOUTUBE</span><small data-i18n="connecting">ПОДКЛЮЧЕНИЕ</small></button>
+            <button type="button" data-source="soundcloud" class="on"><i></i><span>SOUNDCLOUD</span><small data-i18n="connecting">ПОДКЛЮЧЕНИЕ</small></button>
+            <button type="button" data-source="audius" class="on"><i></i><span>AUDIUS</span><small data-i18n="connecting">ПОДКЛЮЧЕНИЕ</small></button>
+            <button type="button" data-source="jamendo" class="on"><i></i><span>JAMENDO</span><small data-i18n="connecting">ПОДКЛЮЧЕНИЕ</small></button>
+            <button type="button" data-source="internet_archive" class="on"><i></i><span>ARCHIVE</span><small data-i18n="connecting">ПОДКЛЮЧЕНИЕ</small></button>
           </div>
           <div class="search-options">
             <label class="region-control limit-control" for="limitSelect">
-              <span>RESULTS</span>
+              <span data-i18n="resultsLabel">РЕЗУЛЬТАТОВ</span>
               <select id="limitSelect" name="limit">
                 <option value="30">30</option>
                 <option value="60" selected>60</option>
@@ -89,28 +89,28 @@
               </select>
             </label>
             <label class="region-control" for="regionSelect">
-              <span>REGION</span>
+              <span data-i18n="regionLabel">РЕГИОН</span>
               <select id="regionSelect" name="region">
-                <option>AUTO</option>
-                <option>CIS</option>
-                <option>EUROPE</option>
-                <option>USA</option>
-                <option>LATAM</option>
-                <option>ASIA</option>
-                <option>GLOBAL</option>
+                <option value="AUTO" data-i18n="regionAuto">АВТО</option>
+                <option value="CIS" data-i18n="regionCis">СНГ</option>
+                <option value="EUROPE" data-i18n="regionEurope">ЕВРОПА</option>
+                <option value="USA" data-i18n="regionUsa">США</option>
+                <option value="LATAM" data-i18n="regionLatam">ЛАТИНСКАЯ АМЕРИКА</option>
+                <option value="ASIA" data-i18n="regionAsia">АЗИЯ</option>
+                <option value="GLOBAL" data-i18n="regionGlobal">ВЕСЬ МИР</option>
               </select>
             </label>
             <kbd>ENTER ↵</kbd>
           </div>
           </div>
           <div class="network-strip" aria-hidden="true">
-          <span>MUSICBRAINZ QUERY EXPANSION</span><i></i><span>30 / 60 / 100 RESULTS</span><i></i><span>YANDEX LIBRARY TRANSFER</span>
+          <span data-i18n="musicbrainzExpansion">РАСШИРЕНИЕ ЗАПРОСА MUSICBRAINZ</span><i></i><span data-i18n="resultCountOptions">30 / 60 / 100 РЕЗУЛЬТАТОВ</span><i></i><span data-i18n="yandexTransfer">ПЕРЕНОС ИЗ ЯНДЕКС МУЗЫКИ</span>
           </div>
           <div class="hero-telemetry" aria-hidden="true">
-          <span>QUERY SIGNAL</span>
+          <span data-i18n="querySignal">СИГНАЛ ЗАПРОСА</span>
           <div class="signal-array"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
           <span id="telemetryClock">00:00:00</span>
-          <span>UTC+02 / BERLIN</span>
+          <span data-i18n="localTime">ЛОКАЛЬНОЕ ВРЕМЯ</span>
           </div>
         </details>
       </div>
@@ -120,15 +120,15 @@
       <div class="results-heading">
         <div>
           <span class="section-number">02</span>
-          <h1 id="resultTitle">DISCOVER</h1>
+          <h1 id="resultTitle" data-i18n="discover">ОТКРЫВАЙ</h1>
         </div>
         <div class="result-stats">
-          <span id="resultTime">READY</span>
-          <strong id="resultCount">0 FOUND</strong>
+          <span id="resultTime" data-i18n="ready">ГОТОВО</span>
+          <strong id="resultCount">0 НАЙДЕНО</strong>
         </div>
       </div>
 
-      <p id="message" class="message">Connect a source, type an artist or track, and press enter.</p>
+      <p id="message" class="message" data-i18n="initialMessage">Введи исполнителя или название трека и нажми Enter.</p>
       <div id="emptyGuide" class="empty-guide">
         <button id="guideSearch" type="button"><b>1</b><strong data-i18n="guideSearchTitle">SEARCH ANY TRACK</strong><span data-i18n="guideSearchBody">Type an artist and title. AWUN checks every connected catalog.</span></button>
         <button id="guideWave" type="button"><b>2</b><strong data-i18n="guideWaveTitle">START MY WAVE</strong><span data-i18n="guideWaveBody">Get an endless station and improve it with likes and skips.</span></button>
@@ -139,66 +139,66 @@
 
     <section id="flowPanel" class="flow-panel" hidden aria-labelledby="flowTitle">
       <header>
-        <div><span>AWUN / PERSONAL RADIO</span><h2 id="flowTitle">MY WAVE</h2></div>
-        <button id="flowClose" type="button" aria-label="Close Flow settings">×</button>
+        <div><span data-i18n="personalRadio">AWUN / ЛИЧНОЕ РАДИО</span><h2 id="flowTitle" data-i18n="wave">МОЯ ВОЛНА</h2></div>
+        <button id="flowClose" type="button" aria-label="Закрыть настройки волны" data-i18n-aria-label="closeFlowAria">×</button>
       </header>
-      <p>An endless personal station: choose how familiar it feels, set a mood, language and era, then tune it with every like, skip and blocked artist.</p>
+      <p data-i18n="flowDescription">Бесконечная личная станция: выбери степень знакомства с музыкой, настроение, язык и эпоху, а затем улучшай подборку лайками и пропусками.</p>
       <div class="flow-controls">
         <fieldset>
-          <legend>DISCOVERY</legend>
+          <legend data-i18n="discoveryMode">РЕЖИМ ПОДБОРА</legend>
           <div id="flowDiscovery" class="flow-segments">
-            <button type="button" data-flow-discovery="familiar">FAMILIAR</button>
-            <button type="button" data-flow-discovery="balanced" aria-pressed="true">BALANCED</button>
-            <button type="button" data-flow-discovery="new">NEW</button>
+            <button type="button" data-flow-discovery="familiar" data-i18n="familiar">ЗНАКОМАЯ</button>
+            <button type="button" data-flow-discovery="balanced" aria-pressed="true" data-i18n="balanced">БАЛАНС</button>
+            <button type="button" data-flow-discovery="new" data-i18n="newOnly">НОВАЯ</button>
           </div>
         </fieldset>
-        <label><span>MOOD</span><select id="flowMood"><option value="any">ANY</option><option value="calm">CALM</option><option value="energy">ENERGY</option><option value="focus">FOCUS</option><option value="happy">HAPPY</option><option value="sad">SAD</option><option value="night">NIGHT</option></select></label>
-        <label><span>ACTIVITY</span><select id="flowActivity"><option value="any">ANY</option><option value="work">WORK</option><option value="drive">DRIVE</option><option value="training">TRAINING</option><option value="relax">RELAX</option></select></label>
-        <label><span>LANGUAGE</span><select id="flowLanguage"><option value="any">ANY</option><option value="ru">RUSSIAN</option><option value="foreign">FOREIGN</option><option value="instrumental">INSTRUMENTAL</option></select></label>
-        <label><span>ERA</span><select id="flowEra"><option value="any">ANY ERA</option><option value="fresh">NEW RELEASES</option><option value="2010s">2010s</option><option value="2000s">2000s</option><option value="classics">CLASSICS</option></select></label>
+        <label><span data-i18n="mood">НАСТРОЕНИЕ</span><select id="flowMood"><option value="any" data-i18n="any">ЛЮБОЕ</option><option value="calm" data-i18n="calm">СПОКОЙНОЕ</option><option value="energy" data-i18n="energy">ЭНЕРГИЧНОЕ</option><option value="focus" data-i18n="focusOption">КОНЦЕНТРАЦИЯ</option><option value="happy" data-i18n="happy">ВЕСЁЛОЕ</option><option value="sad" data-i18n="sad">ГРУСТНОЕ</option><option value="night" data-i18n="night">НОЧНОЕ</option></select></label>
+        <label><span data-i18n="activity">ЗАНЯТИЕ</span><select id="flowActivity"><option value="any" data-i18n="any">ЛЮБОЕ</option><option value="work" data-i18n="work">РАБОТА</option><option value="drive" data-i18n="drive">ЗА РУЛЁМ</option><option value="training" data-i18n="training">ТРЕНИРОВКА</option><option value="relax" data-i18n="relax">ОТДЫХ</option></select></label>
+        <label><span data-i18n="language">ЯЗЫК</span><select id="flowLanguage"><option value="any" data-i18n="any">ЛЮБОЙ</option><option value="ru" data-i18n="russian">РУССКИЙ</option><option value="foreign" data-i18n="foreign">ЗАРУБЕЖНЫЙ</option><option value="instrumental" data-i18n="instrumental">ИНСТРУМЕНТАЛ</option></select></label>
+        <label><span data-i18n="era">ЭПОХА</span><select id="flowEra"><option value="any" data-i18n="anyEra">ЛЮБАЯ ЭПОХА</option><option value="fresh" data-i18n="newReleases">НОВИНКИ</option><option value="2010s">2010-е</option><option value="2000s">2000-е</option><option value="classics" data-i18n="classics">КЛАССИКА</option></select></label>
       </div>
       <div class="flow-start-row">
-        <span id="flowSeed">Seed: current search or your library</span>
-        <button id="flowStart" type="button">START MY WAVE ↗</button>
+        <span id="flowSeed" data-i18n="flowSeedDefault">Основа: текущий поиск или твоя медиатека</span>
+        <button id="flowStart" type="button" data-i18n="startWave">ЗАПУСТИТЬ МОЮ ВОЛНУ ↗</button>
       </div>
-      <footer><span id="flowStats">0 signals learned</span><button id="flowReset" type="button">RESET TASTE PROFILE</button></footer>
+      <footer><span id="flowStats" data-i18n="flowStatsZero">0 сигналов учтено</span><button id="flowReset" type="button" data-i18n="resetTaste">СБРОСИТЬ ПРОФИЛЬ ВКУСА</button></footer>
     </section>
 
     <footer class="site-footer">
-      <span>AWUN / PUBLIC BETA</span>
+      <span data-i18n="footerEdition">AWUN / ЛОКАЛЬНАЯ БЕТА</span>
       <span class="footer-line"></span>
-      <span><a href="/license" target="_blank" rel="license">FREEWARE LICENSE</a> · <a href="/eula" target="_blank">EULA</a></span>
+      <span><a href="/privacy" data-i18n="privacyPolicy">КОНФИДЕНЦИАЛЬНОСТЬ</a> · <a href="/support" data-i18n="support">ПОДДЕРЖКА</a> · <a href="/license" rel="license" data-i18n="freewareLicense">ЛИЦЕНЗИЯ FREEWARE</a> · <a href="/eula" data-i18n="userAgreement">ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ</a></span>
     </footer>
   </main>
 
-  <aside id="player" class="player" hidden aria-label="Music player">
+  <aside id="player" class="player" hidden aria-label="Музыкальный плеер" data-i18n-aria-label="playerAria">
     <div id="youtubeDock" class="youtube-dock" hidden>
-      <div class="dock-head"><span>OFFICIAL YOUTUBE PLAYER</span><button id="minimizeVideo" type="button">—</button></div>
+      <div class="dock-head"><span data-i18n="youtubePlayer">ОФИЦИАЛЬНЫЙ ПЛЕЕР YOUTUBE</span><button id="minimizeVideo" type="button">—</button></div>
       <div id="youtubePlayer" class="youtube-player"></div>
     </div>
 
     <div class="player-accent" aria-hidden="true"></div>
     <div id="playerArtwork" class="player-artwork"><span>AW</span></div>
     <div class="now">
-      <strong id="nowTitle">Nothing playing</strong>
+      <strong id="nowTitle" data-i18n="nothingPlaying">НИЧЕГО НЕ ИГРАЕТ</strong>
       <span id="nowArtist">AWUN</span>
       <div class="mini-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
     </div>
 
     <div class="transport">
       <div class="transport-buttons">
-        <button id="previousTrack" type="button" aria-label="Previous track">‹</button>
-        <button id="flowDislike" class="flow-feedback" type="button" aria-label="Dislike this track" title="Less like this">−</button>
-        <button id="playPause" class="play-pause" type="button" aria-label="Play"><span>▶</span></button>
-        <button id="flowLike" class="flow-feedback" type="button" aria-label="Like this track" title="More like this">+</button>
-        <button id="flowBlockArtist" class="flow-feedback flow-block" type="button" aria-label="Do not recommend this artist" title="Block artist">ART−</button>
-        <button id="nextTrack" type="button" aria-label="Next track">›</button>
-        <button id="repeatMode" class="repeat-mode" type="button" aria-label="Repeat off" aria-pressed="false"><span>↻</span><small>OFF</small></button>
+        <button id="previousTrack" type="button" aria-label="Предыдущий трек" data-i18n-aria-label="previousAria">‹</button>
+        <button id="flowDislike" class="flow-feedback" type="button" aria-label="Не нравится" title="Меньше похожего" data-i18n-aria-label="dislikeAria" data-i18n-title="lessLikeTitle">−</button>
+        <button id="playPause" class="play-pause" type="button" aria-label="Воспроизвести" data-i18n-aria-label="playAria"><span>▶</span></button>
+        <button id="flowLike" class="flow-feedback" type="button" aria-label="Нравится" title="Больше похожего" data-i18n-aria-label="likeAria" data-i18n-title="moreLikeTitle">+</button>
+        <button id="flowBlockArtist" class="flow-feedback flow-block" type="button" aria-label="Не рекомендовать этого исполнителя" title="Заблокировать исполнителя" data-i18n-aria-label="blockArtistAria" data-i18n-title="blockArtistTitle">ИСП−</button>
+        <button id="nextTrack" type="button" aria-label="Следующий трек" data-i18n-aria-label="nextAria">›</button>
+        <button id="repeatMode" class="repeat-mode" type="button" aria-label="Повтор выключен" aria-pressed="false"><span>↻</span><small>ВЫКЛ</small></button>
       </div>
       <div class="timeline">
         <span id="elapsed">0:00</span>
         <div class="wave-progress">
-          <input id="progress" class="range progress" type="range" min="0" max="1000" value="0" aria-label="Playback position">
+          <input id="progress" class="range progress" type="range" min="0" max="1000" value="0" aria-label="Позиция воспроизведения" data-i18n-aria-label="playbackPositionAria">
         </div>
         <span id="totalTime">0:00</span>
       </div>
@@ -206,57 +206,59 @@
 
     <div class="player-tools">
       <span id="nowSource" class="now-source">—</span>
-      <button id="muteButton" type="button" aria-label="Mute">VOL</button>
-      <input id="volume" class="range volume" type="range" min="0" max="100" value="82" aria-label="Volume">
-      <button id="closePlayer" class="close" type="button" aria-label="Close player">×</button>
+      <button id="muteButton" type="button" aria-label="Выключить звук" data-i18n-aria-label="muteAria">ЗВУК</button>
+      <input id="volume" class="range volume" type="range" min="0" max="100" value="82" aria-label="Громкость" data-i18n-aria-label="volumeAria">
+      <button id="closePlayer" class="close" type="button" aria-label="Закрыть плеер" data-i18n-aria-label="closePlayerAria">×</button>
     </div>
     <audio id="audio" preload="metadata"></audio>
   </aside>
 
   <div id="themeBackdrop" class="theme-backdrop" hidden></div>
-  <aside id="themePanel" class="theme-panel" hidden aria-label="Visual settings">
+  <aside id="themePanel" class="theme-panel" hidden aria-label="Настройки внешнего вида" data-i18n-aria-label="visualSettingsAria">
     <div class="theme-panel-head">
-      <div><span>03</span><strong>VISUAL SYSTEM</strong></div>
-      <button id="themeClose" type="button" aria-label="Close visual settings">×</button>
+      <div><span>03</span><strong data-i18n="visualSystem">ВНЕШНИЙ ВИД</strong></div>
+      <button id="themeClose" type="button" aria-label="Закрыть настройки внешнего вида" data-i18n-aria-label="closeVisualAria">×</button>
     </div>
-    <p>Choose a live color system. Set INTERFACE to MINIMAL for a calm, music-first layout. Your setup stays on this device.</p>
-    <div class="theme-grid" role="group" aria-label="Color theme">
-      <button type="button" data-theme-choice="black" aria-pressed="true"><i></i><span>BLACK</span><small>00 / PURE</small></button>
-      <button type="button" data-theme-choice="white" aria-pressed="false"><i></i><span>WHITE</span><small>01 / PAPER</small></button>
-      <button type="button" data-theme-choice="acid" aria-pressed="false"><i></i><span>ACID</span><small>02 / SIGNAL</small></button>
-      <button type="button" data-theme-choice="ultraviolet" aria-pressed="false"><i></i><span>ULTRAVIOLET</span><small>02 / NIGHT</small></button>
-      <button type="button" data-theme-choice="cobalt" aria-pressed="false"><i></i><span>COBALT</span><small>03 / DIGITAL</small></button>
-      <button type="button" data-theme-choice="ember" aria-pressed="false"><i></i><span>EMBER</span><small>04 / HEAT</small></button>
+    <p data-i18n="visualDescription">Выбери цветовую тему. Переключи интерфейс в минимальный режим, если хочешь оставить на экране только музыку. Настройки сохраняются на этом устройстве.</p>
+    <div class="theme-grid" role="group" aria-label="Цветовая тема" data-i18n-aria-label="colorThemeAria">
+      <button type="button" data-theme-choice="black" aria-pressed="true"><i></i><span data-i18n="themeBlack">ЧЁРНАЯ</span><small data-i18n="themeBlackHint">00 / ЧИСТАЯ</small></button>
+      <button type="button" data-theme-choice="white" aria-pressed="false"><i></i><span data-i18n="themeWhite">БЕЛАЯ</span><small data-i18n="themeWhiteHint">01 / БУМАГА</small></button>
+      <button type="button" data-theme-choice="acid" aria-pressed="false"><i></i><span data-i18n="themeAcid">КИСЛОТНАЯ</span><small data-i18n="themeAcidHint">02 / СИГНАЛ</small></button>
+      <button type="button" data-theme-choice="ultraviolet" aria-pressed="false"><i></i><span data-i18n="themeUltraviolet">УЛЬТРАФИОЛЕТ</span><small data-i18n="themeUltravioletHint">03 / НОЧЬ</small></button>
+      <button type="button" data-theme-choice="cobalt" aria-pressed="false"><i></i><span data-i18n="themeCobalt">КОБАЛЬТ</span><small data-i18n="themeCobaltHint">04 / ЦИФРА</small></button>
+      <button type="button" data-theme-choice="ember" aria-pressed="false"><i></i><span data-i18n="themeEmber">УГЛИ</span><small data-i18n="themeEmberHint">05 / ЖАР</small></button>
     </div>
     <div class="visual-toggles">
-      <button id="motionToggle" type="button"><span>MOTION</span><b id="motionValue">ON</b></button>
-      <button id="decorToggle" type="button"><span>INTERFACE</span><b id="decorValue">EDITORIAL</b></button>
-      <button id="densityToggle" type="button"><span>DENSITY</span><b id="densityValue">STANDARD</b></button>
+      <button id="motionToggle" type="button"><span data-i18n="motion">АНИМАЦИЯ</span><b id="motionValue">ВКЛ</b></button>
+      <button id="decorToggle" type="button"><span data-i18n="interface">ИНТЕРФЕЙС</span><b id="decorValue">ПОЛНЫЙ</b></button>
+      <button id="densityToggle" type="button"><span data-i18n="density">ПЛОТНОСТЬ</span><b id="densityValue">ОБЫЧНАЯ</b></button>
     </div>
-    <footer><span>AWUN / VISUAL OS</span><span>V1.7</span></footer>
+    <footer><span data-i18n="visualFooter">AWUN / ВНЕШНИЙ ВИД</span><span>V1.8</span></footer>
   </aside>
 
   <div id="importBackdrop" class="theme-backdrop" hidden></div>
-  <aside id="importPanel" class="theme-panel import-panel" hidden aria-label="Import music library">
+  <aside id="importPanel" class="theme-panel import-panel" hidden aria-label="Перенос музыкальной библиотеки" data-i18n-aria-label="importLibraryAria">
     <div class="theme-panel-head">
-      <div><span>04</span><strong>LIBRARY TRANSFER</strong></div>
-      <button id="importClose" type="button" aria-label="Close library import">×</button>
+      <div><span>04</span><strong data-i18n="libraryTransfer">ПЕРЕНОС МЕДИАТЕКИ</strong></div>
+      <button id="importClose" type="button" aria-label="Закрыть перенос медиатеки" data-i18n-aria-label="closeImportAria">×</button>
     </div>
-    <p>Paste a public playlist link and AWUN will read its public metadata, find playable matches and add every match to your library. Private account access is never requested.</p>
-    <label class="import-copy import-link" for="importUrl"><span>PUBLIC PLAYLIST LINK</span><div><input id="importUrl" type="url" inputmode="url" placeholder="https://www.youtube.com/playlist?list=…"><button id="importUrlSubmit" type="button">FIND + ADD ↗</button></div></label>
-    <div class="import-divider"><span>OR IMPORT AN EXPORT FILE</span></div>
+    <p data-i18n="importDescription">Вставь публичную ссылку на плейлист: AWUN прочитает открытые данные, найдёт доступные версии треков и добавит совпадения в медиатеку. Доступ к личному аккаунту не требуется.</p>
+    <label class="import-copy import-link" for="importUrl"><span data-i18n="publicPlaylistLink">ПУБЛИЧНАЯ ССЫЛКА НА ПЛЕЙЛИСТ</span><div><input id="importUrl" type="url" inputmode="url" placeholder="https://www.youtube.com/playlist?list=…"><button id="importUrlSubmit" type="button" data-i18n="findAndAdd">НАЙТИ И ДОБАВИТЬ ↗</button></div></label>
+    <div class="import-divider"><span data-i18n="orImportFile">ИЛИ ЗАГРУЗИ ФАЙЛ ЭКСПОРТА</span></div>
     <input id="libraryFile" type="file" accept=".csv,.json,.m3u,.m3u8,.txt,text/csv,application/json,audio/x-mpegurl,text/plain" hidden>
-    <button id="importFileButton" class="import-file" type="button"><span>CHOOSE LIBRARY FILE</span><b id="importFileName">CSV / JSON / M3U / TXT</b></button>
-    <label class="import-copy" for="importText"><span>OR PASTE TRACKS</span><textarea id="importText" rows="9" placeholder="Artist — Track&#10;Another Artist — Another Track"></textarea></label>
+    <button id="importFileButton" class="import-file" type="button"><span data-i18n="chooseLibraryFile">ВЫБРАТЬ ФАЙЛ МЕДИАТЕКИ</span><b id="importFileName">CSV / JSON / M3U / TXT</b></button>
+    <label class="import-copy" for="importText"><span data-i18n="orPasteTracks">ИЛИ ВСТАВЬ СПИСОК ТРЕКОВ</span><textarea id="importText" rows="9" placeholder="Исполнитель — Трек&#10;Другой исполнитель — Другой трек" data-i18n-placeholder="importTextPlaceholder"></textarea></label>
     <div class="import-actions">
-      <span id="importStatus">Nothing leaves this device until a track is matched for playback.</span>
-      <button id="importSubmit" type="button">IMPORT TO AWUN ↗</button>
+      <span id="importStatus" data-i18n="importPrivacy">Данные остаются на этом устройстве, пока AWUN не начнёт искать совпадения.</span>
+      <button id="importSubmit" type="button" data-i18n="importToAwun">ПЕРЕНЕСТИ В AWUN ↗</button>
     </div>
     <progress id="importProgress" class="import-progress" value="0" max="100" hidden></progress>
-    <footer><span>PUBLIC METADATA / AUTOMATIC MATCHING</span><span>NO ACCOUNT TOKEN</span></footer>
+    <footer><span data-i18n="publicMetadata">ОТКРЫТЫЕ ДАННЫЕ / АВТОМАТИЧЕСКИЙ ПОИСК</span><span data-i18n="noAccountToken">БЕЗ ТОКЕНА АККАУНТА</span></footer>
   </aside>
 
-  <script src="/static/app.js?v=20260718.1" defer></script>
-  <script src="/static/flow.js?v=20260718.1" defer></script>
+  <script src="/static/desktop-bridge.js?v=20260723.2" defer></script>
+  <script src="/static/i18n.js?v=20260723.2" defer></script>
+  <script src="/static/app.js?v=20260723.2" defer></script>
+  <script src="/static/flow.js?v=20260723.2" defer></script>
 </body>
 </html>

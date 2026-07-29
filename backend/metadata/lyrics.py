@@ -184,7 +184,7 @@ class TrackDetailsService:
             genius_status="not_found" if self.genius_access_token else "disabled",
         )
         if not self.enabled:
-            result.message = "Track stories are disabled"
+            result.message = "Информация о треках отключена"
             return result
 
         async with aiohttp.ClientSession(timeout=self.timeout) as session:
@@ -209,20 +209,20 @@ class TrackDetailsService:
 
         if not result.lines:
             if result.genius_status == "matched":
-                result.message = "Genius matched the song, but no lyrics provider returned text for this recording"
+                result.message = "Genius нашёл песню, но поставщик текстов не вернул текст этой записи"
             else:
-                result.message = "Lyrics are not available for this recording"
+                result.message = "Текст этой записи недоступен"
         elif result.match_type == "canonical":
             match = " — ".join(part for part in (result.matched_artist, result.matched_title) if part)
-            result.message = f"Showing the closest canonical song match: {match}"
+            result.message = f"Показано ближайшее точное совпадение песни: {match}"
         elif result.genius_status == "matched" and result.annotation_count == 0:
-            result.message = "Genius matched this song but currently exposes no public line annotations for it"
+            result.message = "Genius нашёл песню, но сейчас не предоставляет публичных комментариев к строкам"
         elif result.genius_status == "not_found":
-            result.message = "Lyrics found; Genius did not return a confident song match"
+            result.message = "Текст найден, но Genius не подтвердил совпадение песни"
         elif result.genius_status == "error":
-            result.message = "Lyrics found; Genius is temporarily unavailable"
+            result.message = "Текст найден, но Genius временно недоступен"
         elif not self.genius_access_token:
-            result.message = "Add AWUN_GENIUS_ACCESS_TOKEN to include official Genius annotations"
+            result.message = "Добавь AWUN_GENIUS_ACCESS_TOKEN, чтобы показывать официальные аннотации Genius"
         return result
 
     async def _lyrics(
@@ -237,8 +237,8 @@ class TrackDetailsService:
             params["duration"] = round(duration)
         headers = {
             "Accept": "application/json",
-            "User-Agent": "AWUN/1.7.0 (+https://github.com/Loro66/AWUN)",
-            "Lrclib-Client": "AWUN/1.7.0",
+            "User-Agent": "AWUN/1.8.0 (+https://github.com/Loro66/AWUN)",
+            "Lrclib-Client": "AWUN/1.8.0",
         }
         try:
             async with session.get(f"{self.lrclib_base_url}/api/get", params=params, headers=headers) as response:

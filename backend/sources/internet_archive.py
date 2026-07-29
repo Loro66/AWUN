@@ -82,11 +82,11 @@ class InternetArchiveAdapter(BaseAdapter):
             async with (await self._get_session()).get(self.search_url, params=params) as response:
                 payload = await response.json(content_type=None)
                 if response.status != 200:
-                    raise AdapterError(f"Internet Archive returned HTTP {response.status}")
+                    raise AdapterError(f"Internet Archive вернул ошибку HTTP {response.status}")
         except AdapterError:
             raise
         except (aiohttp.ClientError, TimeoutError, ValueError) as exc:
-            raise AdapterError(f"Internet Archive search failed ({type(exc).__name__})") from exc
+            raise AdapterError(f"Поиск Internet Archive не выполнен ({type(exc).__name__})") from exc
 
         docs = payload.get("response", {}).get("docs", []) if isinstance(payload, dict) else []
         identifiers = [
@@ -123,7 +123,7 @@ class InternetArchiveAdapter(BaseAdapter):
         identifier = _text(metadata.get("identifier"))
         if not identifier or str(metadata.get("access-restricted-item", "")).lower() == "true":
             return []
-        item_title = _text(metadata.get("title"), "Internet Archive audio")
+        item_title = _text(metadata.get("title"), "Аудио Internet Archive")
         artist = _text(metadata.get("creator"), "Internet Archive")
         query_key = query.casefold()
         candidates: list[tuple[float, dict[str, Any]]] = []

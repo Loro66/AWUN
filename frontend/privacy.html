@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#050505">
+  <meta name="description" content="Политика конфиденциальности приложения AWUN.">
+  <title>AWUN — конфиденциальность</title>
+  <style>
+    :root{color-scheme:dark;font-family:Inter,Arial,sans-serif;background:#050505;color:#f5f5ef}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 8%,#1d2710 0,transparent 32%),#050505}
+    main{width:min(900px,calc(100% - 36px));margin:auto;padding:42px 0 88px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-bottom:30px;border-bottom:1px solid #282a24}
+    .brand{color:#f5f5ef;font-size:28px;font-weight:900;letter-spacing:-1px;text-decoration:none}.brand i{color:#b7ff19;font-style:normal}
+    .meta{color:#8d8f87;font-size:11px;letter-spacing:1.4px;text-transform:uppercase}
+    article{padding:34px 0;border-bottom:1px solid #282a24}h1{font-size:clamp(38px,8vw,72px);line-height:.95;margin:0 0 22px;letter-spacing:-3px}
+    h2{margin:30px 0 12px;font-size:20px}p,li{color:#c8c9c2;font-size:15px;line-height:1.75}ul{padding-left:20px}
+    strong{color:#f5f5ef}a{color:#b7ff19}code{color:#b7ff19;background:#151711;padding:2px 5px}
+    .notice{margin:24px 0;padding:18px;border-left:3px solid #b7ff19;background:#11130e}
+    nav{display:flex;gap:16px;flex-wrap:wrap;margin-top:32px}nav a{font-size:12px;font-weight:800;letter-spacing:.7px}
+    @media(max-width:600px){header{align-items:flex-start;flex-direction:column}h1{letter-spacing:-2px}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <a class="brand" href="/">AWUN<i>.</i></a>
+    <span class="meta">Версия 1.8 · 23 июля 2026</span>
+  </header>
+
+  <article>
+    <h1>Конфиденциальность</h1>
+    <p>Эта политика описывает обработку данных в AWUN — приложении для поиска музыки, локальной медиатеки и персональных рекомендаций. Оператор приложения: Андрей Анищенко. Контакт: <a href="mailto:shamanmilord@gmail.com">shamanmilord@gmail.com</a>.</p>
+
+    <div class="notice"><strong>Коротко:</strong> в AWUN нет аккаунтов, рекламы и аналитических SDK. Медиатека, настройки и профиль «Моей волны» хранятся на устройстве. Для поиска приложение передаёт запрос серверу AWUN и подключённым музыкальным каталогам.</div>
+
+    <h2>1. Какие данные обрабатываются</h2>
+    <ul>
+      <li><strong>Поисковые запросы.</strong> Исполнитель, название трека и выбранные параметры поиска передаются по HTTPS серверу AWUN для выполнения запроса.</li>
+      <li><strong>Публичные ссылки на плейлисты.</strong> Ссылка, которую пользователь сам вставил, передаётся серверу только для чтения открытых метаданных и сопоставления треков.</li>
+      <li><strong>Технические данные.</strong> Хостинг, сеть доставки и внешние сервисы могут автоматически обрабатывать IP-адрес, User-Agent, время запроса и стандартные серверные журналы для доставки, безопасности и диагностики.</li>
+      <li><strong>Внешний медиаконтент.</strong> При загрузке обложек, официального плеера YouTube или переходе по каталожной ссылке соответствующий сервис получает обычные данные сетевого запроса и может использовать cookies согласно собственной политике.</li>
+    </ul>
+
+    <h2>2. Что остаётся на устройстве</h2>
+    <p>Сохранённые треки, тема, регион, история реакций «Моей волны», локальные комментарии и содержимое импортируемого файла обрабатываются в хранилище приложения. Содержимое файла не загружается целиком; для поиска совпадений серверу отправляются названия отдельных треков. Локальные данные можно удалить в настройках AWUN, очистив данные приложения в Android или удалив приложение.</p>
+
+    <h2>3. Для чего нужны данные</h2>
+    <p>Только для функций, которые запросил пользователь: поиска, воспроизведения, чтения открытого плейлиста, сопоставления метаданных, восстановления временной медиассылки и формирования локальных рекомендаций. AWUN не продаёт данные, не строит рекламные профили и не отправляет маркетинговые уведомления.</p>
+
+    <h2>4. Сторонние сервисы</h2>
+    <p>В зависимости от доступности источников AWUN может обращаться к YouTube, SoundCloud, Audius, Jamendo, Internet Archive, MusicBrainz, LRCLIB и Genius. Эти сервисы действуют по собственным условиям и политикам. В Google Play-версии YouTube воспроизводится только в видимом официальном плеере; скачивание музыки отключено.</p>
+
+    <h2>5. Хранение и защита</h2>
+    <p>Код AWUN не создаёт серверную базу поисковых запросов, публичных ссылок или пользовательских профилей. Данные запроса обрабатываются в памяти не дольше, чем необходимо для ответа. Инфраструктурные журналы могут временно храниться хостингом в соответствии с его настройками безопасности. Передача между приложением и сервером выполняется по HTTPS.</p>
+
+    <h2>6. Дети</h2>
+    <p>AWUN не предназначен для детей младше 13 лет и не собирает возраст. Если вы считаете, что ребёнок передал персональные данные, напишите по адресу ниже.</p>
+
+    <h2>7. Запросы и изменения</h2>
+    <p>В AWUN нет учётной записи и удалённого пользовательского профиля. По вопросам о данных, серверных журналах или этой политике напишите на <a href="mailto:shamanmilord@gmail.com">shamanmilord@gmail.com</a>. Существенные изменения политики публикуются на этой странице с новой датой.</p>
+  </article>
+
+  <article lang="en">
+    <h1>Privacy policy</h1>
+    <p>This policy explains data handling in AWUN, a music search, local library and personal discovery app. App operator: Andrey Anishchenko. Contact: <a href="mailto:shamanmilord@gmail.com">shamanmilord@gmail.com</a>.</p>
+
+    <div class="notice"><strong>In short:</strong> AWUN has no user accounts, ads or analytics SDKs. Your library, settings and My Wave profile remain on your device. Search requires sending your query to the AWUN server and connected music catalogs.</div>
+
+    <h2>Data processed</h2>
+    <p>Search terms and user-submitted public playlist URLs are transmitted over HTTPS to provide the requested feature. Hosting providers and external services may process IP address, User-Agent, request time and standard security logs. Loading artwork, the official YouTube player or an external catalog link may send ordinary network data and cookies to that provider.</p>
+
+    <h2>On-device data</h2>
+    <p>Saved tracks, visual settings, region, My Wave reactions, local comments and imported file contents are stored locally. An imported file is parsed on-device; individual artist and track names are sent only when AWUN searches for matches. Delete this data through AWUN controls, Android's Clear storage action or by uninstalling the app.</p>
+
+    <h2>Purpose, sharing and retention</h2>
+    <p>Data is used only for app functionality requested by the user. AWUN does not sell data, build advertising profiles or send marketing notifications. The AWUN code does not create a server-side database of searches, playlist links or user profiles; requests are processed ephemerally. Infrastructure logs may be retained temporarily for security. Depending on availability, AWUN may use YouTube, SoundCloud, Audius, Jamendo, Internet Archive, MusicBrainz, LRCLIB and Genius under their own policies.</p>
+
+    <h2>Children and contact</h2>
+    <p>AWUN is not directed to children under 13. Questions about data or this policy can be sent to <a href="mailto:shamanmilord@gmail.com">shamanmilord@gmail.com</a>. Material policy changes will be published here with a revised date.</p>
+  </article>
+
+  <nav><a href="/">← AWUN</a><a href="/support">Поддержка / Support</a><a href="/eula">Пользовательское соглашение</a></nav>
+</main>
+</body>
+</html>
