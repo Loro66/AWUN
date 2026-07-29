@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass
 from difflib import SequenceMatcher
+import re
 
 from backend.core.models import Track
 from backend.search.text_normalization import canonical_artist, canonical_title, token_overlap
@@ -62,6 +63,10 @@ def same_recording(left: Track, right: Track, *, threshold: float = 0.86) -> boo
     left_fingerprint = TrackFingerprint.from_track(left)
     right_fingerprint = TrackFingerprint.from_track(right)
     if not left_fingerprint.artist or not left_fingerprint.title:
+        return False
+    left_numbers = tuple(re.findall(r"\d+", left_fingerprint.title))
+    right_numbers = tuple(re.findall(r"\d+", right_fingerprint.title))
+    if left_numbers != right_numbers:
         return False
     return recording_similarity(left_fingerprint, right_fingerprint) >= threshold
 

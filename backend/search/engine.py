@@ -1,10 +1,15 @@
 import asyncio
+from dataclasses import asdict
 from time import perf_counter
 from urllib.parse import quote, quote_plus
 
+from backend.analytics.search_metrics import SearchMetrics
 from backend.core.models import SearchRequest, SearchResponse, SourceName, Track
 from backend.core.regions import RegionProfile, resolve_region
+from backend.reliability.circuit_breaker import CircuitBreaker
+from backend.reliability.source_health import SourceHealthRegistry
 from backend.search.enrichment import BasicQueryEnricher, QueryEnricher
+from backend.search.track_identity import same_recording
 from backend.sources.base import BaseAdapter
 
 
@@ -20,10 +25,27 @@ class SearchEngine:
         self._timeout = timeout_seconds
         self._max_limit = max_limit
         self._enricher = enricher or BasicQueryEnricher()
+        self._breakers = {
+            source: CircuitBreaker(failure_threshold=3, recovery_seconds=30)
+            for source in self._adapters
+        }
+        self._health = SourceHealthRegistry(list(self._adapters))
+        self._metrics = SearchMetrics()
 
     @property
     def available_sources(self) -> list[SourceName]:
         return list(self._adapters)  # type: ignore[return-value]
+
+    @property
+    def source_health(self) -> dict[str, dict[str, object]]:
+        return {
+            source: asdict(health)
+            for source, health in self._health.snapshot().items()
+        }
+
+    @property
+    def metrics(self) -> dict[str, object]:
+        return asdict(self._metrics.snapshot())
 
     async def search(self, request: SearchRequest) -> SearchResponse:
         started = perf_counter()
@@ -40,12 +62,12 @@ class SearchEngine:
             query_variants = [request.query]
 
         errors: dict[str, str] = {
-            source: "Source is not configured"
+            source: "Источник не настроен"
             for source in requested
             if source not in self._adapters
         }
         if not requested:
-            errors["engine"] = "No search sources are configured"
+            errors["engine"] = "Источники поиска не настроены"
 
         tasks = [
             self._safe_search(self._adapters[source], query_variants, per_source_limit, region)
@@ -63,6 +85,7 @@ class SearchEngine:
         for track in tracks:
             track.catalog_links = self._catalog_links(track, region)
         elapsed_ms = round((perf_counter() - started) * 1000)
+        self._metrics.record_search(elapsed_ms=elapsed_ms, result_count=len(tracks))
         return SearchResponse(
             query=request.query,
             tracks=tracks,
@@ -81,16 +104,44 @@ class SearchEngine:
         limit: int,
         region: RegionProfile,
     ) -> tuple[list[Track], str | None]:
+        source = adapter.source
+        breaker = self._breakers[source]
+        if not breaker.allow_request():
+            snapshot = breaker.snapshot
+            return [], (
+                "Источник временно отключён после повторных ошибок; "
+                f"повтор через {snapshot.retry_after_seconds:g} с"
+            )
+        started = perf_counter()
         try:
             tracks = await asyncio.wait_for(
                 adapter.search_many(queries, limit, region=region),
                 timeout=self._timeout,
             )
+            elapsed_ms = round((perf_counter() - started) * 1000)
+            breaker.record_success()
+            self._health.record(source, success=True, latency_ms=elapsed_ms)
+            self._metrics.record_source(
+                source,
+                success=True,
+                elapsed_ms=elapsed_ms,
+                result_count=len(tracks),
+            )
             return tracks, None
         except TimeoutError:
-            return [], f"Timed out after {self._timeout:g} seconds"
+            error = f"Источник не ответил за {self._timeout:g} с"
         except Exception as exc:
-            return [], str(exc)
+            error = str(exc)
+        elapsed_ms = round((perf_counter() - started) * 1000)
+        breaker.record_failure()
+        self._health.record(source, success=False, latency_ms=elapsed_ms, error=error)
+        self._metrics.record_source(
+            source,
+            success=False,
+            elapsed_ms=elapsed_ms,
+            result_count=0,
+        )
+        return [], error
 
     @staticmethod
     def _catalog_links(track: Track, region: RegionProfile) -> dict[str, str]:
@@ -106,12 +157,12 @@ class SearchEngine:
 
     @staticmethod
     def _deduplicate(tracks: list[Track]) -> list[Track]:
-        seen: set[tuple[str, str, int]] = set()
         unique: list[Track] = []
         for track in tracks:
-            key = (track.artist.casefold(), track.title.casefold(), round(track.duration / 3))
-            if key not in seen:
-                seen.add(key)
+            if not any(
+                same_recording(track, existing, threshold=0.97)
+                for existing in unique
+            ):
                 unique.append(track)
         return unique
 

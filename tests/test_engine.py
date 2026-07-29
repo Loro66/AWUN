@@ -128,7 +128,7 @@ class SearchEngineTests(unittest.IsolatedAsyncioTestCase):
         response = await SearchEngine([slow], timeout_seconds=0.001).search(
             SearchRequest(query="song")
         )
-        self.assertIn("Timed out", response.errors["youtube"])
+        self.assertIn("не ответил", response.errors["youtube"])
 
     async def test_legacy_soundcloud_uses_safe_result_window(self) -> None:
         adapter = SoundCloudAdapter()
