@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <rect width="1080" height="1920" fill="#f4f4ef"/>
+  <text x="64" y="112" fill="#0a0a09" font-family="DejaVu Sans" font-size="55" font-weight="900">AWUN<tspan fill="#608f00">.</tspan></text>
+  <rect x="754" y="66" width="262" height="62" rx="31" fill="#0a0a09"/><text x="885" y="105" fill="#f4f4ef" font-family="DejaVu Sans" font-size="16" font-weight="800" text-anchor="middle">МОЯ МУЗЫКА · 12</text>
+  <line x1="64" y1="154" x2="1016" y2="154" stroke="#c7c8c1"/>
+  <text x="64" y="244" fill="#608f00" font-family="DejaVu Sans" font-size="16" font-weight="700" letter-spacing="3">ЛОКАЛЬНАЯ МЕДИАТЕКА</text>
+  <text x="64" y="346" fill="#0a0a09" font-family="DejaVu Sans" font-size="76" font-weight="900">Собери музыку</text>
+  <text x="64" y="426" fill="#0a0a09" font-family="DejaVu Sans" font-size="76" font-weight="900">в одном месте</text>
+  <text x="64" y="490" fill="#64665f" font-family="DejaVu Sans" font-size="24">Без аккаунта — всё хранится на устройстве.</text>
+  <rect x="64" y="566" width="952" height="98" rx="10" fill="#ffffff" stroke="#b9bbb2"/>
+  <text x="96" y="627" fill="#62645e" font-family="DejaVu Sans" font-size="25">Поиск в медиатеке</text><circle cx="953" cy="615" r="28" fill="none" stroke="#777a72" stroke-width="4"/><line x1="973" y1="636" x2="996" y2="659" stroke="#777a72" stroke-width="4"/>
+  <g font-family="DejaVu Sans">
+    <rect x="64" y="724" width="952" height="174" rx="10" fill="#ffffff" stroke="#d3d4ce"/>
+    <rect x="88" y="748" width="126" height="126" rx="8" fill="#dfe8cb"/><path d="M113 849l34-76 28 57 22-38" fill="none" stroke="#608f00" stroke-width="8"/>
+    <text x="254" y="786" fill="#0a0a09" font-size="28" font-weight="800">Signal</text><text x="254" y="826" fill="#6f716a" font-size="20">Neon Echo</text><text x="254" y="865" fill="#608f00" font-size="15" font-weight="800">AUDIUS · 3:34</text>
+    <circle cx="944" cy="811" r="35" fill="#0a0a09"/><path d="M934 793l24 18-24 18z" fill="#f4f4ef"/>
+
+    <rect x="64" y="918" width="952" height="174" rx="10" fill="#ffffff" stroke="#d3d4ce"/>
+    <rect x="88" y="942" width="126" height="126" rx="8" fill="#e3ddf3"/><circle cx="151" cy="1005" r="34" fill="none" stroke="#6a48a8" stroke-width="8"/>
+    <text x="254" y="980" fill="#0a0a09" font-size="28" font-weight="800">Soft Current</text><text x="254" y="1020" fill="#6f716a" font-size="20">Glass District</text><text x="254" y="1059" fill="#6a48a8" font-size="15" font-weight="800">JAMENDO · 4:02</text>
+    <circle cx="944" cy="1005" r="35" fill="#0a0a09"/><path d="M934 987l24 18-24 18z" fill="#f4f4ef"/>
+
+    <rect x="64" y="1112" width="952" height="174" rx="10" fill="#ffffff" stroke="#d3d4ce"/>
+    <rect x="88" y="1136" width="126" height="126" rx="8" fill="#f0dbc9"/><path d="M111 1224c31-67 60-67 88 0" fill="none" stroke="#b45316" stroke-width="8"/>
+    <text x="254" y="1174" fill="#0a0a09" font-size="28" font-weight="800">Night Transit</text><text x="254" y="1214" fill="#6f716a" font-size="20">Northbound</text><text x="254" y="1253" fill="#b45316" font-size="15" font-weight="800">INTERNET ARCHIVE · 3:18</text>
+    <circle cx="944" cy="1199" r="35" fill="#0a0a09"/><path d="M934 1181l24 18-24 18z" fill="#f4f4ef"/>
+  </g>
+  <rect x="64" y="1398" width="952" height="198" rx="12" fill="#0a0a09"/>
+  <text x="98" y="1451" fill="#9fbf5e" font-family="DejaVu Sans" font-size="15" font-weight="800" letter-spacing="2">ПЕРЕНОС ПЛЕЙЛИСТА</text>
+  <text x="98" y="1512" fill="#f5f5ef" font-family="DejaVu Sans" font-size="32" font-weight="900">Вставь открытую ссылку —</text>
+  <text x="98" y="1555" fill="#f5f5ef" font-family="DejaVu Sans" font-size="32" font-weight="900">AWUN найдёт совпадения.</text>
+  <text x="64" y="1748" fill="#62645e" font-family="DejaVu Sans" font-size="17">МЕДИАТЕКА · НАСТРОЙКИ · МОЯ ВОЛНА</text>
+  <text x="64" y="1790" fill="#62645e" font-family="DejaVu Sans" font-size="17">ХРАНЯТСЯ ЛОКАЛЬНО</text>
+  <circle cx="972" cy="1768" r="35" fill="#608f00"/><path d="M956 1777l13-18 13 12 17-23" fill="none" stroke="#fff" stroke-width="4"/>
+</svg>

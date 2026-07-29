@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <rect width="1080" height="1920" fill="#070806"/>
+  <text x="64" y="110" fill="#f5f5ef" font-family="DejaVu Sans" font-size="54" font-weight="900">AWUN<tspan fill="#b7ff19">.</tspan></text>
+  <text x="1014" y="106" fill="#85887f" font-family="DejaVu Sans" font-size="15" text-anchor="end" letter-spacing="2">5 ИСТОЧНИКОВ ОНЛАЙН</text>
+  <line x1="64" y1="148" x2="1016" y2="148" stroke="#30332c"/>
+  <rect x="64" y="205" width="952" height="112" rx="10" fill="#12140f" stroke="#4c5045" stroke-width="2"/>
+  <text x="94" y="274" fill="#f5f5ef" font-family="DejaVu Sans" font-size="31">Neon Echo — Signal</text>
+  <circle cx="958" cy="261" r="36" fill="#b7ff19"/><path d="M942 276l31-31M953 245h20v20" fill="none" stroke="#050505" stroke-width="5"/>
+  <text x="64" y="398" fill="#b7ff19" font-family="DejaVu Sans" font-size="16" font-weight="700" letter-spacing="3">РЕЗУЛЬТАТЫ ПОИСКА</text>
+  <text x="1016" y="398" fill="#85887f" font-family="DejaVu Sans" font-size="16" text-anchor="end">12 НАЙДЕНО · 1.4 С</text>
+  <g font-family="DejaVu Sans">
+    <rect x="64" y="438" width="952" height="190" rx="10" fill="#10120e" stroke="#42463b"/>
+    <rect x="88" y="466" width="126" height="126" rx="8" fill="#1f2b12"/><path d="M113 563l33-72 26 55 25-42" fill="none" stroke="#b7ff19" stroke-width="8"/>
+    <circle cx="260" cy="535" r="29" fill="#b7ff19"/><path d="M251 520l21 15-21 15z" fill="#050505"/>
+    <text x="312" y="504" fill="#f5f5ef" font-size="27" font-weight="800">Signal</text><text x="312" y="541" fill="#a4a69e" font-size="20">Neon Echo</text>
+    <circle cx="313" cy="577" r="6" fill="#b7ff19"/><text x="330" y="583" fill="#85887f" font-size="15" font-weight="700">AUDIUS · 3:34</text>
+    <rect x="809" y="480" width="171" height="48" rx="5" fill="none" stroke="#606459"/><text x="895" y="511" fill="#f5f5ef" font-size="14" font-weight="800" text-anchor="middle">ИСТОРИЯ</text>
+    <rect x="809" y="542" width="171" height="48" rx="5" fill="#f5f5ef"/><text x="895" y="573" fill="#050505" font-size="14" font-weight="800" text-anchor="middle">В МЕДИАТЕКУ</text>
+
+    <rect x="64" y="648" width="952" height="190" rx="10" fill="#10120e" stroke="#30332c"/>
+    <rect x="88" y="676" width="126" height="126" rx="8" fill="#171923"/><circle cx="151" cy="739" r="32" fill="none" stroke="#8c7dff" stroke-width="8"/>
+    <circle cx="260" cy="745" r="29" fill="#f5f5ef"/><path d="M251 730l21 15-21 15z" fill="#050505"/>
+    <text x="312" y="714" fill="#f5f5ef" font-size="27" font-weight="800">Signal — Live Session</text><text x="312" y="751" fill="#a4a69e" font-size="20">Neon Echo</text>
+    <circle cx="313" cy="787" r="6" fill="#8c7dff"/><text x="330" y="793" fill="#85887f" font-size="15" font-weight="700">JAMENDO · 3:48</text>
+    <rect x="809" y="690" width="171" height="48" rx="5" fill="none" stroke="#606459"/><text x="895" y="721" fill="#f5f5ef" font-size="14" font-weight="800" text-anchor="middle">ИСТОРИЯ</text>
+    <rect x="809" y="752" width="171" height="48" rx="5" fill="none" stroke="#606459"/><text x="895" y="783" fill="#f5f5ef" font-size="14" font-weight="800" text-anchor="middle">ДОБАВИТЬ</text>
+
+    <rect x="64" y="858" width="952" height="190" rx="10" fill="#10120e" stroke="#30332c"/>
+    <rect x="88" y="886" width="126" height="126" rx="8" fill="#261810"/><path d="M108 972c30-60 58-60 87 0" fill="none" stroke="#ff7a1a" stroke-width="8"/>
+    <circle cx="260" cy="955" r="29" fill="#f5f5ef"/><path d="M251 940l21 15-21 15z" fill="#050505"/>
+    <text x="312" y="924" fill="#f5f5ef" font-size="27" font-weight="800">Signal (Acoustic)</text><text x="312" y="961" fill="#a4a69e" font-size="20">Neon Echo</text>
+    <circle cx="313" cy="997" r="6" fill="#ff7a1a"/><text x="330" y="1003" fill="#85887f" font-size="15" font-weight="700">SOUNDCLOUD · 3:21</text>
+  </g>
+  <text x="64" y="1153" fill="#85887f" font-family="DejaVu Sans" font-size="16" font-weight="700" letter-spacing="3">ОДИН ТРЕК · РАЗНЫЕ ВЕРСИИ</text>
+  <text x="64" y="1226" fill="#f5f5ef" font-family="DejaVu Sans" font-size="49" font-weight="900">Выбирай источник,</text>
+  <text x="64" y="1284" fill="#f5f5ef" font-family="DejaVu Sans" font-size="49" font-weight="900">который подходит тебе.</text>
+  <rect x="0" y="1608" width="1080" height="312" fill="#11130e" stroke="#3b3f35"/>
+  <rect x="48" y="1652" width="108" height="108" rx="9" fill="#1f2b12"/><path d="M69 1737l28-61 22 47 21-36" fill="none" stroke="#b7ff19" stroke-width="7"/>
+  <text x="190" y="1698" fill="#f5f5ef" font-family="DejaVu Sans" font-size="25" font-weight="800">Signal</text><text x="190" y="1734" fill="#9a9c94" font-family="DejaVu Sans" font-size="18">Neon Echo · Audius</text>
+  <circle cx="864" cy="1706" r="44" fill="#b7ff19"/><path d="M851 1684l32 22-32 22z" fill="#050505"/>
+  <text x="72" y="1832" fill="#85887f" font-family="DejaVu Sans" font-size="15">0:42</text><rect x="126" y="1819" width="806" height="6" rx="3" fill="#383b33"/><rect x="126" y="1819" width="244" height="6" rx="3" fill="#b7ff19"/><text x="1004" y="1832" fill="#85887f" font-family="DejaVu Sans" font-size="15" text-anchor="end">3:34</text>
+</svg>

@@ -1,0 +1,8 @@
+First AWUN release for Google Play.
+
+• Multi-catalog music search.
+• Local library and personal My Wave radio.
+• Public playlist import by link.
+• Full Russian and English interface.
+• Policy-safe official YouTube player.
+• Better loading recovery and a clear retry screen.

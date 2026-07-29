@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AWUN</string>
+    <string name="loading">Загрузка AWUN</string>
+    <string name="offline_title">AWUN пока недоступен</string>
+    <string name="offline_message">Проверь подключение к интернету и попробуй ещё раз. Твоя медиатека и настройки останутся на устройстве.</string>
+    <string name="retry">ПОВТОРИТЬ</string>
+    <string name="privacy">КОНФИДЕНЦИАЛЬНОСТЬ</string>
+    <string name="mirror_selected">Основной сервер не ответил. Открываю резервный.</string>
+    <string name="no_network">Нет подключения к интернету. AWUN переподключится после восстановления сети.</string>
+    <string name="external_link_error">Не удалось открыть ссылку во внешнем приложении.</string>
+    <string name="unsafe_link">Небезопасная ссылка заблокирована.</string>
+    <string name="server_error">Сервер AWUN вернул ошибку %1$d.</string>
+    <string name="web_error">Не удалось загрузить AWUN.</string>
+    <string name="app_icon_description">Логотип AWUN</string>
+</resources>

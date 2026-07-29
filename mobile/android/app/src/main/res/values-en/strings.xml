@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AWUN</string>
+    <string name="loading">Loading AWUN</string>
+    <string name="offline_title">AWUN is unavailable</string>
+    <string name="offline_message">Check your internet connection and try again. Your library and settings remain on this device.</string>
+    <string name="retry">TRY AGAIN</string>
+    <string name="privacy">PRIVACY</string>
+    <string name="mirror_selected">The primary server did not respond. Opening the backup.</string>
+    <string name="no_network">No internet connection. AWUN will reconnect when the network is available.</string>
+    <string name="external_link_error">The link could not be opened in another app.</string>
+    <string name="unsafe_link">An unsafe link was blocked.</string>
+    <string name="server_error">The AWUN server returned error %1$d.</string>
+    <string name="web_error">AWUN could not be loaded.</string>
+    <string name="app_icon_description">AWUN logo</string>
+</resources>

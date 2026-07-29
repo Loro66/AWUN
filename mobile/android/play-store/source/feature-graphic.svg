@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="500" viewBox="0 0 1024 500">
+  <defs>
+    <radialGradient id="glow" cx="78%" cy="28%" r="72%">
+      <stop offset="0" stop-color="#2d4211"/>
+      <stop offset=".42" stop-color="#11170a"/>
+      <stop offset="1" stop-color="#050505"/>
+    </radialGradient>
+    <pattern id="grid" width="42" height="42" patternUnits="userSpaceOnUse">
+      <path d="M42 0H0V42" fill="none" stroke="#252820" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1024" height="500" fill="url(#glow)"/>
+  <rect width="1024" height="500" fill="url(#grid)" opacity=".48"/>
+  <circle cx="850" cy="112" r="162" fill="none" stroke="#b7ff19" stroke-width="2" opacity=".42"/>
+  <circle cx="850" cy="112" r="94" fill="none" stroke="#b7ff19" stroke-width="2" opacity=".7"/>
+  <path d="M767 167L812 55l38 91 38-91 45 112M788 167h124" fill="none" stroke="#f5f5ef" stroke-width="16" stroke-linejoin="miter"/>
+  <circle cx="920" cy="48" r="9" fill="#b7ff19"/>
+  <text x="66" y="105" fill="#b7ff19" font-family="DejaVu Sans,Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="4">МУЗЫКАЛЬНЫЙ НАВИГАТОР</text>
+  <text x="58" y="270" fill="#f5f5ef" font-family="DejaVu Sans,Arial,sans-serif" font-size="148" font-weight="900" letter-spacing="-10">AWUN</text>
+  <circle cx="522" cy="244" r="10" fill="#b7ff19"/>
+  <text x="66" y="330" fill="#c8c9c2" font-family="DejaVu Sans,Arial,sans-serif" font-size="25" font-weight="500">Один поиск. Разные каталоги.</text>
+  <line x1="66" y1="382" x2="958" y2="382" stroke="#45483d"/>
+  <text x="66" y="424" fill="#8e9188" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="700" letter-spacing="3">ПОИСК</text>
+  <circle cx="171" cy="418" r="4" fill="#b7ff19"/>
+  <text x="192" y="424" fill="#8e9188" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="700" letter-spacing="3">МЕДИАТЕКА</text>
+  <circle cx="342" cy="418" r="4" fill="#b7ff19"/>
+  <text x="363" y="424" fill="#8e9188" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="700" letter-spacing="3">МОЯ ВОЛНА</text>
+</svg>

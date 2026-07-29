@@ -1,29 +1,49 @@
-# AWUN mobile shells
+# AWUN mobile
 
-The Android and iOS projects are small native WebView shells for the hosted
-AWUN beta. They retain browser storage, support media playback and open the
-production URL `https://awun-api1.onrender.com`. Both shells now use the AWUN
-brand mark as the native app icon and splash identity.
+## Android / Google Play
 
-## Optional mirror for networks where Render is unavailable
+The Android app is a hardened native WebView client for the owned AWUN web/API
+deployment. It keeps browser storage for the local library and My Wave profile,
+opens third-party catalog links in the user's browser, pauses playback whenever
+the activity goes to the background, and displays a localized offline/retry
+screen if every configured AWUN endpoint is unavailable.
 
-Deploy `deploy/russia-mirror` to a host reachable by your users (for example a
-Russian cloud account you control), then add the public HTTPS address as the
-GitHub Actions repository variable `AWUN_MIRROR_URL`. New Android and iOS beta
-builds will automatically try the mirror if the primary Render address cannot
-be opened. No user credentials or music tokens pass through this setting.
+Google Play identity:
+
+- application ID: `com.loro66.awun`;
+- version: `1.8.0` (`versionCode 18000`);
+- minimum Android: 7.0 / API 24;
+- compile and target SDK: Android 16 / API 36;
+- release format: signed Android App Bundle (`.aab`);
+- permissions: internet and network state only.
+
+The Play client adds `platform=android-play` and the
+`X-AWUN-Client: android-play` header. The frontend hides downloads and the API
+removes every `download_url` for that client. YouTube remains in its visible
+official player and playback stops when AWUN leaves the foreground.
+
+Run the **Mobile test builds** workflow for a debug-signed internal APK. Run
+**Android Google Play release** manually to build a release AAB after the Play
+Console account owner has configured the four upload-key secrets documented in
+[`android/play-store/RELEASE_CHECKLIST.md`](android/play-store/RELEASE_CHECKLIST.md).
+The workflow does not upload or publish anything to Google Play.
+
+Store text and images are under `android/fastlane/metadata/android`. Data safety,
+app-content answers and the release checklist are under `android/play-store`.
+
+## Optional owned mirror
+
+`AWUN_MIRROR_URL` may point to a second HTTPS deployment controlled by the AWUN
+operator. The Android client validates HTTPS endpoints and tries the mirror only
+after the primary endpoint fails. Never set this variable to an unrelated proxy.
 
 The mirror only serves the AWUN site and API. YouTube playback remains inside
-the official YouTube Player and therefore follows YouTube's own regional and
-network availability; AWUN does not proxy or download YouTube media.
+the official YouTube Player and follows YouTube's own availability; AWUN does
+not proxy or download YouTube media.
 
-GitHub Actions produces three beta artifacts for every pull request:
+## iOS
 
-- `AWUN-Android-beta.apk`: debug-signed and directly installable on Android.
-- `AWUN-iOS-unsigned.ipa`: unsigned device build for re-signing with AltStore,
-  Sideloadly or an Apple Developer certificate.
-- `AWUN-iOS-Simulator.zip`: application bundle for an iOS Simulator.
-
-A directly installable iPhone release must be signed with an Apple Developer
-certificate and a provisioning profile. Those credentials must be provided as
-encrypted GitHub secrets and must never be committed to the repository.
+The iOS project remains an unsigned beta shell for the hosted AWUN deployment.
+GitHub Actions produces an unsigned device archive and a Simulator build. A
+direct App Store release still requires an Apple Developer account, signing
+certificate and provisioning profile; those credentials must never be committed.

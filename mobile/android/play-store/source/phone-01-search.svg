@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <radialGradient id="g" cx="80%" cy="10%" r="70%"><stop offset="0" stop-color="#22310e"/><stop offset=".55" stop-color="#0b0d08"/><stop offset="1" stop-color="#050505"/></radialGradient>
+    <pattern id="grid" width="54" height="54" patternUnits="userSpaceOnUse"><path d="M54 0H0V54" fill="none" stroke="#24271f"/></pattern>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#g)"/><rect width="1080" height="1920" fill="url(#grid)" opacity=".35"/>
+  <text x="68" y="116" fill="#f5f5ef" font-family="DejaVu Sans" font-size="58" font-weight="900">AWUN<tspan fill="#b7ff19">.</tspan></text>
+  <rect x="841" y="68" width="86" height="54" rx="27" fill="none" stroke="#5c6053"/><text x="864" y="103" fill="#f5f5ef" font-family="DejaVu Sans" font-size="18" font-weight="700">RU</text>
+  <circle cx="981" cy="95" r="26" fill="#b7ff19"/><path d="M970 95h22M981 84v22" stroke="#050505" stroke-width="4"/>
+  <line x1="68" y1="158" x2="1012" y2="158" stroke="#34372f"/>
+  <text x="68" y="266" fill="#b7ff19" font-family="DejaVu Sans" font-size="18" font-weight="700" letter-spacing="4">01 / ПОИСК</text>
+  <text x="68" y="366" fill="#f5f5ef" font-family="DejaVu Sans" font-size="72" font-weight="800">Найди свой</text>
+  <text x="68" y="444" fill="#f5f5ef" font-family="DejaVu Sans" font-size="72" font-weight="800">следующий трек</text>
+  <text x="68" y="506" fill="#9fa198" font-family="DejaVu Sans" font-size="25">Один запрос проверяет несколько каталогов.</text>
+  <rect x="68" y="590" width="944" height="132" rx="12" fill="#11130e" stroke="#5b6052" stroke-width="2"/>
+  <text x="100" y="670" fill="#7f8279" font-family="DejaVu Sans" font-size="31">Исполнитель или трек</text>
+  <circle cx="944" cy="656" r="43" fill="#b7ff19"/><path d="M924 674l38-38M937 636h25v25" fill="none" stroke="#050505" stroke-width="5"/>
+  <text x="68" y="800" fill="#777a72" font-family="DejaVu Sans" font-size="16" font-weight="700" letter-spacing="3">ПОПРОБУЙ</text>
+  <g font-family="DejaVu Sans" font-size="18" font-weight="700">
+    <rect x="68" y="836" width="244" height="62" rx="31" fill="#151712" stroke="#3d4137"/><text x="97" y="875" fill="#d7d8d2">НОВАЯ МУЗЫКА</text>
+    <rect x="328" y="836" width="250" height="62" rx="31" fill="#151712" stroke="#3d4137"/><text x="358" y="875" fill="#d7d8d2">КОНЦЕНТРАЦИЯ</text>
+    <rect x="594" y="836" width="190" height="62" rx="31" fill="#151712" stroke="#3d4137"/><text x="623" y="875" fill="#d7d8d2">РУССКИЙ РОК</text>
+  </g>
+  <text x="68" y="1012" fill="#f5f5ef" font-family="DejaVu Sans" font-size="24" font-weight="800">ПОДКЛЮЧЁННЫЕ ИСТОЧНИКИ</text>
+  <text x="940" y="1012" fill="#b7ff19" font-family="DejaVu Sans" font-size="18" text-anchor="end">5 ОНЛАЙН</text>
+  <g font-family="DejaVu Sans" font-size="21" font-weight="700">
+    <rect x="68" y="1055" width="944" height="94" rx="8" fill="#10120d" stroke="#2e312a"/><circle cx="112" cy="1102" r="10" fill="#ff4141"/><text x="146" y="1110" fill="#e9eae4">YOUTUBE</text><text x="944" y="1110" fill="#777b71" text-anchor="end" font-size="16">АКТИВЕН</text>
+    <rect x="68" y="1163" width="944" height="94" rx="8" fill="#10120d" stroke="#2e312a"/><circle cx="112" cy="1210" r="10" fill="#ff7a1a"/><text x="146" y="1218" fill="#e9eae4">SOUNDCLOUD</text><text x="944" y="1218" fill="#777b71" text-anchor="end" font-size="16">АКТИВЕН</text>
+    <rect x="68" y="1271" width="944" height="94" rx="8" fill="#10120d" stroke="#2e312a"/><circle cx="112" cy="1318" r="10" fill="#b7ff19"/><text x="146" y="1326" fill="#e9eae4">ОТКРЫТЫЕ КАТАЛОГИ</text><text x="944" y="1326" fill="#777b71" text-anchor="end" font-size="16">3 ИСТОЧНИКА</text>
+  </g>
+  <rect x="68" y="1492" width="944" height="248" rx="14" fill="#b7ff19"/>
+  <text x="104" y="1553" fill="#172000" font-family="DejaVu Sans" font-size="16" font-weight="800" letter-spacing="3">БЕЗ РЕГИСТРАЦИИ</text>
+  <text x="104" y="1630" fill="#050505" font-family="DejaVu Sans" font-size="42" font-weight="900">Ищи. Сохраняй.</text>
+  <text x="104" y="1680" fill="#050505" font-family="DejaVu Sans" font-size="42" font-weight="900">Слушай дальше.</text>
+  <text x="68" y="1840" fill="#777a72" font-family="DejaVu Sans" font-size="15" font-weight="700" letter-spacing="2">AWUN / GOOGLE PLAY</text>
+</svg>

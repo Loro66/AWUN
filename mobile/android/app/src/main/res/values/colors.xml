@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources><color name="awun_background">#10110E</color><color name="awun_acid">#B7FF19</color></resources>
+<resources>
+    <color name="awun_background">#10110E</color>
+    <color name="awun_background_deep">#050505</color>
+    <color name="awun_acid">#B7FF19</color>
+    <color name="awun_text">#F5F5EF</color>
+    <color name="awun_muted">#A0A19A</color>
+</resources>

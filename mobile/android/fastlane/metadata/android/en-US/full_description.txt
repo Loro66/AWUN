@@ -1,0 +1,17 @@
+AWUN is a music navigator that helps you find the same song across different catalogs, save the version that works for you and continue listening with the personal My Wave radio.
+
+What AWUN can do:
+• search several connected music sources at once;
+• account for Cyrillic and Latin spelling, region and query language;
+• keep a local music library without registration;
+• start My Wave and tune recommendations with likes and skips;
+• read a public playlist link and find available matches;
+• show track information, lyrics, catalog links and available versions.
+
+Your library, settings and recommendation profile remain on your device. The app has no ads, advertising SDKs or mandatory account.
+
+An internet connection is required for search and playback. Track availability depends on the provider, region and rights holder. YouTube plays only through the visible official player. Other providers are used only within the capabilities they make available. Music downloads are disabled in the Google Play build.
+
+AWUN is an early-stage product. If one provider is temporarily unavailable, the others can continue to work.
+
+The privacy policy and support contacts are available inside the app.

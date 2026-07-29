@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs><radialGradient id="g" cx="18%" cy="16%" r="74%"><stop offset="0" stop-color="#23340d"/><stop offset=".55" stop-color="#0b0d08"/><stop offset="1" stop-color="#050505"/></radialGradient></defs>
+  <rect width="1080" height="1920" fill="url(#g)"/>
+  <text x="64" y="112" fill="#f5f5ef" font-family="DejaVu Sans" font-size="55" font-weight="900">AWUN<tspan fill="#b7ff19">.</tspan></text>
+  <rect x="770" y="66" width="246" height="62" rx="31" fill="#b7ff19"/><text x="893" y="105" fill="#050505" font-family="DejaVu Sans" font-size="16" font-weight="800" text-anchor="middle">МОЯ ВОЛНА · LIVE</text>
+  <line x1="64" y1="154" x2="1016" y2="154" stroke="#3a3d34"/>
+  <text x="64" y="244" fill="#b7ff19" font-family="DejaVu Sans" font-size="16" font-weight="700" letter-spacing="3">AWUN / ЛИЧНОЕ РАДИО</text>
+  <text x="64" y="350" fill="#f5f5ef" font-family="DejaVu Sans" font-size="82" font-weight="900">Моя волна</text>
+  <text x="64" y="420" fill="#a2a49c" font-family="DejaVu Sans" font-size="25">Настрой настроение — остальное AWUN подберёт сам.</text>
+  <text x="64" y="522" fill="#868980" font-family="DejaVu Sans" font-size="16" font-weight="700" letter-spacing="3">РЕЖИМ ПОДБОРА</text>
+  <rect x="64" y="554" width="952" height="78" rx="10" fill="#11130e" stroke="#363a31"/>
+  <rect x="380" y="560" width="316" height="66" rx="8" fill="#b7ff19"/><text x="538" y="602" fill="#050505" font-family="DejaVu Sans" font-size="18" font-weight="800" text-anchor="middle">БАЛАНС</text>
+  <text x="216" y="602" fill="#8f918a" font-family="DejaVu Sans" font-size="18" font-weight="700" text-anchor="middle">ЗНАКОМАЯ</text>
+  <text x="856" y="602" fill="#8f918a" font-family="DejaVu Sans" font-size="18" font-weight="700" text-anchor="middle">НОВАЯ</text>
+  <g font-family="DejaVu Sans">
+    <text x="64" y="718" fill="#868980" font-size="16" font-weight="700" letter-spacing="3">НАСТРОЕНИЕ</text>
+    <rect x="64" y="748" width="454" height="94" rx="9" fill="#11130e" stroke="#41453a"/><text x="96" y="805" fill="#f5f5ef" font-size="24" font-weight="700">НОЧНОЕ</text><text x="475" y="805" fill="#b7ff19" font-size="25" text-anchor="end">⌄</text>
+    <text x="562" y="718" fill="#868980" font-size="16" font-weight="700" letter-spacing="3">ЗАНЯТИЕ</text>
+    <rect x="562" y="748" width="454" height="94" rx="9" fill="#11130e" stroke="#41453a"/><text x="594" y="805" fill="#f5f5ef" font-size="24" font-weight="700">РАБОТА</text><text x="973" y="805" fill="#b7ff19" font-size="25" text-anchor="end">⌄</text>
+    <text x="64" y="928" fill="#868980" font-size="16" font-weight="700" letter-spacing="3">ЯЗЫК</text>
+    <rect x="64" y="958" width="454" height="94" rx="9" fill="#11130e" stroke="#41453a"/><text x="96" y="1015" fill="#f5f5ef" font-size="24" font-weight="700">ЛЮБОЙ</text><text x="475" y="1015" fill="#b7ff19" font-size="25" text-anchor="end">⌄</text>
+    <text x="562" y="928" fill="#868980" font-size="16" font-weight="700" letter-spacing="3">ЭПОХА</text>
+    <rect x="562" y="958" width="454" height="94" rx="9" fill="#11130e" stroke="#41453a"/><text x="594" y="1015" fill="#f5f5ef" font-size="24" font-weight="700">2010-е</text><text x="973" y="1015" fill="#b7ff19" font-size="25" text-anchor="end">⌄</text>
+  </g>
+  <rect x="64" y="1139" width="952" height="132" rx="12" fill="#b7ff19"/>
+  <text x="100" y="1192" fill="#263100" font-family="DejaVu Sans" font-size="15" font-weight="800" letter-spacing="2">ОСНОВА: ТВОЯ МЕДИАТЕКА</text>
+  <text x="100" y="1241" fill="#050505" font-family="DejaVu Sans" font-size="28" font-weight="900">ЗАПУСТИТЬ МОЮ ВОЛНУ</text><text x="957" y="1239" fill="#050505" font-family="DejaVu Sans" font-size="37" text-anchor="end">↗</text>
+  <text x="64" y="1394" fill="#85887f" font-family="DejaVu Sans" font-size="16" font-weight="700" letter-spacing="3">РЕКОМЕНДАЦИИ ОСТАЮТСЯ НА УСТРОЙСТВЕ</text>
+  <rect x="64" y="1440" width="952" height="224" rx="12" fill="#11130e" stroke="#34372f"/>
+  <circle cx="155" cy="1552" r="58" fill="#1f2b12"/><path d="M124 1572l30-67 28 57" fill="none" stroke="#b7ff19" stroke-width="9"/>
+  <text x="246" y="1523" fill="#f5f5ef" font-family="DejaVu Sans" font-size="29" font-weight="800">Готово к запуску</text>
+  <text x="246" y="1567" fill="#a0a29a" font-family="DejaVu Sans" font-size="20">12 сохранённых треков</text>
+  <text x="246" y="1608" fill="#a0a29a" font-family="DejaVu Sans" font-size="20">34 сигнала вкуса учтено</text>
+  <text x="64" y="1838" fill="#777a72" font-family="DejaVu Sans" font-size="15" font-weight="700" letter-spacing="2">БЕЗ АККАУНТА · БЕЗ РЕКЛАМЫ</text>
+</svg>

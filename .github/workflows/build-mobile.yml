@@ -1,4 +1,4 @@
-name: Mobile beta builds
+name: Mobile test builds
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   android:
-    name: Android APK
+    name: Android internal-test APK
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,20 +20,22 @@ jobs:
       - uses: android-actions/setup-android@v3
       - uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: "8.10.2"
+          gradle-version: "8.13"
+      - name: Install Android 16 SDK
+        run: sdkmanager "platform-tools" "platforms;android-36" "build-tools;35.0.0"
       - name: Build installable beta APK
         env:
           AWUN_MIRROR_URL: ${{ vars.AWUN_MIRROR_URL }}
-        run: gradle -p mobile/android --no-daemon assembleDebug
+        run: gradle -p mobile/android --no-daemon :app:lintDebug :app:assembleDebug
       - name: Prepare Android artifact
         run: |
           mkdir -p dist/android
-          cp mobile/android/app/build/outputs/apk/debug/app-debug.apk dist/android/AWUN-Android-beta.apk
-          sha256sum dist/android/AWUN-Android-beta.apk > dist/android/AWUN-Android-beta.apk.sha256
+          cp mobile/android/app/build/outputs/apk/debug/app-debug.apk dist/android/AWUN-Android-internal-test.apk
+          sha256sum dist/android/AWUN-Android-internal-test.apk > dist/android/AWUN-Android-internal-test.apk.sha256
           cp LICENSE.md EULA.md dist/android/
       - uses: actions/upload-artifact@v4
         with:
-          name: AWUN-Android-beta
+          name: AWUN-Android-internal-test
           path: dist/android
           if-no-files-found: error
 
