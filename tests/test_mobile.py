@@ -119,6 +119,8 @@ def test_render_blueprint_recreates_the_owned_release_url_without_secret_prompts
 
     assert "name: awun-api1" in blueprint
     assert "healthCheckPath: /health" in blueprint
+    assert "renderSubdomainPolicy: enabled" in blueprint
+    assert "autoDeployTrigger: commit" in blueprint
     assert "generateValue: true" in blueprint
     assert "sync: false" not in blueprint
 
