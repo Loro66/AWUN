@@ -61,7 +61,7 @@ button:disabled{cursor:not-allowed}
 
 .ambient{position:fixed;z-index:0;inset:0;pointer-events:none;overflow:hidden}
 .ambient-grid{position:absolute;inset:0;background-image:linear-gradient(var(--grid-color) 1px,transparent 1px),linear-gradient(90deg,var(--grid-color) 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(to bottom,black,transparent 76%)}
-.ambient:after{content:"AWUN / SEARCH NETWORK / 1.7";position:absolute;right:-71px;top:46%;padding:8px 15px;border:1px solid rgba(var(--accent-rgb),.11);color:rgba(var(--accent-rgb),.24);font-size:7px;font-weight:900;letter-spacing:2.3px;transform:rotate(90deg)}
+.ambient:after{content:"AWUN / SEARCH NETWORK / 1.8";position:absolute;right:-71px;top:46%;padding:8px 15px;border:1px solid rgba(var(--accent-rgb),.11);color:rgba(var(--accent-rgb),.24);font-size:7px;font-weight:900;letter-spacing:2.3px;transform:rotate(90deg)}
 .ambient-orb{position:absolute;width:42vw;aspect-ratio:1;border-radius:50%;filter:blur(90px);opacity:.055}
 .orb-one{right:-13vw;top:4vh;background:var(--acid)}
 .orb-two{left:-22vw;bottom:-22vw;background:var(--orb-two)}

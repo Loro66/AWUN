@@ -4,6 +4,8 @@
 
 [English](README.md) · [Русский](README.ru.md) · [Открыть AWUN](https://awun-api1.onrender.com) · [Windows-сборки](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml) · [Поддержать проект](SUPPORT.md#русский) · [Лицензия](LICENSE.md#закрытая-freeware-лицензия-awun-10)
 
+[![Развернуть на Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Loro66/AWUN)
+
 </div>
 
 # AWUN

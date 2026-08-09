@@ -5,6 +5,7 @@
 [English](README.md) · [Русский](README.ru.md) · [Open AWUN](https://awun-api1.onrender.com) · [Windows builds](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml) · [Support the project](SUPPORT.md) · [Freeware license](LICENSE.md)
 
 [![Tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&label=Windows%20build&style=flat-square)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Loro66/AWUN)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-live-009688?style=flat-square&logo=fastapi&logoColor=white)
 ![Public beta](https://img.shields.io/badge/status-public%20beta-b7ff19?style=flat-square&labelColor=10110e)
@@ -23,7 +24,7 @@ ISRC variants. Yandex Music libraries can be transferred as metadata and
 matched to connected playable sources on demand. YouTube playback stays inside the official embedded player;
 other full tracks use short-lived signed AWUN media routes.
 
-The 1.7 beta interface includes AUTO/CIS/EUROPE/USA/LATAM/ASIA/GLOBAL search,
+The 1.8.0 interface includes AUTO/CIS/EUROPE/USA/LATAM/ASIA/GLOBAL search,
 source-aware discovery, partial-failure handling,
 a 30/60/100 result selector, Yandex library import, a local library, shareable search URLs and a unified responsive player with
 custom waveform seeking, volume, previous/next controls and browser Media
