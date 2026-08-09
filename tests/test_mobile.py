@@ -110,6 +110,7 @@ def test_unsigned_play_workflow_builds_without_repository_secrets() -> None:
     assert "AWUN-unsigned-${AWUN_VERSION_NAME}-${AWUN_VERSION_CODE}.aab" in workflow
     assert "PLAY_UPLOAD_KEYSTORE_BASE64" not in workflow
     assert "actions/upload-artifact@v4" in workflow
+    assert "pull_request:" in workflow
     assert 'branches:\n      - main' in workflow
 
 
