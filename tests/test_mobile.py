@@ -49,6 +49,10 @@ def test_play_client_disables_downloads_and_background_playback() -> None:
     assert "DownloadManager" not in activity and "DownloadListener" not in activity
     assert "setMediaPlaybackRequiresUserGesture(true)" in activity
     assert 'evaluateJavascript("window.awunApp?.pausePlayback?.()"' in activity
+    assert "OnBackInvokedDispatcher.PRIORITY_DEFAULT" in activity
+    assert "registerOnBackInvokedCallback" in activity
+    assert "unregisterOnBackInvokedCallback" in activity
+    assert '@SuppressLint("GestureBackNavigation")' in activity
     assert "BuildConfig.AWUN_CLIENT_ID" in activity and "android-play" in gradle
     assert "android-play" in frontend and "capabilities_for" in api
     assert '"android-play"' in policy

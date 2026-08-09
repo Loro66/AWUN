@@ -1,5 +1,6 @@
 package com.loro66.awun;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -30,6 +31,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.window.OnBackInvokedCallback;
+import android.window.OnBackInvokedDispatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +52,7 @@ public final class MainActivity extends Activity {
     private boolean mainFrameFailed;
     private ConnectivityManager connectivityManager;
     private ConnectivityManager.NetworkCallback networkCallback;
+    private OnBackInvokedCallback backInvokedCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +86,7 @@ public final class MainActivity extends Activity {
         setContentView(root);
 
         registerNetworkCallback();
+        registerBackNavigation();
         if (!hasNetwork()) {
             Toast.makeText(this, R.string.no_network, Toast.LENGTH_LONG).show();
         }
@@ -356,13 +361,29 @@ public final class MainActivity extends Activity {
         return Math.round(value * getResources().getDisplayMetrics().density);
     }
 
-    @Override
-    public void onBackPressed() {
+    private void handleBackNavigation() {
         if (webView != null && webView.canGoBack()) {
             webView.goBack();
         } else {
-            super.onBackPressed();
+            finishAfterTransition();
         }
+    }
+
+    private void registerBackNavigation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            backInvokedCallback = this::handleBackNavigation;
+            getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
+                    OnBackInvokedDispatcher.PRIORITY_DEFAULT,
+                    backInvokedCallback
+            );
+        }
+    }
+
+    @SuppressLint("GestureBackNavigation")
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onBackPressed() {
+        handleBackNavigation();
     }
 
     @Override
@@ -386,6 +407,10 @@ public final class MainActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && backInvokedCallback != null) {
+            getOnBackInvokedDispatcher().unregisterOnBackInvokedCallback(backInvokedCallback);
+            backInvokedCallback = null;
+        }
         if (connectivityManager != null && networkCallback != null) {
             try {
                 connectivityManager.unregisterNetworkCallback(networkCallback);
