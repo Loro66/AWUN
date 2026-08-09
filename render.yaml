@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: awun-api
+    name: awun-api1
     runtime: docker
     plan: starter
     healthCheckPath: /health
@@ -24,17 +24,5 @@ services:
         value: "2"
       - key: AWUN_MEDIA_SECRET
         generateValue: true
-      - key: AWUN_YOUTUBE_API_KEY
-        sync: false
-      - key: AWUN_SOUNDCLOUD_CLIENT_ID
-        sync: false
-      - key: AWUN_SOUNDCLOUD_CLIENT_SECRET
-        sync: false
-      - key: AWUN_AUDIUS_API_KEY
-        sync: false
-      - key: AWUN_JAMENDO_CLIENT_ID
-        sync: false
       - key: AWUN_LYRICS_ENABLED
         value: "true"
-      - key: AWUN_GENIUS_ACCESS_TOKEN
-        sync: false

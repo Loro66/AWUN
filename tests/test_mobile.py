@@ -97,6 +97,27 @@ def test_play_workflow_builds_signed_aab_without_auto_publishing() -> None:
     assert "play.google.com" not in workflow
 
 
+def test_unsigned_play_workflow_builds_without_repository_secrets() -> None:
+    workflow = (
+        ROOT / ".github" / "workflows" / "build-google-play-unsigned.yml"
+    ).read_text(encoding="utf-8")
+
+    assert "bundleRelease" in workflow and "lintRelease" in workflow
+    assert "AWUN-unsigned-${AWUN_VERSION_NAME}-${AWUN_VERSION_CODE}.aab" in workflow
+    assert "PLAY_UPLOAD_KEYSTORE_BASE64" not in workflow
+    assert "actions/upload-artifact@v4" in workflow
+    assert 'branches:\n      - main' in workflow
+
+
+def test_render_blueprint_recreates_the_owned_release_url_without_secret_prompts() -> None:
+    blueprint = (ROOT / "render.yaml").read_text(encoding="utf-8")
+
+    assert "name: awun-api1" in blueprint
+    assert "healthCheckPath: /health" in blueprint
+    assert "generateValue: true" in blueprint
+    assert "sync: false" not in blueprint
+
+
 def test_store_listing_text_and_assets_meet_play_dimensions() -> None:
     for locale in ("ru-RU", "en-US"):
         directory = METADATA / locale
