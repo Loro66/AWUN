@@ -60,7 +60,7 @@ this sheet and the Play form must be updated before releasing that build.
 
 Use the deployed HTTPS URL:
 
-`https://awun-api1.onrender.com/privacy`
+`https://awun-1.onrender.com/privacy`
 
 Do not submit the public listing until that URL returns HTTP 200 without login.
 The same policy is linked inside the app and its offline error screen.

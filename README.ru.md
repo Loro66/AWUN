@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[English](README.md) · [Русский](README.ru.md) · [Открыть AWUN](https://awun-api1.onrender.com) · [Windows-сборки](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml) · [Поддержать проект](SUPPORT.md#русский) · [Лицензия](LICENSE.md#закрытая-freeware-лицензия-awun-10)
+[English](README.md) · [Русский](README.ru.md) · [Открыть AWUN](https://awun-1.onrender.com) · [Windows-сборки](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml) · [Поддержать проект](SUPPORT.md#русский) · [Лицензия](LICENSE.md#закрытая-freeware-лицензия-awun-10)
 
 [![Развернуть на Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Loro66/AWUN)
 
@@ -29,7 +29,7 @@ AWUN параллельно ищет музыку в YouTube, SoundCloud, Audius
 
 ## Попробовать и установить
 
-- **Web / PWA:** открой [awun-api1.onrender.com](https://awun-api1.onrender.com). В Chrome или Edge нажми **INSTALL APP** — AWUN появится в меню «Пуск», на рабочем столе или домашнем экране телефона.
+- **Web / PWA:** открой [awun-1.onrender.com](https://awun-1.onrender.com). В Chrome или Edge нажми **INSTALL APP** — AWUN появится в меню «Пуск», на рабочем столе или домашнем экране телефона.
 - **Windows:** скачай артефакт `AWUN-Windows-x64` в [Windows desktop builds](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml). Версия 1.8 содержит интерфейс и FastAPI внутри EXE, запускает случайный локальный адрес `127.0.0.1` и сама обращается к музыкальным источникам — Render и работающий сайт ей не нужны. Интернет для поиска и воспроизведения всё равно требуется. Бета пока не подписана коммерческим сертификатом, поэтому SmartScreen может показать предупреждение.
 - **Android / Google Play:** версия 1.8 подготовлена как `com.loro66.awun`, использует API 36, собирается в подписанный AAB и не показывает скачивание музыки. Карточка магазина, privacy/Data safety и точный чек-лист находятся в [`mobile/android/play-store/`](mobile/android/play-store/RELEASE_CHECKLIST.md). Владелец Play Console должен отдельно настроить ключ загрузки и пройти обязательное тестирование.
 - **iOS beta:** инструкции и воспроизводимая неподписанная сборка находятся в [`mobile/`](mobile/README.md). Для установки на физический iPhone нужна подпись Apple.

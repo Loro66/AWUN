@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[English](README.md) · [Русский](README.ru.md) · [Open AWUN](https://awun-api1.onrender.com) · [Windows builds](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml) · [Support the project](SUPPORT.md) · [Freeware license](LICENSE.md)
+[English](README.md) · [Русский](README.ru.md) · [Open AWUN](https://awun-1.onrender.com) · [Windows builds](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml) · [Support the project](SUPPORT.md) · [Freeware license](LICENSE.md)
 
 [![Tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&label=Windows%20build&style=flat-square)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Loro66/AWUN)
@@ -35,7 +35,7 @@ are saved locally and work across desktop and mobile layouts.
 
 ## Try and install
 
-- **Web / PWA:** open [awun-api1.onrender.com](https://awun-api1.onrender.com). In Chrome or Edge choose **INSTALL APP** to add AWUN to the Start menu, desktop or phone home screen.
+- **Web / PWA:** open [awun-1.onrender.com](https://awun-1.onrender.com). In Chrome or Edge choose **INSTALL APP** to add AWUN to the Start menu, desktop or phone home screen.
 - **Windows:** download the latest `AWUN-Windows-x64` artifact from [Windows desktop builds](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml). The executable is unsigned during beta, so SmartScreen may ask for confirmation.
 - **Android / iOS beta:** reproducible shells live in [`mobile/`](mobile/README.md). A physical iOS release requires Apple signing.
 

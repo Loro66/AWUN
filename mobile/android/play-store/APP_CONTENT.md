@@ -16,7 +16,7 @@ Console draft already exists with another package, resolve that before upload.
 
 | Declaration | Prepared answer |
 |---|---|
-| Privacy policy | `https://awun-api1.onrender.com/privacy` after public HTTP 200 verification |
+| Privacy policy | `https://awun-1.onrender.com/privacy` after public HTTP 200 verification |
 | Ads | No |
 | App access | All functionality is available without an account or special access |
 | Target audience | Ages 16–17 and 18+ |

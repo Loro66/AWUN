@@ -11,7 +11,7 @@
     <key>CFBundlePackageType</key><string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
     <key>CFBundleShortVersionString</key><string>1.7.0</string>
     <key>CFBundleVersion</key><string>18</string>
-    <key>AWUNPrimaryURL</key><string>https://awun-api1.onrender.com</string>
+    <key>AWUNPrimaryURL</key><string>https://awun-1.onrender.com</string>
     <key>AWUNMirrorURL</key><string></string>
     <key>LSRequiresIPhoneOS</key><true/>
     <key>UILaunchScreen</key><dict/>

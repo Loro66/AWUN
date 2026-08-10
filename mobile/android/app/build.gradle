@@ -26,7 +26,7 @@ android {
         targetSdk 36
         versionCode Integer.parseInt(envValue("AWUN_VERSION_CODE", "18000"))
         versionName envValue("AWUN_VERSION_NAME", "1.8.0")
-        buildConfigField "String", "AWUN_PRIMARY_URL", javaString(envValue("AWUN_PRIMARY_URL", "https://awun-api1.onrender.com"))
+        buildConfigField "String", "AWUN_PRIMARY_URL", javaString(envValue("AWUN_PRIMARY_URL", "https://awun-1.onrender.com"))
         buildConfigField "String", "AWUN_MIRROR_URL", javaString(envValue("AWUN_MIRROR_URL", ""))
         buildConfigField "String", "AWUN_CLIENT_ID", javaString("android-play")
     }

@@ -117,7 +117,8 @@ def test_unsigned_play_workflow_builds_without_repository_secrets() -> None:
 def test_render_blueprint_recreates_the_owned_release_url_without_secret_prompts() -> None:
     blueprint = (ROOT / "render.yaml").read_text(encoding="utf-8")
 
-    assert "name: awun-api1" in blueprint
+    assert "name: awun-1" in blueprint
+    assert "plan: free" in blueprint
     assert "healthCheckPath: /health" in blueprint
     assert "renderSubdomainPolicy: enabled" in blueprint
     assert "autoDeployTrigger: commit" in blueprint
@@ -164,6 +165,6 @@ def test_regional_mirror_does_not_proxy_youtube_media() -> None:
     config = (ROOT / "deploy" / "russia-mirror" / "nginx.conf").read_text(encoding="utf-8")
     readme = (ROOT / "deploy" / "russia-mirror" / "README.md").read_text(encoding="utf-8")
 
-    assert "awun-api1.onrender.com" in config
+    assert "awun-1.onrender.com" in config
     assert "youtube.com" not in config and "googlevideo.com" not in config
     assert "official embedded player" in readme

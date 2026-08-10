@@ -33,7 +33,7 @@ struct AWUNWebView: UIViewRepresentable {
     @Binding var loaded: Bool
 
     private var endpoints: [URL] {
-        let primary = Bundle.main.object(forInfoDictionaryKey: "AWUNPrimaryURL") as? String ?? "https://awun-api1.onrender.com"
+        let primary = Bundle.main.object(forInfoDictionaryKey: "AWUNPrimaryURL") as? String ?? "https://awun-1.onrender.com"
         let mirror = Bundle.main.object(forInfoDictionaryKey: "AWUNMirrorURL") as? String ?? ""
         return [primary, mirror].compactMap { $0.isEmpty ? nil : URL(string: $0) }
     }
