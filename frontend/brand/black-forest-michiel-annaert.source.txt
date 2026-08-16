@@ -1,0 +1,7 @@
+Photo: Green pine trees covered with fog
+Photographer: Michiel Annaert (@michielannaert)
+Location: Black Forest, Germany
+Source: https://unsplash.com/photos/green-pine-trees-covered-with-fog-ZES2BuvxEv0
+License: Unsplash License (free to use)
+Downloaded: 2026-08-16
+AWUN derivative: center-cropped to 16:9, resized to 2399x1350, and encoded as WebP.

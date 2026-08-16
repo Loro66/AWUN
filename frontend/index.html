@@ -12,8 +12,8 @@
   <script>
     try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');const p=new URLSearchParams(location.search);document.documentElement.dataset.theme=v.theme||'black';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full';document.documentElement.dataset.density=v.density||'standard';document.documentElement.lang=p.get('lang')||localStorage.getItem('awun-language')||(navigator.language.toLowerCase().startsWith('ru')?'ru':'en')}catch{}
   </script>
-  <link rel="stylesheet" href="/static/styles.css?v=20260816.1">
-  <link rel="stylesheet" href="/static/forest.css?v=20260816.1">
+  <link rel="stylesheet" href="/static/styles.css?v=20260816.2">
+  <link rel="stylesheet" href="/static/forest.css?v=20260816.2">
 </head>
 <body>
   <a class="skip-link" href="#searchInput" data-i18n="skipSearch">Перейти к поиску</a>
@@ -178,44 +178,44 @@
       <div id="youtubePlayer" class="youtube-player"></div>
     </div>
 
-    <div class="player-accent" aria-hidden="true"></div>
     <div class="turntable" aria-hidden="true">
       <div id="playerArtwork" class="player-artwork">
         <span class="vinyl-monogram">AW</span>
       </div>
-      <i class="tonearm"></i>
     </div>
-    <div class="now">
-      <strong id="nowTitle" data-i18n="nothingPlaying">НИЧЕГО НЕ ИГРАЕТ</strong>
-      <span id="nowArtist">AWUN</span>
-      <div class="mini-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-    </div>
-
-    <div class="transport">
-      <div class="transport-buttons">
-        <button id="previousTrack" type="button" aria-label="Предыдущий трек" data-i18n-aria-label="previousAria">‹</button>
-        <button id="flowDislike" class="flow-feedback" type="button" aria-label="Не нравится" title="Меньше похожего" data-i18n-aria-label="dislikeAria" data-i18n-title="lessLikeTitle">−</button>
-        <button id="playPause" class="play-pause" type="button" aria-label="Воспроизвести" data-i18n-aria-label="playAria"><span>▶</span></button>
-        <button id="flowLike" class="flow-feedback" type="button" aria-label="Нравится" title="Больше похожего" data-i18n-aria-label="likeAria" data-i18n-title="moreLikeTitle">+</button>
-        <button id="flowBlockArtist" class="flow-feedback flow-block" type="button" aria-label="Не рекомендовать этого исполнителя" title="Заблокировать исполнителя" data-i18n-aria-label="blockArtistAria" data-i18n-title="blockArtistTitle">ИСП−</button>
-        <button id="nextTrack" type="button" aria-label="Следующий трек" data-i18n-aria-label="nextAria">›</button>
-        <button id="repeatMode" class="repeat-mode" type="button" aria-label="Повтор выключен" aria-pressed="false"><span>↻</span><small>ВЫКЛ</small></button>
+    <section class="player-console">
+      <div class="now">
+        <strong id="nowTitle" data-i18n="nothingPlaying">НИЧЕГО НЕ ИГРАЕТ</strong>
+        <span id="nowArtist">AWUN</span>
+        <div class="mini-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
       </div>
-      <div class="timeline">
-        <span id="elapsed">0:00</span>
-        <div class="wave-progress">
-          <input id="progress" class="range progress" type="range" min="0" max="1000" value="0" aria-label="Позиция воспроизведения" data-i18n-aria-label="playbackPositionAria">
+
+      <div class="transport">
+        <div class="transport-buttons">
+          <button id="previousTrack" type="button" aria-label="Предыдущий трек" data-i18n-aria-label="previousAria">‹</button>
+          <button id="flowDislike" class="flow-feedback" type="button" aria-label="Не нравится" title="Меньше похожего" data-i18n-aria-label="dislikeAria" data-i18n-title="lessLikeTitle">−</button>
+          <button id="playPause" class="play-pause" type="button" aria-label="Воспроизвести" data-i18n-aria-label="playAria"><span>▶</span></button>
+          <button id="flowLike" class="flow-feedback" type="button" aria-label="Нравится" title="Больше похожего" data-i18n-aria-label="likeAria" data-i18n-title="moreLikeTitle">+</button>
+          <button id="flowBlockArtist" class="flow-feedback flow-block" type="button" aria-label="Не рекомендовать этого исполнителя" title="Заблокировать исполнителя" data-i18n-aria-label="blockArtistAria" data-i18n-title="blockArtistTitle">ИСП−</button>
+          <button id="nextTrack" type="button" aria-label="Следующий трек" data-i18n-aria-label="nextAria">›</button>
+          <button id="repeatMode" class="repeat-mode" type="button" aria-label="Повтор выключен" aria-pressed="false"><span>↻</span><small>ВЫКЛ</small></button>
         </div>
-        <span id="totalTime">0:00</span>
+        <div class="timeline">
+          <span id="elapsed">0:00</span>
+          <div class="wave-progress">
+            <input id="progress" class="range progress" type="range" min="0" max="1000" value="0" aria-label="Позиция воспроизведения" data-i18n-aria-label="playbackPositionAria">
+          </div>
+          <span id="totalTime">0:00</span>
+        </div>
       </div>
-    </div>
 
-    <div class="player-tools">
-      <span id="nowSource" class="now-source">—</span>
-      <button id="muteButton" type="button" aria-label="Выключить звук" data-i18n-aria-label="muteAria">ЗВУК</button>
-      <input id="volume" class="range volume" type="range" min="0" max="100" value="82" aria-label="Громкость" data-i18n-aria-label="volumeAria">
-      <button id="closePlayer" class="close" type="button" aria-label="Закрыть плеер" data-i18n-aria-label="closePlayerAria">×</button>
-    </div>
+      <div class="player-tools">
+        <span id="nowSource" class="now-source">—</span>
+        <button id="muteButton" type="button" aria-label="Выключить звук" data-i18n-aria-label="muteAria">ЗВУК</button>
+        <input id="volume" class="range volume" type="range" min="0" max="100" value="82" aria-label="Громкость" data-i18n-aria-label="volumeAria">
+        <button id="closePlayer" class="close" type="button" aria-label="Закрыть плеер" data-i18n-aria-label="closePlayerAria">×</button>
+      </div>
+    </section>
     <audio id="audio" preload="metadata"></audio>
   </aside>
 
@@ -262,9 +262,9 @@
     <footer><span data-i18n="publicMetadata">ОТКРЫТЫЕ ДАННЫЕ / АВТОМАТИЧЕСКИЙ ПОИСК</span><span data-i18n="noAccountToken">БЕЗ ТОКЕНА АККАУНТА</span></footer>
   </aside>
 
-  <script src="/static/desktop-bridge.js?v=20260816.1" defer></script>
-  <script src="/static/i18n.js?v=20260816.1" defer></script>
-  <script src="/static/app.js?v=20260816.1" defer></script>
-  <script src="/static/flow.js?v=20260816.1" defer></script>
+  <script src="/static/desktop-bridge.js?v=20260816.2" defer></script>
+  <script src="/static/i18n.js?v=20260816.2" defer></script>
+  <script src="/static/app.js?v=20260816.2" defer></script>
+  <script src="/static/flow.js?v=20260816.2" defer></script>
 </body>
 </html>
