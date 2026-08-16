@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta id="themeColor" name="theme-color" content="#10110e">
+  <meta id="themeColor" name="theme-color" content="#10130f">
   <meta name="description" content="AWUN ищет настоящую музыку во всех подключённых источниках и сразу запускает воспроизведение.">
   <title>AWUN — один поиск, вся музыка</title>
   <link rel="icon" href="/static/brand/awun-icon-black.png" type="image/png">
@@ -12,7 +12,8 @@
   <script>
     try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');const p=new URLSearchParams(location.search);document.documentElement.dataset.theme=v.theme||'black';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full';document.documentElement.dataset.density=v.density||'standard';document.documentElement.lang=p.get('lang')||localStorage.getItem('awun-language')||(navigator.language.toLowerCase().startsWith('ru')?'ru':'en')}catch{}
   </script>
-  <link rel="stylesheet" href="/static/styles.css?v=20260723.2">
+  <link rel="stylesheet" href="/static/styles.css?v=20260816.1">
+  <link rel="stylesheet" href="/static/forest.css?v=20260816.1">
 </head>
 <body>
   <a class="skip-link" href="#searchInput" data-i18n="skipSearch">Перейти к поиску</a>
@@ -178,7 +179,12 @@
     </div>
 
     <div class="player-accent" aria-hidden="true"></div>
-    <div id="playerArtwork" class="player-artwork"><span>AW</span></div>
+    <div class="turntable" aria-hidden="true">
+      <div id="playerArtwork" class="player-artwork">
+        <span class="vinyl-monogram">AW</span>
+      </div>
+      <i class="tonearm"></i>
+    </div>
     <div class="now">
       <strong id="nowTitle" data-i18n="nothingPlaying">НИЧЕГО НЕ ИГРАЕТ</strong>
       <span id="nowArtist">AWUN</span>
@@ -256,9 +262,9 @@
     <footer><span data-i18n="publicMetadata">ОТКРЫТЫЕ ДАННЫЕ / АВТОМАТИЧЕСКИЙ ПОИСК</span><span data-i18n="noAccountToken">БЕЗ ТОКЕНА АККАУНТА</span></footer>
   </aside>
 
-  <script src="/static/desktop-bridge.js?v=20260723.2" defer></script>
-  <script src="/static/i18n.js?v=20260723.2" defer></script>
-  <script src="/static/app.js?v=20260723.2" defer></script>
-  <script src="/static/flow.js?v=20260723.2" defer></script>
+  <script src="/static/desktop-bridge.js?v=20260816.1" defer></script>
+  <script src="/static/i18n.js?v=20260816.1" defer></script>
+  <script src="/static/app.js?v=20260816.1" defer></script>
+  <script src="/static/flow.js?v=20260816.1" defer></script>
 </body>
 </html>

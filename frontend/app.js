@@ -28,7 +28,7 @@ function loadResultLimit(){const value=Number(localStorage.getItem('awun-result-
 function loadRepeatMode(){const value=localStorage.getItem('awun-repeat-mode')||'off';return ['off','all','one'].includes(value)?value:'off'}
 function loadVisual(){try{const value=JSON.parse(localStorage.getItem('awun-visual')||'{}');return{theme:['black','white','acid','ultraviolet','cobalt','ember'].includes(value.theme)?value.theme:'black',motion:value.motion==='off'?'off':'on',decor:value.decor==='minimal'?'minimal':'full',density:['compact','standard','airy'].includes(value.density)?value.density:'standard'}}catch{return{theme:'black',motion:'on',decor:'full',density:'standard'}}}
 function loadLineComments(){try{const value=JSON.parse(localStorage.getItem('awun-line-comments-v1')||'{}');return value&&typeof value==='object'&&!Array.isArray(value)?value:{}}catch{return{}}}
-const visualThemes={black:{labelKey:'themeBlackShort',color:'#050505'},white:{labelKey:'themeWhiteShort',color:'#f7f7f3'},acid:{labelKey:'themeAcidShort',color:'#10110e'},ultraviolet:{labelKey:'themeUltravioletShort',color:'#0d0718'},cobalt:{labelKey:'themeCobaltShort',color:'#07111f'},ember:{labelKey:'themeEmberShort',color:'#160b07'}};
+const visualThemes={black:{labelKey:'themeBlackShort',color:'#10130f'},white:{labelKey:'themeWhiteShort',color:'#181c17'},acid:{labelKey:'themeAcidShort',color:'#11160f'},ultraviolet:{labelKey:'themeUltravioletShort',color:'#151216'},cobalt:{labelKey:'themeCobaltShort',color:'#101718'},ember:{labelKey:'themeEmberShort',color:'#19130f'}};
 const state={
   tracks:[],saved:loadLibrary(),available:new Set(),sources:new Set(),region:loadRegion(),resultLimit:loadResultLimit(),repeatMode:loadRepeatMode(),library:false,active:null,controller:null,
   youtube:null,youtubeApi:null,youtubeTicker:null,seeking:false,recovering:false,lastVolume:.82,expanded:null,details:new Map(),detailsController:null,openLines:new Set(),lineComments:loadLineComments(),geniusEnabled:false,...loadVisual()
@@ -392,7 +392,10 @@ async function importLibraryUrl(){
 async function playTrack(track){
   if(track.source==='yandex_music'){await matchImportedTrack(track);return}
   const previous=state.active;state.active=track;state.recovering=false;ui.player.hidden=false;ui.nowTitle.textContent=decodeText(track.title);ui.nowArtist.textContent=`${decodeText(track.artist)} · ${sourceLabels[track.source]||track.source}`;ui.nowSource.textContent=track.source;
-  const image=safeImage(track.thumbnail);ui.playerArtwork.style.backgroundImage=image?`url("${image}")`:'';ui.playerArtwork.querySelector?.('span')?.remove();if(!image)ui.playerArtwork.textContent=(decodeText(track.title)||'AW').slice(0,2).toUpperCase();else ui.playerArtwork.textContent='';
+  const image=safeImage(track.thumbnail),monogram=ui.playerArtwork.querySelector('.vinyl-monogram');
+  ui.playerArtwork.style.setProperty('--vinyl-cover',image?`url("${image}")`:'none');
+  ui.playerArtwork.classList.toggle('has-artwork',Boolean(image));
+  if(monogram)monogram.textContent=image?'':(decodeText(track.title)||'AW').slice(0,2).toUpperCase();
   updateTimeline(0,track.duration||0);updateMediaSession(track);render();emitAwun('play',{track,previous});
   if(track.source==='youtube')await playYouTube(track);else await playAudio(track);
 }

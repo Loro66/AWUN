@@ -156,9 +156,23 @@ def test_installable_pwa_is_wired() -> None:
     assert 'rel="manifest"' in html and 'id="installButton"' in html
     assert "beforeinstallprompt" in script and "serviceWorker.register('/service-worker.js')" in script
     assert '"display": "standalone"' in manifest and '"start_url": "/"' in manifest
-    assert "awun-shell-1.8.2" in worker and "startsWith('/api/')" in worker
+    assert "awun-shell-1.8.3" in worker and "startsWith('/api/')" in worker
     assert "/static/desktop-bridge.js" in html and "desktop-bridge.js" in worker
     assert "pywebviewready" in bridge and "save_state" in bridge and "load_state" in bridge
+
+
+def test_forest_redesign_and_vinyl_player_are_wired() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    forest = (ROOT / "frontend" / "forest.css").read_text(encoding="utf-8")
+    background = ROOT / "frontend" / "brand" / "forest-background.png"
+
+    assert background.is_file() and background.stat().st_size > 100_000
+    assert '/static/forest.css?v=20260816.1' in html
+    assert 'class="turntable"' in html and 'class="vinyl-monogram"' in html
+    assert "--vinyl-cover" in script and "has-artwork" in script
+    assert "/static/brand/forest-background.png" in forest
+    assert ".is-playing .player-artwork" in forest and "vinylSpin" in forest
 
 
 def test_listener_first_onboarding_and_language_switch_are_wired() -> None:
