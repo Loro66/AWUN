@@ -1,0 +1,6 @@
+Photo: Burg Eltz in morning mist
+Photographer: Jan Kohl (@jankohl)
+Source: https://unsplash.com/photos/m8RNISlL2HQ
+License: Unsplash License (free to use)
+Downloaded: 2026-08-16
+AWUN derivative: center-cropped to 16:9, resized to 2400x1350, and encoded as WebP.

@@ -155,7 +155,8 @@ def test_privacy_support_and_play_declarations_are_present() -> None:
 
     assert '@app.get("/privacy"' in api and '@app.get("/support"' in api
     assert 'href="/privacy"' in html and 'href="/support"' in html
-    assert "shamanmilord@gmail.com" in privacy
+    assert "https://github.com/Loro66/AWUN/issues" in privacy
+    assert "mailto:" not in privacy
     assert "12 opted-in testers continuously for 14 days" in checklist
     assert "at least 18 years old" in checklist
     assert "In-app search history" in data_safety and "Processed ephemerally" in data_safety

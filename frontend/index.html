@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta id="themeColor" name="theme-color" content="#10130f">
+  <meta id="themeColor" name="theme-color" content="#0b0907">
   <meta name="description" content="AWUN ищет настоящую музыку во всех подключённых источниках и сразу запускает воспроизведение.">
   <title>AWUN — один поиск, вся музыка</title>
   <link rel="icon" href="/static/brand/awun-icon-black.png" type="image/png">
@@ -12,52 +12,36 @@
   <script>
     try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');const p=new URLSearchParams(location.search);document.documentElement.dataset.theme=v.theme||'black';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full';document.documentElement.dataset.density=v.density||'standard';document.documentElement.lang=p.get('lang')||localStorage.getItem('awun-language')||(navigator.language.toLowerCase().startsWith('ru')?'ru':'en')}catch{}
   </script>
-  <link rel="stylesheet" href="/static/styles.css?v=20260816.3">
-  <link rel="stylesheet" href="/static/forest.css?v=20260816.3">
+  <link rel="stylesheet" href="/static/styles.css?v=20260816.4">
+  <link rel="stylesheet" href="/static/forest.css?v=20260816.4">
 </head>
 <body>
   <a class="skip-link" href="#searchInput" data-i18n="skipSearch">Перейти к поиску</a>
-  <div class="ambient" aria-hidden="true">
-    <i class="ambient-orb orb-one"></i>
-    <i class="ambient-orb orb-two"></i>
-    <i class="ambient-grid"></i>
-    <i class="ambient-noise"></i>
-    <i class="ambient-scan"></i>
-    <i class="ambient-ring ring-one"></i>
-    <i class="ambient-ring ring-two"></i>
-    <span class="coordinate coordinate-one" data-i18n="coordinateSearch">59°56′15″N / ПОИСК</span>
-    <span class="coordinate coordinate-two" data-i18n="coordinateNode">УЗЕЛ / AWUN-01</span>
-  </div>
+  <div class="ambient" aria-hidden="true"></div>
 
   <main class="app-shell">
     <header class="site-header">
       <a class="logo" href="/" aria-label="Главная AWUN" data-i18n-aria-label="homeAria"><img src="/static/brand/awun-logo-white.png" alt=""><strong>AWUN</strong><i>.</i></a>
-      <span class="edition" data-i18n="edition">ЛОКАЛЬНАЯ БЕТА / 01</span>
       <div class="top-actions">
-        <button id="languageButton" class="library language-button" type="button" aria-label="Сменить язык" data-i18n-aria-label="switchLanguageAria"><span data-i18n="language">ЯЗЫК</span><b id="languageLabel">RU</b></button>
-        <button id="installButton" class="library install-button" type="button" hidden><span data-i18n="install">УСТАНОВИТЬ</span><b data-i18n="app">AWUN</b></button>
-        <span id="status" class="status"><i></i><b data-i18n="connecting">ПОДКЛЮЧЕНИЕ</b></span>
+        <button id="libraryButton" class="library" type="button" aria-pressed="false"><i aria-hidden="true">♫</i><span data-i18n="library">МОЯ МУЗЫКА</span><b>00</b></button>
         <button id="flowButton" class="library flow-button" type="button" aria-expanded="false" aria-controls="flowPanel">
-          <span data-i18n="wave">МОЯ ВОЛНА</span><b id="flowBadge" data-i18n="ready">ГОТОВО</b>
+          <i aria-hidden="true">◌</i><span data-i18n="wave">МОЯ ВОЛНА</span><b id="flowBadge" data-i18n="ready">ГОТОВО</b>
         </button>
+        <button id="importButton" class="library import-button" type="button" aria-expanded="false" aria-controls="importPanel"><i aria-hidden="true">⇣</i><span data-i18n="import">ПЕРЕНОС</span><b aria-hidden="true">↗</b></button>
+        <button id="languageButton" class="library language-button" type="button" aria-label="Сменить язык" data-i18n-aria-label="switchLanguageAria"><i aria-hidden="true">A</i><span data-i18n="language">ЯЗЫК</span><b id="languageLabel">RU</b></button>
         <button id="themeButton" class="theme-button" type="button" aria-expanded="false" aria-controls="themePanel">
-          <span data-i18n="appearance">ВНЕШНИЙ ВИД</span><b id="themeLabel">ЧЁРНАЯ</b>
+          <i aria-hidden="true">◐</i><span data-i18n="appearance">ВНЕШНИЙ ВИД</span><b id="themeLabel">ЧЁРНАЯ</b>
         </button>
-        <button id="importButton" class="library import-button" type="button" aria-expanded="false" aria-controls="importPanel">
-          <span data-i18n="import">ПЕРЕНОС</span><b data-i18n="link">ССЫЛКА</b>
-        </button>
-        <button id="libraryButton" class="library" type="button" aria-pressed="false">
-          <span data-i18n="library">МОЯ МУЗЫКА</span><b>00</b>
-        </button>
+        <button id="installButton" class="library install-button" type="button" hidden><i aria-hidden="true">↓</i><span data-i18n="install">УСТАНОВИТЬ</span><b data-i18n="app">AWUN</b></button>
       </div>
+      <span id="status" class="status" title="AWUN"><i></i><b data-i18n="connecting">ПОДКЛЮЧЕНИЕ</b></span>
     </header>
 
     <section class="hero" aria-labelledby="heroLabel">
-      <div class="hero-index" aria-hidden="true"><span>01</span><i></i><span data-i18n="search">ПОИСК</span></div>
       <div class="hero-content">
         <div class="eyebrow-row">
-          <p id="heroLabel"><span data-i18n="tagline">ONE SEARCH · EVERY SOUND</span></p>
-          <span id="searchMeta" data-i18n="searchMetaInitial">НАСТОЯЩИЕ РЕЗУЛЬТАТЫ / ОФИЦИАЛЬНОЕ ВОСПРОИЗВЕДЕНИЕ</span>
+          <p id="heroLabel"><span data-i18n="tagline">МУЗЫКА ВНЕ ВРЕМЕНИ</span></p>
+          <span id="searchMeta" class="sr-only" data-i18n="searchMetaInitial">НАСТОЯЩИЕ РЕЗУЛЬТАТЫ / ОФИЦИАЛЬНОЕ ВОСПРОИЗВЕДЕНИЕ</span>
         </div>
 
         <form id="searchForm" class="search-form">
@@ -71,7 +55,7 @@
         <div class="suggestions" aria-label="Быстрый поиск" data-i18n-aria-label="quickSearchAria"><span data-i18n="trySearch">ПОПРОБУЙ</span><button type="button" data-search-suggestion="новая музыка" data-search-suggestion-ru="новая музыка" data-search-suggestion-en="new music" data-i18n="newMusic">НОВАЯ МУЗЫКА</button><button type="button" data-search-suggestion="инструментальная музыка для концентрации" data-search-suggestion-ru="инструментальная музыка для концентрации" data-search-suggestion-en="focus instrumental" data-i18n="focus">КОНЦЕНТРАЦИЯ</button><button type="button" data-search-suggestion="русский рок" data-search-suggestion-ru="русский рок" data-search-suggestion-en="Russian rock">РУССКИЙ РОК</button><button type="button" data-search-suggestion="классика электронной музыки" data-search-suggestion-ru="классика электронной музыки" data-search-suggestion-en="electronic classics" data-i18n="electronic">ЭЛЕКТРОНИКА</button></div>
 
         <details id="advancedSearch" class="advanced-search">
-          <summary><span data-i18n="searchSettings">SEARCH SETTINGS</span><small data-i18n="searchSettingsHint">sources, region and result count</small></summary>
+          <summary><span data-i18n="searchSettings">ИСТОЧНИКИ И РЕГИОН</span><small data-i18n="searchSettingsHint">настрой поиск точнее</small></summary>
           <div class="source-row">
           <div id="sources" class="sources" aria-label="Источники поиска" data-i18n-aria-label="sourcesAria">
             <button type="button" data-source="youtube" class="on"><i></i><span>YOUTUBE</span><small data-i18n="connecting">ПОДКЛЮЧЕНИЕ</small></button>
@@ -104,27 +88,18 @@
             <kbd>ENTER ↵</kbd>
           </div>
           </div>
-          <div class="network-strip" aria-hidden="true">
-          <span data-i18n="musicbrainzExpansion">РАСШИРЕНИЕ ЗАПРОСА MUSICBRAINZ</span><i></i><span data-i18n="resultCountOptions">30 / 60 / 100 РЕЗУЛЬТАТОВ</span><i></i><span data-i18n="yandexTransfer">ПЕРЕНОС ИЗ ЯНДЕКС МУЗЫКИ</span>
-          </div>
-          <div class="hero-telemetry" aria-hidden="true">
-          <span data-i18n="querySignal">СИГНАЛ ЗАПРОСА</span>
-          <div class="signal-array"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-          <span id="telemetryClock">00:00:00</span>
-          <span data-i18n="localTime">ЛОКАЛЬНОЕ ВРЕМЯ</span>
-          </div>
         </details>
+        <span id="telemetryClock" class="sr-only">00:00:00</span>
       </div>
     </section>
 
     <section id="results" class="results" aria-live="polite" aria-busy="false">
       <div class="results-heading">
         <div>
-          <span class="section-number">02</span>
           <h1 id="resultTitle" data-i18n="discover">ОТКРЫВАЙ</h1>
         </div>
         <div class="result-stats">
-          <span id="resultTime" data-i18n="ready">ГОТОВО</span>
+          <span id="resultTime" class="sr-only" data-i18n="ready">ГОТОВО</span>
           <strong id="resultCount">0 НАЙДЕНО</strong>
         </div>
       </div>
@@ -140,7 +115,7 @@
 
     <section id="flowPanel" class="flow-panel" hidden aria-labelledby="flowTitle">
       <header>
-        <div><span data-i18n="personalRadio">AWUN / ЛИЧНОЕ РАДИО</span><h2 id="flowTitle" data-i18n="wave">МОЯ ВОЛНА</h2></div>
+        <div><span data-i18n="personalRadio">ЛИЧНОЕ РАДИО</span><h2 id="flowTitle" data-i18n="wave">МОЯ ВОЛНА</h2></div>
         <button id="flowClose" type="button" aria-label="Закрыть настройки волны" data-i18n-aria-label="closeFlowAria">×</button>
       </header>
       <p data-i18n="flowDescription">Бесконечная личная станция: выбери степень знакомства с музыкой, настроение, язык и эпоху, а затем улучшай подборку лайками и пропусками.</p>
@@ -166,8 +141,6 @@
     </section>
 
     <footer class="site-footer">
-      <span data-i18n="footerEdition">AWUN / ЛОКАЛЬНАЯ БЕТА</span>
-      <span class="footer-line"></span>
       <span><a href="/privacy" data-i18n="privacyPolicy">КОНФИДЕНЦИАЛЬНОСТЬ</a> · <a href="/support" data-i18n="support">ПОДДЕРЖКА</a> · <a href="/license" rel="license" data-i18n="freewareLicense">ЛИЦЕНЗИЯ FREEWARE</a> · <a href="/eula" data-i18n="userAgreement">ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ</a></span>
     </footer>
   </main>
@@ -222,7 +195,7 @@
   <div id="themeBackdrop" class="theme-backdrop" hidden></div>
   <aside id="themePanel" class="theme-panel" hidden aria-label="Настройки внешнего вида" data-i18n-aria-label="visualSettingsAria">
     <div class="theme-panel-head">
-      <div><span>03</span><strong data-i18n="visualSystem">ВНЕШНИЙ ВИД</strong></div>
+      <div><strong data-i18n="visualSystem">ВНЕШНИЙ ВИД</strong></div>
       <button id="themeClose" type="button" aria-label="Закрыть настройки внешнего вида" data-i18n-aria-label="closeVisualAria">×</button>
     </div>
     <p data-i18n="visualDescription">Выбери цветовую тему. Переключи интерфейс в минимальный режим, если хочешь оставить на экране только музыку. Настройки сохраняются на этом устройстве.</p>
@@ -239,13 +212,12 @@
       <button id="decorToggle" type="button"><span data-i18n="interface">ИНТЕРФЕЙС</span><b id="decorValue">ПОЛНЫЙ</b></button>
       <button id="densityToggle" type="button"><span data-i18n="density">ПЛОТНОСТЬ</span><b id="densityValue">ОБЫЧНАЯ</b></button>
     </div>
-    <footer><span data-i18n="visualFooter">AWUN / ВНЕШНИЙ ВИД</span><span>V1.8</span></footer>
   </aside>
 
   <div id="importBackdrop" class="theme-backdrop" hidden></div>
   <aside id="importPanel" class="theme-panel import-panel" hidden aria-label="Перенос музыкальной библиотеки" data-i18n-aria-label="importLibraryAria">
     <div class="theme-panel-head">
-      <div><span>04</span><strong data-i18n="libraryTransfer">ПЕРЕНОС МЕДИАТЕКИ</strong></div>
+      <div><strong data-i18n="libraryTransfer">ПЕРЕНОС МЕДИАТЕКИ</strong></div>
       <button id="importClose" type="button" aria-label="Закрыть перенос медиатеки" data-i18n-aria-label="closeImportAria">×</button>
     </div>
     <p data-i18n="importDescription">Вставь публичную ссылку на плейлист: AWUN прочитает открытые данные, найдёт доступные версии треков и добавит совпадения в медиатеку. Доступ к личному аккаунту не требуется.</p>
@@ -259,12 +231,11 @@
       <button id="importSubmit" type="button" data-i18n="importToAwun">ПЕРЕНЕСТИ В AWUN ↗</button>
     </div>
     <progress id="importProgress" class="import-progress" value="0" max="100" hidden></progress>
-    <footer><span data-i18n="publicMetadata">ОТКРЫТЫЕ ДАННЫЕ / АВТОМАТИЧЕСКИЙ ПОИСК</span><span data-i18n="noAccountToken">БЕЗ ТОКЕНА АККАУНТА</span></footer>
   </aside>
 
-  <script src="/static/desktop-bridge.js?v=20260816.3" defer></script>
-  <script src="/static/i18n.js?v=20260816.3" defer></script>
-  <script src="/static/app.js?v=20260816.3" defer></script>
-  <script src="/static/flow.js?v=20260816.3" defer></script>
+  <script src="/static/desktop-bridge.js?v=20260816.4" defer></script>
+  <script src="/static/i18n.js?v=20260816.4" defer></script>
+  <script src="/static/app.js?v=20260816.4" defer></script>
+  <script src="/static/flow.js?v=20260816.4" defer></script>
 </body>
 </html>
