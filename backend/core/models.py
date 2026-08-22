@@ -35,6 +35,7 @@ class SearchRequest(BaseModel):
     sources: list[SourceName] | None = None
     region: RegionName = "AUTO"
     locale: str | None = Field(default=None, max_length=35, pattern=r"^[A-Za-z]{2,3}(?:[-_][A-Za-z]{2,4})?$")
+    fast: bool = False
 
     @field_validator("sources")
     @classmethod

@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     default_limit: int = Field(default=30, ge=1, le=100)
     max_limit: int = Field(default=100, ge=1, le=100)
     search_timeout_seconds: float = Field(default=35.0, gt=0, le=120)
+    fast_search_timeout_seconds: float = Field(default=6.0, gt=0, le=20)
     search_cache_ttl_seconds: float = Field(default=90.0, gt=0, le=3600)
     search_cache_max_size: int = Field(default=256, ge=1, le=5000)
     query_enrichment_wait_seconds: float = Field(default=0.2, gt=0, le=5)

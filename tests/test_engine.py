@@ -48,6 +48,21 @@ class FailingAdapter(FakeAdapter):
         raise RuntimeError("source unavailable")
 
 
+class CancelAwareAdapter(FakeAdapter):
+    def __init__(self, source: str, tracks: list[Track], delay: float) -> None:
+        super().__init__(source, tracks, delay)
+        self.cancelled = False
+
+    async def search(self, query: str, limit: int, *, region=None) -> list[Track]:
+        self.queries.append(query)
+        try:
+            await asyncio.sleep(self.delay)
+        except asyncio.CancelledError:
+            self.cancelled = True
+            raise
+        return self.tracks[:limit]
+
+
 class SearchEngineTests(unittest.IsolatedAsyncioTestCase):
     def test_parses_youtube_iso_duration(self) -> None:
         self.assertEqual(_iso_duration("PT3M42S"), 222)
@@ -76,6 +91,38 @@ class SearchEngineTests(unittest.IsolatedAsyncioTestCase):
 
     def test_default_search_window_is_above_twenty_four(self) -> None:
         self.assertEqual(SearchRequest(query="song").limit, 30)
+        self.assertFalse(SearchRequest(query="song").fast)
+
+    async def test_fast_search_returns_first_productive_source(self) -> None:
+        slow = CancelAwareAdapter(
+            "youtube",
+            [make_track("youtube", title="Slow", score=90)],
+            delay=0.2,
+        )
+        fast = FakeAdapter(
+            "audius",
+            [make_track("audius", title="Ready", score=80)],
+            delay=0.001,
+        )
+        engine = SearchEngine(
+            [slow, fast],
+            timeout_seconds=1,
+            fast_timeout_seconds=0.05,
+        )
+
+        response = await engine.search(
+            SearchRequest(
+                query="song",
+                limit=5,
+                sources=["youtube", "audius"],
+                fast=True,
+            )
+        )
+
+        self.assertEqual([track.title for track in response.tracks], ["Ready"])
+        self.assertEqual(response.searched_sources, ["audius"])
+        self.assertTrue(slow.cancelled)
+        await engine.close()
 
     async def test_interleaves_sources_before_applying_global_limit(self) -> None:
         youtube = FakeAdapter(

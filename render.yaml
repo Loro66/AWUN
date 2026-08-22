@@ -13,6 +13,8 @@ services:
         value: "30"
       - key: AWUN_SEARCH_TIMEOUT_SECONDS
         value: "35"
+      - key: AWUN_FAST_SEARCH_TIMEOUT_SECONDS
+        value: "6"
       - key: AWUN_SEARCH_CACHE_TTL_SECONDS
         value: "90"
       - key: AWUN_SEARCH_CACHE_MAX_SIZE

@@ -134,7 +134,8 @@ def test_flow_recommendations_are_local_persistent_and_feedback_driven() -> None
     assert "awun-wave-profile-v2" in script
     assert "candidateScore" in script and "rankCandidates" in script
     assert all(signal in script for signal in ("'play'", "'skip'", "'listen30'", "'complete'", "'like'", "'dislike'"))
-    assert "Promise.allSettled" in script and "/api/v1/search" in script
+    assert "primeLocalFlow" in script and "fast:true" in script and "/api/v1/search" in script
+    assert "Promise.allSettled" not in script
     assert "window.awunApp" in app and "emitAwun('play'" in app and "emitAwun('complete'" in app
     assert ".flow-panel" in styles and ".flow-feedback.active" in styles
 
@@ -159,7 +160,7 @@ def test_installable_pwa_is_wired() -> None:
     assert 'rel="manifest"' in html and 'id="installButton"' in html
     assert "beforeinstallprompt" in script and "serviceWorker.register('/service-worker.js')" in script
     assert '"display": "standalone"' in manifest and '"start_url": "/"' in manifest
-    assert "awun-shell-1.8.7" in worker and "startsWith('/api/')" in worker
+    assert "awun-shell-1.8.8" in worker and "startsWith('/api/')" in worker
     assert "startsWith('/static/')" in worker and "cached||fetch" in worker
     assert "/static/desktop-bridge.js" in html and "desktop-bridge.js" in worker
     assert "pywebviewready" in bridge and "save_state" in bridge and "load_state" in bridge
@@ -174,7 +175,7 @@ def test_nocturne_redesign_and_vinyl_player_are_wired() -> None:
 
     assert background.is_file() and background.stat().st_size > 200_000
     assert source.is_file() and "unsplash.com/photos/m8RNISlL2HQ" in source.read_text(encoding="utf-8")
-    assert '/static/forest.css?v=20260822.1' in html
+    assert '/static/forest.css?v=20260822.2' in html
     assert 'class="turntable"' in html and 'class="vinyl-monogram"' in html and 'class="player-console"' in html
     assert 'id="player" class="player" hidden' in html
     assert 'id="searchNavButton" class="library search-nav active"' in html and 'aria-pressed="true"' in html
@@ -182,10 +183,12 @@ def test_nocturne_redesign_and_vinyl_player_are_wired() -> None:
     assert "--vinyl-cover" in script and "has-artwork" in script and "track-enter" in script
     assert "const activateTrack=" in script
     assert "/static/brand/burg-eltz-jan-kohl.webp" in forest
-    assert ".is-playing .player-artwork" in forest and "nocturneVinylReveal" in forest and "nocturneControlsReveal" in forest
+    assert ".player.is-playing .player-artwork" in forest and "nocturneVinylReveal" in forest and "nocturneControlsReveal" in forest
     assert "@media(min-width:1100px)" in forest and "--awun-nav" in forest and "--awun-queue" in forest
     assert "grid-template-columns:var(--awun-nav) var(--awun-queue) minmax(0,1fr)" in forest
     assert "left:calc(var(--awun-nav) + var(--awun-queue))" in forest
+    assert "--vinyl-size:clamp(720px,54vw,1020px)" in forest
+    assert "right:clamp(-510px,-27vw,-360px)" in forest
     assert ".player[hidden]{display:none}" in forest and ".empty-guide{margin:" in forest
     assert ".idle-stage" in forest and ".player.track-swap" in forest
 

@@ -19,7 +19,7 @@
     }catch{return freshProfile()}
   }
   const profile=loadProfile();
-  state.flow={active:false,fetching:false,baseQuery:'',seen:new Set(),progress:new Map(),profile};
+  state.flow={active:false,fetching:false,baseQuery:'',queryCursor:0,controller:null,seen:new Set(),progress:new Map(),profile};
 
   function saveProfile(){localStorage.setItem(PROFILE_KEY,JSON.stringify(profile));updateFlowUi()}
   function trackSnapshot(track){return{id:String(track?.id||''),title:decodeText(track?.title||''),artist:decodeText(track?.artist||''),source:String(track?.source||''),at:Date.now()}}
@@ -47,10 +47,14 @@
     const map=new Map();for(const signal of profile.signals){if(!signal.source)continue;const weight={like:4,complete:3,listen30:1,skip:-2,dislike:-4}[signal.type]||0;map.set(signal.source,(map.get(signal.source)||0)+weight)}return map;
   }
   function stableNoise(track){let hash=2166136261;for(const char of `${track.id}:${profile.signals.length}`){hash^=char.charCodeAt(0);hash=Math.imul(hash,16777619)}return((hash>>>0)%1000)/100}
-  function candidateScore(track){
-    const known=knownIds().has(track.id),reaction=latestReaction(track),artists=artistAffinity(),sources=sourceAffinity(),artist=matchText(track.artist);let score=Number(track.score)||50;
-    score+=(artists.get(artist)||0)+(sources.get(track.source)||0)+stableNoise(track);
-    if(state.saved.some(item=>item.id===track.id))score+=42;
+  function scoringContext(){
+    const reactions=new Map();for(const signal of profile.signals){if(signal.id&&(signal.type==='like'||signal.type==='dislike'))reactions.set(signal.id,signal.type)}
+    return{known:knownIds(),saved:new Set(state.saved.map(track=>track.id)),reactions,artists:artistAffinity(),sources:sourceAffinity()};
+  }
+  function candidateScore(track,context=scoringContext()){
+    const known=context.known.has(track.id),reaction=context.reactions.get(track.id)||'',artist=matchText(track.artist);let score=Number(track.score)||50;
+    score+=(context.artists.get(artist)||0)+(context.sources.get(track.source)||0)+stableNoise(track);
+    if(context.saved.has(track.id))score+=42;
     if(reaction==='like')score+=70;if(reaction==='dislike')score-=1000;
     score+=profile.discovery==='familiar'?(known?34:-4):profile.discovery==='new'?(known?-55:26):(known?8:12);
     if(state.active&&artist&&artist===matchText(state.active.artist))score+=profile.discovery==='familiar'?24:profile.discovery==='new'?-22:8;
@@ -58,8 +62,8 @@
     if(state.flow.seen.has(track.id))score-=160;return score;
   }
   function rankCandidates(candidates){
-    const blocked=dislikedIds(),artists=blockedArtists(),unique=new Map();candidates.forEach(track=>{if(track?.id&&!blocked.has(track.id)&&!artists.has(matchText(track.artist))&&track.source!=='yandex_music'&&!unique.has(track.id))unique.set(track.id,track)});
-    const sorted=[...unique.values()].sort((a,b)=>candidateScore(b)-candidateScore(a));const result=[];
+    const blocked=dislikedIds(),blockedArtistKeys=blockedArtists(),context=scoringContext(),unique=new Map();candidates.forEach(track=>{if(track?.id&&track.stream_url&&!blocked.has(track.id)&&!blockedArtistKeys.has(matchText(track.artist))&&track.source!=='yandex_music'&&!unique.has(track.id))unique.set(track.id,track)});
+    const sorted=[...unique.values()].sort((a,b)=>candidateScore(b,context)-candidateScore(a,context));const result=[];
     while(sorted.length){const recent=result.slice(-2).map(track=>matchText(track.artist));let index=sorted.findIndex(track=>!recent.includes(matchText(track.artist)));if(index<0)index=0;result.push(sorted.splice(index,1)[0])}
     return result;
   }
@@ -73,30 +77,38 @@
       else if(profile.discovery==='new')queries.push(`${seed.title} ${context}`.trim());
       else queries.push(`${artist} ${seed.title} ${context}`.trim());
     }
-    if(!queries.length&&context)queries.push(context);return[...new Set(queries.filter(Boolean))].slice(0,4);
+    if(!queries.length&&context)queries.push(context);if(!queries.length)queries.push(document.documentElement.lang==='ru'?'новая музыка':'new music');return[...new Set(queries.filter(Boolean))].slice(0,4);
   }
-  async function requestCandidates(query){
-    const response=await awunFetch('/api/v1/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query,limit:24,sources:[...state.sources],region:state.region,locale:navigator.language||null})});
+  async function requestCandidates(query,signal){
+    const sources=[...state.sources].filter(source=>!state.available.size||state.available.has(source));
+    const response=await awunFetch('/api/v1/search',{method:'POST',headers:{'Content-Type':'application/json'},signal,body:JSON.stringify({query,limit:18,sources,region:state.region,locale:navigator.language||null,fast:true})});
     const data=await response.json();if(!response.ok)throw new Error(data.detail||t('flowSearchFailed'));return data.tracks||[];
+  }
+  function primeLocalFlow(){
+    const ranked=rankCandidates([state.active,...state.tracks,...state.saved].filter(Boolean));if(!ranked.length)return false;
+    state.tracks=ranked.slice(0,80);state.library=false;ui.libraryButton.classList.remove('active');ui.libraryButton.setAttribute('aria-pressed','false');render();
+    if(!state.active)void playTrack(state.tracks[0]);setMessage(t('flowLive',{count:state.tracks.length}),'notice');return true;
   }
   async function fillFlow(initial=false){
     if(state.flow.fetching||!state.sources.size)return;state.flow.fetching=true;updateFlowUi();
+    let timeoutId=null;
     try{
       const queries=buildQueries();if(!queries.length)throw new Error(t('flowNeedsSeed'));
-      const batches=await Promise.allSettled(queries.map(requestCandidates));const remote=batches.flatMap(batch=>batch.status==='fulfilled'?batch.value:[]);const current=initial?state.tracks:[];
+      const query=queries[state.flow.queryCursor%queries.length];state.flow.queryCursor+=1;state.flow.controller=new AbortController();timeoutId=setTimeout(()=>state.flow.controller?.abort(),7500);
+      const remote=await requestCandidates(query,state.flow.controller.signal);const current=initial?state.tracks:[];
       const ranked=rankCandidates([...current,...remote]);if(!ranked.length)throw new Error(t('flowNoRecommendations'));
       if(initial){state.tracks=ranked.slice(0,80)}else{const existing=new Set(state.tracks.map(track=>track.id));state.tracks.push(...ranked.filter(track=>!existing.has(track.id)).slice(0,40))}
       state.library=false;ui.libraryButton.classList.remove('active');ui.libraryButton.setAttribute('aria-pressed','false');render();
       if(initial&&!state.active)await playTrack(state.tracks[0]);setMessage(t('flowLive',{count:state.tracks.length}),'notice');
-    }catch(error){setMessage(error.message||t('flowUnavailable'),'error');if(initial)stopFlow()}
-    finally{state.flow.fetching=false;updateFlowUi()}
+    }catch(error){if(error.name==='AbortError'&&state.tracks.length)return;setMessage(error.message||t('flowUnavailable'),'error');if(initial)stopFlow(true)}
+    finally{if(timeoutId)clearTimeout(timeoutId);state.flow.controller=null;state.flow.fetching=false;updateFlowUi()}
   }
   async function startFlow(){
     if(state.flow.active){stopFlow();return}
-    state.flow.baseQuery=ui.searchInput.value.trim()||[state.active?.artist,state.active?.title].filter(Boolean).join(' ')||positiveSeeds()[0]?.artist||'';
-    state.flow.active=true;state.flow.seen.clear();document.body.classList.add('flow-active');closePanel();updateFlowUi();await fillFlow(true);
+    state.flow.baseQuery=ui.searchInput.value.trim()||[state.active?.artist,state.active?.title].filter(Boolean).join(' ')||positiveSeeds()[0]?.artist||(document.documentElement.lang==='ru'?'новая музыка':'new music');
+    state.flow.active=true;state.flow.queryCursor=0;state.flow.seen.clear();document.body.classList.add('flow-active');closePanel();updateFlowUi();if(primeLocalFlow()){void fillFlow(false);return}await fillFlow(true);
   }
-  function stopFlow(){state.flow.active=false;document.body.classList.remove('flow-active');updateFlowUi();setMessage(t('flowStopped'),'notice')}
+  function stopFlow(silent=false){state.flow.controller?.abort();state.flow.active=false;document.body.classList.remove('flow-active');updateFlowUi();if(!silent)setMessage(t('flowStopped'),'notice')}
   function openPanel(){flow.flowPanel.hidden=false;flow.flowButton.setAttribute('aria-expanded','true');requestAnimationFrame(()=>flow.flowPanel.classList.add('open'));updateFlowUi()}
   function closePanel(){flow.flowPanel.classList.remove('open');flow.flowButton.setAttribute('aria-expanded','false');setTimeout(()=>{flow.flowPanel.hidden=true},180)}
   function updateFlowUi(){

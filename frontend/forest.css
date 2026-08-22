@@ -349,7 +349,7 @@ html[data-decor="minimal"] .track-story{grid-column:1/-1;width:100%;margin:5px 0
 }
 .player[hidden]{display:none}
 .player>*{pointer-events:auto}
-.turntable{position:relative;z-index:2;grid-row:1;width:286px;height:286px;margin:0 0 -68px -26px;display:grid;place-items:center;border:0;border-radius:50%;background:transparent;pointer-events:none!important}
+.turntable{--vinyl-rest:translateY(0);position:relative;z-index:2;grid-row:1;width:286px;height:286px;margin:0 0 -68px -26px;display:grid;place-items:center;border:0;border-radius:50%;background:transparent;transform:var(--vinyl-rest);pointer-events:none!important}
 .player-artwork{
   --vinyl-cover:none;
   position:relative;
@@ -360,21 +360,23 @@ html[data-decor="minimal"] .track-story{grid-column:1/-1;width:100%;margin:5px 0
   border:1px solid rgba(210,183,129,.12);
   border-radius:50%;
   background:
-    repeating-radial-gradient(circle at center,transparent 0 2px,rgba(221,207,180,.055) 2.5px 3px,transparent 3.5px 6px),
-    conic-gradient(from 18deg,#090806,#242018 11%,#0b0a08 24%,#1c1914 39%,#070605 53%,#28231b 68%,#0a0907 84%,#1c1914);
+    radial-gradient(circle at 34% 27%,rgba(241,224,189,.14),transparent 13%),
+    repeating-radial-gradient(circle at center,transparent 0 2px,rgba(221,207,180,.065) 2.5px 3px,transparent 3.5px 6px),
+    conic-gradient(from 18deg,#090806,#29231a 11%,#0b0a08 24%,#211c15 39%,#070605 53%,#2d261c 68%,#0a0907 84%,#1c1914);
   color:#e3d7c1;
   font-family:Georgia,serif;
   font-size:14px;
   font-weight:400;
   letter-spacing:.7px;
   box-shadow:0 35px 85px rgba(0,0,0,.7),inset 0 0 0 2px rgba(0,0,0,.76),inset 0 0 50px rgba(200,171,115,.035);
-  animation:nocturneVinylSpin 8.8s linear infinite;
+  animation:nocturneVinylSpin 7.2s linear infinite;
   animation-play-state:paused;
+  backface-visibility:hidden;
   will-change:transform;
 }
-.player-artwork:before{position:absolute;z-index:1;width:37%;height:37%;border:3px solid #17130e;border-radius:50%;content:"";background-image:var(--vinyl-cover),radial-gradient(circle,#aa9163,#4f4432);background-position:center;background-size:cover;box-shadow:0 0 0 2px rgba(var(--accent-rgb),.26),0 8px 25px rgba(0,0,0,.45)}
+.player-artwork:before{position:absolute;z-index:1;width:36%;height:36%;border:3px solid #17130e;border-radius:50%;content:"";background-color:#5a4b35;background-image:var(--vinyl-cover),radial-gradient(circle,#aa9163,#4f4432);background-position:center;background-size:cover;box-shadow:0 0 0 2px rgba(var(--accent-rgb),.32),0 8px 25px rgba(0,0,0,.45)}
 .player-artwork:after{position:absolute;z-index:3;width:8px;height:8px;border-radius:50%;content:"";background:#d6c39f;box-shadow:0 0 0 3px rgba(0,0,0,.7)}
-.vinyl-monogram{position:relative;z-index:2;max-width:70px;overflow:hidden;text-align:center;white-space:nowrap}.player-artwork.has-artwork .vinyl-monogram{opacity:0}.is-playing .player-artwork{animation-play-state:running}
+.vinyl-monogram{position:relative;z-index:2;max-width:70px;overflow:hidden;text-align:center;white-space:nowrap}.player-artwork.has-artwork .vinyl-monogram{opacity:0}.is-playing .player-artwork,.player.is-playing .player-artwork{animation-play-state:running}
 
 .player-console{position:relative;z-index:1;width:100%;padding:77px 18px 18px;border:1px solid var(--line);border-radius:0 24px 24px 0;background:linear-gradient(145deg,rgba(16,13,9,.95),rgba(7,6,4,.97));box-shadow:0 30px 90px rgba(0,0,0,.62),inset 0 1px rgba(255,255,255,.025);backdrop-filter:blur(28px) saturate(.65)}
 .now{padding-right:25px}.now strong,.now span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.now-kicker{display:block;margin-bottom:9px;color:var(--acid);font-size:6px;font-weight:800;letter-spacing:1.5px}.now strong{font-family:Iowan Old Style,"Palatino Linotype","Book Antiqua",Georgia,serif;font-size:20px;font-weight:400}.now span{margin-top:6px;color:rgba(229,221,205,.48);font-size:7px}.mini-eq{height:10px;margin-top:8px}.mini-eq i{width:1px;background:var(--acid)}
@@ -529,12 +531,12 @@ html[data-decor="minimal"] .track-story{grid-column:1/-1;width:100%;margin:5px 0
   body.has-player .idle-stage{opacity:0;transform:translateX(7%)}
 
   .player,
-  html[data-decor="minimal"] .player{left:calc(var(--awun-nav) + var(--awun-queue));display:block;padding:0;background:radial-gradient(circle at 70% 35%,rgba(var(--accent-rgb),.08),transparent 43%);overflow:hidden}
-  .player:before{inset:7% 5% 20%;border-color:rgba(var(--accent-rgb),.07)}
-  .player .turntable{position:absolute;z-index:1;top:clamp(24px,5vh,64px);right:clamp(-72px,-3vw,-26px);width:min(60svh,620px,calc(100% - 14px));height:auto;aspect-ratio:1;margin:0;transform:none}
-  .player .player-artwork{width:calc(100% - 14px);height:calc(100% - 14px);font-size:21px;box-shadow:0 52px 120px rgba(0,0,0,.74),0 0 0 1px rgba(var(--accent-rgb),.15),inset 0 0 0 2px rgba(0,0,0,.76)}
-  .player .player-artwork:before{border-width:4px}.player .player-artwork:after{width:10px;height:10px}
-  .player .player-console{position:absolute;z-index:3;right:clamp(24px,4vw,72px);bottom:clamp(24px,4.5vh,58px);width:min(570px,calc(100% - 48px));padding:22px 24px 19px;border:1px solid var(--line-strong);border-radius:24px;background:linear-gradient(145deg,rgba(15,12,9,.94),rgba(6,5,4,.92));box-shadow:0 34px 100px rgba(0,0,0,.62),inset 0 1px rgba(255,255,255,.035);backdrop-filter:blur(32px) saturate(.68);text-align:left}
+  html[data-decor="minimal"] .player{--vinyl-size:clamp(720px,54vw,1020px);left:calc(var(--awun-nav) + var(--awun-queue));display:block;padding:0;background:radial-gradient(circle at 88% 36%,rgba(var(--accent-rgb),.11),transparent 48%);overflow:hidden}
+  .player:before{top:50%;right:clamp(-510px,-27vw,-360px);bottom:auto;left:auto;width:var(--vinyl-size);aspect-ratio:1;border-color:rgba(var(--accent-rgb),.08);transform:translateY(-56%)}
+  .player .turntable{--vinyl-rest:translateY(-56%);position:absolute;z-index:1;top:50%;right:clamp(-510px,-27vw,-360px);width:var(--vinyl-size);max-width:none;height:auto;aspect-ratio:1;margin:0;filter:drop-shadow(-34px 42px 58px rgba(0,0,0,.44))}
+  .player .player-artwork{width:calc(100% - 18px);height:calc(100% - 18px);font-size:24px;box-shadow:0 58px 140px rgba(0,0,0,.78),0 0 0 2px rgba(var(--accent-rgb),.18),inset 0 0 0 3px rgba(0,0,0,.8)}
+  .player .player-artwork:before{border-width:5px}.player .player-artwork:after{width:12px;height:12px}
+  .player .player-console{position:absolute;z-index:3;right:clamp(34px,5vw,92px);bottom:clamp(28px,4.5vh,58px);width:min(610px,calc(100% - 48px));padding:23px 26px 20px;border:1px solid var(--line-strong);border-radius:24px;background:linear-gradient(145deg,rgba(15,12,9,.95),rgba(6,5,4,.93));box-shadow:0 34px 100px rgba(0,0,0,.66),inset 0 1px rgba(255,255,255,.04);backdrop-filter:blur(34px) saturate(.68);text-align:left}
   .player .now{padding:0 34px 0 0}.player .now strong{font-size:clamp(23px,2vw,31px)}.player .now span{font-size:8px}.player .mini-eq{justify-content:flex-start}
   .player .transport{margin-top:18px}.player .transport-buttons{justify-content:flex-start;gap:13px;margin-bottom:14px}.player .play-pause{width:54px;height:54px}.player .timeline{grid-template-columns:38px minmax(130px,1fr) 38px;font-size:7px}
   .player .player-tools{grid-template-columns:auto auto minmax(100px,145px) 32px;justify-content:start;margin-top:11px;padding-top:11px;border-top:1px solid var(--line)}.player .player-tools .close{display:block}
@@ -591,13 +593,13 @@ html[data-decor="minimal"] .track-story{grid-column:1/-1;width:100%;margin:5px 0
 }
 
 @keyframes nocturneVinylSpin{to{transform:rotate(360deg)}}
-@keyframes nocturneVinylReveal{from{opacity:0;transform:translateX(118%) rotate(12deg) scale(.92)}to{opacity:1;transform:none}}
+@keyframes nocturneVinylReveal{from{opacity:0;transform:var(--vinyl-rest) translateX(70%) rotate(12deg) scale(.94)}to{opacity:1;transform:var(--vinyl-rest) translateX(0) rotate(0) scale(1)}}
 @keyframes nocturneControlsReveal{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:none}}
 @keyframes nocturneLabelSwap{from{opacity:.2;filter:blur(7px);transform:scale(.82)}to{opacity:1;filter:none;transform:none}}
 @keyframes nocturneTrackIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
 @keyframes nocturneSpin{to{transform:rotate(360deg)}}
 
 @media(prefers-reduced-motion:reduce){
-  .player-artwork{animation:none!important}
+  .player-artwork{animation-duration:20s!important}
   .player.track-enter .turntable,.player.track-enter .player-console,.player.track-swap .player-artwork:before,.track{animation:none!important}
 }

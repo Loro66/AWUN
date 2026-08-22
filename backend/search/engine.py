@@ -22,6 +22,7 @@ class SearchEngine:
         self,
         adapters: list[BaseAdapter],
         timeout_seconds: float = 20.0,
+        fast_timeout_seconds: float = 6.0,
         max_limit: int = 30,
         enricher: QueryEnricher | None = None,
         cache_ttl_seconds: float = 90.0,
@@ -30,6 +31,7 @@ class SearchEngine:
     ) -> None:
         self._adapters = {adapter.source: adapter for adapter in adapters}
         self._timeout = timeout_seconds
+        self._fast_timeout = min(timeout_seconds, max(0.05, fast_timeout_seconds))
         self._max_limit = max_limit
         self._enricher = enricher or BasicQueryEnricher()
         self._breakers = {
@@ -120,17 +122,61 @@ class SearchEngine:
         if not requested:
             errors["engine"] = "Источники поиска не настроены"
 
-        tasks = [
-            self._safe_search(self._adapters[source], query_variants, per_source_limit, region)
-            for source in selected
-        ]
-        results = await asyncio.gather(*tasks)
-
         tracks_by_source: dict[str, list[Track]] = {}
-        for source, (source_tracks, error) in zip(selected, results, strict=True):
-            tracks_by_source[source] = source_tracks
-            if error:
-                errors[source] = error
+        searched_sources: list[SourceName] = []
+        tasks = {
+            asyncio.create_task(
+                self._safe_search(
+                    self._adapters[source],
+                    query_variants,
+                    per_source_limit,
+                    region,
+                )
+            ): source
+            for source in selected
+        }
+        if request.fast:
+            pending = set(tasks)
+            deadline = asyncio.get_running_loop().time() + self._fast_timeout
+            while pending:
+                remaining = deadline - asyncio.get_running_loop().time()
+                if remaining <= 0:
+                    break
+                completed, pending = await asyncio.wait(
+                    pending,
+                    timeout=remaining,
+                    return_when=asyncio.FIRST_COMPLETED,
+                )
+                if not completed:
+                    break
+                for task in completed:
+                    source = tasks[task]
+                    source_tracks, error = task.result()
+                    searched_sources.append(source)
+                    tracks_by_source[source] = source_tracks
+                    if error:
+                        errors[source] = error
+                if any(tracks_by_source.values()):
+                    break
+            if pending:
+                for task in pending:
+                    task.cancel()
+                await asyncio.gather(*pending, return_exceptions=True)
+                if not any(tracks_by_source.values()):
+                    for task in pending:
+                        source = tasks[task]
+                        errors.setdefault(
+                            source,
+                            f"Источник не успел ответить за {self._fast_timeout:g} с",
+                        )
+                        searched_sources.append(source)
+        else:
+            results = await asyncio.gather(*tasks)
+            for source, (source_tracks, error) in zip(selected, results, strict=True):
+                searched_sources.append(source)
+                tracks_by_source[source] = source_tracks
+                if error:
+                    errors[source] = error
 
         tracks = self._merge_balanced(tracks_by_source, selected, request.limit)
         for track in tracks:
@@ -141,7 +187,7 @@ class SearchEngine:
             query=request.query,
             tracks=tracks,
             total=len(tracks),
-            searched_sources=selected,
+            searched_sources=[source for source in selected if source in searched_sources],
             region=request.region,
             query_variants=query_variants,
             errors=errors,
@@ -152,7 +198,7 @@ class SearchEngine:
         sources = tuple(request.sources or self.available_sources)
         query = " ".join(request.query.casefold().split())
         locale = (request.locale or "").replace("_", "-").casefold()
-        return query, request.limit, sources, request.region, locale
+        return query, request.limit, sources, request.region, locale, request.fast
 
     async def _fast_query_variants(
         self,

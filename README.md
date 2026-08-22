@@ -186,7 +186,10 @@ Search responses are cached for 90 seconds by default and identical concurrent
 requests share one provider run. Tune this with `AWUN_SEARCH_CACHE_TTL_SECONDS`
 and `AWUN_SEARCH_CACHE_MAX_SIZE`. Cold MusicBrainz enrichment gets a short
 `AWUN_QUERY_ENRICHMENT_WAIT_SECONDS` budget and then warms in the background,
-so metadata discovery does not hold up the first provider results.
+so metadata discovery does not hold up the first provider results. My Wave uses
+fast search mode: it returns the first productive catalog within
+`AWUN_FAST_SEARCH_TIMEOUT_SECONDS` (6 seconds by default) and fills the queue in
+the background instead of waiting for every provider.
 LRCLIB is enabled by default. Add `AWUN_GENIUS_ACCESS_TOKEN` for Genius
 referents; never expose this value to the frontend or commit it to the repository.
 

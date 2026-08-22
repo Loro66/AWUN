@@ -139,6 +139,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         app.state.search_engine = SearchEngine(
             build_adapters(settings),
             timeout_seconds=settings.search_timeout_seconds,
+            fast_timeout_seconds=settings.fast_search_timeout_seconds,
             max_limit=settings.max_limit,
             enricher=build_enricher(settings),
             cache_ttl_seconds=settings.search_cache_ttl_seconds,
