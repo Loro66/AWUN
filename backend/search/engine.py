@@ -1,4 +1,5 @@
 import asyncio
+from copy import deepcopy
 from dataclasses import asdict
 from time import perf_counter
 from urllib.parse import quote, quote_plus
@@ -8,18 +9,24 @@ from backend.core.models import SearchRequest, SearchResponse, SourceName, Track
 from backend.core.regions import RegionProfile, resolve_region
 from backend.reliability.circuit_breaker import CircuitBreaker
 from backend.reliability.source_health import SourceHealthRegistry
-from backend.search.enrichment import BasicQueryEnricher, QueryEnricher
+from backend.reliability.ttl_cache import TTLCache
+from backend.search.enrichment import BasicQueryEnricher, QueryEnricher, basic_query_variants
 from backend.search.track_identity import same_recording
 from backend.sources.base import BaseAdapter
 
 
 class SearchEngine:
+    _MAX_BACKGROUND_ENRICHMENTS = 8
+
     def __init__(
         self,
         adapters: list[BaseAdapter],
         timeout_seconds: float = 20.0,
         max_limit: int = 30,
         enricher: QueryEnricher | None = None,
+        cache_ttl_seconds: float = 90.0,
+        cache_max_size: int = 256,
+        enrichment_wait_seconds: float = 0.2,
     ) -> None:
         self._adapters = {adapter.source: adapter for adapter in adapters}
         self._timeout = timeout_seconds
@@ -31,6 +38,13 @@ class SearchEngine:
         }
         self._health = SourceHealthRegistry(list(self._adapters))
         self._metrics = SearchMetrics()
+        self._cache = TTLCache[tuple[object, ...], SearchResponse](
+            ttl_seconds=cache_ttl_seconds,
+            max_size=cache_max_size,
+        )
+        self._enrichment_wait = max(0.01, enrichment_wait_seconds)
+        self._inflight: dict[tuple[object, ...], asyncio.Task[SearchResponse]] = {}
+        self._background_tasks: set[asyncio.Task[list[str]]] = set()
 
     @property
     def available_sources(self) -> list[SourceName]:
@@ -45,21 +59,58 @@ class SearchEngine:
 
     @property
     def metrics(self) -> dict[str, object]:
-        return asdict(self._metrics.snapshot())
+        data: dict[str, object] = asdict(self._metrics.snapshot())
+        data["cache"] = asdict(self._cache.stats)
+        return data
 
     async def search(self, request: SearchRequest) -> SearchResponse:
+        started = perf_counter()
+        cache_key = self._cache_key(request)
+        cached = self._cache.get(cache_key)
+        if cached is not None:
+            response = deepcopy(cached)
+            response.elapsed_ms = round((perf_counter() - started) * 1000)
+            self._metrics.record_search(
+                elapsed_ms=response.elapsed_ms,
+                result_count=len(response.tracks),
+            )
+            return response
+
+        task = self._inflight.get(cache_key)
+        if task is None:
+            task = asyncio.create_task(self._search_and_cache(request, cache_key))
+            self._inflight[cache_key] = task
+            task.add_done_callback(
+                lambda finished, key=cache_key: self._clear_inflight(key, finished)
+            )
+        response = await asyncio.shield(task)
+        return deepcopy(response)
+
+    async def _search_and_cache(
+        self,
+        request: SearchRequest,
+        cache_key: tuple[object, ...],
+    ) -> SearchResponse:
+        response = await self._search_uncached(request)
+        if response.tracks and not response.errors:
+            self._cache.set(cache_key, deepcopy(response))
+        return response
+
+    def _clear_inflight(
+        self,
+        key: tuple[object, ...],
+        task: asyncio.Task[SearchResponse],
+    ) -> None:
+        if self._inflight.get(key) is task:
+            self._inflight.pop(key, None)
+
+    async def _search_uncached(self, request: SearchRequest) -> SearchResponse:
         started = perf_counter()
         requested = request.sources or self.available_sources
         selected = [source for source in requested if source in self._adapters]
         per_source_limit = min(request.limit, self._max_limit)
         region = resolve_region(request.region, request.locale)
-        try:
-            query_variants = await asyncio.wait_for(
-                self._enricher.expand(request.query, region),
-                timeout=min(10.0, self._timeout / 2),
-            )
-        except Exception:
-            query_variants = [request.query]
+        query_variants = await self._fast_query_variants(request.query, region)
 
         errors: dict[str, str] = {
             source: "Источник не настроен"
@@ -96,6 +147,51 @@ class SearchEngine:
             errors=errors,
             elapsed_ms=elapsed_ms,
         )
+
+    def _cache_key(self, request: SearchRequest) -> tuple[object, ...]:
+        sources = tuple(request.sources or self.available_sources)
+        query = " ".join(request.query.casefold().split())
+        locale = (request.locale or "").replace("_", "-").casefold()
+        return query, request.limit, sources, request.region, locale
+
+    async def _fast_query_variants(
+        self,
+        query: str,
+        region: RegionProfile,
+    ) -> list[str]:
+        """Use cached enrichment immediately and never block a cold search on it.
+
+        MusicBrainz rate limits anonymous clients to one request per second.
+        A cold enrichment continues in the background and warms its own cache;
+        the active search starts after a short budget with local variants.
+        """
+
+        if len(self._background_tasks) >= self._MAX_BACKGROUND_ENRICHMENTS:
+            return basic_query_variants(query)
+
+        task = asyncio.create_task(self._enricher.expand(query, region))
+        try:
+            return await asyncio.wait_for(
+                asyncio.shield(task),
+                timeout=min(self._enrichment_wait, self._timeout / 4),
+            )
+        except TimeoutError:
+            if len(self._background_tasks) >= self._MAX_BACKGROUND_ENRICHMENTS:
+                task.cancel()
+                await asyncio.gather(task, return_exceptions=True)
+                return basic_query_variants(query)
+            self._background_tasks.add(task)
+            task.add_done_callback(self._consume_background_task)
+            return basic_query_variants(query)
+        except Exception:
+            return basic_query_variants(query)
+
+    def _consume_background_task(self, task: asyncio.Task[list[str]]) -> None:
+        self._background_tasks.discard(task)
+        try:
+            task.result()
+        except (Exception, asyncio.CancelledError):
+            pass
 
     async def _safe_search(
         self,
@@ -204,6 +300,11 @@ class SearchEngine:
         return merged
 
     async def close(self) -> None:
+        pending = set(self._background_tasks) | set(self._inflight.values())
+        for task in pending:
+            task.cancel()
+        if pending:
+            await asyncio.gather(*pending, return_exceptions=True)
         await asyncio.gather(
             *(adapter.close() for adapter in self._adapters.values()),
             self._enricher.close(),

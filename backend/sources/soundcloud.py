@@ -40,6 +40,8 @@ class SoundCloudAdapter(BaseAdapter):
         self._client_secret = client_secret
         self._token: str | None = None
         self._token_expires_at = 0.0
+        self._token_lock = asyncio.Lock()
+        self._session: aiohttp.ClientSession | None = None
         self._legacy_options = {
             "quiet": True,
             "no_warnings": True,
@@ -50,6 +52,14 @@ class SoundCloudAdapter(BaseAdapter):
             "noplaylist": True,
             "extract_flat": False,
         }
+
+    async def _get_session(self) -> aiohttp.ClientSession:
+        if self._session is None or self._session.closed:
+            self._session = aiohttp.ClientSession(
+                timeout=self._timeout,
+                headers={"Accept": "application/json", "User-Agent": "AWUN/1.8"},
+            )
+        return self._session
 
     async def search(
         self,
@@ -74,20 +84,20 @@ class SoundCloudAdapter(BaseAdapter):
         token = await self._access_token()
         headers = {"Authorization": f"OAuth {token}", "Accept": "application/json"}
         try:
-            async with aiohttp.ClientSession(timeout=self._timeout) as session:
-                async with session.get(
-                    self._TRACKS_URL,
-                    headers=headers,
-                    params={
-                        "q": query,
-                        "access": "playable",
-                        "limit": min(limit, 200),
-                        "linked_partitioning": "true",
-                    },
-                ) as response:
-                    payload = await response.json(content_type=None)
-                    if response.status != 200:
-                        raise AdapterError(f"API SoundCloud вернул ошибку HTTP {response.status}")
+            session = await self._get_session()
+            async with session.get(
+                self._TRACKS_URL,
+                headers=headers,
+                params={
+                    "q": query,
+                    "access": "playable",
+                    "limit": min(limit, 200),
+                    "linked_partitioning": "true",
+                },
+            ) as response:
+                payload = await response.json(content_type=None)
+                if response.status != 200:
+                    raise AdapterError(f"API SoundCloud вернул ошибку HTTP {response.status}")
         except AdapterError:
             raise
         except (aiohttp.ClientError, TimeoutError) as exc:
@@ -104,20 +114,20 @@ class SoundCloudAdapter(BaseAdapter):
                 continue
             candidates.append((item, track_id, stream_url))
 
-        async with aiohttp.ClientSession(timeout=self._timeout) as session:
-            resolved = await asyncio.gather(
-                *(self._resolve_stream(session, stream_url, headers) for _, _, stream_url in candidates[:limit]),
-                return_exceptions=True,
-            )
-            downloads = await asyncio.gather(
-                *(
-                    self._authorized_url(session, str(item["download_url"]), headers)
-                    if item.get("downloadable") and item.get("download_url")
-                    else asyncio.sleep(0, result=None)
-                    for item, _, _ in candidates[:limit]
-                ),
-                return_exceptions=True,
-            )
+        session = await self._get_session()
+        resolved = await asyncio.gather(
+            *(self._resolve_stream(session, stream_url, headers) for _, _, stream_url in candidates[:limit]),
+            return_exceptions=True,
+        )
+        downloads = await asyncio.gather(
+            *(
+                self._authorized_url(session, str(item["download_url"]), headers)
+                if item.get("downloadable") and item.get("download_url")
+                else asyncio.sleep(0, result=None)
+                for item, _, _ in candidates[:limit]
+            ),
+            return_exceptions=True,
+        )
 
         tracks: list[Track] = []
         for (item, track_id, _), direct_url, download_url in zip(
@@ -203,9 +213,12 @@ class SoundCloudAdapter(BaseAdapter):
     async def _access_token(self) -> str:
         if self._token and monotonic() < self._token_expires_at:
             return self._token
-        credentials = base64.b64encode(f"{self._client_id}:{self._client_secret}".encode()).decode()
-        try:
-            async with aiohttp.ClientSession(timeout=self._timeout) as session:
+        async with self._token_lock:
+            if self._token and monotonic() < self._token_expires_at:
+                return self._token
+            credentials = base64.b64encode(f"{self._client_id}:{self._client_secret}".encode()).decode()
+            try:
+                session = await self._get_session()
                 async with session.post(
                     self._TOKEN_URL,
                     headers={
@@ -218,13 +231,13 @@ class SoundCloudAdapter(BaseAdapter):
                     payload = await response.json(content_type=None)
                     if response.status != 200 or not payload.get("access_token"):
                         raise AdapterError(f"OAuth SoundCloud вернул ошибку HTTP {response.status}")
-        except AdapterError:
-            raise
-        except (aiohttp.ClientError, TimeoutError) as exc:
-            raise AdapterError(f"Авторизация OAuth SoundCloud не выполнена ({type(exc).__name__})") from exc
-        self._token = str(payload["access_token"])
-        self._token_expires_at = monotonic() + max(60, int(payload.get("expires_in") or 3600) - 60)
-        return self._token
+            except AdapterError:
+                raise
+            except (aiohttp.ClientError, TimeoutError) as exc:
+                raise AdapterError(f"Авторизация OAuth SoundCloud не выполнена ({type(exc).__name__})") from exc
+            self._token = str(payload["access_token"])
+            self._token_expires_at = monotonic() + max(60, int(payload.get("expires_in") or 3600) - 60)
+            return self._token
 
     def _search_legacy(self, query: str, limit: int) -> list[Track]:
         with YoutubeDL(self._legacy_options) as ydl:
@@ -256,3 +269,7 @@ class SoundCloudAdapter(BaseAdapter):
                 )
             )
         return tracks[:limit]
+
+    async def close(self) -> None:
+        if self._session and not self._session.closed:
+            await self._session.close()

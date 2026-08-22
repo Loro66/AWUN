@@ -24,6 +24,7 @@ def test_visual_controls_have_unique_ids() -> None:
     assert len(parser.ids) == len(set(parser.ids))
     assert {
         "themeButton",
+        "searchNavButton",
         "themePanel",
         "motionToggle",
         "decorToggle",
@@ -75,6 +76,7 @@ def test_every_visual_theme_has_css_and_javascript_metadata() -> None:
 
 def test_frontend_assets_share_cache_version() -> None:
     html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    api = (ROOT / "backend" / "api" / "main.py").read_text(encoding="utf-8")
 
     style_version = re.search(r'/static/styles\.css\?v=([\d.]+)', html)
     script_version = re.search(r'/static/app\.js\?v=([\d.]+)', html)
@@ -85,6 +87,7 @@ def test_frontend_assets_share_cache_version() -> None:
     assert flow_version is not None
     assert style_version.group(1) == script_version.group(1)
     assert style_version.group(1) == flow_version.group(1)
+    assert "CacheControlledStaticFiles" in api and "max-age=31536000, immutable" in api
 
 
 def test_identity_minimal_mode_and_track_stories_are_wired() -> None:
@@ -156,7 +159,8 @@ def test_installable_pwa_is_wired() -> None:
     assert 'rel="manifest"' in html and 'id="installButton"' in html
     assert "beforeinstallprompt" in script and "serviceWorker.register('/service-worker.js')" in script
     assert '"display": "standalone"' in manifest and '"start_url": "/"' in manifest
-    assert "awun-shell-1.8.6" in worker and "startsWith('/api/')" in worker
+    assert "awun-shell-1.8.7" in worker and "startsWith('/api/')" in worker
+    assert "startsWith('/static/')" in worker and "cached||fetch" in worker
     assert "/static/desktop-bridge.js" in html and "desktop-bridge.js" in worker
     assert "pywebviewready" in bridge and "save_state" in bridge and "load_state" in bridge
 
@@ -170,9 +174,10 @@ def test_nocturne_redesign_and_vinyl_player_are_wired() -> None:
 
     assert background.is_file() and background.stat().st_size > 200_000
     assert source.is_file() and "unsplash.com/photos/m8RNISlL2HQ" in source.read_text(encoding="utf-8")
-    assert '/static/forest.css?v=20260816.4' in html
+    assert '/static/forest.css?v=20260822.1' in html
     assert 'class="turntable"' in html and 'class="vinyl-monogram"' in html and 'class="player-console"' in html
     assert 'id="player" class="player" hidden' in html
+    assert 'id="searchNavButton" class="library search-nav active"' in html and 'aria-pressed="true"' in html
     assert "tonearm" not in html
     assert "--vinyl-cover" in script and "has-artwork" in script and "track-enter" in script
     assert "const activateTrack=" in script
@@ -181,7 +186,8 @@ def test_nocturne_redesign_and_vinyl_player_are_wired() -> None:
     assert "@media(min-width:1100px)" in forest and "--awun-nav" in forest and "--awun-queue" in forest
     assert "grid-template-columns:var(--awun-nav) var(--awun-queue) minmax(0,1fr)" in forest
     assert "left:calc(var(--awun-nav) + var(--awun-queue))" in forest
-    assert ".player[hidden]{display:none}" in forest and ".empty-guide{display:none!important}" in forest
+    assert ".player[hidden]{display:none}" in forest and ".empty-guide{margin:" in forest
+    assert ".idle-stage" in forest and ".player.track-swap" in forest
 
 
 def test_listener_first_onboarding_and_language_switch_are_wired() -> None:

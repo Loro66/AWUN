@@ -182,6 +182,11 @@ read-only REST API. Jamendo is added only when `AWUN_JAMENDO_CLIENT_ID` is set.
 Internet Archive is enabled by default and exposes only public audio files.
 MusicBrainz is enabled by default; set `AWUN_MUSICBRAINZ_CONTACT` to a project
 URL or contact address and adjust `AWUN_QUERY_EXPANSION_LIMIT` if needed.
+Search responses are cached for 90 seconds by default and identical concurrent
+requests share one provider run. Tune this with `AWUN_SEARCH_CACHE_TTL_SECONDS`
+and `AWUN_SEARCH_CACHE_MAX_SIZE`. Cold MusicBrainz enrichment gets a short
+`AWUN_QUERY_ENRICHMENT_WAIT_SECONDS` budget and then warms in the background,
+so metadata discovery does not hold up the first provider results.
 LRCLIB is enabled by default. Add `AWUN_GENIUS_ACCESS_TOKEN` for Genius
 referents; never expose this value to the frontend or commit it to the repository.
 

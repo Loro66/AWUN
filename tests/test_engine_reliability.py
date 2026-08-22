@@ -35,6 +35,19 @@ class CountingAdapter(BaseAdapter):
         return self.tracks[:limit]
 
 
+class SlowEnricher:
+    def __init__(self) -> None:
+        self.completed = False
+
+    async def expand(self, query, region):
+        await asyncio.sleep(0.1)
+        self.completed = True
+        return [query, f"{query} enriched"]
+
+    async def close(self) -> None:
+        return None
+
+
 def test_repeated_failures_open_source_circuit() -> None:
     adapter = CountingAdapter(fail=True)
     engine = SearchEngine([adapter])
@@ -87,3 +100,41 @@ def test_health_snapshot_is_json_serializable_data() -> None:
 
     assert health["status"] == "unknown"
     assert health["samples"] == 0
+
+
+def test_cold_metadata_enrichment_does_not_block_provider_search() -> None:
+    adapter = CountingAdapter(tracks=[track("Song")])
+    enricher = SlowEnricher()
+    engine = SearchEngine(
+        [adapter],
+        enricher=enricher,
+        enrichment_wait_seconds=0.001,
+    )
+
+    async def scenario():
+        response = await engine.search(SearchRequest(query="song"))
+        await engine.close()
+        return response
+
+    response = asyncio.run(scenario())
+    assert response.query_variants == ["song"]
+    assert adapter.calls == 1
+
+
+def test_background_enrichment_queue_is_bounded() -> None:
+    engine = SearchEngine(
+        [CountingAdapter(tracks=[track("Song")])],
+        enricher=SlowEnricher(),
+        enrichment_wait_seconds=0.001,
+    )
+    engine._MAX_BACKGROUND_ENRICHMENTS = 2
+
+    async def scenario() -> int:
+        await asyncio.gather(
+            *(engine.search(SearchRequest(query=f"song {index}")) for index in range(6))
+        )
+        pending = len(engine._background_tasks)
+        await engine.close()
+        return pending
+
+    assert asyncio.run(scenario()) == 2

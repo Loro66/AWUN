@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
 
-import math
-
 from backend.core.models import SourceName, Track
 from backend.core.regions import RegionProfile
 
@@ -34,15 +32,24 @@ class BaseAdapter(ABC):
         *,
         region: RegionProfile | None = None,
     ) -> list[Track]:
-        """Search a small query plan while keeping provider traffic bounded."""
+        """Search the primary query first and use aliases only to fill gaps.
+
+        The previous implementation split the requested limit across three
+        sequential provider calls. Most providers can satisfy the result
+        window with the canonical query, so that strategy paid two additional
+        network round trips in the common case.
+        """
         selected = queries[:3] or [""]
-        per_query = max(2, math.ceil(limit / len(selected)))
         tracks: list[Track] = []
         failures: list[Exception] = []
         seen: set[str] = set()
         for query in selected:
             try:
-                found = await self.search(query, per_query, region=region)
+                found = await self.search(
+                    query,
+                    max(2, limit - len(tracks)),
+                    region=region,
+                )
             except Exception as exc:
                 failures.append(exc)
                 continue

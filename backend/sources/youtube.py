@@ -86,6 +86,7 @@ class YouTubeAdapter(BaseAdapter):
         self._api_key = api_key
         self._max_pages = max(1, min(max_pages, 2))
         self._timeout = aiohttp.ClientTimeout(total=timeout)
+        self._session: aiohttp.ClientSession | None = None
         self._flat_options = {
             "quiet": True,
             "no_warnings": True,
@@ -94,6 +95,14 @@ class YouTubeAdapter(BaseAdapter):
             "socket_timeout": timeout,
             "noplaylist": True,
         }
+
+    async def _get_session(self) -> aiohttp.ClientSession:
+        if self._session is None or self._session.closed:
+            self._session = aiohttp.ClientSession(
+                timeout=self._timeout,
+                headers={"Accept": "application/json", "User-Agent": "AWUN/1.8"},
+            )
+        return self._session
 
     async def search(
         self,
@@ -165,48 +174,48 @@ class YouTubeAdapter(BaseAdapter):
         region: RegionProfile | None = None,
     ) -> list[Track]:
         try:
-            async with aiohttp.ClientSession(timeout=self._timeout) as session:
-                items: list[dict[str, Any]] = []
-                page_token: str | None = None
-                pages = 0
-                while len(items) < limit and pages < self._max_pages:
-                    params = self._api_params(query, limit - len(items), region)
-                    if page_token:
-                        params["pageToken"] = page_token
-                    async with session.get(self._SEARCH_URL, params=params) as response:
-                        payload = await response.json(content_type=None)
-                        if response.status != 200:
-                            raise AdapterError(self._api_error(payload, response.status))
-                    page_items = payload.get("items") or []
-                    if not isinstance(page_items, list):
-                        break
-                    items.extend(item for item in page_items if isinstance(item, dict))
-                    pages += 1
-                    page_token = str(payload.get("nextPageToken") or "") or None
-                    if not page_token or not page_items:
-                        break
+            session = await self._get_session()
+            items: list[dict[str, Any]] = []
+            page_token: str | None = None
+            pages = 0
+            while len(items) < limit and pages < self._max_pages:
+                params = self._api_params(query, limit - len(items), region)
+                if page_token:
+                    params["pageToken"] = page_token
+                async with session.get(self._SEARCH_URL, params=params) as response:
+                    payload = await response.json(content_type=None)
+                    if response.status != 200:
+                        raise AdapterError(self._api_error(payload, response.status))
+                page_items = payload.get("items") or []
+                if not isinstance(page_items, list):
+                    break
+                items.extend(item for item in page_items if isinstance(item, dict))
+                pages += 1
+                page_token = str(payload.get("nextPageToken") or "") or None
+                if not page_token or not page_items:
+                    break
 
-                ids = [str(item.get("id", {}).get("videoId") or "") for item in items]
-                ids = list(dict.fromkeys(video_id for video_id in ids if video_id))
-                details: dict[str, dict[str, Any]] = {}
-                for offset in range(0, len(ids), 50):
-                    batch = ids[offset:offset + 50]
-                    async with session.get(
-                        self._VIDEOS_URL,
-                        params={
-                            "part": "contentDetails,status",
-                            "id": ",".join(batch),
-                            "key": self._api_key,
-                        },
-                    ) as response:
-                        detail_payload = await response.json(content_type=None)
-                        if response.status == 200:
-                            details.update(
-                                {
-                                    str(item.get("id")): item
-                                    for item in detail_payload.get("items") or []
-                                }
-                            )
+            ids = [str(item.get("id", {}).get("videoId") or "") for item in items]
+            ids = list(dict.fromkeys(video_id for video_id in ids if video_id))
+            details: dict[str, dict[str, Any]] = {}
+            for offset in range(0, len(ids), 50):
+                batch = ids[offset:offset + 50]
+                async with session.get(
+                    self._VIDEOS_URL,
+                    params={
+                        "part": "contentDetails,status",
+                        "id": ",".join(batch),
+                        "key": self._api_key,
+                    },
+                ) as response:
+                    detail_payload = await response.json(content_type=None)
+                    if response.status == 200:
+                        details.update(
+                            {
+                                str(item.get("id")): item
+                                for item in detail_payload.get("items") or []
+                            }
+                        )
         except AdapterError:
             raise
         except (aiohttp.ClientError, TimeoutError) as exc:
@@ -297,3 +306,7 @@ class YouTubeAdapter(BaseAdapter):
     def _api_error(payload: dict[str, Any], status: int) -> str:
         message = payload.get("error", {}).get("message") if isinstance(payload, dict) else None
         return f"API YouTube вернул ошибку HTTP {status}: {message or 'неизвестная ошибка'}"
+
+    async def close(self) -> None:
+        if self._session and not self._session.closed:
+            await self._session.close()

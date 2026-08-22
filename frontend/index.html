@@ -12,8 +12,8 @@
   <script>
     try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');const p=new URLSearchParams(location.search);document.documentElement.dataset.theme=v.theme||'black';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full';document.documentElement.dataset.density=v.density||'standard';document.documentElement.lang=p.get('lang')||localStorage.getItem('awun-language')||(navigator.language.toLowerCase().startsWith('ru')?'ru':'en')}catch{}
   </script>
-  <link rel="stylesheet" href="/static/styles.css?v=20260816.4">
-  <link rel="stylesheet" href="/static/forest.css?v=20260816.4">
+  <link rel="stylesheet" href="/static/styles.css?v=20260822.1">
+  <link rel="stylesheet" href="/static/forest.css?v=20260822.1">
 </head>
 <body>
   <a class="skip-link" href="#searchInput" data-i18n="skipSearch">Перейти к поиску</a>
@@ -23,6 +23,9 @@
     <header class="site-header">
       <a class="logo" href="/" aria-label="Главная AWUN" data-i18n-aria-label="homeAria"><img src="/static/brand/awun-logo-white.png" alt=""><strong>AWUN</strong><i>.</i></a>
       <div class="top-actions">
+        <button id="searchNavButton" class="library search-nav active" type="button" aria-controls="searchInput" aria-pressed="true">
+          <i aria-hidden="true">⌕</i><span data-i18n="search">ПОИСК</span><b aria-hidden="true">01</b>
+        </button>
         <button id="libraryButton" class="library" type="button" aria-pressed="false"><i aria-hidden="true">♫</i><span data-i18n="library">МОЯ МУЗЫКА</span><b>00</b></button>
         <button id="flowButton" class="library flow-button" type="button" aria-expanded="false" aria-controls="flowPanel">
           <i aria-hidden="true">◌</i><span data-i18n="wave">МОЯ ВОЛНА</span><b id="flowBadge" data-i18n="ready">ГОТОВО</b>
@@ -113,6 +116,14 @@
       <ol id="trackList" class="track-list"></ol>
     </section>
 
+    <section id="idleStage" class="idle-stage" aria-labelledby="idleStageTitle">
+      <div class="idle-orbit" aria-hidden="true"><i></i><i></i><span>AW</span></div>
+      <div>
+        <span data-i18n="nothingPlaying">НИЧЕГО НЕ ИГРАЕТ</span>
+        <h2 id="idleStageTitle" data-i18n="selectTrack">Выбери трек, чтобы сразу его включить.</h2>
+      </div>
+    </section>
+
     <section id="flowPanel" class="flow-panel" hidden aria-labelledby="flowTitle">
       <header>
         <div><span data-i18n="personalRadio">ЛИЧНОЕ РАДИО</span><h2 id="flowTitle" data-i18n="wave">МОЯ ВОЛНА</h2></div>
@@ -158,6 +169,7 @@
     </div>
     <section class="player-console">
       <div class="now">
+        <small class="now-kicker" data-i18n="nowPlaying">СЕЙЧАС ИГРАЕТ</small>
         <strong id="nowTitle" data-i18n="nothingPlaying">НИЧЕГО НЕ ИГРАЕТ</strong>
         <span id="nowArtist">AWUN</span>
         <div class="mini-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -233,9 +245,9 @@
     <progress id="importProgress" class="import-progress" value="0" max="100" hidden></progress>
   </aside>
 
-  <script src="/static/desktop-bridge.js?v=20260816.4" defer></script>
-  <script src="/static/i18n.js?v=20260816.4" defer></script>
-  <script src="/static/app.js?v=20260816.4" defer></script>
-  <script src="/static/flow.js?v=20260816.4" defer></script>
+  <script src="/static/desktop-bridge.js?v=20260822.1" defer></script>
+  <script src="/static/i18n.js?v=20260822.1" defer></script>
+  <script src="/static/app.js?v=20260822.1" defer></script>
+  <script src="/static/flow.js?v=20260822.1" defer></script>
 </body>
 </html>

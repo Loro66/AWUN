@@ -31,12 +31,14 @@ class FakeAdapter(BaseAdapter):
         self._source = source
         self.tracks = tracks
         self.delay = delay
+        self.queries: list[str] = []
 
     @property
     def source(self):
         return self._source
 
     async def search(self, query: str, limit: int, *, region=None) -> list[Track]:
+        self.queries.append(query)
         await asyncio.sleep(self.delay)
         return self.tracks[:limit]
 
@@ -118,6 +120,46 @@ class SearchEngineTests(unittest.IsolatedAsyncioTestCase):
 
         self.assertEqual(response.total, 1)
         self.assertIn("soundcloud", response.errors)
+
+    async def test_primary_query_avoids_unneeded_alias_round_trips(self) -> None:
+        adapter = FakeAdapter(
+            "youtube",
+            [make_track("youtube", title=f"Song {index}", score=80) for index in range(6)],
+        )
+
+        tracks = await adapter.search_many(["main query", "alias one", "alias two"], 5)
+
+        self.assertEqual(len(tracks), 5)
+        self.assertEqual(adapter.queries, ["main query"])
+
+    async def test_identical_searches_use_response_cache(self) -> None:
+        adapter = FakeAdapter("youtube", [make_track("youtube", title="Song", score=80)])
+        engine = SearchEngine([adapter], cache_ttl_seconds=30)
+
+        first = await engine.search(SearchRequest(query="song", limit=5))
+        second = await engine.search(SearchRequest(query="  SONG  ", limit=5))
+
+        self.assertEqual(first.tracks, second.tracks)
+        self.assertEqual(adapter.queries, ["song"])
+        self.assertEqual(engine.metrics["cache"]["hits"], 1)
+        await engine.close()
+
+    async def test_concurrent_identical_searches_share_provider_request(self) -> None:
+        adapter = FakeAdapter(
+            "youtube",
+            [make_track("youtube", title="Song", score=80)],
+            delay=0.01,
+        )
+        engine = SearchEngine([adapter])
+
+        first, second = await asyncio.gather(
+            engine.search(SearchRequest(query="song", limit=5)),
+            engine.search(SearchRequest(query="song", limit=5)),
+        )
+
+        self.assertEqual(first.tracks, second.tracks)
+        self.assertEqual(adapter.queries, ["song"])
+        await engine.close()
 
     def test_unknown_source_is_rejected(self) -> None:
         with self.assertRaises(ValidationError):

@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 import re
 from typing import Annotated
-from urllib.parse import quote, urlencode, urljoin, urlparse
+from urllib.parse import parse_qs, quote, urlencode, urljoin, urlparse
 
 import aiohttp
 from fastapi import Depends, FastAPI, HTTPException, Query, Request
@@ -48,6 +48,21 @@ _PLAYLIST_CONTENT_TYPES = {
     "audio/mpegurl",
     "audio/x-mpegurl",
 }
+
+
+class CacheControlledStaticFiles(StaticFiles):
+    """Cache fingerprinted UI assets aggressively and plain assets briefly."""
+
+    async def get_response(self, path: str, scope: dict):
+        response = await super().get_response(path, scope)
+        if response.status_code == 200:
+            query = parse_qs(scope.get("query_string", b"").decode("ascii", "ignore"))
+            response.headers["Cache-Control"] = (
+                "public, max-age=31536000, immutable"
+                if "v" in query
+                else "public, max-age=86400"
+            )
+        return response
 
 
 def _safe_filename_stem(value: str) -> str:
@@ -126,6 +141,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             timeout_seconds=settings.search_timeout_seconds,
             max_limit=settings.max_limit,
             enricher=build_enricher(settings),
+            cache_ttl_seconds=settings.search_cache_ttl_seconds,
+            cache_max_size=settings.search_cache_max_size,
+            enrichment_wait_seconds=settings.query_enrichment_wait_seconds,
         )
         app.state.track_details = TrackDetailsService(settings)
         app.state.library_importer = LibraryUrlImporter(
@@ -161,7 +179,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     frontend_dir = Path(__file__).resolve().parents[2] / "frontend"
     project_dir = frontend_dir.parent
     if frontend_dir.is_dir():
-        app.mount("/static", StaticFiles(directory=frontend_dir), name="static")
+        app.mount(
+            "/static",
+            CacheControlledStaticFiles(directory=frontend_dir),
+            name="static",
+        )
 
         @app.get("/", include_in_schema=False)
         async def frontend() -> FileResponse:

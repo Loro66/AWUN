@@ -13,6 +13,12 @@ services:
         value: "30"
       - key: AWUN_SEARCH_TIMEOUT_SECONDS
         value: "35"
+      - key: AWUN_SEARCH_CACHE_TTL_SECONDS
+        value: "90"
+      - key: AWUN_SEARCH_CACHE_MAX_SIZE
+        value: "256"
+      - key: AWUN_QUERY_ENRICHMENT_WAIT_SECONDS
+        value: "0.2"
       - key: AWUN_QUERY_EXPANSION_LIMIT
         value: "6"
       - key: AWUN_INTERNET_ARCHIVE_MAX_ITEMS

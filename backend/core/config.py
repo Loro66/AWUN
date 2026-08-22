@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     default_limit: int = Field(default=30, ge=1, le=100)
     max_limit: int = Field(default=100, ge=1, le=100)
     search_timeout_seconds: float = Field(default=35.0, gt=0, le=120)
+    search_cache_ttl_seconds: float = Field(default=90.0, gt=0, le=3600)
+    search_cache_max_size: int = Field(default=256, ge=1, le=5000)
+    query_enrichment_wait_seconds: float = Field(default=0.2, gt=0, le=5)
     ytdlp_socket_timeout_seconds: float = Field(default=12.0, gt=0, le=60)
     media_proxy_enabled: bool = True
     media_secret: str = Field(default="dev-only-change-me", min_length=16)
