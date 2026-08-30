@@ -11,6 +11,7 @@ import secrets
 import socket
 import threading
 import time
+from urllib.parse import quote
 
 import uvicorn
 import webview
@@ -22,6 +23,8 @@ from backend.core.config import Settings
 HOST = "127.0.0.1"
 STARTUP_TIMEOUT_SECONDS = 25
 MAX_DESKTOP_STATE_BYTES = 4 * 1024 * 1024
+REMOTE_API_ENV = "AWUN_REMOTE_API_URL"
+REMOTE_API_FILE = "remote-api.txt"
 
 SPLASH = """
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><style>
@@ -110,6 +113,43 @@ class DesktopStateBridge:
                 return False
 
 
+def _normalize_remote_api_url(value: str | None) -> str | None:
+    """Accept only an explicit HTTPS API origin (or loopback HTTP for testing)."""
+
+    candidate = str(value or "").strip()
+    if not candidate:
+        return None
+    try:
+        from urllib.parse import urlsplit, urlunsplit
+
+        parts = urlsplit(candidate)
+        host = (parts.hostname or "").casefold()
+    except ValueError:
+        return None
+    if parts.scheme.casefold() not in {"http", "https"} or not parts.netloc:
+        return None
+    if parts.username or parts.password or parts.query or parts.fragment or not host:
+        return None
+    if parts.scheme.casefold() == "http" and host not in {"localhost", "127.0.0.1", "::1"}:
+        return None
+    path = parts.path.rstrip("/")
+    return urlunsplit((parts.scheme.casefold(), parts.netloc, path, "", ""))
+
+
+def remote_api_url() -> str | None:
+    """Read the optional remote egress endpoint without ever guessing one."""
+
+    value = os.getenv(REMOTE_API_ENV, "")
+    if not value:
+        app_data = os.getenv("APPDATA")
+        if app_data:
+            try:
+                value = (Path(app_data) / "AWUN" / REMOTE_API_FILE).read_text(encoding="utf-8")
+            except OSError:
+                value = ""
+    return _normalize_remote_api_url(value)
+
+
 @dataclass
 class LocalAwunServer:
     """Run FastAPI on an ephemeral loopback port for the lifetime of the window."""
@@ -182,7 +222,10 @@ class LocalAwunServer:
 def open_local_app(window: webview.Window, runtime: LocalAwunServer) -> None:
     try:
         local_url = runtime.start()
-        window.load_url(f"{local_url}/?desktop=1&lang=ru")
+        query = "?desktop=1&lang=ru"
+        if remote := remote_api_url():
+            query += f"&api={quote(remote, safe='')}"
+        window.load_url(f"{local_url}/{query}")
     except Exception as exc:
         window.load_html(startup_error_page(str(exc)))
 
