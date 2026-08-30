@@ -3,7 +3,12 @@ import zipfile
 
 import pytest
 
-from desktop.region_compat import RegionCompatError, _validate_archive
+from desktop.region_compat import (
+    FLOWSEAL_LICENSE_TEXT,
+    RegionCompatError,
+    RegionalCompatibilityManager,
+    _validate_archive,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -69,7 +74,6 @@ def test_region_compat_validates_zip_paths_and_expected_files(tmp_path: Path) ->
             "bin/quic_initial_www_google_com.bin",
             "bin/tls_clienthello_www_google_com.bin",
             "bin/tls_clienthello_4pda_to.bin",
-            "LICENSE.txt",
         ):
             bundle.writestr(name, b"test")
     _validate_archive(valid)
@@ -79,3 +83,13 @@ def test_region_compat_validates_zip_paths_and_expected_files(tmp_path: Path) ->
         bundle.writestr("../escape.txt", b"test")
     with pytest.raises(RegionCompatError):
         _validate_archive(unsafe)
+
+
+def test_region_compat_writes_upstream_license_when_release_zip_omits_it(tmp_path: Path) -> None:
+    manager = RegionalCompatibilityManager(tmp_path / "regional")
+    payload = manager._build_install_payload(tmp_path / "flowseal.zip", "1.10.2", "0" * 64)
+
+    assert "LICENSE.txt" in payload
+    assert "WriteAllBytes" in payload
+    assert "MIT License" in FLOWSEAL_LICENSE_TEXT
+    assert "WinDivert" in FLOWSEAL_LICENSE_TEXT
