@@ -17,6 +17,7 @@ import webview
 
 from backend.api.main import create_app
 from backend.core.config import Settings
+from region_compat import RegionalCompatibilityManager
 
 
 HOST = "127.0.0.1"
@@ -56,7 +57,7 @@ def startup_error_page(message: str) -> str:
 
 
 class DesktopStateBridge:
-    """Persist AWUN localStorage across launches that use different local ports."""
+    """Persist desktop state and expose Windows-only compatibility controls."""
 
     def __init__(self, state_path: Path | None = None) -> None:
         if state_path is None:
@@ -65,6 +66,7 @@ class DesktopStateBridge:
             state_path = state_dir / "desktop-state.json"
         self.state_path = state_path
         self._lock = threading.Lock()
+        self._regional_compat = RegionalCompatibilityManager()
 
     def load_state(self) -> str:
         with self._lock:
@@ -108,6 +110,18 @@ class DesktopStateBridge:
                 return True
             except OSError:
                 return False
+
+    def regional_compat_status(self) -> dict[str, object]:
+        """Return the state of the optional AWUN-only DPI compatibility service."""
+        return self._regional_compat.status()
+
+    def enable_regional_compat(self) -> dict[str, object]:
+        """Download a verified Flowseal release and enable the narrow AWUN service."""
+        return self._regional_compat.enable()
+
+    def disable_regional_compat(self) -> dict[str, object]:
+        """Stop and remove only the AWUNRegionCompat Windows service."""
+        return self._regional_compat.disable()
 
 
 @dataclass

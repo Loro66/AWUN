@@ -23,7 +23,11 @@ jobs:
           cache: pip
           cache-dependency-path: requirements-desktop.txt
       - name: Install desktop dependencies
-        run: python -m pip install -r requirements-desktop.txt
+        run: |
+          python -m pip install -r requirements-desktop.txt
+          python -m pip install pytest
+      - name: Test desktop integration
+        run: python -m pytest -q tests/test_desktop.py
       - name: Build AWUN.exe
         run: pyinstaller --noconfirm --clean AWUN.spec
       - name: Create SHA256 checksum
