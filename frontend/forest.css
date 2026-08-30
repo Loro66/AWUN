@@ -1,4 +1,4 @@
-/* AWUN Nocturne — a calm, restrained dark-fantasy listening room. */
+/* AWUN Dark Forest Ritual — a readable listening room inside a moonlit forest. */
 
 html[data-theme]{
   --bg:#090806;
@@ -602,4 +602,255 @@ html[data-decor="minimal"] .track-story{grid-column:1/-1;width:100%;margin:5px 0
 @media(prefers-reduced-motion:reduce){
   .player-artwork{animation-duration:20s!important}
   .player.track-enter .turntable,.player.track-enter .player-console,.player.track-swap .player-artwork:before,.track{animation:none!important}
+}
+
+/* AWUN 1.8.10: Dark Forest Ritual finish. The layer below is visual-only so
+   the existing search, library, and HLS playback controls keep their hooks. */
+html[data-theme]{
+  --forest-night:#080908;
+  --forest-panel:#121812;
+  --forest-panel-deep:#060806;
+  --forest-green:#9ebb78;
+  --forest-green-deep:#375430;
+  --forest-silver:#a7ada3;
+  --forest-moon:#e8e4d8;
+  --forest-burgundy:#4a2028;
+  --bg:var(--forest-night);
+  --bg-soft:rgba(17,22,18,.82);
+  --panel:rgba(18,24,18,.84);
+  --panel-strong:rgba(6,8,6,.96);
+  --ink:var(--forest-moon);
+  --muted:#a0aaa0;
+  --faint:#687568;
+  --line:rgba(167,173,163,.2);
+  --line-strong:rgba(167,173,163,.48);
+  --acid:var(--forest-green);
+  --acid-dark:rgba(55,84,48,.42);
+  --accent:var(--forest-green);
+  --accent-2:#bdcbb5;
+  --accent-rgb:158,187,120;
+  --accent-ink:#071007;
+  --hover:rgba(158,187,120,.1);
+  --player-bg:rgba(5,9,6,.95);
+  --shadow:0 34px 110px rgba(0,0,0,.68);
+  color-scheme:dark;
+  background:var(--forest-night);
+}
+
+body{
+  position:relative;
+  background:var(--forest-night);
+  color:var(--forest-moon);
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  z-index:1;
+  inset:0;
+  pointer-events:none;
+  opacity:.12;
+  background-image:
+    radial-gradient(circle at 13% 27%,rgba(232,228,216,.85) 0 1px,transparent 1.5px),
+    radial-gradient(circle at 73% 64%,rgba(158,187,120,.8) 0 1px,transparent 1.5px),
+    radial-gradient(circle at 46% 82%,rgba(167,173,163,.6) 0 1px,transparent 1.5px);
+  background-size:173px 211px,239px 281px,317px 349px;
+  mix-blend-mode:screen;
+  animation:awunDust 28s linear infinite;
+}
+
+.ambient{
+  background:
+    radial-gradient(ellipse at 68% 19%,rgba(158,187,120,.13),transparent 26%),
+    linear-gradient(90deg,rgba(4,7,5,.98) 0%,rgba(5,9,6,.86) 34%,rgba(7,11,8,.52) 68%,rgba(4,6,5,.72) 100%),
+    linear-gradient(180deg,rgba(2,4,3,.16),rgba(3,6,4,.3) 54%,rgba(3,5,3,.88) 100%),
+    url('/static/brand/black-forest-michiel-annaert.webp') center / cover no-repeat;
+  filter:saturate(.55) contrast(1.13) brightness(.5);
+}
+
+.ambient:before{
+  background:
+    radial-gradient(ellipse at 52% 66%,rgba(183,204,177,.16),transparent 12%),
+    radial-gradient(ellipse at 79% 48%,rgba(151,184,143,.13),transparent 20%),
+    linear-gradient(90deg,transparent 0 31%,rgba(7,13,8,.2) 53%,rgba(3,6,4,.66) 100%),
+    url('/static/brand/burg-eltz-jan-kohl.webp') 69% 48% / cover no-repeat;
+  opacity:.24;
+  filter:grayscale(.9) sepia(.08) hue-rotate(55deg) contrast(1.16) brightness(.48);
+  animation:awunMist 22s ease-in-out infinite alternate;
+}
+
+.ambient:after{
+  background:
+    radial-gradient(circle at 67% 18%,rgba(232,228,216,.12) 0 0.5%,rgba(158,187,120,.08) 2%,transparent 11%),
+    radial-gradient(ellipse at center,transparent 31%,rgba(3,6,4,.2) 67%,rgba(2,4,3,.7) 100%),
+    linear-gradient(180deg,transparent 0 68%,rgba(5,9,6,.42) 100%);
+  box-shadow:inset 0 0 190px rgba(0,0,0,.64);
+}
+
+.app-shell{isolation:isolate}
+.site-header,
+.advanced-search .source-row,
+.track,
+.track-story,
+.empty-guide button,
+.flow-panel,
+.theme-panel,
+.player-console{
+  border-color:rgba(167,173,163,.28);
+  background-image:linear-gradient(135deg,rgba(18,26,18,.9),rgba(5,9,6,.78));
+  box-shadow:0 24px 72px rgba(0,0,0,.42),inset 0 1px rgba(232,228,216,.055),inset 0 0 0 1px rgba(55,84,48,.13);
+}
+
+.site-header{border-radius:36px 36px 18px 18px}
+.hero .search-form{
+  border-color:rgba(167,173,163,.5);
+  border-radius:40px 40px 18px 18px;
+  background:linear-gradient(135deg,rgba(18,28,19,.92),rgba(5,9,6,.84));
+  box-shadow:0 30px 92px rgba(0,0,0,.52),inset 0 1px rgba(232,228,216,.08),inset 0 -1px rgba(55,84,48,.24);
+}
+.hero .search-form:after{
+  display:block;
+  right:100%;
+  bottom:-1px;
+  height:1px;
+  background:linear-gradient(90deg,var(--forest-green),var(--forest-silver));
+}
+.hero .search-form:focus-within:after{right:0}
+.hero .search-form button{
+  border-radius:18px 18px 14px 14px;
+  border-color:rgba(167,173,163,.62);
+  background:linear-gradient(145deg,rgba(158,187,120,.32),rgba(55,84,48,.42));
+  box-shadow:inset 0 1px rgba(232,228,216,.16),0 0 22px rgba(158,187,120,.12);
+}
+.hero .search-form button:before{
+  content:"✦";
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  color:rgba(232,228,216,.32);
+  font-size:10px;
+  pointer-events:none;
+}
+.hero .search-form button span{font-size:20px}
+.hero .search-form button:hover{border-color:var(--forest-moon);box-shadow:0 0 30px rgba(158,187,120,.28)}
+
+.eyebrow-row p,
+.results-heading h1,
+.empty-guide button>strong,
+.track .name strong,
+.story-head h2,
+.now strong,
+.idle-stage h2{
+  color:var(--forest-moon);
+  font-family:Iowan Old Style,"Palatino Linotype","Book Antiqua",Georgia,serif;
+  font-weight:400;
+}
+.eyebrow-row p:before{content:"☽";margin-right:9px;color:var(--forest-green);font-size:12px}
+.results-heading{border-bottom-color:rgba(167,173,163,.36)}
+.section-number{color:var(--forest-green)}
+
+.suggestions button,
+.advanced-search>summary,
+.sources button,
+.region-control select,
+.story-button,
+.save,
+.download,
+.player-tools button,
+.flow-start-row button,
+.theme-grid button,
+.visual-toggles button{
+  border-color:rgba(167,173,163,.3);
+  border-radius:12px 12px 6px 6px;
+  background:rgba(8,14,9,.64);
+  box-shadow:inset 0 1px rgba(232,228,216,.06);
+}
+.suggestions button:hover,
+.sources button:hover,
+.sources button.on,
+.story-button:hover,
+.track .save:hover,
+.track .save.saved,
+.flow-start-row button:hover,
+.theme-grid button:hover,
+.visual-toggles button:hover{
+  border-color:var(--forest-green);
+  background:rgba(158,187,120,.14);
+  color:var(--forest-moon);
+  box-shadow:0 0 20px rgba(158,187,120,.12),inset 0 1px rgba(232,228,216,.1);
+}
+.advanced-search>summary:before{content:"✧";color:var(--forest-green)}
+.advanced-search[open]>summary:before{content:"✦"}
+
+.track-list{gap:9px}
+.track{
+  border-radius:24px 24px 13px 13px;
+  border-color:rgba(167,173,163,.22);
+  background-image:linear-gradient(110deg,rgba(17,27,18,.88),rgba(6,10,7,.78));
+}
+.track:hover,.track.active{
+  border-color:rgba(158,187,120,.72);
+  background-image:linear-gradient(110deg,rgba(26,43,27,.9),rgba(7,13,8,.82));
+  box-shadow:0 16px 42px rgba(0,0,0,.4),0 0 28px rgba(158,187,120,.09),inset 0 1px rgba(232,228,216,.09);
+}
+.track .cover{
+  border-color:rgba(167,173,163,.36);
+  border-radius:18px 18px 8px 8px;
+  background-color:#0d160e;
+  box-shadow:0 10px 30px rgba(0,0,0,.42),inset 0 0 0 1px rgba(158,187,120,.12);
+}
+.track .play{
+  border-radius:13px 13px 8px 8px;
+  border-color:rgba(167,173,163,.56);
+  background:rgba(6,12,7,.55);
+}
+.track .play:hover,.track.active .play{border-color:var(--forest-green);background:var(--forest-green);box-shadow:0 0 22px rgba(158,187,120,.32)}
+.track .story-button,.track .save{border-color:rgba(167,173,163,.42);border-radius:11px 11px 6px 6px}
+.track.active:before{content:"✦";display:block;position:absolute;left:5px;top:7px;color:var(--forest-green);font-size:8px}
+
+.track-story{border-radius:34px 34px 16px 16px;border-top-color:var(--forest-green);background-image:linear-gradient(145deg,rgba(17,28,18,.95),rgba(5,9,6,.94))}
+.story-head{border-color:rgba(167,173,163,.3)}
+.story-head span,.now-kicker,.now-source{color:var(--forest-green)}
+
+.player{background:radial-gradient(circle at 88% 36%,rgba(158,187,120,.16),transparent 48%)}
+.player:before{border-color:rgba(167,173,163,.16);box-shadow:0 0 110px rgba(158,187,120,.08),inset 0 0 100px rgba(158,187,120,.045)}
+.player .player-artwork{
+  border-color:rgba(167,173,163,.42);
+  background:
+    radial-gradient(circle at 34% 27%,rgba(232,228,216,.19),transparent 13%),
+    repeating-radial-gradient(circle at center,transparent 0 2px,rgba(167,173,163,.09) 2.5px 3px,transparent 3.5px 6px),
+    conic-gradient(from 18deg,#050806,#1d2b1e 11%,#070b07 24%,#182319 39%,#040604 53%,#263626 68%,#050705 84%,#152016);
+  box-shadow:0 58px 140px rgba(0,0,0,.82),0 0 0 2px rgba(167,173,163,.23),0 0 46px rgba(158,187,120,.13),inset 0 0 0 3px rgba(0,0,0,.82);
+}
+.player .player-artwork:before{background-color:#9ebb78;box-shadow:0 0 0 2px rgba(232,228,216,.46),0 8px 25px rgba(0,0,0,.55),0 0 28px rgba(158,187,120,.24)}
+.player .player-artwork:after{background:var(--forest-moon);box-shadow:0 0 0 3px rgba(0,0,0,.78),0 0 15px rgba(232,228,216,.5)}
+.player .player-console{
+  border-radius:38px 38px 18px 18px;
+  border-color:rgba(167,173,163,.52);
+  background-image:linear-gradient(145deg,rgba(17,27,18,.97),rgba(5,9,6,.95));
+  box-shadow:0 34px 110px rgba(0,0,0,.72),inset 0 1px rgba(232,228,216,.09),inset 0 -1px rgba(55,84,48,.3);
+}
+.player .player-console:before{content:"✦  ◇  ✦";position:absolute;top:8px;right:24px;color:rgba(158,187,120,.5);font-size:8px;letter-spacing:5px;pointer-events:none}
+.player .player-console:after{content:"";position:absolute;top:0;left:18%;right:18%;height:1px;background:linear-gradient(90deg,transparent,var(--forest-silver),transparent);opacity:.55}
+.player .play-pause{border-color:rgba(167,173,163,.72);border-radius:17px 17px 10px 10px;background:linear-gradient(145deg,var(--forest-green),#6d8d59);box-shadow:0 0 28px rgba(158,187,120,.25)}
+.player .play-pause:hover{background:var(--forest-moon);color:var(--accent-ink)}
+.player .range{accent-color:var(--forest-green)}
+
+.theme-panel,.flow-panel{border-radius:36px 36px 18px 18px;border-color:rgba(167,173,163,.48);background-image:linear-gradient(145deg,rgba(17,27,18,.98),rgba(5,9,6,.97))}
+.theme-panel-head,.flow-panel>header{border-color:rgba(167,173,163,.3)}
+.theme-panel-head strong,.flow-panel h2{font-family:Iowan Old Style,"Palatino Linotype",Georgia,serif;font-weight:400}
+
+@keyframes awunMist{0%{transform:translate3d(-1.2%,0,0) scale(1.02);opacity:.16}100%{transform:translate3d(1.8%,-1%,0) scale(1.05);opacity:.29}}
+@keyframes awunDust{0%{transform:translate3d(0,0,0)}50%{transform:translate3d(-9px,-13px,0)}100%{transform:translate3d(7px,-25px,0)}}
+
+@media(prefers-reduced-motion:reduce){
+  body:before,.ambient:before{animation:none!important}
+}
+
+@media(max-width:760px){
+  .site-header{border-radius:25px 25px 15px 15px}
+  .hero .search-form{border-radius:28px 28px 15px 15px}
+  .track{border-radius:18px 18px 10px 10px}
+  .player .player-console{border-radius:28px 28px 15px 15px}
 }
