@@ -160,7 +160,8 @@ def test_installable_pwa_is_wired() -> None:
     assert 'rel="manifest"' in html and 'id="installButton"' in html
     assert "beforeinstallprompt" in script and "serviceWorker.register('/service-worker.js')" in script
     assert '"display": "standalone"' in manifest and '"start_url": "/"' in manifest
-    assert "awun-shell-1.8.8" in worker and "startsWith('/api/')" in worker
+    assert "awun-shell-1.8.9" in worker and "startsWith('/api/')" in worker
+    assert "hls.light.min.js" in worker
     assert "startsWith('/static/')" in worker and "cached||fetch" in worker
     assert "/static/desktop-bridge.js" in html and "desktop-bridge.js" in worker
     assert "pywebviewready" in bridge and "save_state" in bridge and "load_state" in bridge
@@ -175,7 +176,7 @@ def test_nocturne_redesign_and_vinyl_player_are_wired() -> None:
 
     assert background.is_file() and background.stat().st_size > 200_000
     assert source.is_file() and "unsplash.com/photos/m8RNISlL2HQ" in source.read_text(encoding="utf-8")
-    assert '/static/forest.css?v=20260822.2' in html
+    assert '/static/forest.css?v=20260830.1' in html
     assert 'class="turntable"' in html and 'class="vinyl-monogram"' in html and 'class="player-console"' in html
     assert 'id="player" class="player" hidden' in html
     assert 'id="searchNavButton" class="library search-nav active"' in html and 'aria-pressed="true"' in html
@@ -191,6 +192,19 @@ def test_nocturne_redesign_and_vinyl_player_are_wired() -> None:
     assert "right:clamp(-510px,-27vw,-360px)" in forest
     assert ".player[hidden]{display:none}" in forest and ".empty-guide{margin:" in forest
     assert ".idle-stage" in forest and ".player.track-swap" in forest
+
+
+def test_soundcloud_hls_playback_is_wired() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    hls = ROOT / "frontend" / "hls.light.min.js"
+    license_file = ROOT / "frontend" / "hls.js.LICENSE.md"
+
+    assert 'src="/static/hls.light.min.js?v=20260830.1"' in html
+    assert "track.source==='soundcloud'" in script
+    assert "window.Hls" in script and "MANIFEST_PARSED" in script
+    assert hls.is_file() and hls.stat().st_size > 300_000
+    assert license_file.is_file() and "Apache License" in license_file.read_text(encoding="utf-8")
 
 
 def test_listener_first_onboarding_and_language_switch_are_wired() -> None:
