@@ -25,6 +25,11 @@ STARTUP_TIMEOUT_SECONDS = 25
 MAX_DESKTOP_STATE_BYTES = 4 * 1024 * 1024
 REMOTE_API_ENV = "AWUN_REMOTE_API_URL"
 REMOTE_API_FILE = "remote-api.txt"
+# AWUN already has a public, user-owned Render deployment.  Using it by
+# default keeps the desktop build useful on networks that block provider
+# domains without asking the user to create an account or configure a server.
+DEFAULT_REMOTE_API_URL = "https://awun-1.onrender.com"
+LOCAL_REMOTE_VALUES = {"local", "off", "disabled", "none"}
 
 SPLASH = """
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><style>
@@ -137,7 +142,13 @@ def _normalize_remote_api_url(value: str | None) -> str | None:
 
 
 def remote_api_url() -> str | None:
-    """Read the optional remote egress endpoint without ever guessing one."""
+    """Return the configured endpoint, or AWUN's free endpoint by default.
+
+    Setting ``AWUN_REMOTE_API_URL=local`` (or putting ``local`` in the
+    settings file) opts out and keeps all provider requests on the computer.
+    Any other invalid value falls back to the built-in endpoint so a typo does
+    not silently disable the network workaround.
+    """
 
     value = os.getenv(REMOTE_API_ENV, "")
     if not value:
@@ -147,7 +158,10 @@ def remote_api_url() -> str | None:
                 value = (Path(app_data) / "AWUN" / REMOTE_API_FILE).read_text(encoding="utf-8")
             except OSError:
                 value = ""
-    return _normalize_remote_api_url(value)
+    value = str(value or "").strip()
+    if value.casefold() in LOCAL_REMOTE_VALUES:
+        return None
+    return _normalize_remote_api_url(value) or DEFAULT_REMOTE_API_URL
 
 
 @dataclass

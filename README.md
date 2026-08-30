@@ -131,14 +131,21 @@ Region mode changes discovery relevance; it does not bypass provider licensing
 or geographic restrictions. In AUTO mode the browser locale selects a country
 and language. GLOBAL removes the YouTube country/language preference.
 
-The Windows desktop shell also supports an explicit remote API endpoint for
-networks that block one or more provider domains. Set
+The Windows desktop shell uses the project's public AWUN backend
+(`https://awun-1.onrender.com`) by default. This is a free Render web service,
+so no new server, account or configuration is required. Render may pause a free
+service after inactivity; the first request after a pause can take about a
+minute. If the endpoint is unavailable, the desktop app automatically retries
+the request against its local backend.
+
+To use another endpoint, set
 `AWUN_REMOTE_API_URL=https://your-controlled-domain` before launching the EXE,
 or put that HTTPS origin on one line in `%APPDATA%\\AWUN\\remote-api.txt`.
-Search, lyrics, playlist import and AWUN media then use that mirror or your own
-AWUN API server; no system-wide VPN is required. Use only an endpoint you
-control or trust. AWUN does not embed unknown proxy IPs, and YouTube playback
-still uses the official embedded player and remains subject to its availability.
+Set the value to `local` to force direct requests from the computer. Search,
+lyrics, playlist import and AWUN media use the remote endpoint when available;
+YouTube playback still uses the official embedded player and remains subject
+to its availability. Use only an endpoint you control or trust: AWUN does not
+embed unknown proxy IPs.
 
 ## Public playlist and library transfer
 

@@ -18,11 +18,18 @@ const apiBase=(()=>{
   }catch{return''}
 })();
 document.documentElement.dataset.platform=runtimePlatform;
+const remoteRetryStatuses=new Set([502,503,504]);
 function apiUrl(input){return apiBase&&typeof input==='string'&&input.startsWith('/')?`${apiBase}${input}`:input}
 function awunFetch(input,init={}){
   const headers=new Headers(init.headers||{});
   if(playStoreMode)headers.set('X-AWUN-Client','android-play');
-  return fetch(apiUrl(input),{...init,headers});
+  const options={...init,headers};
+  const target=apiUrl(input);
+  if(!apiBase||target===input||typeof input!=='string')return fetch(target,options);
+  return fetch(target,options).then(response=>{
+    if(!remoteRetryStatuses.has(response.status))return response;
+    return fetch(input,options);
+  }).catch(()=>fetch(input,options));
 }
 const ui={
   status:$('status'),searchNavButton:$('searchNavButton'),libraryButton:$('libraryButton'),installButton:$('installButton'),languageButton:$('languageButton'),languageLabel:$('languageLabel'),emptyGuide:$('emptyGuide'),idleStage:$('idleStage'),guideSearch:$('guideSearch'),guideWave:$('guideWave'),guideImport:$('guideImport'),searchForm:$('searchForm'),searchInput:$('searchInput'),searchButton:$('searchButton'),
