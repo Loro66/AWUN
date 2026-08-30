@@ -131,6 +131,15 @@ Region mode changes discovery relevance; it does not bypass provider licensing
 or geographic restrictions. In AUTO mode the browser locale selects a country
 and language. GLOBAL removes the YouTube country/language preference.
 
+The Windows desktop shell also supports an explicit remote API endpoint for
+networks that block one or more provider domains. Set
+`AWUN_REMOTE_API_URL=https://your-controlled-domain` before launching the EXE,
+or put that HTTPS origin on one line in `%APPDATA%\\AWUN\\remote-api.txt`.
+Search, lyrics, playlist import and AWUN media then use that mirror or your own
+AWUN API server; no system-wide VPN is required. Use only an endpoint you
+control or trust. AWUN does not embed unknown proxy IPs, and YouTube playback
+still uses the official embedded player and remains subject to its availability.
+
 ## Public playlist and library transfer
 
 `POST /api/v1/library/import-url` accepts a public HTTPS playlist URL and returns track metadata for automatic matching in AWUN. YouTube playlists use the official YouTube Data API when `AWUN_YOUTUBE_API_KEY` is configured. Other sites are supported only when they publish standard JSON-LD `MusicPlaylist`/`MusicRecording` metadata.
