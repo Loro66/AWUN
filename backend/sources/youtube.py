@@ -64,12 +64,37 @@ _LONG_FORM_TITLE = re.compile(
     re.IGNORECASE,
 )
 
+_NON_MUSIC_TITLE = re.compile(
+    r"(?:"
+    r"\b(?:how\s+to|recipe|recipes|chef|cooking|cook|restaurant|food|kitchen|"
+    r"eat|eating|tasting|review|tutorial|vlog|podcast|interview|news|gameplay|"
+    r"highlights|unboxing|reaction|challenge|at\s+home)\b|"
+    r"(?:рецепт|рецепты|шеф|повар|готов[ит]|кухн|ресторан|еда|есть|обзор|"
+    r"урок|влог|подкаст|интервью|новости|игровой|распаковк|реакци|челлендж)"
+    r")",
+    re.IGNORECASE,
+)
+
+_MUSIC_TITLE_HINT = re.compile(
+    r"(?:\b(?:official\s+audio|official\s+music|music\s+video|lyrics?|song|"
+    r"remix|single|album|soundtrack|ost|live\s+performance|session)\b|"
+    r"(?:официальн(?:ый|ая)|музыкальн|песня|ремикс|сингл|альбом|саундтрек|"
+    r"клип|текст\s+песни|живое\s+выступление))",
+    re.IGNORECASE,
+)
+
 
 def _looks_like_track(title: str, duration: int, *, live: bool = False) -> bool:
     """Keep song-sized, on-demand videos and reject obvious long-form mixes."""
     if live or duration > 20 * 60:
         return False
-    return not _LONG_FORM_TITLE.search(str(title or ""))
+    value = str(title or "")
+    if _LONG_FORM_TITLE.search(value):
+        return False
+    # The no-key fallback uses broad YouTube search, unlike the official API's
+    # category filter. Reject obvious cooking/vlog/tutorial results unless the
+    # title also contains an explicit music signal such as "official audio".
+    return not (_NON_MUSIC_TITLE.search(value) and not _MUSIC_TITLE_HINT.search(value))
 
 
 class YouTubeAdapter(BaseAdapter):
@@ -265,7 +290,12 @@ class YouTubeAdapter(BaseAdapter):
         YouTube iframe player and no protected YouTube media URL is exposed.
         """
         with YoutubeDL(self._flat_options) as ydl:
-            payload = ydl.extract_info(f"ytsearch{min(limit, 100)}:{query}", download=False)
+            # Bias the unauthenticated fallback toward songs. The official API
+            # already enforces videoCategoryId=10; yt-dlp search does not.
+            payload = ydl.extract_info(
+                f"ytsearch{min(max(limit * 2, limit), 100)}:{query} official audio music",
+                download=False,
+            )
 
         tracks: list[Track] = []
         for info in (payload or {}).get("entries") or []:
