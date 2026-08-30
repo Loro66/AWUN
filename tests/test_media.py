@@ -2,7 +2,13 @@ import unittest
 
 from backend.core.media import InvalidMediaToken, MediaSigner
 from backend.core.models import SearchResponse, Track
-from backend.api.main import _apply_client_policy, _download_filename, _is_playlist, _safe_filename_stem
+from backend.api.main import (
+    _apply_client_policy,
+    _download_filename,
+    _is_playlist,
+    _rewrite_hls_playlist,
+    _safe_filename_stem,
+)
 
 
 class MediaSignerTests(unittest.TestCase):
@@ -42,6 +48,27 @@ class MediaSignerTests(unittest.TestCase):
         self.assertTrue(_is_playlist("https://media.example/playlist.m3u8", "application/octet-stream"))
         self.assertTrue(_is_playlist("https://media.example/audio", "application/vnd.apple.mpegurl"))
         self.assertFalse(_is_playlist("https://media.example/audio.mp3", "audio/mpeg"))
+
+    def test_hls_playlist_resources_are_proxied(self) -> None:
+        playlist = (
+            b"#EXTM3U\n"
+            b"#EXT-X-MAP:URI=\"https://cdn.example/init.mp4?token=abc\"\n"
+            b"#EXTINF:10,\n"
+            b"https://cdn.example/segment-000.m4s?token=abc\n"
+        )
+
+        rewritten = _rewrite_hls_playlist(
+            playlist,
+            upstream_url="https://cdn.example/playlist.m3u8",
+            proxy_base_url="https://awun.example/api/v1/media",
+            signer=self.signer,
+            headers={"User-Agent": "AWUN/1.8"},
+        ).decode("utf-8")
+
+        self.assertNotIn("cdn.example", rewritten)
+        self.assertEqual(rewritten.count("https://awun.example/api/v1/media/"), 2)
+        for token in rewritten.split("/media/")[1:]:
+            self.assertTrue(self.signer.verify(token.split('"', 1)[0].split("\n", 1)[0]).url.startswith("https://cdn.example/"))
 
     def test_google_play_client_never_receives_download_url(self) -> None:
         track = Track(
