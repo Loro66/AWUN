@@ -7,11 +7,22 @@ const $=id=>document.getElementById(id);
 const runtimeParams=new URLSearchParams(location.search);
 const runtimePlatform=runtimeParams.get('platform')||'web';
 const playStoreMode=runtimePlatform==='android-play';
+const apiBase=(()=>{
+  const candidate=(runtimeParams.get('api')||'').trim();
+  if(!candidate)return'';
+  try{
+    const parsed=new URL(candidate);
+    if(!['http:','https:'].includes(parsed.protocol)||parsed.search||parsed.hash)return'';
+    if(parsed.protocol==='http:'&&!['localhost','127.0.0.1','[::1]'].includes(parsed.hostname))return'';
+    return parsed.href.replace(/\/+$/,'');
+  }catch{return''}
+})();
 document.documentElement.dataset.platform=runtimePlatform;
+function apiUrl(input){return apiBase&&typeof input==='string'&&input.startsWith('/')?`${apiBase}${input}`:input}
 function awunFetch(input,init={}){
   const headers=new Headers(init.headers||{});
   if(playStoreMode)headers.set('X-AWUN-Client','android-play');
-  return fetch(input,{...init,headers});
+  return fetch(apiUrl(input),{...init,headers});
 }
 const ui={
   status:$('status'),searchNavButton:$('searchNavButton'),libraryButton:$('libraryButton'),installButton:$('installButton'),languageButton:$('languageButton'),languageLabel:$('languageLabel'),emptyGuide:$('emptyGuide'),idleStage:$('idleStage'),guideSearch:$('guideSearch'),guideWave:$('guideWave'),guideImport:$('guideImport'),searchForm:$('searchForm'),searchInput:$('searchInput'),searchButton:$('searchButton'),
@@ -456,6 +467,6 @@ async function bootstrap(){
   if(!playStoreMode&&'serviceWorker'in navigator)navigator.serviceWorker.register('/service-worker.js').catch(()=>{});applyLanguage();applyVisual(false);applyRepeatMode(false);updateClock();setInterval(updateClock,1000);persist();setRange(ui.volume,82);setRange(ui.progress,0);render();await refreshStatus();
   const query=url.get('q');if(query){ui.searchInput.value=query;search(query)}
 }
-window.awunApp={state,ui,playTrack,render,search,toggleSave,currentList,setMessage,sourceLabels,decodeText,matchText,loadingRows,awunFetch,pausePlayback,playStoreMode};
+window.awunApp={state,ui,playTrack,render,search,toggleSave,currentList,setMessage,sourceLabels,decodeText,matchText,loadingRows,awunFetch,pausePlayback,playStoreMode,apiBase,apiUrl};
 document.addEventListener('awun:language',event=>{language=event.detail.language;applyVisual(false);applyRepeatMode(false);render();refreshStatus()});
 bootstrap();
