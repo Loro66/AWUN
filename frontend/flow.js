@@ -81,8 +81,10 @@
   }
   async function requestCandidates(query,signal){
     const sources=[...state.sources].filter(source=>!state.available.size||state.available.has(source));
-    const response=await awunFetch('/api/v1/search',{method:'POST',headers:{'Content-Type':'application/json'},signal,body:JSON.stringify({query,limit:18,sources,region:state.region,locale:navigator.language||null,fast:true})});
-    const data=await response.json();if(!response.ok)throw new Error(data.detail||t('flowSearchFailed'));return data.tracks||[];
+    if(!sources.length)throw new Error(t('flowSearchFailed'));
+    const perSourceLimit=Math.max(6,Math.ceil(18/sources.length)+2);
+    const requests=sources.map(source=>awunFetch('/api/v1/search',{method:'POST',headers:{'Content-Type':'application/json'},signal,body:JSON.stringify({query,limit:perSourceLimit,sources:[source],region:state.region,locale:navigator.language||null,fast:true})}).then(async response=>{const data=await response.json();if(!response.ok)throw new Error(data.detail||t('flowSearchFailed'));return data.tracks||[]}).catch(()=>[]));
+    const batches=await Promise.all(requests);return batches.flat();
   }
   function primeLocalFlow(){
     const ranked=rankCandidates([state.active,...state.tracks,...state.saved].filter(Boolean));if(!ranked.length)return false;

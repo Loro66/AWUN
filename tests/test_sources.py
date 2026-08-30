@@ -14,6 +14,8 @@ class ProviderAdapterTests(unittest.TestCase):
         self.assertTrue(_looks_like_track("Long classical movement", 1199))
         self.assertFalse(_looks_like_track("Крутая музыка в машину на 3 часа", 10800))
         self.assertFalse(_looks_like_track("Best songs playlist 2026", 540))
+        self.assertFalse(_looks_like_track("We Spent the Day With a Michelin Sushi Chef", 540))
+        self.assertFalse(_looks_like_track("Best Way To Make Sushi At Home", 420))
         self.assertFalse(_looks_like_track("Artist live now", 0, live=True))
 
     def test_youtube_api_is_scoped_to_music_category(self) -> None:

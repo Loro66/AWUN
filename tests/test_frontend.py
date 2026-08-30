@@ -135,6 +135,7 @@ def test_flow_recommendations_are_local_persistent_and_feedback_driven() -> None
     assert "candidateScore" in script and "rankCandidates" in script
     assert all(signal in script for signal in ("'play'", "'skip'", "'listen30'", "'complete'", "'like'", "'dislike'"))
     assert "primeLocalFlow" in script and "fast:true" in script and "/api/v1/search" in script
+    assert "perSourceLimit" in script and "Promise.all(requests)" in script
     assert "Promise.allSettled" not in script
     assert "window.awunApp" in app and "emitAwun('play'" in app and "emitAwun('complete'" in app
     assert ".flow-panel" in styles and ".flow-feedback.active" in styles
