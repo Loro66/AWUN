@@ -854,3 +854,24 @@ body:before{
   .track{border-radius:18px 18px 10px 10px}
   .player .player-console{border-radius:28px 28px 15px 15px}
 }
+
+/* Controls must be legible in their resting state; hover only adds emphasis. */
+.flow-start-row button:not(.stop){
+  color:var(--forest-night);
+  background:var(--forest-green);
+  border-color:var(--forest-green);
+  text-shadow:none;
+  box-shadow:0 0 22px rgba(158,187,120,.16),inset 0 1px rgba(232,228,216,.24);
+}
+.flow-start-row button:not(.stop):hover{color:var(--forest-night);background:var(--forest-moon);border-color:var(--forest-moon)}
+.flow-start-row button.stop{color:var(--forest-green);background:rgba(55,84,48,.26);border-color:var(--forest-green)}
+.flow-segments button,.flow-controls select,.flow-controls label>span,.flow-controls legend{color:var(--forest-moon)}
+.flow-controls label>span,.flow-controls legend{font-size:7px}
+.flow-panel>p,.theme-panel>p{font-size:10px;line-height:1.6;color:rgba(232,228,216,.68)}
+.flow-start-row>span{font-size:9px;color:rgba(232,228,216,.7)}
+.flow-panel>footer,.flow-panel>footer button{font-size:7px}
+.theme-panel-head strong{font-size:11px}
+.theme-grid button>span{font-size:9px}.theme-grid button>small{font-size:7px}
+.theme-grid button,.visual-toggles button{color:var(--forest-moon)}
+.theme-grid button>i{box-shadow:inset 0 0 0 9px rgba(0,0,0,.25),0 0 18px rgba(158,187,120,.1)}
+.visual-toggles b{color:var(--forest-green)}
