@@ -9,8 +9,7 @@ Security properties:
 - the GitHub-published SHA256 digest is mandatory;
 - the archive is verified once after download and again after an elevated copy;
 - the service executable lives under Program Files, not a user-writable folder;
-- the elevated PowerShell payload is passed as EncodedCommand rather than via a
-  user-writable script file;
+- the elevated PowerShell payload is passed as EncodedCommand;
 - no broad IP set or game filter is enabled.
 """
 
@@ -34,6 +33,58 @@ FLOWSEAL_LATEST_RELEASE_API = (
 )
 SERVICE_NAME = "AWUNRegionCompat"
 EXTERNAL_ZAPRET_SERVICE = "zapret"
+
+# Exact text of Flowseal/zapret-discord-youtube LICENSE.txt from the upstream
+# repository. Release archives do not always contain this file, so AWUN writes
+# the notice next to the installed helper instead of rejecting an otherwise
+# valid official release ZIP.
+FLOWSEAL_LICENSE_TEXT = """MIT License
+
+Copyright (c) 2016-2026 bol-van
+Copyright (c) 2024-2026 Flowseal
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+This repository contains binary files originating from the project by bol-van,
+available at: https://github.com/bol-van/zapret/ (licensed under the MIT License).
+
+This repository also includes and depends on WinDivert
+(https://github.com/basil00/WinDivert), which is licensed under your choice of:
+
+1. The GNU Lesser General Public License (LGPL) Version 3, or
+2. The GNU General Public License (GPL) Version 2.
+
+Binary distributions of WinDivert are included in this project as-is, without modification.
+The corresponding source code and license terms for WinDivert are available at
+https://github.com/basil00/WinDivert.
+
+---
+
+To comply with the licenses of these projects:
+
+1. The original copyright notices and licenses (above) are retained.
+2. The use of WinDivert in this project is governed by its licensing terms (LGPLv3/GPLv2).
+3. This repository provides only binary files and does not include the source code of
+   the project by bol-van or modifications to WinDivert.
+"""
 
 SOUNDCLOUD_HOSTS = (
     "soundcloud.com",
@@ -79,7 +130,6 @@ _REQUIRED_ARCHIVE_SUFFIXES = (
     "bin/quic_initial_www_google_com.bin",
     "bin/tls_clienthello_www_google_com.bin",
     "bin/tls_clienthello_4pda_to.bin",
-    "LICENSE.txt",
 )
 
 
@@ -201,8 +251,7 @@ class RegionalCompatibilityManager:
                     "включением режима AWUN, чтобы два фильтра не конфликтовали."
                 )
             archive, version, expected_sha256 = self._ensure_latest_archive()
-            powershell = self._build_install_payload(archive, version, expected_sha256)
-            self._run_elevated(powershell)
+            self._run_elevated(self._build_install_payload(archive, version, expected_sha256))
             if _service_state(SERVICE_NAME) != "running":
                 raise RegionCompatError(
                     "Служба была установлена, но не перешла в состояние RUNNING"
@@ -293,11 +342,11 @@ class RegionalCompatibilityManager:
     def _build_install_payload(self, archive: Path, version: str, expected_sha256: str) -> str:
         soundcloud = "`n".join(SOUNDCLOUD_HOSTS) + "`n"
         youtube = "`n".join(YOUTUBE_HOSTS) + "`n"
+        license_b64 = base64.b64encode(FLOWSEAL_LICENSE_TEXT.encode("utf-8")).decode("ascii")
         version = _safe_version(version)
 
-        # The strategy mirrors Flowseal's current default TCP/QUIC primitives,
-        # but removes its broad IP/game filters and limits interception to AWUN
-        # provider host lists.
+        # Strategy follows the same TCP/QUIC desync primitives used by Flowseal,
+        # but removes broad IP/game filters and limits interception to AWUN hosts.
         return f"""$ErrorActionPreference = 'Stop'
 $service = '{SERVICE_NAME}'
 $sourceArchive = {_quote_ps(archive)}
@@ -333,10 +382,15 @@ $windivertSys = Join-Path $bin 'WinDivert64.sys'
 $quic = Join-Path $bin 'quic_initial_www_google_com.bin'
 $tlsGoogle = Join-Path $bin 'tls_clienthello_www_google_com.bin'
 $tlsGeneral = Join-Path $bin 'tls_clienthello_4pda_to.bin'
-$license = Join-Path $helperRoot 'LICENSE.txt'
-foreach ($required in @($winws,$windivertDll,$windivertSys,$quic,$tlsGoogle,$tlsGeneral,$license)) {{
+foreach ($required in @($winws,$windivertDll,$windivertSys,$quic,$tlsGoogle,$tlsGeneral)) {{
     if (-not (Test-Path -LiteralPath $required -PathType Leaf)) {{ throw ('Required Flowseal file missing: ' + $required) }}
 }}
+
+$license = Join-Path $helperRoot 'LICENSE.txt'
+$licenseBytes = [Convert]::FromBase64String('{license_b64}')
+[IO.File]::WriteAllBytes($license, $licenseBytes)
+if (-not (Test-Path -LiteralPath $license -PathType Leaf)) {{ throw 'Unable to write Flowseal LICENSE.txt' }}
+
 New-Item -ItemType Directory -Force -Path $lists | Out-Null
 Set-Content -LiteralPath (Join-Path $lists 'awun-soundcloud.txt') -Value "{soundcloud}" -Encoding ASCII
 Set-Content -LiteralPath (Join-Path $lists 'awun-youtube.txt') -Value "{youtube}" -Encoding ASCII
