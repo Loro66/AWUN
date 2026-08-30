@@ -7,7 +7,7 @@ from urllib.parse import parse_qs, quote, urlencode, urljoin, urlparse
 import aiohttp
 from fastapi import Depends, FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import FileResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
 from backend.core.config import Settings, get_settings
@@ -48,6 +48,8 @@ _PLAYLIST_CONTENT_TYPES = {
     "audio/mpegurl",
     "audio/x-mpegurl",
 }
+_HLS_URI_PATTERN = re.compile(r'URI="([^"]+)"')
+_MAX_HLS_MANIFEST_BYTES = 512 * 1024
 
 
 class CacheControlledStaticFiles(StaticFiles):
@@ -84,6 +86,48 @@ def _download_filename(stem: str, content_type: str, url: str) -> str:
         suffix = Path(urlparse(url).path).suffix.lower().lstrip(".")
         extension = suffix if suffix in {"aac", "flac", "m4a", "mp3", "ogg", "opus", "wav", "webm"} else "audio"
     return f"{_safe_filename_stem(stem)}.{extension}"
+
+
+def _rewrite_hls_playlist(
+    payload: bytes,
+    *,
+    upstream_url: str,
+    proxy_base_url: str,
+    signer: MediaSigner,
+    headers: dict[str, str],
+) -> bytes:
+    """Proxy HLS playlist resources so the browser never contacts the CDN directly."""
+
+    if len(payload) > _MAX_HLS_MANIFEST_BYTES:
+        raise UnsafeUrl("HLS manifest is too large")
+    try:
+        text = payload.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise UnsafeUrl("HLS manifest is not valid UTF-8") from exc
+
+    def proxied_uri(value: str) -> str:
+        candidate = value.strip()
+        if not candidate or candidate.startswith("data:"):
+            return value
+        absolute = urljoin(upstream_url, candidate)
+        validated = validate_outbound_url(absolute)
+        token = signer.sign(validated.url, headers)
+        return f"{proxy_base_url.rstrip('/')}/{token}"
+
+    rewritten: list[str] = []
+    for line in text.splitlines():
+        if line.startswith("#"):
+            rewritten.append(
+                _HLS_URI_PATTERN.sub(
+                    lambda match: f'URI="{proxied_uri(match.group(1))}"',
+                    line,
+                )
+            )
+        elif line.strip():
+            rewritten.append(proxied_uri(line))
+        else:
+            rewritten.append("")
+    return ("\n".join(rewritten) + "\n").encode("utf-8")
 
 
 def _apply_client_policy(response: SearchResponse, client_id: str | None) -> SearchResponse:
@@ -392,10 +436,33 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             raise HTTPException(502, f"Источник аудио вернул ошибку HTTP {upstream.status}")
 
         content_type = upstream.headers.get("content-type", "audio/mpeg")
-        if download and _is_playlist(str(upstream.url), content_type):
-            upstream.release()
-            await session.close()
-            raise HTTPException(409, "Источник предоставляет потоковый плейлист, а не скачиваемый аудиофайл")
+        if _is_playlist(str(upstream.url), content_type):
+            if download:
+                upstream.release()
+                await session.close()
+                raise HTTPException(409, "Источник предоставляет потоковый плейлист, а не скачиваемый аудиофайл")
+            try:
+                playlist = await upstream.read()
+                rewritten = _rewrite_hls_playlist(
+                    playlist,
+                    upstream_url=str(upstream.url),
+                    proxy_base_url=f"{str(request.base_url).rstrip('/')}{settings.api_prefix}/media",
+                    signer=media_signer,
+                    headers=target.headers,
+                )
+            except UnsafeUrl as exc:
+                raise HTTPException(502, "Источник аудио вернул некорректный HLS-плейлист") from exc
+            finally:
+                upstream.release()
+                await session.close()
+            return Response(
+                content=rewritten,
+                media_type=content_type.partition(";")[0].strip() or "application/vnd.apple.mpegurl",
+                headers={
+                    "Cache-Control": "private, no-store",
+                    "X-Content-Type-Options": "nosniff",
+                },
+            )
 
         async def chunks():
             try:

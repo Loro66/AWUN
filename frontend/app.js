@@ -49,7 +49,7 @@ function loadLineComments(){try{const value=JSON.parse(localStorage.getItem('awu
 const visualThemes={black:{labelKey:'themeBlackShort',color:'#0b0907'},white:{labelKey:'themeWhiteShort',color:'#0b0907'},acid:{labelKey:'themeAcidShort',color:'#0b0907'},ultraviolet:{labelKey:'themeUltravioletShort',color:'#0b0907'},cobalt:{labelKey:'themeCobaltShort',color:'#0b0907'},ember:{labelKey:'themeEmberShort',color:'#0b0907'}};
 const state={
   tracks:[],saved:loadLibrary(),available:new Set(),sources:new Set(),region:loadRegion(),resultLimit:loadResultLimit(),repeatMode:loadRepeatMode(),library:false,active:null,controller:null,
-  youtube:null,youtubeApi:null,youtubeTicker:null,seeking:false,recovering:false,lastVolume:.82,expanded:null,details:new Map(),detailsController:null,openLines:new Set(),lineComments:loadLineComments(),geniusEnabled:false,...loadVisual()
+  youtube:null,youtubeApi:null,youtubeTicker:null,hls:null,seeking:false,recovering:false,lastVolume:.82,expanded:null,details:new Map(),detailsController:null,openLines:new Set(),lineComments:loadLineComments(),geniusEnabled:false,...loadVisual()
 };
 let installPrompt=null;
 let language=i18n.language;
@@ -325,6 +325,10 @@ function stopYouTube(){
   ui.youtubePlayer.replaceChildren();ui.youtubeDock.hidden=true;
 }
 
+function stopHls(){
+  if(state.hls){try{state.hls.destroy()}catch{}state.hls=null}
+}
+
 function setPlaying(playing){ui.playPause.querySelector('span').textContent=playing?'Ⅱ':'▶';ui.playPause.setAttribute('aria-label',t(playing?'pauseAria':'playAria'));document.body.classList.toggle('is-playing',playing);ui.player.classList.toggle('is-playing',playing)}
 
 function applyRepeatMode(save=true){
@@ -341,7 +345,7 @@ function updateTimeline(current,duration){
 }
 
 async function playYouTube(track){
-  ui.audio.pause();ui.audio.removeAttribute('src');stopYouTube();ui.youtubeDock.hidden=false;ui.youtubeDock.classList.remove('minimized');
+  ui.audio.pause();ui.audio.removeAttribute('src');stopHls();stopYouTube();ui.youtubeDock.hidden=false;ui.youtubeDock.classList.remove('minimized');
   try{
     const YT=await ensureYouTubeApi(),videoId=youtubeId(track);if(!videoId)throw new Error(t('invalidYoutubeResult'));
     const target=document.createElement('div');ui.youtubePlayer.replaceChildren(target);
@@ -354,7 +358,27 @@ async function playYouTube(track){
 }
 
 async function playAudio(track,recovered=false){
-  stopYouTube();state.recovering=recovered;ui.audio.src=track.stream_url;ui.audio.volume=Number(ui.volume.value)/100;
+  stopYouTube();stopHls();state.recovering=recovered;ui.audio.pause();ui.audio.removeAttribute('src');ui.audio.load();ui.audio.volume=Number(ui.volume.value)/100;
+  if(track.source==='soundcloud'&&window.Hls?.isSupported?.()){
+    const hls=new window.Hls({enableWorker:true});state.hls=hls;
+    try{
+      await new Promise((resolve,reject)=>{
+        let settled=false;
+        const finish=(callback,value)=>{if(settled)return;settled=true;callback(value)};
+        hls.on(window.Hls.Events.ERROR,(_event,data)=>{if(data.fatal)finish(reject,new Error(t('playbackFailed')))});
+        hls.on(window.Hls.Events.MANIFEST_PARSED,async()=>{
+          try{await ui.audio.play();setPlaying(true);finish(resolve)}catch(error){finish(reject,error)}
+        });
+        hls.on(window.Hls.Events.MEDIA_ATTACHED,()=>hls.loadSource(track.stream_url));
+        hls.attachMedia(ui.audio);
+      });
+    }catch(error){
+      stopHls();
+      if(error.name!=='NotAllowedError')setMessage(t('playbackFailed'),'error');
+    }
+    return;
+  }
+  ui.audio.src=track.stream_url;
   try{await ui.audio.play();setPlaying(true)}catch(error){if(error.name!=='NotAllowedError')setMessage(t('playbackFailed'),'error')}
 }
 

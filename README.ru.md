@@ -12,7 +12,7 @@
 
 > Музыкальное пространство, которое ищет композиции в подключённых каталогах, хранит библиотеку на устройстве и превращает твой вкус в бесконечную персональную станцию.
 
-AWUN параллельно ищет музыку в YouTube, SoundCloud, Audius, Jamendo и Internet Archive. MusicBrainz расширяет запросы: использует альтернативные написания, транслитерацию, релизы и ISRC. Недоступность одного источника не ломает остальные результаты.
+AWUN параллельно ищет музыку в YouTube, SoundCloud, Audius, Jamendo и Internet Archive. MusicBrainz расширяет запросы: использует альтернативные написания, транслитерацию, релизы и ISRC. Недоступность одного источника не ломает остальные результаты. SoundCloud HLS-потоки проходят через AWUN media proxy и воспроизводятся встроенным HLS.js.
 
 ## Что уже работает
 
@@ -90,6 +90,9 @@ Python 3.11+, FastAPI, aiohttp, Pydantic, yt-dlp, Web Audio/Media Session, pyweb
 Copyright © 2026 Loro66. Все права защищены.
 
 Действует двуязычная [закрытая freeware-лицензия AWUN 1.0](LICENSE.md#закрытая-freeware-лицензия-awun-10).
+
+В desktop- и web-оболочки включён HLS.js 1.7.0 по Apache License 2.0; текст
+лицензии находится в [`frontend/hls.js.LICENSE.md`](frontend/hls.js.LICENSE.md).
 Публичный репозиторий предназначен для прозрачности и вкладов, но код не
 является open source. Для pull request действует
 [соглашение с участником](CONTRIBUTOR_LICENSE_AGREEMENT.md#соглашение-с-участником-awun-10).
