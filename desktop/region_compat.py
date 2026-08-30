@@ -1,21 +1,29 @@
-"""Optional Windows DPI-compatibility helper for AWUN desktop.
+"""Optional Windows DPI compatibility for AWUN desktop.
 
-The helper is deliberately narrow: it installs a separate winws service that
-only sees host names used by AWUN's SoundCloud and YouTube integrations. It is
-not a VPN, does not change the public IP address, and does not route unrelated
-traffic through a remote server.
+This module integrates a narrow subset of Flowseal/zapret behavior for AWUN's
+SoundCloud and YouTube traffic. It is not a VPN and never changes the public IP
+address. The helper is optional and Windows-only.
+
+Security properties:
+- only the official GitHub release API and release ZIP are used;
+- the GitHub-published SHA256 digest is mandatory;
+- the archive is verified once after download and again after an elevated copy;
+- the service executable lives under Program Files, not a user-writable folder;
+- the elevated PowerShell payload is passed as EncodedCommand rather than via a
+  user-writable script file;
+- no broad IP set or game filter is enabled.
 """
 
 from __future__ import annotations
 
+import base64
 import hashlib
 import json
 import os
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import platform
 import shutil
 import subprocess
-import tempfile
 from typing import Any
 from urllib.request import Request, urlopen
 import zipfile
@@ -27,15 +35,23 @@ FLOWSEAL_LATEST_RELEASE_API = (
 SERVICE_NAME = "AWUNRegionCompat"
 EXTERNAL_ZAPRET_SERVICE = "zapret"
 
-# Keep these lists intentionally narrow. Parent SoundCloud domains cover API,
-# artwork and current media-streaming hosts. The YouTube entries mirror the
-# focused Google/YouTube host list used by Flowseal rather than intercepting
-# arbitrary Google traffic.
 SOUNDCLOUD_HOSTS = (
     "soundcloud.com",
-    "soundcloud.cloud",
+    "api.soundcloud.com",
+    "api-v2.soundcloud.com",
+    "api-auth.soundcloud.com",
+    "secure.soundcloud.com",
     "sndcdn.com",
+    "a-v2.sndcdn.com",
+    "cf-hls-media.sndcdn.com",
+    "cf-hls-opus-media.sndcdn.com",
+    "soundcloud.cloud",
+    "playback.media-streaming.soundcloud.cloud",
+    "player.media-streaming.soundcloud.cloud",
 )
+
+# Focused YouTube host list derived from Flowseal's list-google.txt. Deliberately
+# excludes unrelated Google domains.
 YOUTUBE_HOSTS = (
     "yt3.ggpht.com",
     "yt4.ggpht.com",
@@ -54,6 +70,16 @@ YOUTUBE_HOSTS = (
     "yt-video-upload.l.google.com",
     "ytimg.com",
     "ytimg.l.google.com",
+)
+
+_REQUIRED_ARCHIVE_SUFFIXES = (
+    "bin/winws.exe",
+    "bin/WinDivert.dll",
+    "bin/WinDivert64.sys",
+    "bin/quic_initial_www_google_com.bin",
+    "bin/tls_clienthello_www_google_com.bin",
+    "bin/tls_clienthello_4pda_to.bin",
+    "LICENSE.txt",
 )
 
 
@@ -99,20 +125,40 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def _safe_extract(archive: Path, destination: Path) -> None:
-    root = destination.resolve()
-    with zipfile.ZipFile(archive) as bundle:
-        for member in bundle.infolist():
-            target = (destination / member.filename).resolve()
-            try:
-                target.relative_to(root)
-            except ValueError as exc:
-                raise RegionCompatError("Архив совместимости содержит небезопасный путь") from exc
-        bundle.extractall(destination)
-
-
 def _quote_ps(value: str | Path) -> str:
     return "'" + str(value).replace("'", "''") + "'"
+
+
+def _safe_version(value: str) -> str:
+    clean = "".join(character for character in value if character.isalnum() or character in ".-_")
+    if not clean:
+        raise RegionCompatError("Некорректная версия релиза Flowseal")
+    return clean[:80]
+
+
+def _validate_archive(archive: Path) -> None:
+    try:
+        with zipfile.ZipFile(archive) as bundle:
+            names: list[str] = []
+            for member in bundle.infolist():
+                normalized = member.filename.replace("\\", "/")
+                path = PurePosixPath(normalized)
+                if path.is_absolute() or ".." in path.parts:
+                    raise RegionCompatError("Архив Flowseal содержит небезопасный путь")
+                names.append(normalized)
+    except zipfile.BadZipFile as exc:
+        raise RegionCompatError("Скачанный файл Flowseal не является корректным ZIP") from exc
+
+    lower_names = [name.lower() for name in names]
+    missing = [
+        suffix
+        for suffix in _REQUIRED_ARCHIVE_SUFFIXES
+        if not any(name.endswith(suffix.lower()) for name in lower_names)
+    ]
+    if missing:
+        raise RegionCompatError(
+            "В релизе Flowseal отсутствуют обязательные файлы: " + ", ".join(missing)
+        )
 
 
 class RegionalCompatibilityManager:
@@ -124,6 +170,7 @@ class RegionalCompatibilityManager:
             base = Path(local_app_data) if local_app_data else Path.home() / "AppData" / "Local"
             root = base / "AWUN" / "regional-compat"
         self.root = Path(root)
+        self.download_dir = self.root / "downloads"
         self.current_file = self.root / "current.json"
 
     @property
@@ -148,22 +195,19 @@ class RegionalCompatibilityManager:
         if not self.supported:
             return {"ok": False, "error": "Режим совместимости доступен только в Windows"}
         try:
-            external_state = _service_state(EXTERNAL_ZAPRET_SERVICE)
-            if external_state == "running":
+            if _service_state(EXTERNAL_ZAPRET_SERVICE) == "running":
                 raise RegionCompatError(
                     "Обнаружена уже запущенная служба zapret. Останови внешний zapret перед "
-                    "включением встроенного режима AWUN, чтобы два фильтра не конфликтовали."
+                    "включением режима AWUN, чтобы два фильтра не конфликтовали."
                 )
-            helper_root, version = self._ensure_latest_helper()
-            self._write_hostlists(helper_root)
-            script = self._write_install_script(helper_root)
-            self._run_elevated(script)
-            state = _service_state(SERVICE_NAME)
-            if state != "running":
+            archive, version, expected_sha256 = self._ensure_latest_archive()
+            powershell = self._build_install_payload(archive, version, expected_sha256)
+            self._run_elevated(powershell)
+            if _service_state(SERVICE_NAME) != "running":
                 raise RegionCompatError(
                     "Служба была установлена, но не перешла в состояние RUNNING"
                 )
-            self._write_current(version, helper_root)
+            self._write_current(version)
             return {"ok": True, **self.status()}
         except Exception as exc:
             return {"ok": False, "error": str(exc), **self.status()}
@@ -172,8 +216,7 @@ class RegionalCompatibilityManager:
         if not self.supported:
             return {"ok": False, "error": "Режим совместимости доступен только в Windows"}
         try:
-            script = self._write_uninstall_script()
-            self._run_elevated(script)
+            self._run_elevated(self._build_uninstall_payload())
             if _service_state(SERVICE_NAME) is not None:
                 raise RegionCompatError("Windows не удалила службу AWUNRegionCompat")
             return {"ok": True, **self.status()}
@@ -195,12 +238,12 @@ class RegionalCompatibilityManager:
             raise RegionCompatError("GitHub вернул некорректные данные релиза")
         return payload
 
-    def _ensure_latest_helper(self) -> tuple[Path, str]:
+    def _ensure_latest_archive(self) -> tuple[Path, str, str]:
         release = self._request_json(FLOWSEAL_LATEST_RELEASE_API)
-        version = str(release.get("tag_name") or "").strip()
+        version = _safe_version(str(release.get("tag_name") or "").strip())
         assets = release.get("assets") or []
-        if not version or not isinstance(assets, list):
-            raise RegionCompatError("Не удалось определить актуальный релиз Flowseal")
+        if not isinstance(assets, list):
+            raise RegionCompatError("Не удалось прочитать список файлов релиза Flowseal")
 
         asset = next(
             (
@@ -215,137 +258,108 @@ class RegionalCompatibilityManager:
             raise RegionCompatError("В актуальном релизе Flowseal нет ZIP-архива")
 
         digest = str(asset.get("digest") or "")
-        if not digest.startswith("sha256:") or len(digest.partition(":")[2]) != 64:
+        expected_sha256 = digest.partition(":")[2].lower() if digest.startswith("sha256:") else ""
+        if len(expected_sha256) != 64 or any(c not in "0123456789abcdef" for c in expected_sha256):
             raise RegionCompatError(
-                "GitHub не опубликовал SHA256 для архива Flowseal; непроверенный бинарник AWUN не запустит"
+                "GitHub не опубликовал корректный SHA256 для Flowseal; AWUN не запустит непроверенный бинарник"
             )
-        expected_sha256 = digest.partition(":")[2].lower()
+
         download_url = str(asset.get("browser_download_url") or "")
         if not download_url.startswith("https://github.com/"):
             raise RegionCompatError("Некорректная ссылка на релиз Flowseal")
 
-        version_dir = self.root / f"flowseal-{version}"
-        ready = self._find_helper_root(version_dir) if version_dir.exists() else None
-        if ready:
-            return ready, version
+        self.download_dir.mkdir(parents=True, exist_ok=True)
+        archive = self.download_dir / f"flowseal-{version}.zip"
+        if archive.is_file() and _sha256(archive) == expected_sha256:
+            _validate_archive(archive)
+            return archive, version, expected_sha256
 
-        self.root.mkdir(parents=True, exist_ok=True)
-        with tempfile.TemporaryDirectory(prefix="awun-region-", dir=self.root) as temporary:
-            temp_dir = Path(temporary)
-            archive = temp_dir / "flowseal.zip"
-            request = Request(download_url, headers={"User-Agent": "AWUN/1.8 regional-compat"})
-            with urlopen(request, timeout=60) as response, archive.open("wb") as output:
+        temporary = archive.with_suffix(".zip.part")
+        temporary.unlink(missing_ok=True)
+        request = Request(download_url, headers={"User-Agent": "AWUN/1.8 regional-compat"})
+        try:
+            with urlopen(request, timeout=60) as response, temporary.open("wb") as output:
                 shutil.copyfileobj(response, output)
-            actual_sha256 = _sha256(archive)
-            if actual_sha256 != expected_sha256:
+            if _sha256(temporary) != expected_sha256:
                 raise RegionCompatError(
                     "SHA256 архива Flowseal не совпал с хэшем, опубликованным GitHub"
                 )
+            _validate_archive(temporary)
+            temporary.replace(archive)
+        finally:
+            temporary.unlink(missing_ok=True)
+        return archive, version, expected_sha256
 
-            extracted = temp_dir / "extracted"
-            extracted.mkdir()
-            _safe_extract(archive, extracted)
-            helper_root = self._find_helper_root(extracted)
-            if not helper_root:
-                raise RegionCompatError("В архиве Flowseal не найден winws.exe")
-            self._verify_required_files(helper_root)
+    def _build_install_payload(self, archive: Path, version: str, expected_sha256: str) -> str:
+        soundcloud = "`n".join(SOUNDCLOUD_HOSTS) + "`n"
+        youtube = "`n".join(YOUTUBE_HOSTS) + "`n"
+        version = _safe_version(version)
 
-            if version_dir.exists():
-                shutil.rmtree(version_dir, ignore_errors=True)
-            shutil.copytree(helper_root, version_dir)
-
-        resolved = self._find_helper_root(version_dir)
-        if not resolved:
-            raise RegionCompatError("Не удалось подготовить локальную копию Flowseal")
-        self._verify_required_files(resolved)
-        return resolved, version
-
-    @staticmethod
-    def _find_helper_root(root: Path) -> Path | None:
-        direct = root / "bin" / "winws.exe"
-        if direct.is_file():
-            return root
-        for candidate in root.rglob("winws.exe"):
-            if candidate.parent.name.lower() == "bin":
-                return candidate.parent.parent
-        return None
-
-    @staticmethod
-    def _verify_required_files(helper_root: Path) -> None:
-        required = (
-            helper_root / "bin" / "winws.exe",
-            helper_root / "bin" / "WinDivert.dll",
-            helper_root / "bin" / "WinDivert64.sys",
-            helper_root / "bin" / "quic_initial_www_google_com.bin",
-            helper_root / "bin" / "tls_clienthello_www_google_com.bin",
-            helper_root / "bin" / "tls_clienthello_4pda_to.bin",
-            helper_root / "LICENSE.txt",
-        )
-        missing = [path.name for path in required if not path.is_file()]
-        if missing:
-            raise RegionCompatError(
-                "В релизе Flowseal отсутствуют обязательные файлы: " + ", ".join(missing)
-            )
-
-    @staticmethod
-    def _write_hostlists(helper_root: Path) -> None:
-        lists = helper_root / "lists"
-        lists.mkdir(parents=True, exist_ok=True)
-        (lists / "awun-soundcloud.txt").write_text(
-            "\n".join(SOUNDCLOUD_HOSTS) + "\n", encoding="utf-8"
-        )
-        (lists / "awun-youtube.txt").write_text(
-            "\n".join(YOUTUBE_HOSTS) + "\n", encoding="utf-8"
-        )
-
-    def _write_install_script(self, helper_root: Path) -> Path:
-        scripts = self.root / "scripts"
-        scripts.mkdir(parents=True, exist_ok=True)
-        script = scripts / "install-awun-region-compat.ps1"
-        bin_dir = helper_root / "bin"
-        lists_dir = helper_root / "lists"
-        winws = bin_dir / "winws.exe"
-        quic = bin_dir / "quic_initial_www_google_com.bin"
-        tls_google = bin_dir / "tls_clienthello_www_google_com.bin"
-        tls_general = bin_dir / "tls_clienthello_4pda_to.bin"
-        soundcloud = lists_dir / "awun-soundcloud.txt"
-        youtube = lists_dir / "awun-youtube.txt"
-
-        # The strategy is based on Flowseal's current default TCP/QUIC approach,
-        # but all broad IP/game filters are deliberately removed.
-        powershell = f"""$ErrorActionPreference = 'Stop'
+        # The strategy mirrors Flowseal's current default TCP/QUIC primitives,
+        # but removes its broad IP/game filters and limits interception to AWUN
+        # provider host lists.
+        return f"""$ErrorActionPreference = 'Stop'
 $service = '{SERVICE_NAME}'
-$winws = {_quote_ps(winws)}
-$soundcloud = {_quote_ps(soundcloud)}
-$youtube = {_quote_ps(youtube)}
-$quic = {_quote_ps(quic)}
-$tlsGoogle = {_quote_ps(tls_google)}
-$tlsGeneral = {_quote_ps(tls_general)}
+$sourceArchive = {_quote_ps(archive)}
+$expected = '{expected_sha256.upper()}'
+$base = Join-Path $env:ProgramFiles 'AWUN\RegionalCompat'
+$target = Join-Path $base 'flowseal-{version}'
+$stagedArchive = Join-Path $base 'flowseal-{version}.zip'
 
 $existing = Get-Service -Name $service -ErrorAction SilentlyContinue
 if ($existing) {{
     if ($existing.Status -ne 'Stopped') {{ Stop-Service -Name $service -Force -ErrorAction SilentlyContinue }}
     & sc.exe delete $service | Out-Null
-    Start-Sleep -Milliseconds 600
+    Start-Sleep -Milliseconds 700
 }}
+
+if (Test-Path $base) {{ Remove-Item $base -Recurse -Force }}
+New-Item -ItemType Directory -Force -Path $base | Out-Null
+Copy-Item -LiteralPath $sourceArchive -Destination $stagedArchive -Force
+$actual = (Get-FileHash -LiteralPath $stagedArchive -Algorithm SHA256).Hash.ToUpperInvariant()
+if ($actual -ne $expected) {{ throw 'Flowseal SHA256 mismatch after elevated copy' }}
+New-Item -ItemType Directory -Force -Path $target | Out-Null
+Expand-Archive -LiteralPath $stagedArchive -DestinationPath $target -Force
+Remove-Item -LiteralPath $stagedArchive -Force
+
+$winwsItem = Get-ChildItem -LiteralPath $target -Filter 'winws.exe' -File -Recurse | Where-Object {{ $_.Directory.Name -ieq 'bin' }} | Select-Object -First 1
+if (-not $winwsItem) {{ throw 'winws.exe not found after extraction' }}
+$helperRoot = Split-Path (Split-Path $winwsItem.FullName -Parent) -Parent
+$bin = Join-Path $helperRoot 'bin'
+$lists = Join-Path $helperRoot 'lists'
+$winws = Join-Path $bin 'winws.exe'
+$windivertDll = Join-Path $bin 'WinDivert.dll'
+$windivertSys = Join-Path $bin 'WinDivert64.sys'
+$quic = Join-Path $bin 'quic_initial_www_google_com.bin'
+$tlsGoogle = Join-Path $bin 'tls_clienthello_www_google_com.bin'
+$tlsGeneral = Join-Path $bin 'tls_clienthello_4pda_to.bin'
+$license = Join-Path $helperRoot 'LICENSE.txt'
+foreach ($required in @($winws,$windivertDll,$windivertSys,$quic,$tlsGoogle,$tlsGeneral,$license)) {{
+    if (-not (Test-Path -LiteralPath $required -PathType Leaf)) {{ throw ('Required Flowseal file missing: ' + $required) }}
+}}
+New-Item -ItemType Directory -Force -Path $lists | Out-Null
+Set-Content -LiteralPath (Join-Path $lists 'awun-soundcloud.txt') -Value "{soundcloud}" -Encoding ASCII
+Set-Content -LiteralPath (Join-Path $lists 'awun-youtube.txt') -Value "{youtube}" -Encoding ASCII
+$soundcloudList = Join-Path $lists 'awun-soundcloud.txt'
+$youtubeList = Join-Path $lists 'awun-youtube.txt'
 
 $args = @(
     '--wf-tcp=80,443',
     '--wf-udp=443',
     '--filter-udp=443',
-    ('--hostlist="' + $soundcloud + '"'),
+    ('--hostlist="' + $soundcloudList + '"'),
     '--dpi-desync=fake',
     '--dpi-desync-repeats=6',
     ('--dpi-desync-fake-quic="' + $quic + '"'),
     '--new',
     '--filter-udp=443',
-    ('--hostlist="' + $youtube + '"'),
+    ('--hostlist="' + $youtubeList + '"'),
     '--dpi-desync=fake',
     '--dpi-desync-repeats=6',
     ('--dpi-desync-fake-quic="' + $quic + '"'),
     '--new',
     '--filter-tcp=443',
-    ('--hostlist="' + $youtube + '"'),
+    ('--hostlist="' + $youtubeList + '"'),
     '--ip-id=zero',
     '--dpi-desync=multisplit',
     '--dpi-desync-split-seqovl=681',
@@ -353,7 +367,7 @@ $args = @(
     ('--dpi-desync-split-seqovl-pattern="' + $tlsGoogle + '"'),
     '--new',
     '--filter-tcp=80,443',
-    ('--hostlist="' + $soundcloud + '"'),
+    ('--hostlist="' + $soundcloudList + '"'),
     '--dpi-desync=multisplit',
     '--dpi-desync-split-seqovl=568',
     '--dpi-desync-split-pos=1',
@@ -363,34 +377,30 @@ $binary = '"' + $winws + '" ' + ($args -join ' ')
 New-Service -Name $service -BinaryPathName $binary -DisplayName 'AWUN Regional Compatibility' -StartupType Automatic | Out-Null
 & sc.exe description $service 'Optional AWUN-only DPI compatibility for SoundCloud and YouTube' | Out-Null
 Start-Service -Name $service
-Start-Sleep -Milliseconds 900
-if ((Get-Service -Name $service).Status -ne 'Running') {{ exit 7 }}
+Start-Sleep -Milliseconds 1200
+if ((Get-Service -Name $service).Status -ne 'Running') {{ throw 'AWUNRegionCompat did not start' }}
 """
-        script.write_text(powershell, encoding="utf-8-sig")
-        return script
 
-    def _write_uninstall_script(self) -> Path:
-        scripts = self.root / "scripts"
-        scripts.mkdir(parents=True, exist_ok=True)
-        script = scripts / "remove-awun-region-compat.ps1"
-        powershell = f"""$ErrorActionPreference = 'Stop'
+    @staticmethod
+    def _build_uninstall_payload() -> str:
+        return f"""$ErrorActionPreference = 'Stop'
 $service = '{SERVICE_NAME}'
 $existing = Get-Service -Name $service -ErrorAction SilentlyContinue
 if ($existing) {{
     if ($existing.Status -ne 'Stopped') {{ Stop-Service -Name $service -Force -ErrorAction SilentlyContinue }}
     & sc.exe delete $service | Out-Null
-    Start-Sleep -Milliseconds 700
+    Start-Sleep -Milliseconds 900
 }}
+$base = Join-Path $env:ProgramFiles 'AWUN\RegionalCompat'
+if (Test-Path $base) {{ Remove-Item $base -Recurse -Force }}
 """
-        script.write_text(powershell, encoding="utf-8-sig")
-        return script
 
     @staticmethod
-    def _run_elevated(script: Path) -> None:
-        escaped = str(script).replace("'", "''")
+    def _run_elevated(powershell: str) -> None:
+        encoded = base64.b64encode(powershell.encode("utf-16le")).decode("ascii")
         command = (
             "$p = Start-Process -FilePath 'powershell.exe' -Verb RunAs -PassThru -Wait "
-            f"-ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File','{escaped}'); "
+            f"-ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-EncodedCommand','{encoded}'); "
             "exit $p.ExitCode"
         )
         result = subprocess.run(
@@ -404,7 +414,7 @@ if ($existing) {{
         )
         if result.returncode != 0:
             raise RegionCompatError(
-                "Windows отклонила установку режима совместимости или служба завершилась с ошибкой"
+                "Windows отклонила запрос UAC или режим совместимости завершился с ошибкой"
             )
 
     def _read_current(self) -> dict[str, Any]:
@@ -414,13 +424,9 @@ if ($existing) {{
         except (OSError, ValueError, TypeError):
             return {}
 
-    def _write_current(self, version: str, helper_root: Path) -> None:
+    def _write_current(self, version: str) -> None:
         self.root.mkdir(parents=True, exist_ok=True)
         self.current_file.write_text(
-            json.dumps(
-                {"version": version, "helper_root": str(helper_root)},
-                ensure_ascii=False,
-                separators=(",", ":"),
-            ),
+            json.dumps({"version": version}, ensure_ascii=False, separators=(",", ":")),
             encoding="utf-8",
         )
