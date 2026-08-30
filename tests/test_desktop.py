@@ -27,7 +27,20 @@ def test_desktop_runs_the_backend_locally_without_render() -> None:
     assert "create_app(settings)" in launcher
     assert "listener.bind((self.host, 0))" in launcher
     assert "?desktop=1&lang=ru" in launcher
+    assert "AWUN_REMOTE_API_URL" in launcher
+    assert "remote-api.txt" in launcher
+    assert "quote(remote, safe='')" in launcher
+    assert "_normalize_remote_api_url" in launcher
     assert "DesktopStateBridge" in launcher
     assert 'os.getenv("APPDATA")' in launcher
     assert "onrender.com" not in launcher
     assert "-r requirements.txt" in requirements
+
+
+def test_frontend_can_use_an_explicit_remote_api_without_rewriting_local_assets() -> None:
+    script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+
+    assert "const apiBase=" in script
+    assert "function apiUrl(input)" in script
+    assert "fetch(apiUrl(input)" in script
+    assert "apiBase,apiUrl" in script
