@@ -161,7 +161,7 @@ def test_installable_pwa_is_wired() -> None:
     assert 'rel="manifest"' in html and 'id="installButton"' in html
     assert "beforeinstallprompt" in script and "serviceWorker.register('/service-worker.js')" in script
     assert '"display": "standalone"' in manifest and '"start_url": "/"' in manifest
-    assert "awun-shell-1.8.10" in worker and "startsWith('/api/')" in worker
+    assert "awun-shell-1.8.11" in worker and "startsWith('/api/')" in worker
     assert "hls.light.min.js" in worker
     assert "startsWith('/static/')" in worker and "cached||fetch" in worker
     assert "/static/desktop-bridge.js" in html and "desktop-bridge.js" in worker
@@ -177,7 +177,7 @@ def test_nocturne_redesign_and_vinyl_player_are_wired() -> None:
 
     assert background.is_file() and background.stat().st_size > 200_000
     assert source.is_file() and "unsplash.com/photos/m8RNISlL2HQ" in source.read_text(encoding="utf-8")
-    assert '/static/forest.css?v=20260830.2' in html
+    assert '/static/forest.css?v=20260830.3' in html
     assert 'class="turntable"' in html and 'class="vinyl-monogram"' in html and 'class="player-console"' in html
     assert 'id="player" class="player" hidden' in html
     assert 'id="searchNavButton" class="library search-nav active"' in html and 'aria-pressed="true"' in html
@@ -201,7 +201,7 @@ def test_soundcloud_hls_playback_is_wired() -> None:
     hls = ROOT / "frontend" / "hls.light.min.js"
     license_file = ROOT / "frontend" / "hls.js.LICENSE.md"
 
-    assert 'src="/static/hls.light.min.js?v=20260830.2"' in html
+    assert 'src="/static/hls.light.min.js?v=20260830.3"' in html
     assert "track.source==='soundcloud'" in script
     assert "window.Hls" in script and "MANIFEST_PARSED" in script
     assert hls.is_file() and hls.stat().st_size > 300_000
@@ -220,7 +220,7 @@ def test_dark_forest_ritual_visual_system_is_wired() -> None:
     assert '.hero .search-form:after' in forest and '✦' in forest
     assert '.track.active:before' in forest and '.player .player-console:before' in forest
     assert 'Iowan Old Style' in forest and 'border-radius:40px 40px 18px 18px' in forest
-    assert '20260830.2' in html
+    assert '20260830.3' in html
 
 
 def test_listener_first_onboarding_and_language_switch_are_wired() -> None:
