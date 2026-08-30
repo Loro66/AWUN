@@ -22,7 +22,9 @@ then fairly interleaves the connected catalogs. MusicBrainz expands human
 queries into canonical artist/track, local alias, release, transliteration and
 ISRC variants. Yandex Music libraries can be transferred as metadata and
 matched to connected playable sources on demand. YouTube playback stays inside the official embedded player;
-other full tracks use short-lived signed AWUN media routes.
+other full tracks use short-lived signed AWUN media routes. SoundCloud HLS
+playlists are rewritten through those routes and played with the bundled HLS.js
+client, so the browser does not contact the SoundCloud CDN directly.
 
 The 1.8.0 interface includes AUTO/CIS/EUROPE/USA/LATAM/ASIA/GLOBAL search,
 source-aware discovery, partial-failure handling,
@@ -223,9 +225,10 @@ five results per query for reliability; configure OAuth for the full range.
 Run `build-windows.bat` on Windows 10 or 11 to create `dist\\AWUN.exe` and its
 SHA256 checksum. The AWUN icon is embedded in the executable and is used by
 Explorer, shortcuts and the taskbar. The executable bundles the FastAPI backend
-and web interface, starts them on a random `127.0.0.1` port, and sends source
-requests directly from the user's computer. It does not depend on Render or the
-AWUN website, but music search and playback still require internet access.
+and web interface, starts them on a random `127.0.0.1` port, and by default
+uses the public AWUN Render backend for provider requests. It keeps the local
+backend as a fallback, so music search and playback still require internet
+access but do not require a new server.
 The desktop interface opens in Russian by default and retains the English
 language switch.
 
@@ -261,3 +264,6 @@ AWUN uses the bilingual [AWUN Proprietary Freeware License 1.0](LICENSE.md).
 The repository is public for transparency and contribution, but its source is
 not open source. Contributors must accept the
 [AWUN Contributor License Agreement](CONTRIBUTOR_LICENSE_AGREEMENT.md).
+
+The desktop and web shells bundle HLS.js 1.7.0 under the Apache License 2.0;
+see [`frontend/hls.js.LICENSE.md`](frontend/hls.js.LICENSE.md).
