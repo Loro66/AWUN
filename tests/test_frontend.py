@@ -248,6 +248,8 @@ def test_desktop_shell_has_no_legacy_chrome_and_wave_is_integrated() -> None:
     assert "flow-screen-open" in flow
     assert "right:var(--awun-player)" in forest and "left:var(--awun-nav)" in forest
     assert ".window-chrome,.player-menu,.site-header .status{display:none!important}" in forest
+    assert ".player .player-tools .now-source,.player .player-tools .close{display:none!important}" in forest
+    assert ".player::-webkit-scrollbar{display:none}" in forest
 
 
 def test_listener_first_onboarding_and_language_switch_are_wired() -> None:
