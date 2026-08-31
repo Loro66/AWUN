@@ -237,6 +237,19 @@ def test_premium_desktop_shell_uses_actionable_idle_state() -> None:
     assert ".idle-actions" in forest and ".track-list{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))" in forest
 
 
+def test_desktop_shell_has_no_legacy_chrome_and_wave_is_integrated() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    flow = (ROOT / "frontend" / "flow.js").read_text(encoding="utf-8")
+    forest = (ROOT / "frontend" / "forest.css").read_text(encoding="utf-8")
+
+    assert 'class="window-chrome"' not in html
+    assert 'class="player-menu"' not in html
+    assert 'id="status" class="status sr-only"' in html
+    assert "flow-screen-open" in flow
+    assert "right:var(--awun-player)" in forest and "left:var(--awun-nav)" in forest
+    assert ".window-chrome,.player-menu,.site-header .status{display:none!important}" in forest
+
+
 def test_listener_first_onboarding_and_language_switch_are_wired() -> None:
     html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
     script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")

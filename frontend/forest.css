@@ -1136,6 +1136,62 @@ body:before{
   .home-sections{padding:18px 20px 30px}.home-track-grid,.recommendation-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.section-heading h1,.section-heading h2{font-size:22px}.recommendation-card{min-height:145px}.player.player-empty{display:none!important}.player:not(.player-empty){display:flex!important}
 }
 
+/* AWUN 1.8.14: remove decorative desktop chrome and turn My Wave into a
+   dedicated product screen instead of a legacy floating settings modal. */
+.window-chrome,.player-menu,.site-header .status{display:none!important}
+
+@media (min-width:1100px){
+  .flow-panel{
+    position:fixed;
+    z-index:70;
+    top:0;
+    right:var(--awun-player);
+    bottom:0;
+    left:var(--awun-nav);
+    width:auto;
+    max-width:none;
+    max-height:none;
+    padding:48px 42px 38px;
+    overflow:auto;
+    border:0;
+    border-radius:0;
+    background:#080d09;
+    background-image:radial-gradient(circle at 82% 12%,rgba(167,198,112,.08),transparent 27%),linear-gradient(180deg,#0a110b,#070c08);
+    box-shadow:none;
+    opacity:0;
+    transform:translateY(10px);
+    backdrop-filter:none;
+    transition:opacity .18s ease,transform .18s ease;
+  }
+  .flow-panel.open{opacity:1;transform:none}
+  .flow-panel:before{display:none}
+  .flow-panel>header{align-items:flex-end;margin:0 0 28px;padding:0 0 25px;border-bottom:1px solid rgba(232,228,216,.14)}
+  .flow-panel>header span{color:#aecb7b;font-size:8px;letter-spacing:1.9px}
+  .flow-panel h2{margin:9px 0 0;color:#ebe5d8;font-size:48px;line-height:1;letter-spacing:-1.8px}
+  .flow-panel>header button{width:38px;height:38px;border:1px solid rgba(232,228,216,.22);border-radius:10px;background:rgba(12,20,13,.68);color:#e9e4d7}
+  .flow-panel>header button:hover{border-color:#b4ca87;color:#c9df9b}
+  .flow-panel>p{max-width:660px;margin:0 0 25px;color:rgba(232,228,216,.62);font-size:11px;line-height:1.65}
+  .flow-controls{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .flow-controls fieldset{grid-column:1/-1}
+  .flow-controls fieldset,.flow-controls label{padding:15px;border-color:rgba(232,228,216,.16);border-radius:12px;background:rgba(12,20,13,.68)}
+  .flow-controls legend,.flow-controls label>span{margin-bottom:11px;color:#9eb677;font-size:7px;letter-spacing:1.2px}
+  .flow-controls select{height:38px;color:#e9e4d7;font-size:10px}
+  .flow-segments{max-width:390px;gap:7px}.flow-segments button{height:37px;border-radius:8px;font-size:7px}
+  .flow-start-row{margin-top:14px;padding:18px;border-color:rgba(232,228,216,.18);border-radius:12px;background:rgba(12,20,13,.5)}
+  .flow-start-row>span{font-size:10px}.flow-start-row button{height:44px;border-radius:9px;background:#b4ca87;border-color:#b4ca87;color:#10170f}
+  .flow-panel>footer{margin-top:22px;padding-top:18px;border-color:rgba(232,228,216,.12);font-size:7px}
+}
+
+@media (max-width:1099px){
+  .flow-screen-open .player{display:none!important}
+  .flow-panel{position:fixed;z-index:90;inset:0;width:100vw;max-width:none;max-height:100svh;padding:28px 22px 34px;border:0;border-radius:0;background:#080d09;box-shadow:none;backdrop-filter:none}
+  .flow-panel:before{display:none}.flow-panel h2{font-size:clamp(34px,9vw,48px);line-height:1}.flow-panel>header{margin-bottom:20px;padding-bottom:18px}.flow-panel>p{max-width:660px;margin:0 0 20px;font-size:10px}.flow-controls{grid-template-columns:repeat(2,minmax(0,1fr))}.flow-controls fieldset{grid-column:1/-1}.flow-controls fieldset,.flow-controls label{border-radius:10px}.flow-start-row{border-radius:10px}
+}
+
+@media (max-width:760px){
+  .flow-panel{padding:22px 16px 28px}.flow-controls{grid-template-columns:1fr}.flow-controls fieldset{grid-column:auto}
+}
+
 @media (min-width:1100px) and (max-height:680px){
   .site-header{margin-top:10px;margin-bottom:10px;padding-top:12px;padding-bottom:10px}
   .site-header .logo{height:76px;padding-bottom:12px}
@@ -1163,7 +1219,7 @@ body:before{
   .site-header .logo img{width:56px;height:56px;filter:grayscale(1) sepia(.14) brightness(1.25)}
   .site-header .logo strong{font-family:Iowan Old Style,"Palatino Linotype",Georgia,serif;font-size:27px;font-weight:400;letter-spacing:5px;color:#e9e4d7}.site-header .logo>i{display:none}
   .site-header .top-actions{margin:30px 0 0;gap:9px;overflow:visible}
-  .site-header .search-nav{order:1}.site-header .flow-button{order:2}.site-header #libraryButton{order:3}.site-header .favorites-button{order:4}.site-header .theme-button{order:5}
+  .site-header .search-nav{order:1}.site-header .flow-button{order:2}.site-header #libraryButton{order:3}.site-header .theme-button{order:4}
   .site-header .library,.site-header .theme-button{height:56px;min-height:56px;padding:0 14px;border:1px solid transparent;border-radius:11px;background:transparent;gap:15px}
   .site-header .library>i,.site-header .theme-button>i{width:24px;height:24px;line-height:24px;color:#c2d88b;font-size:21px;font-style:normal;text-align:center}.site-header .library>span,.site-header .theme-button>span{font-family:Inter,ui-sans-serif,sans-serif;font-size:12px;font-weight:500;letter-spacing:.15px;color:rgba(232,228,216,.78)}
   .site-header .library>b{display:none}.site-header .import-button,.site-header .language-button,.site-header .install-button{display:none}.site-header .theme-button{margin-top:auto}.site-header .theme-button>b{display:none}

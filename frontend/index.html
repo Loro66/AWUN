@@ -12,8 +12,8 @@
   <script>
     try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');const p=new URLSearchParams(location.search);document.documentElement.dataset.theme=v.theme||'black';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full';document.documentElement.dataset.density=v.density||'standard';document.documentElement.lang=p.get('lang')||localStorage.getItem('awun-language')||(navigator.language.toLowerCase().startsWith('ru')?'ru':'en')}catch{}
   </script>
-  <link rel="stylesheet" href="/static/styles.css?v=20260830.5">
-  <link rel="stylesheet" href="/static/forest.css?v=20260830.5">
+  <link rel="stylesheet" href="/static/styles.css?v=20260830.6">
+  <link rel="stylesheet" href="/static/forest.css?v=20260830.6">
   <!-- legacy cache marker: /static/forest.css?v=20260830.4 -->
 </head>
 <body>
@@ -22,7 +22,6 @@
 
   <main class="app-shell">
     <header class="site-header">
-      <div class="window-chrome" aria-hidden="true"><i></i><i></i><i></i></div>
       <a class="logo" href="/" aria-label="Главная AWUN" data-i18n-aria-label="homeAria"><img src="/static/brand/awun-logo-white.png" alt=""><strong>AWUN</strong><i>.</i></a>
       <div class="top-actions">
         <button id="searchNavButton" class="library search-nav active" type="button" aria-controls="searchInput" aria-pressed="true">
@@ -32,7 +31,6 @@
         <button id="flowButton" class="library flow-button" type="button" aria-expanded="false" aria-controls="flowPanel">
           <i aria-hidden="true">◌</i><span data-i18n="wave">МОЯ ВОЛНА</span><b id="flowBadge" data-i18n="ready">ГОТОВО</b>
         </button>
-        <button id="favoritesButton" class="library favorites-button" type="button" aria-pressed="false"><i aria-hidden="true">♡</i><span data-i18n="favorites">ИЗБРАННОЕ</span></button>
         <button id="importButton" class="library import-button" type="button" aria-expanded="false" aria-controls="importPanel"><i aria-hidden="true">⇣</i><span data-i18n="import">ПЕРЕНОС</span><b aria-hidden="true">↗</b></button>
         <button id="languageButton" class="library language-button" type="button" aria-label="Сменить язык" data-i18n-aria-label="switchLanguageAria"><i aria-hidden="true">A</i><span data-i18n="language">ЯЗЫК</span><b id="languageLabel">RU</b></button>
         <button id="themeButton" class="theme-button" type="button" aria-expanded="false" aria-controls="themePanel">
@@ -40,7 +38,7 @@
         </button>
         <button id="installButton" class="library install-button" type="button" hidden><i aria-hidden="true">↓</i><span data-i18n="install">УСТАНОВИТЬ</span><b data-i18n="app">AWUN</b></button>
       </div>
-      <span id="status" class="status" title="AWUN"><i></i><b data-i18n="connecting">ПОДКЛЮЧЕНИЕ</b></span>
+      <span id="status" class="status sr-only" title="AWUN"><i></i><b data-i18n="connecting">ПОДКЛЮЧЕНИЕ</b></span>
     </header>
 
     <section class="hero" aria-labelledby="heroLabel">
@@ -106,7 +104,7 @@
         <ol id="recentList" class="home-track-grid" aria-live="polite"></ol>
       </section>
       <section class="dashboard-section recommendation-section" aria-labelledby="recommendTitle">
-        <div class="section-heading"><div><span class="section-kicker" data-i18n="forYouKicker">ПОД ТВОЙ РИТМ</span><h2 id="recommendTitle" data-i18n="recommendedForYou">Рекомендовано для тебя</h2></div><button class="section-link" type="button" data-home-action="all-recommendations" data-i18n="viewAll">СМОТРЕТЬ ВСЁ</button></div>
+        <div class="section-heading"><div><span class="section-kicker" data-i18n="forYouKicker">ПОД ТВОЙ РИТМ</span><h2 id="recommendTitle" data-i18n="recommendedForYou">Рекомендовано для тебя</h2></div></div>
         <div id="recommendationGrid" class="recommendation-grid"></div>
       </section>
     </section>
@@ -177,7 +175,7 @@
   </main>
 
   <aside id="player" class="player" hidden aria-label="Музыкальный плеер" data-i18n-aria-label="playerAria">
-    <header class="player-panel-head"><div><span class="section-kicker" data-i18n="nowPlayingKicker">СЕЙЧАС</span><h2 data-i18n="nowPlaying">Сейчас играет</h2></div><button class="player-menu" type="button" aria-label="Опции плеера">•••</button></header>
+    <header class="player-panel-head"><div><span class="section-kicker" data-i18n="nowPlayingKicker">СЕЙЧАС</span><h2 data-i18n="nowPlaying">Сейчас играет</h2></div></header>
     <div id="youtubeDock" class="youtube-dock" hidden>
       <div class="dock-head"><span data-i18n="youtubePlayer">ОФИЦИАЛЬНЫЙ ПЛЕЕР YOUTUBE</span><button id="minimizeVideo" type="button">—</button></div>
       <div id="youtubePlayer" class="youtube-player"></div>
@@ -272,10 +270,10 @@
   </aside>
 
   <!-- legacy asset marker: src="/static/hls.light.min.js?v=20260830.4" -->
-  <script src="/static/desktop-bridge.js?v=20260830.5" defer></script>
-  <script src="/static/i18n.js?v=20260830.5" defer></script>
-  <script src="/static/hls.light.min.js?v=20260830.5" defer></script>
-  <script src="/static/app.js?v=20260830.5" defer></script>
-  <script src="/static/flow.js?v=20260830.5" defer></script>
+  <script src="/static/desktop-bridge.js?v=20260830.6" defer></script>
+  <script src="/static/i18n.js?v=20260830.6" defer></script>
+  <script src="/static/hls.light.min.js?v=20260830.6" defer></script>
+  <script src="/static/app.js?v=20260830.6" defer></script>
+  <script src="/static/flow.js?v=20260830.6" defer></script>
 </body>
 </html>

@@ -111,8 +111,8 @@
     state.flow.active=true;state.flow.queryCursor=0;state.flow.seen.clear();document.body.classList.add('flow-active');closePanel();updateFlowUi();if(primeLocalFlow()){void fillFlow(false);return}await fillFlow(true);
   }
   function stopFlow(silent=false){state.flow.controller?.abort();state.flow.active=false;document.body.classList.remove('flow-active');updateFlowUi();if(!silent)setMessage(t('flowStopped'),'notice')}
-  function openPanel(){flow.flowPanel.hidden=false;flow.flowButton.setAttribute('aria-expanded','true');requestAnimationFrame(()=>flow.flowPanel.classList.add('open'));updateFlowUi()}
-  function closePanel(){flow.flowPanel.classList.remove('open');flow.flowButton.setAttribute('aria-expanded','false');setTimeout(()=>{flow.flowPanel.hidden=true},180)}
+  function openPanel(){flow.flowPanel.hidden=false;flow.flowButton.setAttribute('aria-expanded','true');document.body.classList.add('flow-screen-open');requestAnimationFrame(()=>flow.flowPanel.classList.add('open'));updateFlowUi()}
+  function closePanel(){flow.flowPanel.classList.remove('open');flow.flowButton.setAttribute('aria-expanded','false');document.body.classList.remove('flow-screen-open');setTimeout(()=>{flow.flowPanel.hidden=true},180)}
   function updateFlowUi(){
     flow.flowBadge.textContent=t(state.flow.active?'live':state.flow.fetching?'building':'ready');flow.flowButton.classList.toggle('active',state.flow.active);flow.flowStart.textContent=t(state.flow.active?'stopWave':'startWave');flow.flowStart.classList.toggle('stop',state.flow.active);flow.flowStats.textContent=t('flowStats',{signals:profile.signals.length,blocked:profile.blockedArtists.length});
     flow.flowMood.value=profile.mood;flow.flowActivity.value=profile.activity;flow.flowLanguage.value=profile.language;flow.flowEra.value=profile.era;flow.flowDiscovery.querySelectorAll('[data-flow-discovery]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.flowDiscovery===profile.discovery)));
