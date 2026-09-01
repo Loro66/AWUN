@@ -161,9 +161,9 @@ def test_installable_pwa_is_wired() -> None:
     assert 'rel="manifest"' in html and 'id="installButton"' in html
     assert "beforeinstallprompt" in script and "serviceWorker.register('/service-worker.js')" in script
     assert '"display": "standalone"' in manifest and '"start_url": "/"' in manifest
-    assert "awun-shell-1.9.2" in worker and "startsWith('/api/')" in worker
+    assert "awun-shell-1.9.3" in worker and "startsWith('/api/')" in worker
     assert "hls.light.min.js" in worker
-    assert "redesign.css?v=20260901.2" in worker
+    assert "redesign.css?v=20260901.3" in worker
     assert "startsWith('/static/')" in worker and "cached||fetch" in worker
     assert "/static/desktop-bridge.js" in html and "desktop-bridge.js" in worker
     assert "pywebviewready" in bridge and "save_state" in bridge and "load_state" in bridge
@@ -230,7 +230,7 @@ def test_soundcloud_forest_shell_uses_on_demand_player_surfaces() -> None:
     redesign = (ROOT / "frontend" / "redesign.css").read_text(encoding="utf-8")
 
     assert 'id="advancedSearch" class="advanced-search">' in html
-    assert '/static/redesign.css?v=20260901.2' in html
+    assert '/static/redesign.css?v=20260901.3' in html
     assert 'id="idleSearchButton"' in html and 'id="idleWaveButton"' in html
     assert 'id="queueToggle"' in html and 'id="queueClose"' in html
     assert 'id="expandPlayer"' in html and 'id="collapsePlayer"' in html
@@ -247,7 +247,13 @@ def test_visual_settings_have_distinct_rendered_modes() -> None:
 
     for theme in ("black", "white", "acid", "ultraviolet", "cobalt", "ember"):
         assert f'html[data-theme="{theme}"]' in redesign
-    assert "--paper-rgb:24,34,26" in redesign
+    assert "--paper-rgb:24,35,28" in redesign
+    assert "--forest-moon:#18231c" in redesign
+    assert 'html[data-theme="white"] .theme-grid button' in redesign
+    assert 'html[data-theme="white"] .player .transport-buttons>button:not(.play-pause)' in redesign
+    assert 'html[data-theme="black"]' in redesign and "--signal:#ff6b1a" in redesign
+    assert 'rgba(var(--paper-rgb),.24)' in redesign
+    assert '.player .wave-progress:before{opacity:1' in redesign
     assert 'html[data-theme="white"] .recommendation-card:before' in redesign
     assert 'html[data-decor="minimal"]{--awun-nav:78px}' in redesign
     assert 'html[data-density="compact"] .track' in redesign

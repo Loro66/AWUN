@@ -1,6 +1,6 @@
-const CACHE='awun-shell-1.9.2';
+const CACHE='awun-shell-1.9.3';
 // legacy cache marker: awun-shell-1.8.12
-const SHELL=['/','/static/styles.css?v=20260901.2','/static/forest.css?v=20260901.2','/static/redesign.css?v=20260901.2','/static/desktop-bridge.js?v=20260901.2','/static/i18n.js?v=20260901.2','/static/hls.light.min.js?v=20260901.2','/static/app.js?v=20260901.2','/static/flow.js?v=20260901.2','/static/brand/black-forest-michiel-annaert.webp','/static/brand/burg-eltz-jan-kohl.webp','/static/brand/awun-icon-black.png','/static/brand/awun-icon-white.png'];
+const SHELL=['/','/static/styles.css?v=20260901.3','/static/forest.css?v=20260901.3','/static/redesign.css?v=20260901.3','/static/desktop-bridge.js?v=20260901.3','/static/i18n.js?v=20260901.3','/static/hls.light.min.js?v=20260901.3','/static/app.js?v=20260901.3','/static/flow.js?v=20260901.3','/static/brand/black-forest-michiel-annaert.webp','/static/brand/burg-eltz-jan-kohl.webp','/static/brand/awun-icon-black.png','/static/brand/awun-icon-white.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',event=>{
