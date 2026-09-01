@@ -161,9 +161,9 @@ def test_installable_pwa_is_wired() -> None:
     assert 'rel="manifest"' in html and 'id="installButton"' in html
     assert "beforeinstallprompt" in script and "serviceWorker.register('/service-worker.js')" in script
     assert '"display": "standalone"' in manifest and '"start_url": "/"' in manifest
-    assert "awun-shell-1.9.1" in worker and "startsWith('/api/')" in worker
+    assert "awun-shell-1.9.2" in worker and "startsWith('/api/')" in worker
     assert "hls.light.min.js" in worker
-    assert "redesign.css?v=20260901.1" in worker
+    assert "redesign.css?v=20260901.2" in worker
     assert "startsWith('/static/')" in worker and "cached||fetch" in worker
     assert "/static/desktop-bridge.js" in html and "desktop-bridge.js" in worker
     assert "pywebviewready" in bridge and "save_state" in bridge and "load_state" in bridge
@@ -230,7 +230,7 @@ def test_soundcloud_forest_shell_uses_on_demand_player_surfaces() -> None:
     redesign = (ROOT / "frontend" / "redesign.css").read_text(encoding="utf-8")
 
     assert 'id="advancedSearch" class="advanced-search">' in html
-    assert '/static/redesign.css?v=20260901.1' in html
+    assert '/static/redesign.css?v=20260901.2' in html
     assert 'id="idleSearchButton"' in html and 'id="idleWaveButton"' in html
     assert 'id="queueToggle"' in html and 'id="queueClose"' in html
     assert 'id="expandPlayer"' in html and 'id="collapsePlayer"' in html
@@ -239,6 +239,23 @@ def test_soundcloud_forest_shell_uses_on_demand_player_surfaces() -> None:
     assert "grid-template-columns:var(--awun-nav) minmax(0,1fr)" in redesign
     assert "bottom:0;left:0" in redesign and ".player.queue-open .up-next" in redesign
     assert "--signal:#ff6b1a" in redesign and ".track-waveform:after" in redesign
+
+
+def test_visual_settings_have_distinct_rendered_modes() -> None:
+    app = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    redesign = (ROOT / "frontend" / "redesign.css").read_text(encoding="utf-8")
+
+    for theme in ("black", "white", "acid", "ultraviolet", "cobalt", "ember"):
+        assert f'html[data-theme="{theme}"]' in redesign
+    assert "--paper-rgb:24,34,26" in redesign
+    assert 'html[data-theme="white"] .recommendation-card:before' in redesign
+    assert 'html[data-decor="minimal"]{--awun-nav:78px}' in redesign
+    assert 'html[data-density="compact"] .track' in redesign
+    assert 'html[data-density="airy"] .track' in redesign
+    assert "ui.motionToggle.setAttribute('aria-pressed'" in app
+    assert "ui.densityToggle.dataset.value=state.density" in app
+    assert "black:{labelKey:'themeBlackShort',color:'#050505'}" in app
+    assert "white:{labelKey:'themeWhiteShort',color:'#e7e8df'}" in app
 
 
 def test_desktop_shell_has_no_legacy_chrome_and_wave_is_integrated() -> None:

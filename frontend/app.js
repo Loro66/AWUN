@@ -47,7 +47,7 @@ function loadRepeatMode(){const value=localStorage.getItem('awun-repeat-mode')||
 function loadRecents(){try{const value=JSON.parse(localStorage.getItem('awun-recent')||'[]');return Array.isArray(value)?value.filter(item=>item&&item.id):[]}catch{return[]}}
 function loadVisual(){try{const value=JSON.parse(localStorage.getItem('awun-visual')||'{}');return{theme:['black','white','acid','ultraviolet','cobalt','ember'].includes(value.theme)?value.theme:'black',motion:value.motion==='off'?'off':'on',decor:value.decor==='minimal'?'minimal':'full',density:['compact','standard','airy'].includes(value.density)?value.density:'standard'}}catch{return{theme:'black',motion:'on',decor:'full',density:'standard'}}}
 function loadLineComments(){try{const value=JSON.parse(localStorage.getItem('awun-line-comments-v1')||'{}');return value&&typeof value==='object'&&!Array.isArray(value)?value:{}}catch{return{}}}
-const visualThemes={black:{labelKey:'themeBlackShort',color:'#0b0907'},white:{labelKey:'themeWhiteShort',color:'#0b0907'},acid:{labelKey:'themeAcidShort',color:'#0b0907'},ultraviolet:{labelKey:'themeUltravioletShort',color:'#0b0907'},cobalt:{labelKey:'themeCobaltShort',color:'#0b0907'},ember:{labelKey:'themeEmberShort',color:'#0b0907'}};
+const visualThemes={black:{labelKey:'themeBlackShort',color:'#050505'},white:{labelKey:'themeWhiteShort',color:'#e7e8df'},acid:{labelKey:'themeAcidShort',color:'#050a05'},ultraviolet:{labelKey:'themeUltravioletShort',color:'#07050c'},cobalt:{labelKey:'themeCobaltShort',color:'#040a0e'},ember:{labelKey:'themeEmberShort',color:'#080704'}};
 const state={
   tracks:[],saved:loadLibrary(),recents:loadRecents(),available:new Set(),sources:new Set(),region:loadRegion(),resultLimit:loadResultLimit(),repeatMode:loadRepeatMode(),library:false,hasSearched:false,queueCleared:false,active:null,controller:null,
   youtube:null,youtubeApi:null,youtubeTicker:null,hls:null,seeking:false,recovering:false,lastVolume:.82,expanded:null,details:new Map(),detailsController:null,openLines:new Set(),lineComments:loadLineComments(),geniusEnabled:false,...loadVisual()
@@ -86,6 +86,9 @@ function applyVisual(save=true){
   ui.motionValue.textContent=t(state.motion==='on'?'on':'off');
   ui.decorValue.textContent=t(state.decor==='minimal'?'minimal':'editorial');
   ui.densityValue.textContent=t(state.density);
+  ui.motionToggle.setAttribute('aria-pressed',String(state.motion==='on'));
+  ui.decorToggle.setAttribute('aria-pressed',String(state.decor==='minimal'));
+  ui.densityToggle.dataset.value=state.density;
   document.querySelectorAll('[data-theme-choice]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.themeChoice===state.theme)));
   if(save)localStorage.setItem('awun-visual',JSON.stringify({theme:state.theme,motion:state.motion,decor:state.decor,density:state.density}));
 }
