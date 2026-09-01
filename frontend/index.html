@@ -12,8 +12,9 @@
   <script>
     try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');const p=new URLSearchParams(location.search);document.documentElement.dataset.theme=v.theme||'black';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full';document.documentElement.dataset.density=v.density||'standard';document.documentElement.lang=p.get('lang')||localStorage.getItem('awun-language')||(navigator.language.toLowerCase().startsWith('ru')?'ru':'en')}catch{}
   </script>
-  <link rel="stylesheet" href="/static/styles.css?v=20260830.6">
-  <link rel="stylesheet" href="/static/forest.css?v=20260830.6">
+  <link rel="stylesheet" href="/static/styles.css?v=20260901.1">
+  <link rel="stylesheet" href="/static/forest.css?v=20260901.1">
+  <link rel="stylesheet" href="/static/redesign.css?v=20260901.1">
   <!-- legacy cache marker: /static/forest.css?v=20260830.4 -->
 </head>
 <body>
@@ -58,7 +59,7 @@
 
         <div class="suggestions" aria-label="Быстрый поиск" data-i18n-aria-label="quickSearchAria"><span data-i18n="trySearch">ПОПРОБУЙ</span><button type="button" data-search-suggestion="новая музыка" data-search-suggestion-ru="новая музыка" data-search-suggestion-en="new music" data-i18n="newMusic">НОВАЯ МУЗЫКА</button><button type="button" data-search-suggestion="инструментальная музыка для концентрации" data-search-suggestion-ru="инструментальная музыка для концентрации" data-search-suggestion-en="focus instrumental" data-i18n="focus">КОНЦЕНТРАЦИЯ</button><button type="button" data-search-suggestion="русский рок" data-search-suggestion-ru="русский рок" data-search-suggestion-en="Russian rock">РУССКИЙ РОК</button><button type="button" data-search-suggestion="классика электронной музыки" data-search-suggestion-ru="классика электронной музыки" data-search-suggestion-en="electronic classics" data-i18n="electronic">ЭЛЕКТРОНИКА</button></div>
 
-        <details id="advancedSearch" class="advanced-search" open>
+        <details id="advancedSearch" class="advanced-search">
           <summary><span data-i18n="searchSettings">ИСТОЧНИКИ И РЕГИОН</span><small data-i18n="searchSettingsHint">настрой поиск точнее</small></summary>
           <div class="source-row">
           <div id="sources" class="sources" aria-label="Источники поиска" data-i18n-aria-label="sourcesAria">
@@ -175,7 +176,7 @@
   </main>
 
   <aside id="player" class="player" hidden aria-label="Музыкальный плеер" data-i18n-aria-label="playerAria">
-    <header class="player-panel-head"><div><span class="section-kicker" data-i18n="nowPlayingKicker">СЕЙЧАС</span><h2 data-i18n="nowPlaying">Сейчас играет</h2></div></header>
+    <header class="player-panel-head"><div><span class="section-kicker" data-i18n="nowPlayingKicker">СЕЙЧАС</span><h2 data-i18n="nowPlaying">Сейчас играет</h2></div><button id="collapsePlayer" type="button" aria-label="Свернуть плеер" data-i18n-aria-label="collapsePlayerAria">×</button></header>
     <div id="youtubeDock" class="youtube-dock" hidden>
       <div class="dock-head"><span data-i18n="youtubePlayer">ОФИЦИАЛЬНЫЙ ПЛЕЕР YOUTUBE</span><button id="minimizeVideo" type="button">—</button></div>
       <div id="youtubePlayer" class="youtube-player"></div>
@@ -215,13 +216,15 @@
 
       <div class="player-tools">
         <span id="nowSource" class="now-source">—</span>
+        <button id="queueToggle" type="button" aria-label="Открыть очередь" data-i18n-aria-label="openQueueAria" aria-expanded="false">☷</button>
         <button id="muteButton" type="button" aria-label="Выключить звук" data-i18n-aria-label="muteAria">ЗВУК</button>
         <input id="volume" class="range volume" type="range" min="0" max="100" value="82" aria-label="Громкость" data-i18n-aria-label="volumeAria">
+        <button id="expandPlayer" type="button" aria-label="Развернуть плеер" data-i18n-aria-label="expandPlayerAria" aria-expanded="false">↗</button>
         <button id="closePlayer" class="close" type="button" aria-label="Закрыть плеер" data-i18n-aria-label="closePlayerAria">×</button>
       </div>
     </section>
     <section class="up-next" aria-labelledby="queueTitle">
-      <header><h3 id="queueTitle" data-i18n="upNext">Далее</h3><button id="clearQueue" type="button" data-i18n="clearQueue">ОЧИСТИТЬ</button></header>
+      <header><div><span class="section-kicker" data-i18n="upNext">Далее</span><h3 id="queueTitle" data-i18n="queue">Очередь</h3></div><div><button id="clearQueue" type="button" data-i18n="clearQueue">ОЧИСТИТЬ</button><button id="queueClose" type="button" aria-label="Закрыть очередь" data-i18n-aria-label="closeQueueAria">×</button></div></header>
       <ol id="queueList" class="queue-list"></ol>
       <p id="queueEmpty" class="queue-empty" data-i18n="queueEmpty">Очередь появится после выбора трека.</p>
     </section>
@@ -270,10 +273,10 @@
   </aside>
 
   <!-- legacy asset marker: src="/static/hls.light.min.js?v=20260830.4" -->
-  <script src="/static/desktop-bridge.js?v=20260830.6" defer></script>
-  <script src="/static/i18n.js?v=20260830.6" defer></script>
-  <script src="/static/hls.light.min.js?v=20260830.6" defer></script>
-  <script src="/static/app.js?v=20260830.6" defer></script>
-  <script src="/static/flow.js?v=20260830.6" defer></script>
+  <script src="/static/desktop-bridge.js?v=20260901.1" defer></script>
+  <script src="/static/i18n.js?v=20260901.1" defer></script>
+  <script src="/static/hls.light.min.js?v=20260901.1" defer></script>
+  <script src="/static/app.js?v=20260901.1" defer></script>
+  <script src="/static/flow.js?v=20260901.1" defer></script>
 </body>
 </html>
