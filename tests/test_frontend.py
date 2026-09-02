@@ -78,7 +78,7 @@ def test_frontend_assets_share_cache_version() -> None:
     html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
     api = (ROOT / "backend" / "api" / "main.py").read_text(encoding="utf-8")
 
-    style_version = re.search(r'/static/styles\.css\?v=([\d.]+)', html)
+    style_version = re.search(r'/static/design-system\.css\?v=([\d.]+)', html)
     script_version = re.search(r'/static/app\.js\?v=([\d.]+)', html)
     flow_version = re.search(r'/static/flow\.js\?v=([\d.]+)', html)
 
@@ -88,6 +88,18 @@ def test_frontend_assets_share_cache_version() -> None:
     assert style_version.group(1) == script_version.group(1)
     assert style_version.group(1) == flow_version.group(1)
     assert "CacheControlledStaticFiles" in api and "max-age=31536000, immutable" in api
+
+
+def test_design_system_has_one_entrypoint_and_explicit_layers() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    design = (ROOT / "frontend" / "design-system.css").read_text(encoding="utf-8")
+    release = (ROOT / "frontend" / "redesign.css").read_text(encoding="utf-8")
+
+    stylesheets = re.findall(r'<link rel="stylesheet" href="([^"]+)"', html)
+    assert stylesheets == ["/static/design-system.css?v=20260902.1"]
+    assert "@layer foundation, forest, release" in design
+    assert "layer(foundation)" in design and "layer(forest)" in design and "layer(release)" in design
+    assert "--color-accent:" in release and "--color-text:" in release
 
 
 def test_identity_minimal_mode_and_track_stories_are_wired() -> None:
@@ -161,9 +173,9 @@ def test_installable_pwa_is_wired() -> None:
     assert 'rel="manifest"' in html and 'id="installButton"' in html
     assert "beforeinstallprompt" in script and "serviceWorker.register('/service-worker.js')" in script
     assert '"display": "standalone"' in manifest and '"start_url": "/"' in manifest
-    assert "awun-shell-1.9.3" in worker and "startsWith('/api/')" in worker
+    assert "awun-shell-1.9.4" in worker and "startsWith('/api/')" in worker
     assert "hls.light.min.js" in worker
-    assert "redesign.css?v=20260901.3" in worker
+    assert "design-system.css?v=20260902.1" in worker and "player-core.js?v=20260902.1" in worker
     assert "startsWith('/static/')" in worker and "cached||fetch" in worker
     assert "/static/desktop-bridge.js" in html and "desktop-bridge.js" in worker
     assert "pywebviewready" in bridge and "save_state" in bridge and "load_state" in bridge
@@ -178,7 +190,7 @@ def test_nocturne_redesign_and_vinyl_player_are_wired() -> None:
 
     assert background.is_file() and background.stat().st_size > 200_000
     assert source.is_file() and "unsplash.com/photos/m8RNISlL2HQ" in source.read_text(encoding="utf-8")
-    assert '/static/forest.css?v=20260830.4' in html
+    assert '/static/design-system.css?v=20260902.1' in html
     assert 'class="turntable"' in html and 'class="vinyl-monogram"' in html and 'class="player-console"' in html
     assert 'id="player" class="player" hidden' in html
     assert 'id="searchNavButton" class="library search-nav active"' in html and 'aria-pressed="true"' in html
@@ -202,7 +214,7 @@ def test_soundcloud_hls_playback_is_wired() -> None:
     hls = ROOT / "frontend" / "hls.light.min.js"
     license_file = ROOT / "frontend" / "hls.js.LICENSE.md"
 
-    assert 'src="/static/hls.light.min.js?v=20260830.4"' in html
+    assert 'src="/static/hls.light.min.js?v=20260902.1"' in html
     assert "track.source==='soundcloud'" in script
     assert "window.Hls" in script and "MANIFEST_PARSED" in script
     assert hls.is_file() and hls.stat().st_size > 300_000
@@ -221,7 +233,7 @@ def test_dark_forest_ritual_visual_system_is_wired() -> None:
     assert '.hero .search-form:after' in forest and '✦' in forest
     assert '.track.active:before' in forest and '.player .player-console:before' in forest
     assert 'Iowan Old Style' in forest and 'border-radius:40px 40px 18px 18px' in forest
-    assert '20260830.4' in html
+    assert '20260902.1' in html
 
 
 def test_soundcloud_forest_shell_uses_on_demand_player_surfaces() -> None:
@@ -230,7 +242,7 @@ def test_soundcloud_forest_shell_uses_on_demand_player_surfaces() -> None:
     redesign = (ROOT / "frontend" / "redesign.css").read_text(encoding="utf-8")
 
     assert 'id="advancedSearch" class="advanced-search">' in html
-    assert '/static/redesign.css?v=20260901.3' in html
+    assert '/static/design-system.css?v=20260902.1' in html
     assert 'id="idleSearchButton"' in html and 'id="idleWaveButton"' in html
     assert 'id="queueToggle"' in html and 'id="queueClose"' in html
     assert 'id="expandPlayer"' in html and 'id="collapsePlayer"' in html
@@ -238,7 +250,7 @@ def test_soundcloud_forest_shell_uses_on_demand_player_surfaces() -> None:
     assert "track-waveform" in app and "--track-progress" in app
     assert "grid-template-columns:var(--awun-nav) minmax(0,1fr)" in redesign
     assert "bottom:0;left:0" in redesign and ".player.queue-open .up-next" in redesign
-    assert "--signal:#ff6b1a" in redesign and ".track-waveform:after" in redesign
+    assert "--color-accent:#ff6b1a" in redesign and ".track-waveform:after" in redesign
 
 
 def test_visual_settings_have_distinct_rendered_modes() -> None:
@@ -247,11 +259,11 @@ def test_visual_settings_have_distinct_rendered_modes() -> None:
 
     for theme in ("black", "white", "acid", "ultraviolet", "cobalt", "ember"):
         assert f'html[data-theme="{theme}"]' in redesign
-    assert "--paper-rgb:24,35,28" in redesign
+    assert "--color-text-rgb:24,35,28" in redesign
     assert "--forest-moon:#18231c" in redesign
     assert 'html[data-theme="white"] .theme-grid button' in redesign
     assert 'html[data-theme="white"] .player .transport-buttons>button:not(.play-pause)' in redesign
-    assert 'html[data-theme="black"]' in redesign and "--signal:#ff6b1a" in redesign
+    assert 'html[data-theme="black"]' in redesign and "--color-accent:#ff6b1a" in redesign
     assert 'rgba(var(--paper-rgb),.24)' in redesign
     assert '.player .wave-progress:before{opacity:1' in redesign
     assert 'html[data-theme="white"] .recommendation-card:before' in redesign

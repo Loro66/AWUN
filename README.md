@@ -26,14 +26,19 @@ other full tracks use short-lived signed AWUN media routes. SoundCloud HLS
 playlists are rewritten through those routes and played with the bundled HLS.js
 client, so the browser does not contact the SoundCloud CDN directly.
 
-The 1.8.0 interface includes AUTO/CIS/EUROPE/USA/LATAM/ASIA/GLOBAL search,
+The current interface includes AUTO/CIS/EUROPE/USA/LATAM/ASIA/GLOBAL search,
 source-aware discovery, partial-failure handling,
 a 30/60/100 result selector, Yandex library import, a local library, shareable search URLs and a unified responsive player with
 custom waveform seeking, volume, previous/next controls and browser Media
-Session integration. A new geometric SVG mark stays sharp in the web, desktop
+Session integration. Its persistent queue supports **Play next**, append,
+remove and reorder and survives an app restart. When the active provider fails,
+AWUN finds a high-confidence match on another connected source and resumes at
+the same position instead of retrying the broken stream. A new geometric SVG mark stays sharp in the web, desktop
 and mobile shells. Its visual system includes Acid, Ultraviolet, Cobalt and
 Ember themes, Editorial and music-first Minimal layouts, plus motion controls. Visual settings
-are saved locally and work across desktop and mobile layouts.
+are saved locally and work across desktop and mobile layouts. One versioned
+design-system entrypoint and explicit cascade layers keep theme tokens and
+components deterministic, including the light-theme waveform.
 
 ## Try and install
 
@@ -211,7 +216,12 @@ the background instead of waiting for every provider.
 LRCLIB is enabled by default. Add `AWUN_GENIUS_ACCESS_TOKEN` for Genius
 referents; never expose this value to the frontend or commit it to the repository.
 
-Direct media URLs are provider-issued and normally expire. Clients should search again instead of storing them. Some providers may require their usual request headers, authentication, or region access. Use AWUN only for media you are authorized to access and in accordance with each provider's terms.
+Direct media URLs are provider-issued and normally expire. AWUN refreshes a
+failed track by searching the other connected sources and accepts only a close
+title, artist and duration match; if no safe match exists it stops and reports
+the failure. Some providers may require their usual request headers,
+authentication, or region access. Use AWUN only for media you are authorized to
+access and in accordance with each provider's terms.
 
 The web library refreshes expired non-YouTube playback URLs when possible.
 AWUN exposes a download button only when the provider supplies a real,

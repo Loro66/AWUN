@@ -53,6 +53,10 @@ Open `https://YOUR-AWUN-API/` after deployment.
 - Starting a track returns HTTP 200 or 206.
 - Seeking sends a Range request and playback resumes from the selected point.
 - Saved tracks reappear after a page reload.
+- A queued track can be placed next or last, removed and reordered; queue order survives a reload.
+- Breaking the active SoundCloud stream switches to a close YouTube/Audius match and resumes near the captured position.
+- A weak title/artist/duration match is rejected instead of playing an unrelated result.
+- The page loads one versioned `design-system.css` entrypoint; every theme keeps controls and waveform contrast usable.
 - FLOW starts from a search, active track or local library and keeps refilling the queue.
 - FLOW likes, dislikes and listening signals survive reload only on the same device.
 - Familiar/Balanced/New, mood and activity controls change recommendation ranking.
@@ -77,9 +81,10 @@ Open **GitHub → Actions → Windows desktop build → Run workflow**. The comp
 run contains an `AWUN-Windows-x64` artifact with `AWUN.exe` and
 `AWUN.exe.sha256`. A `v*` tag publishes both files in GitHub Releases.
 
-Version 1.8 is self-contained: the executable bundles the FastAPI backend and
-frontend, starts a random loopback port, and does not open or depend on Render.
-The interface defaults to Russian in the desktop build.
+The current desktop build bundles the FastAPI backend and frontend and starts a random
+loopback port. It uses the configured public AWUN endpoint by default and falls
+back to the bundled local backend when that endpoint is unavailable. The
+interface defaults to Russian in the desktop build.
 
 The binary is not code-signed yet. Treat code signing as a release requirement
 before broad public distribution.
