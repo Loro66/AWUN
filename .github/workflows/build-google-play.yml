@@ -2,15 +2,6 @@ name: Android Google Play release
 
 on:
   workflow_dispatch:
-    inputs:
-      version_code:
-        description: Monotonically increasing Google Play version code
-        required: true
-        default: "18000"
-      version_name:
-        description: Public version name
-        required: true
-        default: "1.8.0"
 
 permissions:
   contents: read
@@ -25,10 +16,19 @@ jobs:
       AWUN_UPLOAD_KEY_ALIAS: ${{ secrets.PLAY_UPLOAD_KEY_ALIAS }}
       AWUN_UPLOAD_KEY_PASSWORD: ${{ secrets.PLAY_UPLOAD_KEY_PASSWORD }}
       AWUN_MIRROR_URL: ${{ vars.AWUN_MIRROR_URL }}
-      AWUN_VERSION_CODE: ${{ inputs.version_code }}
-      AWUN_VERSION_NAME: ${{ inputs.version_name }}
     steps:
       - uses: actions/checkout@v4
+      - name: Read canonical project version
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(tr -d '[:space:]' < VERSION)"
+          core="${version%%[-+]*}"
+          IFS=. read -r major minor patch <<< "$core"
+          test -n "$major" && test -n "$minor" && test -n "$patch"
+          code=$((10#$major * 1000000 + 10#$minor * 10000 + 10#$patch * 100))
+          echo "AWUN_VERSION_NAME=$version" >> "$GITHUB_ENV"
+          echo "AWUN_VERSION_CODE=$code" >> "$GITHUB_ENV"
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -69,7 +69,7 @@ jobs:
           sha256sum dist/google-play/*.aab > dist/google-play/SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         with:
-          name: AWUN-Google-Play-${{ inputs.version_name }}-${{ inputs.version_code }}
+          name: AWUN-Google-Play-${{ env.AWUN_VERSION_NAME }}-${{ env.AWUN_VERSION_CODE }}
           path: dist/google-play
           if-no-files-found: error
           retention-days: 30

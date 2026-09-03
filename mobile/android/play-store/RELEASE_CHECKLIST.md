@@ -1,4 +1,4 @@
-# AWUN 1.8.0 — Google Play release checklist
+# AWUN — Google Play release checklist
 
 ## 1. Account owner
 
@@ -38,9 +38,10 @@ Optional repository variable:
 
 - `AWUN_MIRROR_URL` — an owned HTTPS AWUN deployment only.
 
-Run **Android Google Play release** manually. For the first build use version
-code `18000` and version name `1.8.0`. Download the workflow artifact and upload
-its signed `.aab`; keep `mapping.txt` for de-obfuscated crash reports.
+Update the repository `VERSION` file, then run **Android Google Play release**
+manually. Gradle and GitHub Actions derive both the public version and the
+monotonically increasing Play version code from that file. Download the workflow
+artifact and upload its signed `.aab`; keep `mapping.txt` for de-obfuscated crash reports.
 
 ## 4. Public pages and listing
 
@@ -68,7 +69,7 @@ its signed `.aab`; keep `mapping.txt` for de-obfuscated crash reports.
 ## 6. Production release
 
 - [ ] Verify the version code is higher than every previously uploaded build.
-- [ ] Paste localized release notes from the `changelogs/18000.txt` files.
+- [ ] Paste localized release notes matching the derived Play version code.
 - [ ] Submit with managed publishing enabled.
 - [ ] After approval, use a staged rollout and monitor crashes and provider
   failures before increasing availability.

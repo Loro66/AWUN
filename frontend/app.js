@@ -8,8 +8,8 @@ const $=id=>document.getElementById(id);
 const runtimeParams=new URLSearchParams(location.search);
 const runtimePlatform=runtimeParams.get('platform')||'web';
 const playStoreMode=runtimePlatform==='android-play';
-const apiBase=(()=>{
-  const candidate=(runtimeParams.get('api')||'').trim();
+function runtimeApiBase(name){
+  const candidate=(runtimeParams.get(name)||'').trim();
   if(!candidate)return'';
   try{
     const parsed=new URL(candidate);
@@ -17,20 +17,74 @@ const apiBase=(()=>{
     if(parsed.protocol==='http:'&&!['localhost','127.0.0.1','[::1]'].includes(parsed.hostname))return'';
     return parsed.href.replace(/\/+$/,'');
   }catch{return''}
-})();
+}
+const apiBase=runtimeApiBase('api');
+const fallbackApiBase=runtimeApiBase('fallback_api');
 document.documentElement.dataset.platform=runtimePlatform;
 const remoteRetryStatuses=new Set([502,503,504]);
-function apiUrl(input){return apiBase&&typeof input==='string'&&input.startsWith('/')?`${apiBase}${input}`:input}
-function awunFetch(input,init={}){
+const remoteFallbackTimeoutMs=60000;
+function endpointUrl(base,input){return base&&typeof input==='string'&&input.startsWith('/')?`${base}${input}`:input}
+function apiUrl(input){return endpointUrl(apiBase,input)}
+function fallbackApiUrl(input){return endpointUrl(fallbackApiBase,input)}
+function requestOptions(init={}){
   const headers=new Headers(init.headers||{});
   if(playStoreMode)headers.set('X-AWUN-Client','android-play');
-  const options={...init,headers};
+  return{...init,headers};
+}
+function awunFetch(input,init={}){
+  const options=requestOptions(init);
   const target=apiUrl(input);
-  if(!apiBase||target===input||typeof input!=='string')return fetch(target,options);
-  return fetch(target,options).then(response=>{
-    if(!remoteRetryStatuses.has(response.status))return response;
-    return fetch(input,options);
-  }).catch(()=>fetch(input,options));
+  if(apiBase&&target!==input&&typeof input==='string'){
+    return fetch(target,options).then(response=>remoteRetryStatuses.has(response.status)?fetch(input,options):response).catch(()=>fetch(input,options));
+  }
+  if(fallbackApiBase&&typeof input==='string'&&input.startsWith('/')){
+    return fetch(input,options).then(response=>remoteRetryStatuses.has(response.status)?fetch(fallbackApiUrl(input),options):response).catch(()=>fetch(fallbackApiUrl(input),options));
+  }
+  return fetch(target,options);
+}
+
+function trackSessionKey(track){return `${track?.source||''}:${track?.id||''}`}
+const freshTracksByKey=new Map();
+function markFreshTracks(tracks){(Array.isArray(tracks)?tracks:[]).forEach(track=>freshTracksByKey.set(trackSessionKey(track),track))}
+async function readSearchData(response){
+  const data=await response.json();
+  if(!response.ok)throw new Error(data.detail||t('searchFailed'));
+  markFreshTracks(data.tracks);
+  return data;
+}
+function mergeSearchData(primary,fallback,requestedSources=[]){
+  if(!fallback)return primary;
+  const tracks=playerCore.uniqueTracks([...(primary.tracks||[]),...(fallback.tracks||[])]);
+  const errors={...(primary.errors||{})};
+  requestedSources.forEach(source=>{if(fallback.errors?.[source])errors[source]=fallback.errors[source];else delete errors[source]});
+  return{...primary,tracks,total:tracks.length,searched_sources:[...new Set([...(primary.searched_sources||[]),...(fallback.searched_sources||[])])],query_variants:[...new Set([...(primary.query_variants||[]),...(fallback.query_variants||[])])],errors,elapsed_ms:Math.max(Number(primary.elapsed_ms)||0,Number(fallback.elapsed_ms)||0)};
+}
+function fallbackSearch(payload,signal){
+  const controller=new AbortController();
+  const relayAbort=()=>controller.abort(signal?.reason);
+  if(signal?.aborted)relayAbort();else signal?.addEventListener('abort',relayAbort,{once:true});
+  const timer=setTimeout(()=>controller.abort(),remoteFallbackTimeoutMs);
+  const options=requestOptions({method:'POST',headers:{'Content-Type':'application/json'},signal:controller.signal,body:JSON.stringify(payload)});
+  return fetch(fallbackApiUrl('/api/v1/search'),options).then(readSearchData).catch(error=>{
+    if(error?.name==='AbortError'&&!signal?.aborted)throw new Error(t('searchUnavailable'));
+    throw error;
+  }).finally(()=>{clearTimeout(timer);signal?.removeEventListener('abort',relayAbort)});
+}
+async function requestSearch(payload,{signal,waitForFallback=false}={}){
+  const options=requestOptions({method:'POST',headers:{'Content-Type':'application/json'},signal,body:JSON.stringify(payload)});
+  if(!fallbackApiBase||apiBase){return{data:await readSearchData(await awunFetch('/api/v1/search',options)),supplement:null}}
+  let local;
+  try{local=await readSearchData(await fetch('/api/v1/search',options))}
+  catch(error){if(error?.name==='AbortError')throw error;return{data:await fallbackSearch(payload,signal),supplement:null}}
+  const requested=Array.isArray(payload.sources)?payload.sources:[];
+  const failed=requested.filter(source=>Object.prototype.hasOwnProperty.call(local.errors||{},source));
+  if(!failed.length)return{data:local,supplement:null};
+  const remote=fallbackSearch({...payload,sources:failed},signal).then(data=>mergeSearchData(local,data,failed));
+  if(waitForFallback||!(local.tracks||[]).length){
+    try{return{data:(await remote)||local,supplement:null}}
+    catch(error){if(error?.name==='AbortError'&&signal?.aborted)throw error;return{data:local,supplement:null}}
+  }
+  return{data:local,supplement:remote.catch(()=>null)};
 }
 const ui={
   status:$('status'),searchNavButton:$('searchNavButton'),libraryButton:$('libraryButton'),allSourcesButton:$('allSourcesButton'),installButton:$('installButton'),languageButton:$('languageButton'),languageLabel:$('languageLabel'),emptyGuide:$('emptyGuide'),idleStage:$('idleStage'),idleSearchButton:$('idleSearchButton'),idleWaveButton:$('idleWaveButton'),guideSearch:$('guideSearch'),guideWave:$('guideWave'),guideImport:$('guideImport'),searchForm:$('searchForm'),searchInput:$('searchInput'),searchButton:$('searchButton'),homeSections:$('homeSections'),recentList:$('recentList'),recommendationGrid:$('recommendationGrid'),queueList:$('queueList'),queueEmpty:$('queueEmpty'),clearQueue:$('clearQueue'),
@@ -59,7 +113,7 @@ const visualThemes={black:{labelKey:'themeBlackShort',color:'#050505'},white:{la
 const restoredQueue=loadQueueState();
 const state={
   tracks:[],saved:loadLibrary(),recents:loadRecents(),queue:restoredQueue.items,queueMode:restoredQueue.mode,available:new Set(),sources:new Set(),region:loadRegion(),resultLimit:loadResultLimit(),repeatMode:loadRepeatMode(),library:false,hasSearched:false,active:null,controller:null,
-  youtube:null,youtubeApi:null,youtubeTicker:null,hls:null,seeking:false,recoveringGeneration:null,playbackGeneration:0,audioTrackId:null,failedSources:new Set(),playbackOrigin:null,playbackPosition:0,lastVolume:.82,expanded:null,details:new Map(),detailsController:null,openLines:new Set(),lineComments:loadLineComments(),geniusEnabled:false,...loadVisual()
+  youtube:null,youtubeApi:null,youtubeTicker:null,hls:null,seeking:false,recoveringGeneration:null,sameSourceRefreshGeneration:null,playbackGeneration:0,audioTrackId:null,failedSources:new Set(),playbackOrigin:null,playbackPosition:0,lastVolume:.82,expanded:null,details:new Map(),detailsController:null,openLines:new Set(),lineComments:loadLineComments(),geniusEnabled:false,...loadVisual()
 };
 let installPrompt=null;
 let language=i18n.language;
@@ -409,17 +463,21 @@ async function search(query=ui.searchInput.value.trim()){
   if(!state.sources.size){setMessage(t('noSourcesError'),'error');return}
   state.controller?.abort();state.controller=new AbortController();state.library=false;state.hasSearched=true;ui.libraryButton.classList.remove('active');ui.libraryButton.setAttribute('aria-pressed','false');
   ui.results.setAttribute('aria-busy','true');ui.emptyGuide.hidden=true;ui.searchButton.classList.add('searching');document.body.classList.add('is-searching');setMessage(t('searchingSources'),'loading');loadingRows();ui.resultTitle.textContent=t('searching');ui.resultCount.textContent='—';ui.resultTime.textContent=t('pleaseWait');
-  const started=performance.now();
-  try{
-    const response=await awunFetch('/api/v1/search',{method:'POST',headers:{'Content-Type':'application/json'},signal:state.controller.signal,body:JSON.stringify({query,limit:state.resultLimit,sources:[...state.sources],region:state.region,locale:navigator.language||null})});
-    const data=await response.json();if(!response.ok)throw new Error(data.detail||t('searchFailed'));
+  const started=performance.now(),controller=state.controller;
+  const applyResults=data=>{
     state.tracks=data.tracks||[];
     const failures=Object.keys(data.errors||{}).map(source=>sourceLabels[source]||source);
     if(state.tracks.length){setMessage(failures.length?t('partialResults',{sources:failures.join(', ')}):t('selectTrack'),failures.length?'notice':'');}
     else setMessage(failures.length?t('noPlayableResults',{sources:failures.join(', ')}):t('nothingFound'),'error');
     const variants=Math.max(1,data.query_variants?.length||1);ui.resultTime.textContent=t('searchTiming',{ms:data.elapsed_ms??Math.round(performance.now()-started),variants});
-    const params=new URLSearchParams({q:query});if(state.region!=='AUTO')params.set('region',state.region);if(state.resultLimit!==60)params.set('limit',String(state.resultLimit));history.replaceState(null,'',`${location.pathname}?${params}`);
     render();
+  };
+  try{
+    const payload={query,limit:state.resultLimit,sources:[...state.sources],region:state.region,locale:navigator.language||null};
+    const {data,supplement}=await requestSearch(payload,{signal:controller.signal});
+    applyResults(data);
+    if(supplement)void supplement.then(merged=>{if(merged&&state.controller===controller&&!controller.signal.aborted)applyResults(merged)});
+    const params=new URLSearchParams(runtimeParams);params.set('q',query);if(state.region!=='AUTO')params.set('region',state.region);else params.delete('region');if(state.resultLimit!==60)params.set('limit',String(state.resultLimit));else params.delete('limit');history.replaceState(null,'',`${location.pathname}?${params}`);
   }catch(error){
     if(error.name==='AbortError')return;
     state.tracks=[];render();setMessage(error.message||t('searchUnavailable'),'error');ui.resultTime.textContent=t('failed');
@@ -528,8 +586,8 @@ async function matchImportedTrack(track){
   setMessage(t('matchingTrack',{track:`${decodeText(track.artist)} — ${decodeText(track.title)}`}),'loading');
   try{
     const sources=[...state.sources].filter(source=>state.available.has(source));
-    const response=await awunFetch('/api/v1/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:`${track.artist==='Yandex Music'?'':track.artist} ${track.title}`.trim(),limit:12,sources:sources.length?sources:[...state.available],region:state.region,locale:navigator.language||null})});
-    const data=await response.json();if(!response.ok)throw new Error(data.detail||t('matchingFailed'));const candidates=data.tracks||[];if(!candidates.length)throw new Error(t('noPlayableMatch'));
+    const {data}=await requestSearch({query:`${track.artist==='Yandex Music'?'':track.artist} ${track.title}`.trim(),limit:12,sources:sources.length?sources:[...state.available],region:state.region,locale:navigator.language||null},{waitForFallback:true});
+    const candidates=data.tracks||[];if(!candidates.length)throw new Error(t('noPlayableMatch'));
     const fresh=[...candidates].sort((left,right)=>matchScore(right,track)-matchScore(left,track))[0];fresh.catalog_links={...fresh.catalog_links,...track.catalog_links};fresh.import_origin='yandex_music';
     const savedIndex=state.saved.findIndex(item=>item.id===track.id);if(savedIndex>=0)state.saved[savedIndex]=fresh;persist();render();setMessage(t('matchedOn',{source:sourceLabels[fresh.source]||fresh.source}),'notice');await playTrack(fresh);
   }catch(error){setMessage(error.message||t('importedMatchFailed'),'error')}
@@ -542,8 +600,7 @@ function directImportedTrack(entry){
 async function findImportedMatch(track){
   if(track.source==='youtube'&&track.external_id)return directImportedTrack(track);
   const sources=[...state.sources].filter(source=>state.available.has(source));
-  const response=await awunFetch('/api/v1/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:`${track.artist==='Yandex Music'?'':track.artist} ${track.title}`.trim(),limit:8,sources:sources.length?sources:[...state.available],region:state.region,locale:navigator.language||null})});
-  const data=await response.json();if(!response.ok)throw new Error(data.detail||t('matchingFailed'));
+  const {data}=await requestSearch({query:`${track.artist==='Yandex Music'?'':track.artist} ${track.title}`.trim(),limit:8,sources:sources.length?sources:[...state.available],region:state.region,locale:navigator.language||null},{waitForFallback:true});
   return [...(data.tracks||[])].sort((left,right)=>matchScore(right,track)-matchScore(left,track))[0]||null;
 }
 async function matchAndSaveImported(tracks){
@@ -566,10 +623,21 @@ async function playTrack(track,options={}){
   if(track.source==='yandex_music'){await matchImportedTrack(track);return false}
   const preserveQueue=Boolean(options.preserveQueue),recovered=Boolean(options.recovered),resumeAt=Math.max(0,Number(options.resumeAt)||0);
   const playbackGeneration=recovered?(Number(options.playbackGeneration)||state.playbackGeneration):(state.playbackGeneration+=1);
+  let refreshAttempted=false,refreshSucceeded=false;
+  const sessionFresh=!recovered?freshTracksByKey.get(trackSessionKey(track)):null;
+  if(sessionFresh&&sessionFresh.stream_url!==track.stream_url)track=replaceStoredTrack(track,sessionFresh);
+  if(!recovered&&options.refreshStored!==false&&shouldRefreshBeforePlayback(track)){
+    refreshAttempted=true;state.sameSourceRefreshGeneration=playbackGeneration;setMessage(t('refreshingLink'),'loading');
+    try{
+      const refreshed=await refreshTrackLink(track);
+      if(playbackGeneration!==state.playbackGeneration)return false;
+      if(refreshed){track=replaceStoredTrack(track,refreshed);refreshSucceeded=true;setMessage(t('linkRefreshed'),'notice')}
+    }catch(error){if(error?.name==='AbortError')return false}
+  }
   if(!preserveQueue)seedContextQueue(track);
   state.queue=playerCore.remove(state.queue,track.id);persistQueue();
   const firstReveal=!state.active,previous=state.active;state.active=track;
-  if(!recovered){state.playbackOrigin=track;state.failedSources.clear()}
+  if(!recovered){state.playbackOrigin=track;state.failedSources.clear();state.sameSourceRefreshGeneration=refreshAttempted?playbackGeneration:null}
   else state.playbackOrigin=options.origin||state.playbackOrigin||track;
   rememberRecent(track);ui.player.classList.remove('player-empty');ui.idleStage.setAttribute('aria-hidden','true');document.body.classList.add('has-player');ui.player.classList.remove('track-enter','track-swap');void ui.player.offsetWidth;ui.player.classList.add(firstReveal?'track-enter':'track-swap');ui.nowTitle.textContent=decodeText(track.title);ui.nowArtist.textContent=`${decodeText(track.artist)} · ${sourceLabels[track.source]||track.source}`;ui.nowSource.textContent=sourceLabels[track.source]||track.source;
   const image=safeImage(track.thumbnail),monogram=ui.playerArtwork.querySelector('.vinyl-monogram');
@@ -580,6 +648,7 @@ async function playTrack(track,options={}){
   updateTimeline(resumeAt,track.duration||0);updateMediaSession(track);render();emitAwun('play',{track,previous,recovered});
   try{
     if(track.source==='youtube')await playYouTube(track,resumeAt);else await playAudio(track,resumeAt);
+    if(refreshAttempted&&!refreshSucceeded)setMessage('');
     return true;
   }catch(error){
     stopHls();setPlaying(false);
@@ -617,26 +686,53 @@ function currentPlaybackTime(){
   return Math.max(0,Number(current)||0,state.playbackPosition||0);
 }
 
+function shouldRefreshBeforePlayback(track){
+  return Boolean(track?.id&&track.source!=='youtube'&&track.source!=='yandex_music'&&!freshTracksByKey.has(trackSessionKey(track)));
+}
+
+async function refreshTrackLink(track){
+  if(!track?.id||!track.source||track.source==='yandex_music')return null;
+  const query=`${decodeText(track.artist)} ${decodeText(track.title)}`.trim();
+  if(!query)return null;
+  const {data}=await requestSearch({query,limit:12,sources:[track.source],region:state.region,locale:navigator.language||null,fast:true},{waitForFallback:true});
+  const candidates=(data.tracks||[]).filter(candidate=>candidate.source===track.source);
+  return candidates.find(candidate=>candidate.id===track.id)||playerCore.rankAlternatives(track,candidates,new Set())[0]||null;
+}
+
 function replaceStoredTrack(origin,replacement){
   const merged={...replacement,catalog_links:{...(origin.catalog_links||{}),...(replacement.catalog_links||{})}};
-  state.saved=playerCore.uniqueTracks(state.saved.map(track=>track.id===origin.id?merged:track));
-  state.recents=playerCore.uniqueTracks(state.recents.map(track=>track.id===origin.id?merged:track));
+  const replace=items=>{const seen=new Set();return items.map(track=>track.id===origin.id?merged:track).filter(track=>{if(!track?.id||seen.has(track.id))return false;seen.add(track.id);return true})};
+  state.saved=replace(state.saved);state.recents=replace(state.recents);state.queue=replace(state.queue);state.tracks=replace(state.tracks);
+  freshTracksByKey.set(trackSessionKey(merged),merged);
   persist();
+  return merged;
 }
 
 async function recoverPlayback(_error,expectedGeneration=state.playbackGeneration){
   if(!state.active||expectedGeneration!==state.playbackGeneration||state.recoveringGeneration===expectedGeneration)return false;
   const failed=state.active,origin=state.playbackOrigin||failed,resumeAt=currentPlaybackTime(),from=sourceLabels[failed.source]||failed.source;
-  state.recoveringGeneration=expectedGeneration;state.failedSources.add(failed.source);setMessage(t('findingAlternative',{source:from}),'loading');
+  state.recoveringGeneration=expectedGeneration;
   try{
+    if(state.sameSourceRefreshGeneration!==expectedGeneration){
+      state.sameSourceRefreshGeneration=expectedGeneration;setMessage(t('refreshingLink'),'loading');
+      let refreshed=null;
+      try{refreshed=await refreshTrackLink(failed)}catch{}
+      if(expectedGeneration!==state.playbackGeneration)return false;
+      if(refreshed){
+        const started=await playTrack(refreshed,{preserveQueue:true,recovered:true,resumeAt,origin,playbackGeneration:expectedGeneration,recoverOnFailure:false});
+        if(expectedGeneration!==state.playbackGeneration)return false;
+        if(started){replaceStoredTrack(origin,refreshed);setMessage(t('linkRefreshed'),'notice');return true}
+      }
+    }
+    state.failedSources.add(failed.source);setMessage(t('findingAlternative',{source:from}),'loading');
     const sources=[...state.available].filter(source=>!state.failedSources.has(source)&&source!=='yandex_music');if(!sources.length)throw new Error();
-    const response=await awunFetch('/api/v1/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:`${origin.artist} ${origin.title}`,limit:20,sources,region:state.region,locale:navigator.language||null})});const data=await response.json();if(!response.ok)throw new Error();
-    if(expectedGeneration!==state.playbackGeneration||state.active?.id!==failed.id)return false;
+    const {data}=await requestSearch({query:`${origin.artist} ${origin.title}`,limit:20,sources,region:state.region,locale:navigator.language||null},{waitForFallback:true});
+    if(expectedGeneration!==state.playbackGeneration)return false;
     const alternatives=playerCore.rankAlternatives(origin,data.tracks||[],state.failedSources);
     for(const candidate of alternatives){
       if(expectedGeneration!==state.playbackGeneration)return false;
       const started=await playTrack(candidate,{preserveQueue:true,recovered:true,resumeAt,origin,playbackGeneration:expectedGeneration,recoverOnFailure:false});
-      if(expectedGeneration!==state.playbackGeneration||state.active?.id!==candidate.id)return false;
+      if(expectedGeneration!==state.playbackGeneration)return false;
       if(started){replaceStoredTrack(origin,candidate);setMessage(t('sourceSwitched',{from,to:sourceLabels[candidate.source]||candidate.source}),'notice');return true}
       state.failedSources.add(candidate.source);
     }
@@ -677,6 +773,6 @@ async function bootstrap(){
   if(!playStoreMode&&'serviceWorker'in navigator)navigator.serviceWorker.register('/service-worker.js').catch(()=>{});ui.player.hidden=false;ui.player.classList.add('player-empty');applyLanguage();applyVisual(false);applyRepeatMode(false);updateClock();setInterval(updateClock,1000);persist();setRange(ui.volume,82);setRange(ui.progress,0);render();await refreshStatus();
   const query=url.get('q');if(query){ui.searchInput.value=query;search(query)}
 }
-window.awunApp={state,ui,playTrack,render,search,toggleSave,currentList,setMessage,sourceLabels,decodeText,matchText,loadingRows,awunFetch,pausePlayback,playStoreMode,apiBase,apiUrl,refreshStatus,replaceQueue,appendQueue};
+window.awunApp={state,ui,playTrack,render,search,toggleSave,currentList,setMessage,sourceLabels,decodeText,matchText,loadingRows,awunFetch,requestSearch,pausePlayback,playStoreMode,apiBase,fallbackApiBase,apiUrl,refreshStatus,replaceQueue,appendQueue};
 document.addEventListener('awun:language',event=>{language=event.detail.language;applyVisual(false);applyRepeatMode(false);render();refreshStatus()});
 bootstrap();

@@ -1,4 +1,4 @@
-AWUN 1.8.0 local desktop, Russian interface and Google Play preparation
+AWUN release package. The canonical release number is stored in VERSION.
 Release date: 2026-07-23
 
 The Windows application now bundles FastAPI and the complete frontend, starts

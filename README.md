@@ -138,21 +138,20 @@ Region mode changes discovery relevance; it does not bypass provider licensing
 or geographic restrictions. In AUTO mode the browser locale selects a country
 and language. GLOBAL removes the YouTube country/language preference.
 
-The Windows desktop shell uses the project's public AWUN backend
-(`https://awun-1.onrender.com`) by default. This is a free Render web service,
-so no new server, account or configuration is required. Render may pause a free
-service after inactivity; the first request after a pause can take about a
-minute. If the endpoint is unavailable, the desktop app automatically retries
-the request against its local backend.
+The Windows desktop shell uses its embedded local backend first. If an
+individual provider fails locally, AWUN retries only that provider through the
+project's public backend (`https://awun-1.onrender.com`). This is a free Render
+service, so no new server, account or configuration is required. A sleeping
+Render instance never delays results from healthy local providers.
 
 To use another endpoint, set
 `AWUN_REMOTE_API_URL=https://your-controlled-domain` before launching the EXE,
 or put that HTTPS origin on one line in `%APPDATA%\\AWUN\\remote-api.txt`.
-Set the value to `local` to force direct requests from the computer. Search,
-lyrics, playlist import and AWUN media use the remote endpoint when available;
-YouTube playback still uses the official embedded player and remains subject
-to its availability. Use only an endpoint you control or trust: AWUN does not
-embed unknown proxy IPs.
+Set the value to `local` to disable the fallback. Search, lyrics and playlist
+import stay local unless their request fails; provider-level search errors can
+use the configured fallback. YouTube playback still uses the official embedded
+player and remains subject to its availability. Use only an endpoint you
+control or trust: AWUN does not embed unknown proxy IPs.
 
 ## Public playlist and library transfer
 
@@ -223,7 +222,9 @@ the failure. Some providers may require their usual request headers,
 authentication, or region access. Use AWUN only for media you are authorized to
 access and in accordance with each provider's terms.
 
-The web library refreshes expired non-YouTube playback URLs when possible.
+The library and persistent queue refresh expired non-YouTube playback URLs on
+the same provider before playback. Only after that refresh fails does AWUN look
+for a close match on another provider and preserve the current position.
 AWUN exposes a download button only when the provider supplies a real,
 progressive download resource. HLS/DASH playlists and DRM media are playback
 resources, not files, and are never presented as downloads.
@@ -235,16 +236,17 @@ five results per query for reliability; configure OAuth for the full range.
 Run `build-windows.bat` on Windows 10 or 11 to create `dist\\AWUN.exe` and its
 SHA256 checksum. The AWUN icon is embedded in the executable and is used by
 Explorer, shortcuts and the taskbar. The executable bundles the FastAPI backend
-and web interface, starts them on a random `127.0.0.1` port, and by default
-uses the public AWUN Render backend for provider requests. It keeps the local
-backend as a fallback, so music search and playback still require internet
-access but do not require a new server.
+and web interface and starts them on a random `127.0.0.1` port. The local
+backend is always queried first. The public AWUN Render deployment is contacted
+only for a provider that failed locally, so healthy local sources are never
+delayed by a remote cold start. Music search and playback still require internet
+access, but the user does not need a server.
 The desktop interface opens in Russian by default and retains the English
 language switch.
 
 For a reproducible cloud build, open **Actions → Windows desktop build → Run
 workflow**. Every pull request also creates an `AWUN-Windows-x64` test artifact.
-Download it from the completed run. Pushing a tag such as `v1.8.0` creates a
+Download it from the completed run. Pushing a tag matching `VERSION` creates a
 GitHub Release containing the executable and
 checksum. The executable is currently unsigned, so Windows SmartScreen may
 show a warning until a code-signing certificate is added.
@@ -254,7 +256,7 @@ Installing or using an official build means accepting those terms.
 
 ## Android Google Play and iOS beta
 
-Android 1.8 is prepared for Google Play with the permanent application ID
+Android is prepared for Google Play with the permanent application ID
 `com.loro66.awun`, API 36, a signed-AAB workflow, localized store metadata,
 privacy/support pages and a Play-specific client mode that removes every music
 download control. Run **Actions → Mobile test builds** for an internal APK or

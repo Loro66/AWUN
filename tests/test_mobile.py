@@ -21,8 +21,9 @@ def test_android_release_identity_targets_current_play_api() -> None:
     assert 'namespace "com.loro66.awun"' in gradle
     assert 'applicationId "com.loro66.awun"' in gradle
     assert "compileSdk 36" in gradle and "targetSdk 36" in gradle
-    assert 'envValue("AWUN_VERSION_CODE", "18000")' in gradle
-    assert 'envValue("AWUN_VERSION_NAME", "1.8.0")' in gradle
+    assert 'rootProject.file("../../VERSION")' in gradle
+    assert "versionCode awunVersionCode" in gradle
+    assert "versionName awunVersionName" in gradle
     assert 'version "8.13.2"' in root_gradle
     assert "WRITE_EXTERNAL_STORAGE" not in manifest
     assert "allowBackup=\"false\"" in manifest
@@ -127,12 +128,15 @@ def test_render_blueprint_recreates_the_owned_release_url_without_secret_prompts
 
 
 def test_store_listing_text_and_assets_meet_play_dimensions() -> None:
+    version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
+    major, minor, patch = (int(part) for part in version.split(".")[:3])
+    version_code = major * 1_000_000 + minor * 10_000 + patch * 100
     for locale in ("ru-RU", "en-US"):
         directory = METADATA / locale
         title = (directory / "title.txt").read_text(encoding="utf-8").strip()
         short = (directory / "short_description.txt").read_text(encoding="utf-8").strip()
         full = (directory / "full_description.txt").read_text(encoding="utf-8").strip()
-        notes = (directory / "changelogs" / "18000.txt").read_text(encoding="utf-8").strip()
+        notes = (directory / "changelogs" / f"{version_code}.txt").read_text(encoding="utf-8").strip()
 
         assert 1 <= len(title) <= 30
         assert 1 <= len(short) <= 80

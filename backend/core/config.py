@@ -3,6 +3,8 @@ from functools import lru_cache
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from backend.core.version import APP_VERSION
+
 
 class Settings(BaseSettings):
     """Runtime configuration loaded from environment variables or ``.env``."""
@@ -15,7 +17,7 @@ class Settings(BaseSettings):
     )
 
     app_name: str = "AWUN"
-    app_version: str = "1.8.0"
+    app_version: str = APP_VERSION
     debug: bool = False
     api_prefix: str = "/api/v1"
 

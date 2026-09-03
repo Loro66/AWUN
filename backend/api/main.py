@@ -224,6 +224,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     frontend_dir = Path(__file__).resolve().parents[2] / "frontend"
     project_dir = frontend_dir.parent
     if frontend_dir.is_dir():
+        @app.get("/design-system.css", include_in_schema=False)
+        async def design_system() -> Response:
+            stylesheet = (frontend_dir / "design-system.css").read_text(encoding="utf-8")
+            stylesheet = stylesheet.replace("__AWUN_VERSION__", settings.app_version)
+            return Response(content=stylesheet, media_type="text/css; charset=utf-8")
+
         app.mount(
             "/static",
             CacheControlledStaticFiles(directory=frontend_dir),
@@ -231,13 +237,21 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         )
 
         @app.get("/", include_in_schema=False)
-        async def frontend() -> FileResponse:
-            return FileResponse(frontend_dir / "index.html", headers={"Cache-Control": "no-cache"})
+        async def frontend() -> Response:
+            document = (frontend_dir / "index.html").read_text(encoding="utf-8")
+            document = document.replace("__AWUN_VERSION__", settings.app_version)
+            return Response(
+                content=document,
+                media_type="text/html; charset=utf-8",
+                headers={"Cache-Control": "no-cache"},
+            )
 
         @app.get("/service-worker.js", include_in_schema=False)
-        async def service_worker() -> FileResponse:
-            return FileResponse(
-                frontend_dir / "service-worker.js",
+        async def service_worker() -> Response:
+            worker = (frontend_dir / "service-worker.js").read_text(encoding="utf-8")
+            worker = worker.replace("__AWUN_VERSION__", settings.app_version)
+            return Response(
+                content=worker,
                 media_type="application/javascript",
                 headers={"Cache-Control": "no-cache", "Service-Worker-Allowed": "/"},
             )

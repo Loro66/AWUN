@@ -18,6 +18,7 @@ import webview
 
 from backend.api.main import create_app
 from backend.core.config import Settings
+from backend.core.version import APP_VERSION
 
 
 HOST = "127.0.0.1"
@@ -25,9 +26,9 @@ STARTUP_TIMEOUT_SECONDS = 25
 MAX_DESKTOP_STATE_BYTES = 4 * 1024 * 1024
 REMOTE_API_ENV = "AWUN_REMOTE_API_URL"
 REMOTE_API_FILE = "remote-api.txt"
-# AWUN already has a public, user-owned Render deployment.  Using it by
-# default keeps the desktop build useful on networks that block provider
-# domains without asking the user to create an account or configure a server.
+# AWUN's public Render deployment is a provider fallback. The embedded local
+# backend always receives requests first so a healthy source never wakes or
+# waits for the remote service.
 DEFAULT_REMOTE_API_URL = "https://awun-1.onrender.com"
 LOCAL_REMOTE_VALUES = {"local", "off", "disabled", "none"}
 
@@ -43,8 +44,8 @@ h1{margin:0;font-size:84px;font-style:italic;letter-spacing:-7px}h1 i{color:#b7f
 p{color:#8b8d82;font-size:9px;font-weight:800;letter-spacing:3px}.meta{display:flex;justify-content:space-between;margin-top:34px;color:#55574f;font-size:7px;font-weight:900;letter-spacing:1.5px}
 .line{height:2px;margin-top:14px;background:#30322c;overflow:hidden}.line:after{content:"";display:block;width:34%;height:100%;background:#b7ff19;box-shadow:0 0 20px rgba(183,255,25,.4);animation:scan 1.2s ease-in-out infinite alternate}
 @keyframes scan{to{transform:translateX(195%)}}@keyframes orbit{50%{transform:translate(-18px,14px) rotate(12deg)}}
-</style></head><body><main><section><h1>AWUN<i>.</i></h1><p>ЗАПУСКАЕМ ЛОКАЛЬНЫЙ ПОИСК</p><div class="meta"><span>ЛОКАЛЬНАЯ ВЕРСИЯ / 1.8.0</span><span>ОДИН ПОИСК · ВСЯ МУЗЫКА</span></div><div class="line"></div></section></main></body></html>
-"""
+</style></head><body><main><section><h1>AWUN<i>.</i></h1><p>ЗАПУСКАЕМ ЛОКАЛЬНЫЙ ПОИСК</p><div class="meta"><span>ЛОКАЛЬНАЯ ВЕРСИЯ / __AWUN_VERSION__</span><span>ОДИН ПОИСК · ВСЯ МУЗЫКА</span></div><div class="line"></div></section></main></body></html>
+""".replace("__AWUN_VERSION__", APP_VERSION)
 
 
 def startup_error_page(message: str) -> str:
@@ -186,7 +187,7 @@ class LocalAwunServer:
         self.url = f"http://{self.host}:{port}"
 
         settings = Settings(
-            app_version="1.8.0",
+            app_version=APP_VERSION,
             media_secret=secrets.token_urlsafe(32),
             cors_origins=[self.url],
         )
@@ -238,7 +239,7 @@ def open_local_app(window: webview.Window, runtime: LocalAwunServer) -> None:
         local_url = runtime.start()
         query = "?desktop=1&lang=ru"
         if remote := remote_api_url():
-            query += f"&api={quote(remote, safe='')}"
+            query += f"&fallback_api={quote(remote, safe='')}"
         window.load_url(f"{local_url}/{query}")
     except Exception as exc:
         window.load_html(startup_error_page(str(exc)))

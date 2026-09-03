@@ -96,4 +96,5 @@ def test_app_wires_persistent_queue_and_cross_source_recovery() -> None:
     assert "playerCore.enqueue" in app and "playerCore.move" in app and "playerCore.remove" in app
     assert "rankAlternatives" in app and "failedSources" in app
     assert "resumeAt" in app and "sourceSwitched" in app
-    assert 'src="/static/player-core.js?v=20260902.2"' in html
+    assert "refreshTrackLink" in app and "sameSourceRefreshGeneration" in app
+    assert 'src="/static/player-core.js?v=__AWUN_VERSION__"' in html

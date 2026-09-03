@@ -10,6 +10,7 @@ on:
       - ".github/workflows/build-google-play-unsigned.yml"
       - "mobile/android/**"
       - "frontend/**"
+      - "VERSION"
       - "LICENSE.md"
       - "EULA.md"
 
@@ -20,11 +21,19 @@ jobs:
   bundle:
     name: Unsigned Play AAB
     runs-on: ubuntu-latest
-    env:
-      AWUN_VERSION_CODE: "18000"
-      AWUN_VERSION_NAME: "1.8.0"
     steps:
       - uses: actions/checkout@v4
+      - name: Read canonical project version
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(tr -d '[:space:]' < VERSION)"
+          core="${version%%[-+]*}"
+          IFS=. read -r major minor patch <<< "$core"
+          test -n "$major" && test -n "$minor" && test -n "$patch"
+          code=$((10#$major * 1000000 + 10#$minor * 10000 + 10#$patch * 100))
+          echo "AWUN_VERSION_NAME=$version" >> "$GITHUB_ENV"
+          echo "AWUN_VERSION_CODE=$code" >> "$GITHUB_ENV"
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -53,7 +62,7 @@ jobs:
           sha256sum dist/google-play-unsigned/*.aab > dist/google-play-unsigned/SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         with:
-          name: AWUN-unsigned-Google-Play-1.8.0-18000
+          name: AWUN-unsigned-Google-Play-${{ env.AWUN_VERSION_NAME }}-${{ env.AWUN_VERSION_CODE }}
           path: dist/google-play-unsigned
           if-no-files-found: error
           retention-days: 7

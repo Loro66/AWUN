@@ -1,6 +1,6 @@
 (() => {
   const app=window.awunApp;if(!app)return;
-  const {state,ui,playTrack,render,toggleSave,setMessage,sourceLabels,decodeText,matchText,awunFetch,refreshStatus,replaceQueue,appendQueue}=app;
+  const {state,ui,playTrack,render,toggleSave,setMessage,sourceLabels,decodeText,matchText,requestSearch,refreshStatus,replaceQueue,appendQueue}=app;
   const t=(key,values={})=>window.awunI18n.t(key,values);
   const PROFILE_KEY='awun-wave-profile-v2';
   const moodTerms={any:'',calm:'calm mellow',energy:'energetic',focus:'focus instrumental',happy:'happy upbeat',sad:'melancholic',night:'night'};
@@ -85,12 +85,9 @@
   async function requestCandidates(query,signal){
     const sources=[...state.sources].filter(source=>!state.available.size||state.available.has(source));
     if(!sources.length)throw new Error(t('flowSearchFailed'));
-    const options={method:'POST',headers:{'Content-Type':'application/json'},signal,body:JSON.stringify({query,limit:30,sources,region:state.region,locale:navigator.language||null,fast:true})};
-    const readTracks=async response=>{const data=await response.json();if(!response.ok||!data.tracks?.length)throw new Error(data.detail||t('flowNoRecommendations'));return data.tracks};
-    const remote=awunFetch('/api/v1/search',options).then(readTracks);
-    if(!app.apiBase)return remote;
-    const local=new Promise((resolve,reject)=>{const timer=setTimeout(()=>fetch('/api/v1/search',options).then(readTracks).then(resolve,reject),4500);signal.addEventListener('abort',()=>{clearTimeout(timer);reject(new DOMException('Aborted','AbortError'))},{once:true})});
-    try{return await Promise.any([remote,local])}catch{if(signal.aborted)throw new DOMException('Aborted','AbortError');throw new Error(t('flowSearchFailed'))}
+    const {data}=await requestSearch({query,limit:30,sources,region:state.region,locale:navigator.language||null,fast:true},{signal});
+    if(!data.tracks?.length)throw new Error(t('flowNoRecommendations'));
+    return data.tracks;
   }
   async function primeLocalFlow(){
     const ranked=rankCandidates([state.active,...state.tracks,...state.saved].filter(Boolean));if(!ranked.length)return false;
