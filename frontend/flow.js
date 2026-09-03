@@ -1,6 +1,6 @@
 (() => {
   const app=window.awunApp;if(!app)return;
-  const {state,ui,playTrack,render,toggleSave,setMessage,sourceLabels,decodeText,matchText,awunFetch}=app;
+  const {state,ui,playTrack,render,toggleSave,setMessage,sourceLabels,decodeText,matchText,awunFetch,refreshStatus,replaceQueue,appendQueue}=app;
   const t=(key,values={})=>window.awunI18n.t(key,values);
   const PROFILE_KEY='awun-wave-profile-v2';
   const moodTerms={any:'',calm:'calm mellow',energy:'energetic',focus:'focus instrumental',happy:'happy upbeat',sad:'melancholic',night:'night'};
@@ -68,6 +68,9 @@
     return result;
   }
   function contextTerms(){return[moodTerms[profile.mood],activityTerms[profile.activity],languageTerms[profile.language],eraTerms[profile.era]].filter(Boolean).join(' ')}
+  function revealFlowResults(){
+    state.library=false;state.hasSearched=true;ui.libraryButton.classList.remove('active');ui.libraryButton.setAttribute('aria-pressed','false');ui.searchNavButton.classList.add('active');ui.searchNavButton.setAttribute('aria-pressed','true');
+  }
   function buildQueries(){
     const seeds=positiveSeeds(),base=state.flow.baseQuery||ui.searchInput.value.trim(),context=contextTerms(),queries=[];
     if(base)queries.push([base,context].filter(Boolean).join(' '));
@@ -82,39 +85,43 @@
   async function requestCandidates(query,signal){
     const sources=[...state.sources].filter(source=>!state.available.size||state.available.has(source));
     if(!sources.length)throw new Error(t('flowSearchFailed'));
-    const perSourceLimit=Math.max(6,Math.ceil(18/sources.length)+2);
-    const requests=sources.map(source=>awunFetch('/api/v1/search',{method:'POST',headers:{'Content-Type':'application/json'},signal,body:JSON.stringify({query,limit:perSourceLimit,sources:[source],region:state.region,locale:navigator.language||null,fast:true})}).then(async response=>{const data=await response.json();if(!response.ok)throw new Error(data.detail||t('flowSearchFailed'));return data.tracks||[]}).catch(()=>[]));
-    const batches=await Promise.all(requests);return batches.flat();
+    const options={method:'POST',headers:{'Content-Type':'application/json'},signal,body:JSON.stringify({query,limit:30,sources,region:state.region,locale:navigator.language||null,fast:true})};
+    const readTracks=async response=>{const data=await response.json();if(!response.ok||!data.tracks?.length)throw new Error(data.detail||t('flowNoRecommendations'));return data.tracks};
+    const remote=awunFetch('/api/v1/search',options).then(readTracks);
+    if(!app.apiBase)return remote;
+    const local=new Promise((resolve,reject)=>{const timer=setTimeout(()=>fetch('/api/v1/search',options).then(readTracks).then(resolve,reject),4500);signal.addEventListener('abort',()=>{clearTimeout(timer);reject(new DOMException('Aborted','AbortError'))},{once:true})});
+    try{return await Promise.any([remote,local])}catch{if(signal.aborted)throw new DOMException('Aborted','AbortError');throw new Error(t('flowSearchFailed'))}
   }
-  function primeLocalFlow(){
+  async function primeLocalFlow(){
     const ranked=rankCandidates([state.active,...state.tracks,...state.saved].filter(Boolean));if(!ranked.length)return false;
-    state.tracks=ranked.slice(0,80);state.library=false;ui.libraryButton.classList.remove('active');ui.libraryButton.setAttribute('aria-pressed','false');render();
-    if(!state.active)void playTrack(state.tracks[0]);setMessage(t('flowLive',{count:state.tracks.length}),'notice');return true;
+    state.tracks=ranked.slice(0,80);revealFlowResults();replaceQueue(state.tracks,'context');render();
+    setMessage(t('flowLive',{count:state.queue.length}),'notice');if(!state.active)void playTrack(state.tracks[0],{preserveQueue:true});return true;
   }
   async function fillFlow(initial=false){
-    if(state.flow.fetching||!state.sources.size)return;state.flow.fetching=true;updateFlowUi();
+    if(state.flow.fetching)return;state.flow.fetching=true;revealFlowResults();setMessage(t('building'),'loading');updateFlowUi();render();
     let timeoutId=null;
     try{
+      if(!state.sources.size)await refreshStatus();if(!state.sources.size)throw new Error(t('flowSearchFailed'));
       const queries=buildQueries();if(!queries.length)throw new Error(t('flowNeedsSeed'));
-      const query=queries[state.flow.queryCursor%queries.length];state.flow.queryCursor+=1;state.flow.controller=new AbortController();timeoutId=setTimeout(()=>state.flow.controller?.abort(),7500);
+      const query=queries[state.flow.queryCursor%queries.length];state.flow.queryCursor+=1;state.flow.controller=new AbortController();timeoutId=setTimeout(()=>state.flow.controller?.abort(),65000);
       const remote=await requestCandidates(query,state.flow.controller.signal);const current=initial?state.tracks:[];
       const ranked=rankCandidates([...current,...remote]);if(!ranked.length)throw new Error(t('flowNoRecommendations'));
       if(initial){state.tracks=ranked.slice(0,80)}else{const existing=new Set(state.tracks.map(track=>track.id));state.tracks.push(...ranked.filter(track=>!existing.has(track.id)).slice(0,40))}
-      state.library=false;ui.libraryButton.classList.remove('active');ui.libraryButton.setAttribute('aria-pressed','false');render();
-      if(initial&&!state.active)await playTrack(state.tracks[0]);setMessage(t('flowLive',{count:state.tracks.length}),'notice');
-    }catch(error){if(error.name==='AbortError'&&state.tracks.length)return;setMessage(error.message||t('flowUnavailable'),'error');if(initial)stopFlow(true)}
-    finally{if(timeoutId)clearTimeout(timeoutId);state.flow.controller=null;state.flow.fetching=false;updateFlowUi()}
+      revealFlowResults();if(initial)replaceQueue(state.tracks,'context');else appendQueue(ranked,'context');render();
+      if(initial&&!state.active)await playTrack(state.tracks[0],{preserveQueue:true});setMessage(t('flowLive',{count:state.queue.length}),'notice');
+    }catch(error){if(error.name==='AbortError'&&(!state.flow.active||state.tracks.length))return;setMessage(error.message||t('flowUnavailable'),'error');if(initial)stopFlow(true)}
+    finally{if(timeoutId)clearTimeout(timeoutId);state.flow.controller?.abort();state.flow.controller=null;state.flow.fetching=false;updateFlowUi()}
   }
   async function startFlow(){
     if(state.flow.active){stopFlow();return}
     state.flow.baseQuery=ui.searchInput.value.trim()||[state.active?.artist,state.active?.title].filter(Boolean).join(' ')||positiveSeeds()[0]?.artist||(document.documentElement.lang==='ru'?'новая музыка':'new music');
-    state.flow.active=true;state.flow.queryCursor=0;state.flow.seen.clear();document.body.classList.add('flow-active');closePanel();updateFlowUi();if(primeLocalFlow()){void fillFlow(false);return}await fillFlow(true);
+    state.flow.active=true;state.flow.queryCursor=0;state.flow.seen.clear();document.body.classList.add('flow-active');closePanel();updateFlowUi();if(await primeLocalFlow()){void fillFlow(false);return}await fillFlow(true);
   }
   function stopFlow(silent=false){state.flow.controller?.abort();state.flow.active=false;document.body.classList.remove('flow-active');updateFlowUi();if(!silent)setMessage(t('flowStopped'),'notice')}
   function openPanel(){flow.flowPanel.hidden=false;flow.flowButton.setAttribute('aria-expanded','true');document.body.classList.add('flow-screen-open');requestAnimationFrame(()=>flow.flowPanel.classList.add('open'));updateFlowUi()}
   function closePanel(){flow.flowPanel.classList.remove('open');flow.flowButton.setAttribute('aria-expanded','false');document.body.classList.remove('flow-screen-open');setTimeout(()=>{flow.flowPanel.hidden=true},180)}
   function updateFlowUi(){
-    flow.flowBadge.textContent=t(state.flow.active?'live':state.flow.fetching?'building':'ready');flow.flowButton.classList.toggle('active',state.flow.active);flow.flowStart.textContent=t(state.flow.active?'stopWave':'startWave');flow.flowStart.classList.toggle('stop',state.flow.active);flow.flowStats.textContent=t('flowStats',{signals:profile.signals.length,blocked:profile.blockedArtists.length});
+    flow.flowBadge.textContent=t(state.flow.fetching?'building':state.flow.active?'live':'ready');flow.flowButton.classList.toggle('active',state.flow.active);flow.flowStart.textContent=t(state.flow.active?'stopWave':'startWave');flow.flowStart.classList.toggle('stop',state.flow.active);flow.flowStats.textContent=t('flowStats',{signals:profile.signals.length,blocked:profile.blockedArtists.length});
     flow.flowMood.value=profile.mood;flow.flowActivity.value=profile.activity;flow.flowLanguage.value=profile.language;flow.flowEra.value=profile.era;flow.flowDiscovery.querySelectorAll('[data-flow-discovery]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.flowDiscovery===profile.discovery)));
     const seed=state.active?[decodeText(state.active.artist),decodeText(state.active.title)].filter(Boolean).join(' — '):ui.searchInput.value.trim()||positiveSeeds()[0]?.artist||t('currentSearchOrLibrary');flow.flowSeed.textContent=t('flowSeed',{seed});
     const reaction=state.active?latestReaction(state.active):'';flow.flowLike.classList.toggle('active',reaction==='like');flow.flowDislike.classList.toggle('active',reaction==='dislike');

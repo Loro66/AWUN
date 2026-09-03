@@ -45,6 +45,22 @@ def test_queue_deduplicates_tracks_and_caps_payload() -> None:
     assert result == {"length": 250, "unique": 250}
 
 
+def test_waveform_is_deterministic_varied_and_svg_masked() -> None:
+    result = run_core(
+        "(()=>{const first=core.waveformBars('track-42',96);"
+        "const second=core.waveformBars('track-42',96);"
+        "return {same:JSON.stringify(first)===JSON.stringify(second),length:first.length,"
+        "minimum:Math.min(...first),maximum:Math.max(...first),unique:new Set(first).size,"
+        "mask:core.waveformMask('track-42',96)}})()"
+    )
+    assert result["same"] is True
+    assert result["length"] == 96
+    assert 20 <= result["minimum"] < result["maximum"] <= 96
+    assert result["unique"] >= 12
+    assert result["mask"].startswith('url("data:image/svg+xml,')
+    assert "%3Crect" in result["mask"]
+
+
 def test_failover_ranks_only_matching_untried_sources() -> None:
     result = run_core(
         "(()=>{"
@@ -80,4 +96,4 @@ def test_app_wires_persistent_queue_and_cross_source_recovery() -> None:
     assert "playerCore.enqueue" in app and "playerCore.move" in app and "playerCore.remove" in app
     assert "rankAlternatives" in app and "failedSources" in app
     assert "resumeAt" in app and "sourceSwitched" in app
-    assert 'src="/static/player-core.js?v=20260902.1"' in html
+    assert 'src="/static/player-core.js?v=20260902.2"' in html

@@ -1,4 +1,4 @@
-/* AWUN 1.9.4 — SoundCloud-shaped stream with resilient playback and queue. */
+/* AWUN 1.9.5 — responsive controls, radio queue and bar waveforms. */
 
 html[data-theme]{
   /* Semantic design tokens. Components below consume the compatibility
@@ -87,7 +87,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 }
 
 @media (min-width:1100px){
-  html{--awun-nav:214px;--awun-player-height:88px}
+  html{--awun-nav:214px;--awun-player-height:96px}
   body{height:100svh;overflow:hidden;background:var(--forest-0)}
   .ambient{opacity:.16;filter:grayscale(1) saturate(.5) contrast(1.12) brightness(.42)}
 
@@ -374,6 +374,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .track-queue-menu>div{position:absolute;z-index:40;top:calc(100% + 7px);right:0;width:174px;padding:5px;display:grid;gap:4px;border:1px solid rgba(var(--paper-rgb),.15);border-radius:9px;background:var(--drawer-bg);box-shadow:0 16px 38px rgba(0,0,0,.42)}
 .track-queue-menu>div button{min-height:36px;padding:0 11px;border:0;border-radius:6px;background:transparent;color:var(--paper);text-align:left;font-size:10px;font-weight:700;letter-spacing:.35px;cursor:pointer}
 .track-queue-menu>div button:hover{background:var(--signal-soft);color:var(--signal-hot)}
+.track.queue-menu-open{z-index:60}
+.track-queue-menu[open]{z-index:61}
+.track-queue-menu.opens-up>div{top:auto;bottom:calc(100% + 7px)}
 
 .queue-item{display:grid;grid-template-columns:14px 44px minmax(0,1fr) auto auto;align-items:center;gap:9px}
 .queue-item.dragging{opacity:.45}
@@ -404,4 +407,77 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   .track{grid-template-columns:46px 34px minmax(160px,1fr) minmax(105px,.9fr) 68px 38px 108px;gap:8px}
   .track .actions{grid-template-columns:32px 32px 32px;gap:4px}
   .track .story-button,.track .save,.track-queue-menu,.track-queue-menu>summary{width:32px;height:30px}
+}
+
+/* A deterministic bar mask gives every track a legible SoundCloud-style
+   waveform while keeping seeking as a native range input. */
+.home-track-meter:before,.home-track-meter:after,
+.track-waveform:before,.track-waveform:after,
+.player .wave-progress:before,.player .wave-progress:after{
+  inset:0;
+  width:auto;
+  clip-path:none;
+  background:rgba(var(--paper-rgb),.22);
+  -webkit-mask-image:var(--wave-mask);
+  mask-image:var(--wave-mask);
+  -webkit-mask-position:center;
+  mask-position:center;
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
+  -webkit-mask-size:100% 100%;
+  mask-size:100% 100%;
+}
+.home-track-meter:after,.track-waveform:after{
+  width:auto;
+  background:var(--signal);
+  clip-path:inset(0 calc(100% - var(--track-progress)) 0 0);
+}
+.player .wave-progress:before,.player .wave-progress:after{z-index:0;filter:none}
+.player .wave-progress:after{
+  background:var(--signal);
+  clip-path:inset(0 calc(100% - var(--value)) 0 0);
+}
+.track-waveform{height:36px}
+.home-track-meter{height:28px}
+.player .wave-progress,.player .wave-progress .progress{height:28px}
+.player .wave-progress .progress{z-index:2;inset:0}
+.player .wave-progress .progress::-webkit-slider-runnable-track{height:28px;background:transparent}
+.player .wave-progress .progress::-moz-range-track,
+.player .wave-progress .progress::-moz-range-progress{height:28px;background:transparent}
+.player .wave-progress .progress::-webkit-slider-thumb{margin-top:8.5px}
+.player.expanded-player .wave-progress,.player.expanded-player .wave-progress .progress{height:42px}
+.player.expanded-player .wave-progress .progress::-webkit-slider-runnable-track{height:42px}
+.player.expanded-player .wave-progress .progress::-moz-range-track,
+.player.expanded-player .wave-progress .progress::-moz-range-progress{height:42px}
+.player.expanded-player .wave-progress .progress::-webkit-slider-thumb{margin-top:15.5px}
+
+/* The legacy two-column tool rule could wrap volume and expand into a broken
+   second row between the mobile and desktop layouts. */
+@media (min-width:761px) and (max-width:1099px){
+  .player .player-tools{
+    position:static!important;
+    width:100%!important;
+    display:grid!important;
+    grid-template-columns:28px 28px minmax(88px,130px)!important;
+    align-items:center!important;
+    justify-content:start!important;
+    gap:9px!important;
+  }
+  .player .player-tools #queueToggle,.player .player-tools #muteButton{display:grid!important}
+  .player .player-tools .volume{display:block!important;min-width:0!important}
+  .player .player-tools #expandPlayer{display:none!important}
+}
+@media (max-width:760px){
+  .player .player-tools{
+    position:absolute!important;
+    z-index:5!important;
+    top:12px!important;
+    right:12px!important;
+    width:30px!important;
+    display:grid!important;
+    grid-template-columns:30px!important;
+    margin:0!important;
+  }
+  .player .player-tools>*{display:none!important}
+  .player .player-tools #queueToggle{display:grid!important;width:30px;height:30px}
 }

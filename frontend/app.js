@@ -36,7 +36,7 @@ const ui={
   status:$('status'),searchNavButton:$('searchNavButton'),libraryButton:$('libraryButton'),allSourcesButton:$('allSourcesButton'),installButton:$('installButton'),languageButton:$('languageButton'),languageLabel:$('languageLabel'),emptyGuide:$('emptyGuide'),idleStage:$('idleStage'),idleSearchButton:$('idleSearchButton'),idleWaveButton:$('idleWaveButton'),guideSearch:$('guideSearch'),guideWave:$('guideWave'),guideImport:$('guideImport'),searchForm:$('searchForm'),searchInput:$('searchInput'),searchButton:$('searchButton'),homeSections:$('homeSections'),recentList:$('recentList'),recommendationGrid:$('recommendationGrid'),queueList:$('queueList'),queueEmpty:$('queueEmpty'),clearQueue:$('clearQueue'),
   sources:$('sources'),regionSelect:$('regionSelect'),limitSelect:$('limitSelect'),results:$('results'),trackList:$('trackList'),message:$('message'),resultTitle:$('resultTitle'),resultCount:$('resultCount'),resultTime:$('resultTime'),searchMeta:$('searchMeta'),
   player:$('player'),playerArtwork:$('playerArtwork'),nowTitle:$('nowTitle'),nowArtist:$('nowArtist'),nowSource:$('nowSource'),audio:$('audio'),youtubeDock:$('youtubeDock'),youtubePlayer:$('youtubePlayer'),
-  previousTrack:$('previousTrack'),playPause:$('playPause'),nextTrack:$('nextTrack'),repeatMode:$('repeatMode'),progress:$('progress'),elapsed:$('elapsed'),totalTime:$('totalTime'),volume:$('volume'),muteButton:$('muteButton'),closePlayer:$('closePlayer'),minimizeVideo:$('minimizeVideo'),queueToggle:$('queueToggle'),queueClose:$('queueClose'),expandPlayer:$('expandPlayer'),collapsePlayer:$('collapsePlayer'),
+  previousTrack:$('previousTrack'),playPause:$('playPause'),nextTrack:$('nextTrack'),repeatMode:$('repeatMode'),waveProgress:$('waveProgress'),progress:$('progress'),elapsed:$('elapsed'),totalTime:$('totalTime'),volume:$('volume'),muteButton:$('muteButton'),closePlayer:$('closePlayer'),minimizeVideo:$('minimizeVideo'),queueToggle:$('queueToggle'),queueClose:$('queueClose'),expandPlayer:$('expandPlayer'),collapsePlayer:$('collapsePlayer'),
   themeButton:$('themeButton'),themeLabel:$('themeLabel'),themePanel:$('themePanel'),themeClose:$('themeClose'),themeBackdrop:$('themeBackdrop'),themeColor:$('themeColor'),motionToggle:$('motionToggle'),motionValue:$('motionValue'),decorToggle:$('decorToggle'),decorValue:$('decorValue'),densityToggle:$('densityToggle'),densityValue:$('densityValue'),telemetryClock:$('telemetryClock'),
   importButton:$('importButton'),importPanel:$('importPanel'),importClose:$('importClose'),importBackdrop:$('importBackdrop'),libraryFile:$('libraryFile'),importFileButton:$('importFileButton'),importFileName:$('importFileName'),importText:$('importText'),importStatus:$('importStatus'),importSubmit:$('importSubmit'),importUrl:$('importUrl'),importUrlSubmit:$('importUrlSubmit'),importProgress:$('importProgress')
 };
@@ -72,6 +72,10 @@ const decodeText=value=>{const node=document.createElement('textarea');node.inne
 const safeImage=value=>{try{const url=new URL(value);return ['http:','https:'].includes(url.protocol)?url.href:''}catch{return''}};
 const currentList=()=>state.library?state.saved:state.tracks;
 const selectedIds=()=>new Set(state.saved.map(track=>track.id));
+const waveformKey=track=>[track?.id,track?.artist,track?.title,track?.duration].filter(value=>value!==undefined&&value!==null).join('|')||'awun';
+function applyWaveform(element,track,bars=96){
+  if(element)element.style.setProperty('--wave-mask',playerCore.waveformMask(waveformKey(track),bars));
+}
 
 function persist(){
   localStorage.setItem('awun-library',JSON.stringify(state.saved));
@@ -182,9 +186,9 @@ function sourceButtons(){return [...document.querySelectorAll('[data-source]')]}
 
 async function refreshStatus(){
   try{
-    const response=await awunFetch('/health',{cache:'no-store'});
-    if(!response.ok)throw new Error(t('healthFailed'));
-    const data=await response.json();
+    const readHealth=async request=>{const response=await request;if(!response.ok)throw new Error(t('healthFailed'));return response.json()};
+    const remote=readHealth(awunFetch('/health',{cache:'no-store'}));
+    const data=apiBase?await Promise.any([remote,readHealth(fetch('/health',{cache:'no-store'}))]):await remote;
     state.available=new Set(data.sources||[]);
     state.geniusEnabled=Boolean(data.providers?.track_stories?.genius_annotations);
     state.sources=new Set([...state.sources].filter(source=>state.available.has(source)));
@@ -240,7 +244,7 @@ function renderHome(){
     const activate=()=>state.active?.id===track.id?togglePlayback():playTrack(track);
     const play=document.createElement('button');play.type='button';play.className='home-track-play';play.textContent=state.active?.id===track.id?'Ⅱ':'▶';play.setAttribute('aria-label',t('playTrackAria',{title:decodeText(track.title)}));play.onclick=activate;
     cover.append(play);
-    const meter=document.createElement('span');meter.className='home-track-meter';meter.setAttribute('aria-hidden','true');cover.append(meter);
+    const meter=document.createElement('span');meter.className='home-track-meter';meter.setAttribute('aria-hidden','true');applyWaveform(meter,track,58);cover.append(meter);
     const body=document.createElement('div');body.className='home-track-body';const title=document.createElement('button');title.type='button';title.className='home-track-title';title.textContent=decodeText(track.title)||t('unknownTitle');title.onclick=activate;const artist=document.createElement('span');artist.className='home-track-artist';artist.textContent=decodeText(track.artist)||t('unknownArtist');body.append(title,artist);
     const footer=document.createElement('div');footer.className='home-track-footer';const duration=document.createElement('span');duration.className='home-track-duration';duration.textContent=formatTime(track.duration);const save=document.createElement('button');save.type='button';save.className=`home-track-save ${selectedIds().has(track.id)?'saved':''}`;save.textContent=selectedIds().has(track.id)?'♥':'♡';save.setAttribute('aria-label',t(selectedIds().has(track.id)?'saved':'addLibrary'));save.onclick=event=>{event.stopPropagation();toggleSave(track)};footer.append(duration,save);card.append(cover,body,footer);card.onclick=event=>{if(!event.target.closest('button'))activate()};ui.recentList.append(card);
   });
@@ -253,6 +257,16 @@ function seedContextQueue(track){
   const list=currentList();const index=list.findIndex(item=>item.id===track.id);
   state.queue=index>=0?playerCore.uniqueTracks(list.slice(index+1)):[];
   state.queueMode='context';persistQueue();
+}
+
+function replaceQueue(tracks,mode='context'){
+  state.queue=playerCore.uniqueTracks(tracks).filter(track=>track.id!==state.active?.id);
+  state.queueMode=mode==='manual'?'manual':'context';persistQueue();renderQueue();
+}
+
+function appendQueue(tracks,mode=state.queueMode){
+  state.queue=playerCore.uniqueTracks([...state.queue,...tracks]).filter(track=>track.id!==state.active?.id);
+  state.queueMode=mode==='manual'?'manual':'context';persistQueue();renderQueue();
 }
 
 function queueTrack(track,position){
@@ -304,7 +318,7 @@ function render(){
   renderQueue();
   ui.emptyGuide.hidden=Boolean(list.length);
   ui.trackList.replaceChildren();
-  ui.resultTitle.textContent=t(state.library?'yourLibrary':state.tracks.length?'searchResults':'discover');
+  ui.resultTitle.textContent=t(state.library?'yourLibrary':state.flow?.active?'wave':state.tracks.length?'searchResults':'discover');
   ui.resultCount.textContent=t(state.library?'savedCount':'foundCount',{count:list.length});
 
   list.forEach((track,index)=>{
@@ -314,14 +328,14 @@ function render(){
     const activateTrack=()=>state.active?.id===track.id?togglePlayback():playTrack(track);
     const play=document.createElement('button');play.className='play';play.type='button';play.textContent=needsMatch?'↻':state.active?.id===track.id?'Ⅱ':'▶';play.setAttribute('aria-label',t(needsMatch?'matchAndPlayAria':'playTrackAria',{title:decodeText(track.title)}));play.onclick=event=>{event.stopPropagation();activateTrack()};
     const name=document.createElement('button');name.className='name';name.type='button';name.setAttribute('aria-label',t('playTrackAria',{title:decodeText(track.title)}));const title=document.createElement('strong');title.textContent=decodeText(track.title)||t('unknownTitle');const artist=document.createElement('span');artist.textContent=decodeText(track.artist)||t('unknownArtist');name.append(title,artist);name.onclick=event=>{event.stopPropagation();activateTrack()};
-    const waveform=document.createElement('button');waveform.className='track-waveform';waveform.type='button';waveform.setAttribute('aria-label',t('playTrackAria',{title:decodeText(track.title)}));waveform.onclick=event=>{event.stopPropagation();activateTrack()};
+    const waveform=document.createElement('button');waveform.className='track-waveform';waveform.type='button';waveform.setAttribute('aria-label',t('playTrackAria',{title:decodeText(track.title)}));applyWaveform(waveform,track,74);waveform.onclick=event=>{event.stopPropagation();activateTrack()};
     const source=document.createElement('span');source.className=`tag ${track.source}`;source.textContent=sourceLabels[track.source]||track.source;
     const quality=document.createElement('span');quality.className='quality';quality.textContent=track.quality||'—';
     const duration=document.createElement('span');duration.className='duration';duration.textContent=formatTime(track.duration);
     const actions=document.createElement('div');actions.className='actions';
     const story=document.createElement('button');story.className='story-button';story.type='button';story.textContent=t(state.expanded===track.id?'close':'story');story.setAttribute('aria-expanded',String(state.expanded===track.id));story.onclick=event=>{event.stopPropagation();toggleStory(track)};actions.append(story);
     const save=document.createElement('button');save.className=`save ${saved.has(track.id)?'saved':''}`;save.type='button';save.textContent=t(saved.has(track.id)?'saved':'addLibrary');save.onclick=event=>{event.stopPropagation();toggleSave(track)};actions.append(save);
-    const queueMenu=document.createElement('details');queueMenu.className='track-queue-menu';const queueSummary=document.createElement('summary');queueSummary.textContent='☷';queueSummary.setAttribute('aria-label',t('queueActionsAria',{track:decodeText(track.title)}));const queueOptions=document.createElement('div');const playNext=document.createElement('button');playNext.type='button';playNext.textContent=t('playNext');playNext.onclick=event=>{event.stopPropagation();queueTrack(track,'next');queueMenu.open=false};const addQueue=document.createElement('button');addQueue.type='button';addQueue.textContent=t('addToQueue');addQueue.onclick=event=>{event.stopPropagation();queueTrack(track,'end');queueMenu.open=false};queueOptions.append(playNext,addQueue);queueMenu.append(queueSummary,queueOptions);actions.append(queueMenu);
+    const queueMenu=document.createElement('details');queueMenu.className='track-queue-menu';const queueSummary=document.createElement('summary');queueSummary.textContent='☷';queueSummary.setAttribute('aria-label',t('queueActionsAria',{track:decodeText(track.title)}));const queueOptions=document.createElement('div');const playNext=document.createElement('button');playNext.type='button';playNext.textContent=t('playNext');playNext.onclick=event=>{event.stopPropagation();queueTrack(track,'next');queueMenu.open=false};const addQueue=document.createElement('button');addQueue.type='button';addQueue.textContent=t('addToQueue');addQueue.onclick=event=>{event.stopPropagation();queueTrack(track,'end');queueMenu.open=false};queueOptions.append(playNext,addQueue);queueMenu.append(queueSummary,queueOptions);queueMenu.addEventListener('toggle',()=>{row.classList.toggle('queue-menu-open',queueMenu.open);if(!queueMenu.open){queueMenu.classList.remove('opens-up');return}document.querySelectorAll('.track-queue-menu[open]').forEach(menu=>{if(menu!==queueMenu)menu.open=false});requestAnimationFrame(()=>{const boundary=ui.results.getBoundingClientRect(),options=queueOptions.getBoundingClientRect();queueMenu.classList.toggle('opens-up',options.bottom>boundary.bottom-8)})});actions.append(queueMenu);
     if(track.download_url&&!playStoreMode){const download=document.createElement('a');download.className='download';download.href=track.download_url;download.download='';download.rel='noopener';download.textContent=t('download');download.onclick=event=>event.stopPropagation();actions.append(download)}
     const catalog=document.createElement('div');catalog.className='catalog-links';
     [['spotify','SPOTIFY'],['apple_music','APPLE'],['yandex_music','YANDEX']].forEach(([provider,label])=>{const href=track.catalog_links?.[provider];if(!href)return;const link=document.createElement('a');link.className='catalog-link';link.href=href;link.target='_blank';link.rel='noopener noreferrer';link.textContent=`${label} ↗`;link.setAttribute('aria-label',t('findCatalogAria',{title:decodeText(track.title),source:label}));catalog.append(link)});
@@ -561,6 +575,7 @@ async function playTrack(track,options={}){
   const image=safeImage(track.thumbnail),monogram=ui.playerArtwork.querySelector('.vinyl-monogram');
   ui.playerArtwork.style.setProperty('--vinyl-cover',image?`url("${image}")`:'none');
   ui.playerArtwork.classList.toggle('has-artwork',Boolean(image));
+  applyWaveform(ui.waveProgress,track,132);
   if(monogram)monogram.textContent=image?'':(decodeText(track.title)||'AW').slice(0,2).toUpperCase();
   updateTimeline(resumeAt,track.duration||0);updateMediaSession(track);render();emitAwun('play',{track,previous,recovered});
   try{
@@ -662,6 +677,6 @@ async function bootstrap(){
   if(!playStoreMode&&'serviceWorker'in navigator)navigator.serviceWorker.register('/service-worker.js').catch(()=>{});ui.player.hidden=false;ui.player.classList.add('player-empty');applyLanguage();applyVisual(false);applyRepeatMode(false);updateClock();setInterval(updateClock,1000);persist();setRange(ui.volume,82);setRange(ui.progress,0);render();await refreshStatus();
   const query=url.get('q');if(query){ui.searchInput.value=query;search(query)}
 }
-window.awunApp={state,ui,playTrack,render,search,toggleSave,currentList,setMessage,sourceLabels,decodeText,matchText,loadingRows,awunFetch,pausePlayback,playStoreMode,apiBase,apiUrl};
+window.awunApp={state,ui,playTrack,render,search,toggleSave,currentList,setMessage,sourceLabels,decodeText,matchText,loadingRows,awunFetch,pausePlayback,playStoreMode,apiBase,apiUrl,refreshStatus,replaceQueue,appendQueue};
 document.addEventListener('awun:language',event=>{language=event.detail.language;applyVisual(false);applyRepeatMode(false);render();refreshStatus()});
 bootstrap();

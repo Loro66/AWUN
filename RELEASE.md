@@ -57,10 +57,14 @@ Open `https://YOUR-AWUN-API/` after deployment.
 - Breaking the active SoundCloud stream switches to a close YouTube/Audius match and resumes near the captured position.
 - A weak title/artist/duration match is rejected instead of playing an unrelated result.
 - The page loads one versioned `design-system.css` entrypoint; every theme keeps controls and waveform contrast usable.
-- FLOW starts from a search, active track or local library and keeps refilling the queue.
+- FLOW opens its result surface immediately, starts from a search, active track or local library,
+  and keeps the persistent queue refilled while a remote API is waking up.
 - FLOW likes, dislikes and listening signals survive reload only on the same device.
 - Familiar/Balanced/New, mood and activity controls change recommendation ranking.
-- The player progress line supports click/drag seeking on desktop and mobile.
+- Track cards and the player use deterministic SoundCloud-style bar waveforms; the player waveform
+  remains a native click/drag seek control on desktop and mobile.
+- At tablet and compact desktop widths, player volume and queue controls stay on one row without
+  clipping; result queue menus stack above adjacent cards and open upward near the scroll edge.
 - Disabled providers are visibly marked `NOT CONNECTED` and are not sent in a
   search request.
 - Opening `/?q=artist%20track` runs a shareable search.

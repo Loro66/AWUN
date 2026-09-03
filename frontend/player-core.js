@@ -120,6 +120,43 @@
     return items;
   }
 
+  function waveformBars(seed, count = 96) {
+    const length = Math.max(16, Math.min(180, Math.round(Number(count) || 96)));
+    const text = String(seed || 'awun');
+    let hash = 2166136261;
+    for (const character of text) {
+      hash ^= character.charCodeAt(0);
+      hash = Math.imul(hash, 16777619);
+    }
+
+    const bars = [];
+    let previous = 0.45;
+    for (let index = 0; index < length; index += 1) {
+      hash ^= hash << 13;
+      hash ^= hash >>> 17;
+      hash ^= hash << 5;
+      const noise = (hash >>> 0) / 4294967295;
+      const phrase = (Math.sin(index * 0.31 + (hash & 31)) + 1) / 2;
+      const pulse = (Math.sin(index * 0.083 + text.length) + 1) / 2;
+      const sample = noise * 0.56 + phrase * 0.27 + pulse * 0.17;
+      previous = previous * 0.34 + sample * 0.66;
+      bars.push(Math.round(20 + previous * 76));
+    }
+    return bars;
+  }
+
+  function waveformMask(seed, count = 96) {
+    const bars = waveformBars(seed, count);
+    const step = 3;
+    const width = bars.length * step - 1;
+    const rectangles = bars.map((height, index) => {
+      const y = Math.round((100 - height) * 50) / 100;
+      return `<rect x="${index * step}" y="${y}" width="2" height="${height}" rx="1"/>`;
+    }).join('');
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} 100" preserveAspectRatio="none"><g fill="black">${rectangles}</g></svg>`;
+    return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+  }
+
   return {
     MAX_QUEUE_LENGTH,
     alternativeScore,
@@ -128,6 +165,8 @@
     normalizeText,
     rankAlternatives,
     remove,
-    uniqueTracks
+    uniqueTracks,
+    waveformBars,
+    waveformMask
   };
 });
