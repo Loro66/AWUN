@@ -124,7 +124,7 @@ def test_repeat_modes_are_persistent_and_handle_track_endings() -> None:
     assert "['off','all','one']" in script
     assert "handleTrackEnded" in script
     assert "YT.PlayerState.ENDED)handleTrackEnded()" in script
-    assert "addEventListener('ended',handleTrackEnded)" in script
+    assert "addEventListener('ended',()=>{stopWaveformCapture();handleTrackEnded()})" in script
 
 
 def test_flow_recommendations_are_local_persistent_and_feedback_driven() -> None:
@@ -302,6 +302,24 @@ def test_waveform_queue_menu_and_responsive_player_regressions_are_fixed() -> No
     assert "row.classList.toggle('queue-menu-open',queueMenu.open)" in app
     assert "@media (min-width:761px) and (max-width:1099px)" in redesign
     assert ".player .player-tools #expandPlayer{display:none!important}" in redesign
+
+
+def test_provider_waveforms_progressive_search_and_diagnostics_are_wired() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    app = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    core = (ROOT / "frontend" / "player-core.js").read_text(encoding="utf-8")
+    api = (ROOT / "backend" / "api" / "main.py").read_text(encoding="utf-8")
+
+    assert "waveformMaskFromPeaks" in core and "interleaveTracks" in core
+    assert "awun-waveforms-v1" in app and "waveformImagePeaks" in app
+    assert "captureStream" in app and "startWaveformCapture" in app
+    assert "track?.waveform_url" in app and "data.waveform_url" not in app
+    assert "Promise.all(sources.map(async source=>" in app
+    assert "mergeProgressiveData" in app and "progressiveResults" in app
+    assert 'id="diagnosticsPanel"' in html and 'id="diagnosticsCopy"' in html
+    assert 'aria-controls="diagnosticsPanel"' in html
+    assert "diagnosticsReport" in app and "copyDiagnostics" in app
+    assert '"source_health": search_engine.source_health' in api
 
 
 def test_listener_first_onboarding_and_language_switch_are_wired() -> None:

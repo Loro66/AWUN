@@ -24,7 +24,7 @@
 | Название | `ru-RU/title.txt` | `en-US/title.txt` |
 | Краткое описание | `ru-RU/short_description.txt` | `en-US/short_description.txt` |
 | Полное описание | `ru-RU/full_description.txt` | `en-US/full_description.txt` |
-| Примечания к версии | `ru-RU/changelogs/1090500.txt` | `en-US/changelogs/1090500.txt` |
+| Примечания к версии | `ru-RU/changelogs/1100000.txt` | `en-US/changelogs/1100000.txt` |
 
 Для каждой локали загрузить:
 
@@ -71,7 +71,7 @@
 ## Загрузка и тестирование
 
 1. Включить Play App Signing и загрузить подписанный AAB из артефакта
-   `AWUN-Google-Play-1.9.5-1090500` во **Внутреннее тестирование**.
+   `AWUN-Google-Play-1.10.0-1100000` во **Внутреннее тестирование**.
 2. Добавить русские и английские примечания к версии.
 3. Установить сборку из Google Play на физический Android и проверить поиск,
    воспроизведение, сохранение, «Мою волну», поворот, фон, офлайн-ошибку,

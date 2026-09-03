@@ -248,6 +248,28 @@
       <button id="decorToggle" type="button"><span data-i18n="interface">ИНТЕРФЕЙС</span><b id="decorValue">ПОЛНЫЙ</b></button>
       <button id="densityToggle" type="button"><span data-i18n="density">ПЛОТНОСТЬ</span><b id="densityValue">ОБЫЧНАЯ</b></button>
     </div>
+    <button id="diagnosticsButton" class="diagnostics-entry" type="button" aria-controls="diagnosticsPanel" aria-expanded="false">
+      <span><small data-i18n="diagnosticsKicker">СОСТОЯНИЕ СЕТИ</small><strong data-i18n="sourceDiagnostics">ДИАГНОСТИКА ИСТОЧНИКОВ</strong></span>
+      <b data-i18n="openDiagnostics">ОТКРЫТЬ</b>
+    </button>
+  </aside>
+
+  <aside id="diagnosticsPanel" class="theme-panel diagnostics-panel" hidden aria-label="Диагностика музыкальных источников" data-i18n-aria-label="sourceDiagnosticsAria">
+    <div class="theme-panel-head">
+      <div><strong data-i18n="sourceDiagnostics">ДИАГНОСТИКА ИСТОЧНИКОВ</strong></div>
+      <button id="diagnosticsClose" type="button" aria-label="Закрыть диагностику" data-i18n-aria-label="closeDiagnosticsAria">×</button>
+    </div>
+    <p data-i18n="diagnosticsDescription">Фактическое состояние источников по последним поисковым запросам. Отчёт не содержит ключей API и личных данных.</p>
+    <div class="diagnostics-summary">
+      <div><span data-i18n="diagnosticRoute">МАРШРУТ API</span><strong id="diagnosticsEndpoint" data-i18n="diagnosticChecking">ПРОВЕРКА</strong></div>
+      <div><span data-i18n="diagnosticUpdated">ОБНОВЛЕНО</span><strong id="diagnosticsChecked">—</strong></div>
+    </div>
+    <div id="diagnosticsList" class="diagnostics-list" aria-live="polite"></div>
+    <div class="diagnostics-actions">
+      <span id="diagnosticsCopyStatus" data-i18n="diagnosticsPrivacy">В отчёте только технические статусы.</span>
+      <button id="diagnosticsRefresh" type="button" data-i18n="refreshDiagnostics">ОБНОВИТЬ</button>
+      <button id="diagnosticsCopy" type="button" data-i18n="copyDiagnostics">КОПИРОВАТЬ ОТЧЁТ</button>
+    </div>
   </aside>
 
   <div id="importBackdrop" class="theme-backdrop" hidden></div>

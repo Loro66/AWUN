@@ -45,6 +45,15 @@ def test_queue_deduplicates_tracks_and_caps_payload() -> None:
     assert result == {"length": 250, "unique": 250}
 
 
+def test_progressive_results_interleave_ready_sources_fairly() -> None:
+    result = run_core(
+        "(()=>{const bySource={soundcloud:[{id:'s1'},{id:'s2'},{id:'same'}],"
+        "youtube:[{id:'y1'},{id:'same'},{id:'y2'}],audius:[{id:'a1'}]};"
+        "return core.interleaveTracks(bySource,['soundcloud','youtube','audius'],8).map(track=>track.id)})()"
+    )
+    assert result == ["s1", "y1", "a1", "s2", "same", "y2"]
+
+
 def test_waveform_is_deterministic_varied_and_svg_masked() -> None:
     result = run_core(
         "(()=>{const first=core.waveformBars('track-42',96);"
@@ -59,6 +68,18 @@ def test_waveform_is_deterministic_varied_and_svg_masked() -> None:
     assert result["unique"] >= 12
     assert result["mask"].startswith('url("data:image/svg+xml,')
     assert "%3Crect" in result["mask"]
+
+
+def test_provider_waveform_peaks_are_resampled_and_svg_masked() -> None:
+    result = run_core(
+        "(()=>{const source=[10,20,80,40,100,5,35,60];"
+        "const peaks=core.waveformPeaks(source,16);"
+        "return {peaks,mask:core.waveformMaskFromPeaks(source,16)}})()"
+    )
+    assert len(result["peaks"]) == 16
+    assert min(result["peaks"]) >= 8
+    assert max(result["peaks"]) == 100
+    assert result["mask"].startswith('url("data:image/svg+xml,')
 
 
 def test_failover_ranks_only_matching_untried_sources() -> None:

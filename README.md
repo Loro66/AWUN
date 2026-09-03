@@ -27,9 +27,10 @@ playlists are rewritten through those routes and played with the bundled HLS.js
 client, so the browser does not contact the SoundCloud CDN directly.
 
 The current interface includes AUTO/CIS/EUROPE/USA/LATAM/ASIA/GLOBAL search,
-source-aware discovery, partial-failure handling,
+progressive source-by-source results, partial-failure handling and a diagnostics
+screen with provider latency, recent errors and a copyable technical report,
 a 30/60/100 result selector, Yandex library import, a local library, shareable search URLs and a unified responsive player with
-custom waveform seeking, volume, previous/next controls and browser Media
+provider-native waveform peaks with a deterministic fallback, volume, previous/next controls and browser Media
 Session integration. Its persistent queue supports **Play next**, append,
 remove and reorder and survives an app restart. When the active provider fails,
 AWUN finds a high-confidence match on another connected source and resumes at
@@ -38,7 +39,10 @@ and mobile shells. Its visual system includes Acid, Ultraviolet, Cobalt and
 Ember themes, Editorial and music-first Minimal layouts, plus motion controls. Visual settings
 are saved locally and work across desktop and mobile layouts. One versioned
 design-system entrypoint and explicit cascade layers keep theme tokens and
-components deterministic, including the light-theme waveform.
+components deterministic, including the light-theme waveform. Provider waveform
+profiles are extracted lazily and cached on the device instead of downloading
+full audio files for every search result. For same-origin audio without provider
+metadata, listened sections are progressively replaced with captured real peaks.
 
 ## Try and install
 

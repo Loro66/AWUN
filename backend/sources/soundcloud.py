@@ -153,6 +153,7 @@ class SoundCloudAdapter(BaseAdapter):
                     download_url=official_download,
                     score=76.0,
                     thumbnail=item.get("artwork_url") or (item.get("user") or {}).get("avatar_url"),
+                    waveform_url=self._safe_waveform_url(item.get("waveform_url")),
                 )
             )
         return tracks[:limit]
@@ -265,10 +266,16 @@ class SoundCloudAdapter(BaseAdapter):
                     download_url=None,
                     score=score,
                     thumbnail=info.get("thumbnail"),
+                    waveform_url=self._safe_waveform_url(info.get("waveform_url")),
                     request_headers=_request_headers(info),
                 )
             )
         return tracks[:limit]
+
+    @staticmethod
+    def _safe_waveform_url(value: Any) -> str | None:
+        url = str(value or "").strip()
+        return url if url.startswith(("http://", "https://")) else None
 
     async def close(self) -> None:
         if self._session and not self._session.closed:

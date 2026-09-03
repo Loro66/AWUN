@@ -120,6 +120,29 @@
     return items;
   }
 
+  function interleaveTracks(tracksBySource, sourceOrder, limit = MAX_QUEUE_LENGTH) {
+    const maximum = Math.max(0, Math.min(MAX_QUEUE_LENGTH, Math.round(Number(limit) || 0)));
+    const queues = (Array.isArray(sourceOrder) ? sourceOrder : [])
+      .map(source => uniqueTracks(tracksBySource?.[source] || []));
+    const positions = queues.map(() => 0);
+    const tracks = [];
+    const seen = new Set();
+    while (tracks.length < maximum) {
+      let consumed = false;
+      for (let index = 0; index < queues.length && tracks.length < maximum; index += 1) {
+        const candidate = queues[index][positions[index]];
+        positions[index] += 1;
+        if (!candidate) continue;
+        consumed = true;
+        if (seen.has(candidate.id)) continue;
+        seen.add(candidate.id);
+        tracks.push(candidate);
+      }
+      if (!consumed) break;
+    }
+    return tracks;
+  }
+
   function waveformBars(seed, count = 96) {
     const length = Math.max(16, Math.min(180, Math.round(Number(count) || 96)));
     const text = String(seed || 'awun');
@@ -145,8 +168,28 @@
     return bars;
   }
 
-  function waveformMask(seed, count = 96) {
-    const bars = waveformBars(seed, count);
+  function waveformPeaks(peaks, count = 96) {
+    const length = Math.max(16, Math.min(180, Math.round(Number(count) || 96)));
+    const values = Array.isArray(peaks)
+      ? peaks.map(value => Math.max(0, Math.min(100, Number(value) || 0)))
+      : [];
+    if (!values.length) return [];
+    const bars = [];
+    for (let index = 0; index < length; index += 1) {
+      const start = Math.floor((index * values.length) / length);
+      const end = Math.max(start + 1, Math.ceil(((index + 1) * values.length) / length));
+      let peak = 0;
+      for (let cursor = start; cursor < Math.min(end, values.length); cursor += 1) {
+        peak = Math.max(peak, values[cursor]);
+      }
+      bars.push(Math.round(Math.max(8, peak)));
+    }
+    return bars;
+  }
+
+  function waveformMaskFromPeaks(peaks, count = 96) {
+    const bars = waveformPeaks(peaks, count);
+    if (!bars.length) return '';
     const step = 3;
     const width = bars.length * step - 1;
     const rectangles = bars.map((height, index) => {
@@ -157,16 +200,23 @@
     return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
   }
 
+  function waveformMask(seed, count = 96) {
+    return waveformMaskFromPeaks(waveformBars(seed, count), count);
+  }
+
   return {
     MAX_QUEUE_LENGTH,
     alternativeScore,
     enqueue,
+    interleaveTracks,
     move,
     normalizeText,
     rankAlternatives,
     remove,
     uniqueTracks,
     waveformBars,
-    waveformMask
+    waveformMask,
+    waveformMaskFromPeaks,
+    waveformPeaks
   };
 });

@@ -1,0 +1,1 @@
+AWUN 1.10.0 adds provider-native waveforms with a local peak cache, progressive multi-source search, and a source diagnostics screen with latency and error reporting.

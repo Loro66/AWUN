@@ -292,6 +292,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "status": "ok",
             "version": settings.app_version,
             "sources": search_engine.available_sources,
+            "source_health": search_engine.source_health,
             "regions": list(REGION_NAMES),
             "providers": {
                 "youtube": {
@@ -352,6 +353,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         response = _apply_client_policy(response, request.headers.get("x-awun-client"))
         base_url = str(request.base_url).rstrip("/")
         for track in response.tracks:
+            if track.waveform_url and settings.media_proxy_enabled:
+                waveform_token = media_signer.sign(track.waveform_url)
+                track.waveform_url = f"{base_url}{settings.api_prefix}/media/{waveform_token}"
             if not settings.media_proxy_enabled:
                 continue
             if track.source == "youtube":

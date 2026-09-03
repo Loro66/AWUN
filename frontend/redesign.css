@@ -481,3 +481,29 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   .player .player-tools>*{display:none!important}
   .player .player-tools #queueToggle{display:grid!important;width:30px;height:30px}
 }
+
+/* Source diagnostics lives behind Settings and uses measured backend data,
+   so it fills the screen only when the listener explicitly opens it. */
+.diagnostics-entry{
+  width:min(820px,100%);min-height:62px;margin-top:15px;padding:0 16px;display:flex;align-items:center;justify-content:space-between;gap:20px;
+  border:1px solid rgba(var(--paper-rgb),.15);border-radius:var(--radius-control);background:var(--control-bg);color:var(--paper);text-align:left;cursor:pointer;
+}
+.diagnostics-entry:hover{border-color:rgba(var(--accent-rgb),.48);background:var(--signal-soft)}
+.diagnostics-entry>span{display:grid;gap:5px}.diagnostics-entry small{color:var(--paper-muted);font-size:7px;font-weight:800;letter-spacing:1.1px}.diagnostics-entry strong{font-size:10px;letter-spacing:1px}.diagnostics-entry>b{color:var(--signal-hot);font-size:8px;letter-spacing:1px}
+.diagnostics-panel{--diagnostic-width:920px}
+.diagnostics-panel>p,.diagnostics-summary,.diagnostics-list,.diagnostics-actions{width:min(var(--diagnostic-width),100%)}
+.diagnostics-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.diagnostics-summary>div{min-height:64px;padding:12px 14px;display:grid;align-content:center;gap:7px;border:1px solid rgba(var(--paper-rgb),.13);border-radius:var(--radius-control);background:var(--control-bg)}
+.diagnostics-summary span,.diagnostic-source dt{color:var(--paper-muted);font-size:7px;font-weight:800;letter-spacing:.9px}.diagnostics-summary strong{color:var(--paper);font-size:10px;letter-spacing:.6px}
+.diagnostics-list{display:grid;gap:8px}
+.diagnostic-source{padding:14px 15px;border:1px solid rgba(var(--paper-rgb),.13);border-radius:var(--radius-control);background:var(--track-bg)}
+.diagnostic-source>div:first-child{display:flex;align-items:center;justify-content:space-between;gap:16px}.diagnostic-source>div:first-child>div{display:flex;align-items:center;gap:10px}.diagnostic-source i{width:8px;height:8px;border-radius:50%;background:rgba(var(--paper-rgb),.35);box-shadow:0 0 0 4px rgba(var(--paper-rgb),.04)}
+.diagnostic-source.healthy i{background:#89c76f;box-shadow:0 0 13px rgba(137,199,111,.5)}.diagnostic-source.degraded i{background:#d4aa55;box-shadow:0 0 13px rgba(212,170,85,.45)}.diagnostic-source.unavailable i{background:#d45e52;box-shadow:0 0 13px rgba(212,94,82,.45)}
+.diagnostic-source strong{font-size:12px;font-weight:650;letter-spacing:.25px}.diagnostic-source>div:first-child>span{padding:5px 7px;border:1px solid rgba(var(--paper-rgb),.13);border-radius:5px;color:var(--paper-muted);font-size:6px;font-weight:900;letter-spacing:.9px}.diagnostic-source.healthy>div:first-child>span{border-color:rgba(137,199,111,.34);color:#9ed585}.diagnostic-source.degraded>div:first-child>span{border-color:rgba(212,170,85,.35);color:#dfba70}.diagnostic-source.unavailable>div:first-child>span{border-color:rgba(212,94,82,.35);color:#e07b71}
+.diagnostic-source dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:13px 0 0}.diagnostic-source dl>div{display:grid;gap:4px}.diagnostic-source dd{margin:0;color:var(--paper);font-size:9px}.diagnostic-source p{margin:11px 0 0;padding-top:10px;border-top:1px solid rgba(var(--paper-rgb),.1);color:var(--paper-muted);font-size:8px;line-height:1.45}
+.diagnostics-actions{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:8px;margin-top:14px}.diagnostics-actions>span{color:var(--paper-muted);font-size:7px}.diagnostics-actions button{min-height:40px;padding:0 13px;border:1px solid rgba(var(--paper-rgb),.15);border-radius:7px;background:var(--control-bg);color:var(--paper);font-size:7px;font-weight:900;letter-spacing:.8px;cursor:pointer}.diagnostics-actions button:last-child{border-color:var(--signal);background:var(--signal);color:var(--signal-ink)}.diagnostics-actions button[aria-busy="true"]{opacity:.5;cursor:wait}
+html[data-theme="white"] .diagnostics-entry,html[data-theme="white"] .diagnostics-summary>div,html[data-theme="white"] .diagnostic-source,html[data-theme="white"] .diagnostics-actions button{box-shadow:0 5px 14px rgba(35,48,39,.06)}
+
+@media (max-width:760px){
+  .diagnostics-summary{grid-template-columns:1fr}.diagnostic-source dl{grid-template-columns:1fr 1fr}.diagnostic-source dl>div:last-child{grid-column:1/-1}.diagnostics-actions{grid-template-columns:1fr 1fr}.diagnostics-actions>span{grid-column:1/-1}.diagnostics-actions button{width:100%}
+}

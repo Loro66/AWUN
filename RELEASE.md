@@ -61,8 +61,13 @@ Open `https://YOUR-AWUN-API/` after deployment.
   and keeps the persistent queue refilled while a remote API is waking up.
 - FLOW likes, dislikes and listening signals survive reload only on the same device.
 - Familiar/Balanced/New, mood and activity controls change recommendation ranking.
-- Track cards and the player use deterministic SoundCloud-style bar waveforms; the player waveform
-  remains a native click/drag seek control on desktop and mobile.
+- SoundCloud tracks use provider-native waveform data, lazily converted into cached peaks; sources
+  without waveform metadata initially use the deterministic fallback, then replace listened sections
+  with captured real peaks for same-origin audio. The player waveform remains a native click/drag
+  seek control on desktop and mobile.
+- Search results appear source by source instead of waiting for the slowest provider.
+- Settings opens source diagnostics with average latency, the latest provider error and a safe
+  copyable report.
 - At tablet and compact desktop widths, player volume and queue controls stay on one row without
   clipping; result queue menus stack above adjacent cards and open upward near the scroll edge.
 - Disabled providers are visibly marked `NOT CONNECTED` and are not sent in a
