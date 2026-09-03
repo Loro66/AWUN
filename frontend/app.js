@@ -1,7 +1,986 @@
-Y™Áäx-ÆÈ‹j◊ù¢Îi∫⁄+äßj[hëÈ‹¢ÈÌﬂ_<Ò:-jZ.∂õ≠ñ)ﬁ≥V6ˆÁ7B6˜W&6T∆&V«3◊∑ñ˜WGV&S¢uñ˜UGV&Rr«6˜VÊF6∆˜VC¢u6˜VÊD6∆˜VBr∆VFóW3¢tVFóW2r∆¶÷VÊFÛ¢t¶÷VÊFÚr∆ñÁFW&ÊWEˆ&6ÜófS¢tñÁFW&ÊWB&6ÜófRr«ñÊFWÖˆ◊W6ñ3¢uñÊFWÇ◊W6ñ2w”∞¶6ˆÁ7B&VvñˆÁ3’≤tUDÚr¬t4ï2r¬tUU$ıRr¬uU4r¬tƒD“r¬t4îr¬ttƒÙ$¬u”∞¶6ˆÁ7B&W7V«D∆ñ÷óG3’≥3√c√”∞¶6ˆÁ7BìÜ„◊vñÊF˜rÊwV‰ìÜ„∞¶6ˆÁ7B∆ñW$6˜&S◊vñÊF˜rÊwVÂ∆ñW$6˜&S∞¶6ˆÁ7BC“Ü∂Wí«f«VW3◊∑“ì”ÊìÜ‚ÁBÜ∂Wí«f«VW2ì∞¶6ˆÁ7BC÷ñC”ÊFˆ7V÷VÁBÊvWDV∆V÷VÁD'îñBÜñBì∞¶6ˆÁ7B'VÁFñ÷U&◊3÷ÊWrU$≈6V&6Ö&◊2Ü∆ˆ6Fñˆ‚Á6V&6Çì∞¶6ˆÁ7B'VÁFñ÷U∆Ff˜&”◊'VÁFñ÷U&◊2ÊvWBÇw∆Ff˜&“ró«¬wvV"s∞¶6ˆÁ7B∆ï7F˜&T÷ˆFS◊'VÁFñ÷U∆Ff˜&”””“vÊG&ˆñB◊∆ís∞¶gVÊ7Fñˆ‚'VÁFñ÷Tî&6RÜÊ÷Ró∞¢6ˆÁ7B6ÊFñFFS“á'VÁFñ÷U&◊2ÊvWBÜÊ÷Ró«¬rríÁG&ñ“Çì∞¢ñbÇ6ÊFñFFRó&WGW&‚rs∞¢G'ó∞¢6ˆÁ7B'6VC÷ÊWrU$¬Ü6ÊFñFFRì∞¢ñbÇ≤váGG¢r¬váGG3¢u“ÊñÊ6«VFW2á'6VBÁ&˜Fˆ6ˆ¬ó««'6VBÁ6V&6á««'6VBÊÜ6Çó&WGW&‚rs∞¢ñbá'6VBÁ&˜Fˆ6ˆ√””“váGG¢rbb≤v∆ˆ6∆Ü˜7Br¬s#r„„„r¬u≥££“u“ÊñÊ6«VFW2á'6VBÊÜ˜7FÊ÷Ríó&WGW&‚rs∞¢&WGW&‚'6VBÊá&VbÁ&W∆6RÇı¬Ú≤BÚ¬rrì∞¢÷6F6á∑&WGW&‚rw–ß–¶6ˆÁ7Bî&6S◊'VÁFñ÷Tî&6RÇvírì∞¶6ˆÁ7Bf∆∆&6¥î&6S◊'VÁFñ÷Tî&6RÇvf∆∆&6µˆírì∞¶Fˆ7V÷VÁBÊFˆ7V÷VÁDV∆V÷VÁBÊFF6WBÁ∆Ff˜&”◊'VÁFñ÷U∆Ff˜&”∞¶6ˆÁ7B&V÷˜FU&WG'ï7FGW6W3÷ÊWr6WBÖ≥S"√S2√SE“ì∞¶6ˆÁ7B&V÷˜FTf∆∆&6µFñ÷V˜WD◊3”c∞¶gVÊ7Fñˆ‚VÊGˆñÁEW&¬Ü&6R∆ñÁWBó∑&WGW&‚&6RbgGóVˆbñÁWC””“w7G&ñÊrrbfñÁWBÁ7F'G5vóFÇÇrÚrìˆG∂&6W“G∂ñÁWG÷¶ñÁWG–¶gVÊ7Fñˆ‚ïW&¬ÜñÁWBó∑&WGW&‚VÊGˆñÁEW&¬Üî&6R∆ñÁWBó–¶gVÊ7Fñˆ‚f∆∆&6¥ïW&¬ÜñÁWBó∑&WGW&‚VÊGˆñÁEW&¬Üf∆∆&6¥î&6R∆ñÁWBó–¶gVÊ7Fñˆ‚&WVW7D˜FñˆÁ2ÜñÊóC◊∑“ó∞¢6ˆÁ7BÜVFW'3÷ÊWrÜVFW'2ÜñÊóBÊÜVFW'7««∑“ì∞¢ñbá∆ï7F˜&T÷ˆFRñÜVFW'2Á6WBÇuÇ‘uT‚‘6∆ñVÁBr¬vÊG&ˆñB◊∆írì∞¢&WGW&Á≤‚‚ÊñÊóB∆ÜVFW'7”∞ß–¶gVÊ7Fñˆ‚wV‰fWF6ÇÜñÁWB∆ñÊóC◊∑“ó∞¢6ˆÁ7B˜FñˆÁ3◊&WVW7D˜FñˆÁ2ÜñÊóBì∞¢6ˆÁ7BF&vWC÷ïW&¬ÜñÁWBì∞¢ñbÜî&6RbgF&vWB”÷ñÁWBbgGóVˆbñÁWC””“w7G&ñÊrró∞¢&WGW&‚fWF6ÇáF&vWB∆˜FñˆÁ2íÁFÜV‚á&W7ˆÁ6S”Á&V÷˜FU&WG'ï7FGW6W2ÊÜ2á&W7ˆÁ6RÁ7FGW2ìˆfWF6ÇÜñÁWB∆˜FñˆÁ2ìß&W7ˆÁ6RíÊ6F6ÇÇÇì”ÊfWF6ÇÜñÁWB∆˜FñˆÁ2íì∞¢–¢ñbÜf∆∆&6¥î&6RbgGóVˆbñÁWC””“w7G&ñÊrrbfñÁWBÁ7F'G5vóFÇÇrÚríó∞¢&WGW&‚fWF6ÇÜñÁWB∆˜FñˆÁ2íÁFÜV‚á&W7ˆÁ6S”Á&V÷˜FU&WG'ï7FGW6W2ÊÜ2á&W7ˆÁ6RÁ7FGW2ìˆfWF6ÇÜf∆∆&6¥ïW&¬ÜñÁWBí∆˜FñˆÁ2ìß&W7ˆÁ6RíÊ6F6ÇÇÇì”ÊfWF6ÇÜf∆∆&6¥ïW&¬ÜñÁWBí∆˜FñˆÁ2íì∞¢–¢&WGW&‚fWF6ÇáF&vWB∆˜FñˆÁ2ì∞ß–†¶7ñÊ2gVÊ7Fñˆ‚fWF6ÑÜV«FÑ6ÊFñFFRáW&¬∆˜&ñvñ‚«Fñ÷V˜WD◊2ó∞¢6ˆÁ7B6ˆÁG&ˆ∆∆W#÷ÊWr&˜'D6ˆÁG&ˆ∆∆W"Çí«Fñ÷W#◊6WEFñ÷V˜WBÇÇì”Ê6ˆÁG&ˆ∆∆W"Ê&˜'BÇí«Fñ÷V˜WD◊2í«7F'FVC◊W&f˜&÷Ê6RÊÊ˜rÇì∞¢G'ó∞¢6ˆÁ7B&W7ˆÁ6S÷vóBfWF6ÇáW&¬«&WVW7D˜FñˆÁ2á∂66ÜS¢vÊÚ◊7F˜&Rr«6ñvÊ√¶6ˆÁG&ˆ∆∆W"Á6ñvÊ«“íì∞¢ñbÇ&W7ˆÁ6RÊˆ≤óFá&˜rÊWrW'&˜"áBÇvÜV«FÑfñ∆VBríì∞¢&WGW&Á∂FF¶vóB&W7ˆÁ6RÊß6ˆ‚Çí∆˜&ñvñ‚∆VÊGˆñÁEˆ∆FVÊ7ïˆ◊3§÷FÇÁ&˜VÊBáW&f˜&÷Ê6RÊÊ˜rÇí◊7F'FVBí∆6ÜV6∂VEˆC¶ÊWrFFRÇíÁFÙï4ı7G&ñÊrÇó”∞¢÷fñÊ∆«ó∂6∆V%Fñ÷V˜WBáFñ÷W"ó–ß–¶7ñÊ2gVÊ7Fñˆ‚&WVW7DÜV«FÖ6Ê6Ü˜BÇó∞¢6ˆÁ7B6ÊFñFFW3’µ”∞¢ñbÜî&6Rñ6ÊFñFFW2ÁW6Çá∑W&√¶ïW&¬ÇrˆÜV«FÇrí∆˜&ñvñ„¢v6ˆÊfñwW&VBr«Fñ÷V˜WC£É“ì∞¢V«6R6ÊFñFFW2ÁW6Çá∑W&√¢rˆÜV«FÇr∆˜&ñvñ„ß'VÁFñ÷U∆Ff˜&”””“vFW6∑F˜sÚv∆ˆ6¬s¢v7W'&VÁBr«Fñ÷V˜WC£É“ì∞¢ñbÜf∆∆&6¥î&6Rñ6ÊFñFFW2ÁW6Çá∑W&√¶f∆∆&6¥ïW&¬ÇrˆÜV«FÇrí∆˜&ñvñ„¢vf∆∆&6≤r«Fñ÷V˜WCß&V÷˜FTf∆∆&6µFñ÷V˜WD◊7“ì∞¢ñbÜî&6RbgGóVˆb∆ˆ6Fñˆ‚Ê˜&ñvñ„””“w7G&ñÊrrbf∆ˆ6Fñˆ‚Ê˜&ñvñ‚Á7F'G5vóFÇÇváGGríñ6ÊFñFFW2ÁW6Çá∑W&√¢rˆÜV«FÇr∆˜&ñvñ„¢v7W'&VÁBr«Fñ÷V˜WC£É“ì∞¢∆WBfñ«W&S∞¢f˜"Ü6ˆÁ7B6ÊFñFFRˆb6ÊFñFFW2ó∞¢G'ó∑&WGW&‚vóBfWF6ÑÜV«FÑ6ÊFñFFRÜ6ÊFñFFRÁW&¬∆6ÊFñFFRÊ˜&ñvñ‚∆6ÊFñFFRÁFñ÷V˜WBó–¢6F6ÇÜW'&˜"ó∂fñ«W&S÷W'&˜'–¢–¢Fá&˜rfñ«W&W«∆ÊWrW'&˜"áBÇvÜV«FÑfñ∆VBríì∞ß–†¶gVÊ7Fñˆ‚G&6µ6W76ñˆ‰∂WíáG&6≤ó∑&WGW&‚G∑G&6≥ÚÁ6˜W&6W«¬rw”¢G∑G&6≥ÚÊñG«¬rw÷–¶6ˆÁ7Bg&W6ÖG&6∑4'î∂Wì÷ÊWr÷Çì∞¶gVÊ7Fñˆ‚÷&¥g&W6ÖG&6∑2áG&6∑2ó≤Ñ'&íÊó4'&íáG&6∑2ì˜G&6∑3•µ“íÊf˜$V6ÇáG&6≥”Êg&W6ÖG&6∑4'î∂WíÁ6WBáG&6µ6W76ñˆ‰∂WíáG&6≤í«G&6≤íó–¶7ñÊ2gVÊ7Fñˆ‚&VE6V&6ÑFFá&W7ˆÁ6Ró∞¢6ˆÁ7BFF÷vóB&W7ˆÁ6RÊß6ˆ‚Çì∞¢ñbÇ&W7ˆÁ6RÊˆ≤óFá&˜rÊWrW'&˜"ÜFFÊFWFñ«««BÇw6V&6Ñfñ∆VBríì∞¢÷&¥g&W6ÖG&6∑2ÜFFÁG&6∑2ì∞¢&WGW&‚FF∞ß–¶gVÊ7Fñˆ‚÷W&vU6V&6ÑFFá&ñ÷'í∆f∆∆&6≤«&WVW7FVE6˜W&6W3’µ“ó∞¢ñbÇf∆∆&6≤ó&WGW&‚&ñ÷'ì∞¢6ˆÁ7BG&6∑3◊∆ñW$6˜&RÁVÊóVUG&6∑2Ö≤‚‚‚á&ñ÷'íÁG&6∑7«≈µ“í¬‚‚‚Üf∆∆&6≤ÁG&6∑7«≈µ“ï“ì∞¢6ˆÁ7BW'&˜'3◊≤‚‚‚á&ñ÷'íÊW'&˜'7««∑“ó”∞¢&WVW7FVE6˜W&6W2Êf˜$V6Çá6˜W&6S”Á∂ñbÜf∆∆&6≤ÊW'&˜'3ÚÂ∑6˜W&6U“ñW'&˜'5∑6˜W&6U”÷f∆∆&6≤ÊW'&˜'5∑6˜W&6U”∂V«6RFV∆WFRW'&˜'5∑6˜W&6U◊“ì∞¢&WGW&Á≤‚‚Á&ñ÷'í«G&6∑2«F˜F√ßG&6∑2Ê∆VÊwFÇ«6V&6ÜVE˜6˜W&6W3•≤‚‚ÊÊWr6WBÖ≤‚‚‚á&ñ÷'íÁ6V&6ÜVE˜6˜W&6W7«≈µ“í¬‚‚‚Üf∆∆&6≤Á6V&6ÜVE˜6˜W&6W7«≈µ“ï“ï“«VW'ï˜f&ñÁG3•≤‚‚ÊÊWr6WBÖ≤‚‚‚á&ñ÷'íÁVW'ï˜f&ñÁG7«≈µ“í¬‚‚‚Üf∆∆&6≤ÁVW'ï˜f&ñÁG7«≈µ“ï“ï“∆W'&˜'2∆V∆6VEˆ◊3§÷FÇÊ÷ÇÑÁV÷&W"á&ñ÷'íÊV∆6VEˆ◊2ó«√ƒÁV÷&W"Üf∆∆&6≤ÊV∆6VEˆ◊2ó«√ó”∞ß–¶gVÊ7Fñˆ‚f∆∆&6µ6V&6Çáñ∆ˆB«6ñvÊ¬ó∞¢6ˆÁ7B6ˆÁG&ˆ∆∆W#÷ÊWr&˜'D6ˆÁG&ˆ∆∆W"Çì∞¢6ˆÁ7B&V∆î&˜'C“Çì”Ê6ˆÁG&ˆ∆∆W"Ê&˜'Bá6ñvÊ√ÚÁ&V6ˆ‚ì∞¢ñbá6ñvÊ√ÚÊ&˜'FVBó&V∆î&˜'BÇì∂V«6R6ñvÊ√ÚÊFDWfVÁD∆ó7FVÊW"Çv&˜'Br«&V∆î&˜'B«∂ˆÊ6SßG'VW“ì∞¢6ˆÁ7BFñ÷W#◊6WEFñ÷V˜WBÇÇì”Ê6ˆÁG&ˆ∆∆W"Ê&˜'BÇí«&V÷˜FTf∆∆&6µFñ÷V˜WD◊2ì∞¢6ˆÁ7B˜FñˆÁ3◊&WVW7D˜FñˆÁ2á∂÷WFÜˆC¢uı5Br∆ÜVFW'3ß≤t6ˆÁFVÁB’GóRs¢v∆ñ6Fñˆ‚ˆß6ˆ‚w“«6ñvÊ√¶6ˆÁG&ˆ∆∆W"Á6ñvÊ¬∆&ˆGì§•4Ù‚Á7G&ñÊvñgíáñ∆ˆBó“ì∞¢&WGW&‚fWF6ÇÜf∆∆&6¥ïW&¬Çrˆí˜c˜6V&6Çrí∆˜FñˆÁ2íÁFÜV‚á&VE6V&6ÑFFíÊ6F6ÇÜW'&˜#”Á∞¢ñbÜW'&˜#ÚÊÊ÷S””“t&˜'DW'&˜"rbb6ñvÊ√ÚÊ&˜'FVBóFá&˜rÊWrW'&˜"áBÇw6V&6ÖVÊfñ∆&∆Rríì∞¢Fá&˜rW'&˜#∞¢“íÊfñÊ∆«íÇÇì”Á∂6∆V%Fñ÷V˜WBáFñ÷W"ì∑6ñvÊ√ÚÁ&V÷˜fTWfVÁD∆ó7FVÊW"Çv&˜'Br«&V∆î&˜'Bó“ì∞ß–¶7ñÊ2gVÊ7Fñˆ‚&WVW7E6V&6Çáñ∆ˆB«∑6ñvÊ¬«vóDf˜$f∆∆&6≥÷f«6W”◊∑“ó∞¢6ˆÁ7B˜FñˆÁ3◊&WVW7D˜FñˆÁ2á∂÷WFÜˆC¢uı5Br∆ÜVFW'3ß≤t6ˆÁFVÁB’GóRs¢v∆ñ6Fñˆ‚ˆß6ˆ‚w“«6ñvÊ¬∆&ˆGì§•4Ù‚Á7G&ñÊvñgíáñ∆ˆBó“ì∞¢ñbÇf∆∆&6¥î&6W«∆î&6Ró∑&WGW&Á∂FF¶vóB&VE6V&6ÑFFÜvóBwV‰fWF6ÇÇrˆí˜c˜6V&6Çr∆˜FñˆÁ2íí«7W∆V÷VÁC¶ÁV∆«◊–¢∆WB∆ˆ6√∞¢G'ó∂∆ˆ6√÷vóB&VE6V&6ÑFFÜvóBfWF6ÇÇrˆí˜c˜6V&6Çr∆˜FñˆÁ2íó–¢6F6ÇÜW'&˜"ó∂ñbÜW'&˜#ÚÊÊ÷S””“t&˜'DW'&˜"róFá&˜rW'&˜#∑&WGW&Á∂FF¶vóBf∆∆&6µ6V&6Çáñ∆ˆB«6ñvÊ¬í«7W∆V÷VÁC¶ÁV∆«◊–¢6ˆÁ7B&WVW7FVC‘'&íÊó4'&íáñ∆ˆBÁ6˜W&6W2ì˜ñ∆ˆBÁ6˜W&6W3•µ”∞¢6ˆÁ7Bfñ∆VC◊&WVW7FVBÊfñ«FW"á6˜W&6S”‰ˆ&¶V7BÁ&˜F˜GóRÊÜ4˜vÂ&˜W'GíÊ6∆¬Ü∆ˆ6¬ÊW'&˜'7««∑“«6˜W&6Ríì∞¢ñbÇfñ∆VBÊ∆VÊwFÇó&WGW&Á∂FF¶∆ˆ6¬«7W∆V÷VÁC¶ÁV∆«”∞¢6ˆÁ7B&V÷˜FS÷f∆∆&6µ6V&6Çá≤‚‚Áñ∆ˆB«6˜W&6W3¶fñ∆VG“«6ñvÊ¬íÁFÜV‚ÜFF”Ê÷W&vU6V&6ÑFFÜ∆ˆ6¬∆FF∆fñ∆VBíì∞¢ñbávóDf˜$f∆∆&6∑«¬Ü∆ˆ6¬ÁG&6∑7«≈µ“íÊ∆VÊwFÇó∞¢G'ó∑&WGW&Á∂FF¢ÜvóB&V÷˜FRó«∆∆ˆ6¬«7W∆V÷VÁC¶ÁV∆«◊–¢6F6ÇÜW'&˜"ó∂ñbÜW'&˜#ÚÊÊ÷S””“t&˜'DW'&˜"rbg6ñvÊ√ÚÊ&˜'FVBóFá&˜rW'&˜#∑&WGW&Á∂FF¶∆ˆ6¬«7W∆V÷VÁC¶ÁV∆«◊–¢–¢&WGW&Á∂FF¶∆ˆ6¬«7W∆V÷VÁCß&V÷˜FRÊ6F6ÇÇÇì”ÊÁV∆¬ó”∞ß–¶6ˆÁ7BVì◊∞¢7FGW3¢BÇw7FGW2rí«6V&6ÑÊd'WGFˆ„¢BÇw6V&6ÑÊd'WGFˆ‚rí∆∆ñ'&'î'WGFˆ„¢BÇv∆ñ'&'î'WGFˆ‚rí∆∆≈6˜W&6W4'WGFˆ„¢BÇv∆≈6˜W&6W4'WGFˆ‚rí∆ñÁ7F∆ƒ'WGFˆ„¢BÇvñÁ7F∆ƒ'WGFˆ‚rí∆∆ÊwVvT'WGFˆ„¢BÇv∆ÊwVvT'WGFˆ‚rí∆∆ÊwVvT∆&V√¢BÇv∆ÊwVvT∆&V¬rí∆V◊GîwVñFS¢BÇvV◊GîwVñFRrí∆ñF∆U7FvS¢BÇvñF∆U7FvRrí∆ñF∆U6V&6Ñ'WGFˆ„¢BÇvñF∆U6V&6Ñ'WGFˆ‚rí∆ñF∆UvfT'WGFˆ„¢BÇvñF∆UvfT'WGFˆ‚rí∆wVñFU6V&6É¢BÇvwVñFU6V&6Çrí∆wVñFUvfS¢BÇvwVñFUvfRrí∆wVñFTñ◊˜'C¢BÇvwVñFTñ◊˜'Brí«6V&6Ñf˜&”¢BÇw6V&6Ñf˜&“rí«6V&6ÑñÁWC¢BÇw6V&6ÑñÁWBrí«6V&6Ñ'WGFˆ„¢BÇw6V&6Ñ'WGFˆ‚rí∆Üˆ÷U6V7FñˆÁ3¢BÇvÜˆ÷U6V7FñˆÁ2rí«&V6VÁD∆ó7C¢BÇw&V6VÁD∆ó7Brí«&V6ˆ÷÷VÊFFñˆ‰w&ñC¢BÇw&V6ˆ÷÷VÊFFñˆ‰w&ñBrí«VWVT∆ó7C¢BÇwVWVT∆ó7Brí«VWVTV◊Gì¢BÇwVWVTV◊Gírí∆6∆V%VWVS¢BÇv6∆V%VWVRrí¿¢6˜W&6W3¢BÇw6˜W&6W2rí«&VvñˆÂ6V∆V7C¢BÇw&VvñˆÂ6V∆V7Brí∆∆ñ÷óE6V∆V7C¢BÇv∆ñ÷óE6V∆V7Brí«&W7V«G3¢BÇw&W7V«G2rí«G&6¥∆ó7C¢BÇwG&6¥∆ó7Brí∆÷W76vS¢BÇv÷W76vRrí«&W7V«EFóF∆S¢BÇw&W7V«EFóF∆Rrí«&W7V«D6˜VÁC¢BÇw&W7V«D6˜VÁBrí«&W7V«EFñ÷S¢BÇw&W7V«EFñ÷Rrí«6V&6Ñ÷WF¢BÇw6V&6Ñ÷WFrí¿¢∆ñW#¢BÇw∆ñW"rí«∆ñW$'Gv˜&≥¢BÇw∆ñW$'Gv˜&≤rí∆Ê˜uFóF∆S¢BÇvÊ˜uFóF∆Rrí∆Ê˜t'Fó7C¢BÇvÊ˜t'Fó7Brí∆Ê˜u6˜W&6S¢BÇvÊ˜u6˜W&6Rrí∆VFñÛ¢BÇvVFñÚrí«ñ˜WGV&TFˆ6≥¢BÇwñ˜WGV&TFˆ6≤rí«ñ˜WGV&U∆ñW#¢BÇwñ˜WGV&U∆ñW"rí¿¢&Wfñ˜W5G&6≥¢BÇw&Wfñ˜W5G&6≤rí«∆ïW6S¢BÇw∆ïW6Rrí∆ÊWáEG&6≥¢BÇvÊWáEG&6≤rí«&WVD÷ˆFS¢BÇw&WVD÷ˆFRrí«vfU&ˆw&W73¢BÇwvfU&ˆw&W72rí«&ˆw&W73¢BÇw&ˆw&W72rí∆V∆6VC¢BÇvV∆6VBrí«F˜F≈Fñ÷S¢BÇwF˜F≈Fñ÷Rrí«fˆ«V÷S¢BÇwfˆ«V÷Rrí∆◊WFT'WGFˆ„¢BÇv◊WFT'WGFˆ‚rí∆6∆˜6U∆ñW#¢BÇv6∆˜6U∆ñW"rí∆÷ñÊñ÷ó¶UfñFVÛ¢BÇv÷ñÊñ÷ó¶UfñFVÚrí«VWVUFˆvv∆S¢BÇwVWVUFˆvv∆Rrí«VWVT6∆˜6S¢BÇwVWVT6∆˜6Rrí∆WáÊE∆ñW#¢BÇvWáÊE∆ñW"rí∆6ˆ∆∆6U∆ñW#¢BÇv6ˆ∆∆6U∆ñW"rí¿¢FÜV÷T'WGFˆ„¢BÇwFÜV÷T'WGFˆ‚rí«FÜV÷T∆&V√¢BÇwFÜV÷T∆&V¬rí«FÜV÷UÊV√¢BÇwFÜV÷UÊV¬rí«FÜV÷T6∆˜6S¢BÇwFÜV÷T6∆˜6Rrí«FÜV÷T&6∂G&˜¢BÇwFÜV÷T&6∂G&˜rí«FÜV÷T6ˆ∆˜#¢BÇwFÜV÷T6ˆ∆˜"rí∆÷˜FñˆÂFˆvv∆S¢BÇv÷˜FñˆÂFˆvv∆Rrí∆÷˜FñˆÂf«VS¢BÇv÷˜FñˆÂf«VRrí∆FV6˜%Fˆvv∆S¢BÇvFV6˜%Fˆvv∆Rrí∆FV6˜%f«VS¢BÇvFV6˜%f«VRrí∆FVÁ6óGïFˆvv∆S¢BÇvFVÁ6óGïFˆvv∆Rrí∆FVÁ6óGïf«VS¢BÇvFVÁ6óGïf«VRrí«FV∆V÷WG'î6∆ˆ6≥¢BÇwFV∆V÷WG'î6∆ˆ6≤rí∆FñvÊ˜7Fñ74'WGFˆ„¢BÇvFñvÊ˜7Fñ74'WGFˆ‚rí∆FñvÊ˜7Fñ75ÊV√¢BÇvFñvÊ˜7Fñ75ÊV¬rí∆FñvÊ˜7Fñ746∆˜6S¢BÇvFñvÊ˜7Fñ746∆˜6Rrí∆FñvÊ˜7Fñ75&Vg&W6É¢BÇvFñvÊ˜7Fñ75&Vg&W6Çrí∆FñvÊ˜7Fñ746˜ì¢BÇvFñvÊ˜7Fñ746˜írí∆FñvÊ˜7Fñ74∆ó7C¢BÇvFñvÊ˜7Fñ74∆ó7Brí∆FñvÊ˜7Fñ74VÊGˆñÁC¢BÇvFñvÊ˜7Fñ74VÊGˆñÁBrí∆FñvÊ˜7Fñ746ÜV6∂VC¢BÇvFñvÊ˜7Fñ746ÜV6∂VBrí∆FñvÊ˜7Fñ746˜ï7FGW3¢BÇvFñvÊ˜7Fñ746˜ï7FGW2rí¿¢ñ◊˜'D'WGFˆ„¢BÇvñ◊˜'D'WGFˆ‚rí∆ñ◊˜'EÊV√¢BÇvñ◊˜'EÊV¬rí∆ñ◊˜'D6∆˜6S¢BÇvñ◊˜'D6∆˜6Rrí∆ñ◊˜'D&6∂G&˜¢BÇvñ◊˜'D&6∂G&˜rí∆∆ñ'&'îfñ∆S¢BÇv∆ñ'&'îfñ∆Rrí∆ñ◊˜'Dfñ∆T'WGFˆ„¢BÇvñ◊˜'Dfñ∆T'WGFˆ‚rí∆ñ◊˜'Dfñ∆TÊ÷S¢BÇvñ◊˜'Dfñ∆TÊ÷Rrí∆ñ◊˜'EFWáC¢BÇvñ◊˜'EFWáBrí∆ñ◊˜'E7FGW3¢BÇvñ◊˜'E7FGW2rí∆ñ◊˜'E7V&÷óC¢BÇvñ◊˜'E7V&÷óBrí∆ñ◊˜'EW&√¢BÇvñ◊˜'EW&¬rí∆ñ◊˜'EW&≈7V&÷óC¢BÇvñ◊˜'EW&≈7V&÷óBrí∆ñ◊˜'E&ˆw&W73¢BÇvñ◊˜'E&ˆw&W72rêß”∞†¶gVÊ7Fñˆ‚∆ˆD∆ñ'&'íÇó∑G'ó∂6ˆÁ7Bf«VS‘•4Ù‚Á'6RÜ∆ˆ6≈7F˜&vRÊvWDóFV“ÇvwV‚÷∆ñ'&'író«¬uµ“rì∑&WGW&‚'&íÊó4'&íáf«VRì˜f«VS•µ◊÷6F6á∑&WGW&Âµ◊◊–¶gVÊ7Fñˆ‚∆ˆE&Vvñˆ‚Çó∂6ˆÁ7Bf«VS÷∆ˆ6≈7F˜&vRÊvWDóFV“ÇvwV‚◊&Vvñˆ‚ró«¬tUDÚs∑&WGW&‚&VvñˆÁ2ÊñÊ6«VFW2áf«VRì˜f«VS¢tUDÚw–¶gVÊ7Fñˆ‚∆ˆE&W7V«D∆ñ÷óBÇó∂6ˆÁ7Bf«VS‘ÁV÷&W"Ü∆ˆ6≈7F˜&vRÊvWDóFV“ÇvwV‚◊&W7V«B÷∆ñ÷óBró«√cì∑&WGW&‚&W7V«D∆ñ÷óG2ÊñÊ6«VFW2áf«VRì˜f«VS£c–¶gVÊ7Fñˆ‚∆ˆE&WVD÷ˆFRÇó∂6ˆÁ7Bf«VS÷∆ˆ6≈7F˜&vRÊvWDóFV“ÇvwV‚◊&WVB÷÷ˆFRró«¬vˆfbs∑&WGW&‚≤vˆfbr¬v∆¬r¬vˆÊRu“ÊñÊ6«VFW2áf«VRì˜f«VS¢vˆfbw–¶gVÊ7Fñˆ‚∆ˆE&V6VÁG2Çó∑G'ó∂6ˆÁ7Bf«VS‘•4Ù‚Á'6RÜ∆ˆ6≈7F˜&vRÊvWDóFV“ÇvwV‚◊&V6VÁBró«¬uµ“rì∑&WGW&‚'&íÊó4'&íáf«VRì˜f«VRÊfñ«FW"ÜóFV””ÊóFV“bfóFV“ÊñBì•µ◊÷6F6á∑&WGW&Âµ◊◊–¶gVÊ7Fñˆ‚∆ˆEVWVU7FFRÇó∞¢G'ó∞¢6ˆÁ7Bf«VS‘•4Ù‚Á'6RÜ∆ˆ6≈7F˜&vRÊvWDóFV“ÇvwV‚◊VWVR◊cró«¬w∑“rì∞¢6ˆÁ7BóFV◊3‘'&íÊó4'&íáf«VRì˜f«VSßf«VRÊóFV◊3∞¢&WGW&Á∂óFV◊3ß∆ñW$6˜&RÁVÊóVUG&6∑2ÜóFV◊2í∆÷ˆFSßf«VRÊ÷ˆFS””“v÷ÁV¬sÚv÷ÁV¬s¢v6ˆÁFWáBw”∞¢÷6F6á∑&WGW&Á∂óFV◊3•µ“∆÷ˆFS¢v6ˆÁFWáBw◊–ß–¶gVÊ7Fñˆ‚∆ˆEfó7V¬Çó∑G'ó∂6ˆÁ7Bf«VS‘•4Ù‚Á'6RÜ∆ˆ6≈7F˜&vRÊvWDóFV“ÇvwV‚◊fó7V¬ró«¬w∑“rì∑&WGW&Á∑FÜV÷S•≤v&∆6≤r¬wvÜóFRr¬v6ñBr¬wV«G&fñˆ∆WBr¬v6ˆ&«Br¬vV÷&W"u“ÊñÊ6«VFW2áf«VRÁFÜV÷Rì˜f«VRÁFÜV÷S¢v&∆6≤r∆÷˜Fñˆ„ßf«VRÊ÷˜Fñˆ„””“vˆfbsÚvˆfbs¢vˆ‚r∆FV6˜#ßf«VRÊFV6˜#””“v÷ñÊñ÷¬sÚv÷ñÊñ÷¬s¢vgV∆¬r∆FVÁ6óGì•≤v6ˆ◊7Br¬w7FÊF&Br¬vó'íu“ÊñÊ6«VFW2áf«VRÊFVÁ6óGíì˜f«VRÊFVÁ6óGì¢w7FÊF&Bw◊÷6F6á∑&WGW&Á∑FÜV÷S¢v&∆6≤r∆÷˜Fñˆ„¢vˆ‚r∆FV6˜#¢vgV∆¬r∆FVÁ6óGì¢w7FÊF&Bw◊◊–¶gVÊ7Fñˆ‚∆ˆD∆ñÊT6ˆ÷÷VÁG2Çó∑G'ó∂6ˆÁ7Bf«VS‘•4Ù‚Á'6RÜ∆ˆ6≈7F˜&vRÊvWDóFV“ÇvwV‚÷∆ñÊR÷6ˆ÷÷VÁG2◊cró«¬w∑“rì∑&WGW&‚f«VRbgGóVˆbf«VS””“vˆ&¶V7Brbb'&íÊó4'&íáf«VRì˜f«VSß∑◊÷6F6á∑&WGW&Á∑◊◊–¶6ˆÁ7Bfó7V≈FÜV÷W3◊∂&∆6≥ß∂∆&Vƒ∂Wì¢wFÜV÷T&∆6µ6Ü˜'Br∆6ˆ∆˜#¢r3SSRw“«vÜóFSß∂∆&Vƒ∂Wì¢wFÜV÷UvÜóFU6Ü˜'Br∆6ˆ∆˜#¢r6SvSÜFbw“∆6ñCß∂∆&Vƒ∂Wì¢wFÜV÷T6ñE6Ü˜'Br∆6ˆ∆˜#¢r3SRw“«V«G&fñˆ∆WCß∂∆&Vƒ∂Wì¢wFÜV÷UV«G&fñˆ∆WE6Ü˜'Br∆6ˆ∆˜#¢r3sS2w“∆6ˆ&«Cß∂∆&Vƒ∂Wì¢wFÜV÷T6ˆ&«E6Ü˜'Br∆6ˆ∆˜#¢r3CRw“∆V÷&W#ß∂∆&Vƒ∂Wì¢wFÜV÷TV÷&W%6Ü˜'Br∆6ˆ∆˜#¢r3ÉsBw◊”∞¶6ˆÁ7B&W7F˜&VEVWVS÷∆ˆEVWVU7FFRÇì∞¶6ˆÁ7B7FFS◊∞¢G&6∑3•µ“«6fVC¶∆ˆD∆ñ'&'íÇí«&V6VÁG3¶∆ˆE&V6VÁG2Çí«VWVSß&W7F˜&VEVWVRÊóFV◊2«VWVT÷ˆFSß&W7F˜&VEVWVRÊ÷ˆFR∆fñ∆&∆S¶ÊWr6WBÇí«6˜W&6W3¶ÊWr6WBÇí«&Vvñˆ„¶∆ˆE&Vvñˆ‚Çí«&W7V«D∆ñ÷óC¶∆ˆE&W7V«D∆ñ÷óBÇí«&WVD÷ˆFS¶∆ˆE&WVD÷ˆFRÇí∆∆ñ'&'ì¶f«6R∆Ü56V&6ÜVC¶f«6R∆7FófS¶ÁV∆¬∆6ˆÁG&ˆ∆∆W#¶ÁV∆¬¿¢ñ˜WGV&S¶ÁV∆¬«ñ˜WGV&Tì¶ÁV∆¬«ñ˜WGV&UFñ6∂W#¶ÁV∆¬∆Ü«3¶ÁV∆¬∆VFñÙw&É¶ÁV∆¬«vfVf˜&‘6GW&S¶ÁV∆¬«vfVf˜&‘6GW&Tg&÷S¶ÁV∆¬«6VV∂ñÊs¶f«6R«&V6˜fW&ñÊtvVÊW&Fñˆ„¶ÁV∆¬«6÷U6˜W&6U&Vg&W6ÑvVÊW&Fñˆ„¶ÁV∆¬«∆ñ&6¥vVÊW&Fñˆ„£∆VFñıG&6¥ñC¶ÁV∆¬∆fñ∆VE6˜W&6W3¶ÊWr6WBÇí«∆ñ&6¥˜&ñvñ„¶ÁV∆¬«∆ñ&6µ˜6óFñˆ„£∆∆7Efˆ«V÷S¢„É"∆WáÊFVC¶ÁV∆¬∆FWFñ«3¶ÊWr÷Çí∆FWFñ«46ˆÁG&ˆ∆∆W#¶ÁV∆¬∆˜V‰∆ñÊW3¶ÊWr6WBÇí∆∆ñÊT6ˆ÷÷VÁG3¶∆ˆD∆ñÊT6ˆ÷÷VÁG2Çí∆vVÊóW4VÊ&∆VC¶f«6R∆FñvÊ˜7Fñ73¶ÁV∆¬¬‚‚Ê∆ˆEfó7V¬Çêß”∞¶∆WBñÁ7F∆≈&ˆ◊C÷ÁV∆√∞¶∆WB∆ÊwVvS÷ìÜ‚Ê∆ÊwVvS∞¶gVÊ7Fñˆ‚«î∆ÊwVvRÇó∂∆ÊwVvS÷ìÜ‚Ê∆ÊwVvS∂ìÜ‚Ê«íÇì∂«ïfó7V¬Üf«6Rì∂«ï&WVD÷ˆFRÜf«6Rì∑&VÊFW"Çì∑&VÊFW$FñvÊ˜7Fñ72Çì∑&Vg&W6Ö7FGW2Çó–†¶gVÊ7Fñˆ‚V÷óDwV‚áGóR∆FWFñ√◊∑“ó∂Fˆ7V÷VÁBÊFó7F6ÑWfVÁBÜÊWr7W7Fˆ‘WfVÁBÜwV„¢G∑GóW÷«∂FWFñ«“íó–†¶6ˆÁ7Bf˜&÷EFñ÷S◊f«VS”Á∂6ˆÁ7B6V6ˆÊG3‘÷FÇÊ÷ÇÉƒ÷FÇÊf∆ˆ˜"ÑÁV÷&W"áf«VRó«√íì∑&WGW&‚G¥÷FÇÊf∆ˆ˜"á6V6ˆÊG2Ûcó”¢Gµ7G&ñÊrá6V6ˆÊG2ScíÁE7F'BÉ"¬sró÷”∞¶6ˆÁ7BFV6ˆFUFWáC◊f«VS”Á∂6ˆÁ7BÊˆFS÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇwFWáF&Vrì∂ÊˆFRÊñÊÊW$ÖD‘√’7G&ñÊráf«VW«¬rrì∑&WGW&‚ÊˆFRÁf«VW”∞¶6ˆÁ7B6fTñ÷vS◊f«VS”Á∑G'ó∂6ˆÁ7BW&√÷ÊWrU$¬áf«VRì∑&WGW&‚≤váGG¢r¬váGG3¢u“ÊñÊ6«VFW2áW&¬Á&˜Fˆ6ˆ¬ì˜W&¬Êá&Vc¢rw÷6F6á∑&WGW&‚rw◊”∞¶6ˆÁ7B7W'&VÁD∆ó7C“Çì”Á7FFRÊ∆ñ'&'ì˜7FFRÁ6fVCß7FFRÁG&6∑3∞¶6ˆÁ7B6V∆V7FVDñG3“Çì”ÊÊWr6WBá7FFRÁ6fVBÊ÷áG&6≥”ÁG&6≤ÊñBíì∞¶6ˆÁ7BvfVf˜&‘∂Wì◊G&6≥”Â∑G&6≥ÚÁ6˜W&6R«G&6≥ÚÊñB«G&6≥ÚÊ'Fó7B«G&6≥ÚÁFóF∆R«G&6≥ÚÊGW&FñˆÂ“Êfñ«FW"áf«VS”Áf«VR”◊VÊFVfñÊVBbgf«VR”÷ÁV∆¬íÊ¶ˆñ‚Çw¬ró«¬vwV‚s∞¶6ˆÁ7BvfVf˜&‘66ÜT∂Wì“vwV‚◊vfVf˜&◊2◊cs∞¶6ˆÁ7BvfVf˜&‘∆ˆG3÷ÊWr÷Çì∞¶6ˆÁ7BvfVf˜&’F&vWG3÷ÊWrvV¥÷Çì∞¶∆WBvfVf˜&‘ˆ'6W'fW#÷ÁV∆√∞¶gVÊ7Fñˆ‚∆ˆEvfVf˜&‘66ÜRÇó∞¢G'ó∂6ˆÁ7Bf«VS‘•4Ù‚Á'6RÜ∆ˆ6≈7F˜&vRÊvWDóFV“ávfVf˜&‘66ÜT∂Wíó«¬w∑“rì∑&WGW&‚f«VRbgGóVˆbf«VS””“vˆ&¶V7Brbb'&íÊó4'&íáf«VRì˜f«VSß∑◊–¢6F6á∑&WGW&Á∑◊–ß–¶6ˆÁ7BvfVf˜&‘66ÜS÷∆ˆEvfVf˜&‘66ÜRÇì∞¶gVÊ7Fñˆ‚vfVf˜&‘VÁG'íáG&6≤ó∞¢6ˆÁ7BV÷&VFFVC‘'&íÊó4'&íáG&6≥ÚÁvfVf˜&’˜V∑2ì˜G&6≤ÁvfVf˜&’˜V∑3¶ÁV∆√∞¢ñbÜV÷&VFFVCÚÊ∆VÊwFÇó&WGW&Á∑V∑3¶V÷&VFFVB∆˜&ñvñ„¢w&˜fñFW"r∆6˜fW&vS£”∞¢&WGW&‚vfVf˜&‘66ÜU∑vfVf˜&‘∂WíáG&6≤ï◊«∆ÁV∆√∞ß–¶gVÊ7Fñˆ‚66ÜVEvfVf˜&“áG&6≤ó∂6ˆÁ7BVÁG'ì◊vfVf˜&‘VÁG'íáG&6≤í«V∑3÷VÁG'ìÚÁV∑3∑&WGW&‚'&íÊó4'&íáV∑2íbgV∑2Ê∆VÊwFÉ„”c˜V∑3¶ÁV∆«–¶gVÊ7Fñˆ‚7F˜&UvfVf˜&“áG&6≤«V∑2«∂˜&ñvñ„“w&˜fñFW"r∆6GW&VC÷ÁV∆¬∆6˜fW&vS””◊∑“ó∞¢6ˆÁ7BÊ˜&÷∆ó¶VC◊∆ñW$6˜&RÁvfVf˜&’V∑2áV∑2√Éì∂ñbÜÊ˜&÷∆ó¶VBÊ∆VÊwFÉ√bó&WGW&„∞¢vfVf˜&‘66ÜU∑vfVf˜&‘∂WíáG&6≤ï”◊∑V∑3¶Ê˜&÷∆ó¶VB∆˜&ñvñ‚∆6˜fW&vS§÷FÇÊ÷ÇÉƒ÷FÇÊ÷ñ‚ÉƒÁV÷&W"Ü6˜fW&vRó«√íí∆6GW&VC§'&íÊó4'&íÜ6GW&VBìˆ6GW&VBÊ÷áf«VS”‰÷FÇÊ÷ÇÉƒ÷FÇÊ÷ñ‚Éƒ÷FÇÁ&˜VÊBÑÁV÷&W"áf«VRó«√íííìßVÊFVfñÊVB«WFFVEˆC§FFRÊÊ˜rÇó”∞¢6ˆÁ7BVÁG&ñW3‘ˆ&¶V7BÊVÁG&ñW2ávfVf˜&‘66ÜRíÁ6˜'BÇÜ∆VgB«&ñváBì”‚á&ñváE≥”ÚÁWFFVEˆG«√í“Ü∆VgE≥”ÚÁWFFVEˆG«√íì∞¢VÁG&ñW2Á6∆ñ6RÉcíÊf˜$V6ÇÇÖ∂∂Wï“ì”ÊFV∆WFRvfVf˜&‘66ÜU∂∂Wï“ì∞¢G'ó∂∆ˆ6≈7F˜&vRÁ6WDóFV“ávfVf˜&‘66ÜT∂Wíƒ•4Ù‚Á7G&ñÊvñgíávfVf˜&‘66ÜRíó÷6F6á∑–ß–¶gVÊ7Fñˆ‚vfVf˜&‘ñ÷vUV∑2áW&¬ó∞¢&WGW&‚ÊWr&ˆ÷ó6RÇá&W6ˆ«fR«&V¶V7Bì”Á∞¢6ˆÁ7Bñ÷vS÷ÊWrñ÷vRÇì∂ñ÷vRÊ7&˜74˜&ñvñ„“vÊˆÁñ÷˜W2s∂ñ÷vRÊFV6ˆFñÊs“v7ñÊ2s∞¢ñ÷vRÊˆÊW'&˜#“Çì”Á&V¶V7BÜÊWrW'&˜"ÇwvfVf˜&“ñ÷vRVÊfñ∆&∆Rríì∞¢ñ÷vRÊˆÊ∆ˆC“Çì”Á∞¢G'ó∞¢6ˆÁ7BvñGFÉ”É∆ÜVñváC”É∆6Áf3÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇv6Áf2rì∂6Áf2ÁvñGFÉ◊vñGFÉ∂6Áf2ÊÜVñváC÷ÜVñváC∞¢6ˆÁ7B6ˆÁFWáC÷6Áf2ÊvWD6ˆÁFWáBÇs&Br«∑vñ∆≈&VDg&WVVÁF«ìßG'VW“ì∂ñbÇ6ˆÁFWáBóFá&˜rÊWrW'&˜"Çv6Áf2VÊfñ∆&∆Rrì∞¢6ˆÁFWáBÊ6∆V%&V7BÉ√«vñGFÇ∆ÜVñváBì∂6ˆÁFWáBÊG&tñ÷vRÜñ÷vR√√«vñGFÇ∆ÜVñváBì∞¢6ˆÁ7BóÜV«3÷6ˆÁFWáBÊvWDñ÷vTFFÉ√«vñGFÇ∆ÜVñváBíÊFF∞¢6ˆÁ7B6˜&ÊW#’∑óÜV«5≥“«óÜV«5≥“«óÜV«5≥%“«óÜV«5≥5’“«G&Á7&VÁC÷6˜&ÊW%≥5”√#C∞¢6ˆÁ7BV∑3’µ”∞¢f˜"Ü∆WBÉ”∑É«vñGFÉ∑Ç≥”ó∞¢∆WBF˜÷ÜVñváB∆&˜GFˆ”“”∞¢f˜"Ü∆WBì”∑ì∆ÜVñváC∑í≥”ó∞¢6ˆÁ7BñÊFWÉ“áíßvñGFÇ∑Çí£B∆«Ü◊óÜV«5∂ñÊFWÇ≥5”∞¢6ˆÁ7BFñffW&VÊ6S‘÷FÇÊ'2áóÜV«5∂ñÊFWÖ“÷6˜&ÊW%≥“í¥÷FÇÊ'2áóÜV«5∂ñÊFWÇ≥“÷6˜&ÊW%≥“í¥÷FÇÊ'2áóÜV«5∂ñÊFWÇ≥%“÷6˜&ÊW%≥%“ì∞¢ñbÇáG&Á7&VÁBbf«Ü„#Çó«¬ÇG&Á7&VÁBbf«Ü„#ÇbfFñffW&VÊ6S„3bíó∑F˜‘÷FÇÊ÷ñ‚áF˜«íì∂&˜GFˆ”‘÷FÇÊ÷ÇÜ&˜GFˆ“«íó–¢–¢V∑2ÁW6ÇÜ&˜GFˆ”„◊F˜Ù÷FÇÁ&˜VÊBÇÇÜ&˜GFˆ“◊F˜≥íˆÜVñváBí£ì£ì∞¢–¢6ˆÁ7BW6VgV√◊V∑2Êfñ«FW"áf«VS”Áf«VS„”ÇíÊ∆VÊwFÉ∞¢ñbáW6VgV√«vñGFÇ¢„'««V∑2Êfñ«FW"áf«VS”Áf«VS„”ìbíÊ∆VÊwFÉÁvñGFÇ¢„ÉRóFá&˜rÊWrW'&˜"ÇwvfVf˜&“ñ÷vRÜ2ÊÚW6&∆R«Ü&ˆfñ∆Rrì∞¢&W6ˆ«fRáV∑2ì∞¢÷6F6ÇÜW'&˜"ó∑&V¶V7BÜW'&˜"ó–¢”∞¢ñ÷vRÁ7&3◊W&√∞¢“ì∞ß–¶7ñÊ2gVÊ7Fñˆ‚áñG&FUvfVf˜&“ÜV∆V÷VÁB«G&6≤∆&'2ó∞¢6ˆÁ7BW&√◊6fTñ÷vRáG&6≥ÚÁvfVf˜&’˜W&¬ì∂ñbÇW&««∆66ÜVEvfVf˜&“áG&6≤íó&WGW&„∞¢6ˆÁ7B∂Wì◊vfVf˜&‘∂WíáG&6≤ì∞¢∆WBVÊFñÊs◊vfVf˜&‘∆ˆG2ÊvWBÜ∂Wíì∞¢ñbÇVÊFñÊró∑VÊFñÊs◊vfVf˜&‘ñ÷vUV∑2áW&¬íÁFÜV‚áV∑3”Á∑7F˜&UvfVf˜&“áG&6≤«V∑2«∂˜&ñvñ„¢w&˜fñFW"w“ì∑&WGW&‚V∑7“íÊfñÊ∆«íÇÇì”ÁvfVf˜&‘∆ˆG2ÊFV∆WFRÜ∂Wííì∑vfVf˜&‘∆ˆG2Á6WBÜ∂Wí«VÊFñÊró–¢G'ó∂6ˆÁ7BV∑3÷vóBVÊFñÊs∂ñbÜV∆V÷VÁBÊó46ˆÊÊV7FVBó∂V∆V÷VÁBÁ7Gñ∆RÁ6WE&˜W'GíÇr“◊vfR÷÷6≤r«∆ñW$6˜&RÁvfVf˜&‘÷6¥g&ˆ’V∑2áV∑2∆&'2íì∂V∆V÷VÁBÊFF6WBÁvfVf˜&”“w&˜fñFW"w◊÷6F6á∑–ß–¶gVÊ7Fñˆ‚66ÜVGV∆UvfVf˜&‘áñG&Fñˆ‚ÜV∆V÷VÁB«G&6≤∆&'2ó∞¢ñbÇV∆V÷VÁG«¬G&6≥ÚÁvfVf˜&’˜W&««∆66ÜVEvfVf˜&“áG&6≤íó&WGW&„∞¢vfVf˜&’F&vWG2Á6WBÜV∆V÷VÁB«∑G&6≤∆&'7“ì∞¢ñbÇÇtñÁFW'6V7Fñˆ‰ˆ'6W'fW"vñ‚vñÊF˜ríó∑fˆñBáñG&FUvfVf˜&“ÜV∆V÷VÁB«G&6≤∆&'2ì∑&WGW&Á–¢ñbÇvfVf˜&‘ˆ'6W'fW"óvfVf˜&‘ˆ'6W'fW#÷ÊWrñÁFW'6V7Fñˆ‰ˆ'6W'fW"ÜVÁG&ñW3”ÊVÁG&ñW2Êf˜$V6ÇÜVÁG'ì”Á∂ñbÇVÁG'íÊó4ñÁFW'6V7FñÊró&WGW&„∑vfVf˜&‘ˆ'6W'fW"ÁVÊˆ'6W'fRÜVÁG'íÁF&vWBì∂6ˆÁ7BF&vWC◊vfVf˜&’F&vWG2ÊvWBÜVÁG'íÁF&vWBì∂ñbáF&vWBófˆñBáñG&FUvfVf˜&“ÜVÁG'íÁF&vWB«F&vWBÁG&6≤«F&vWBÊ&'2ó“í«∑&ˆ˜D÷&vñ„¢scÇw“ì∞¢vfVf˜&‘ˆ'6W'fW"Êˆ'6W'fRÜV∆V÷VÁBì∞ß–¶gVÊ7Fñˆ‚«ïvfVf˜&“ÜV∆V÷VÁB«G&6≤∆&'3”ìbó∞¢ñbÇV∆V÷VÁBó&WGW&„∞¢6ˆÁ7BV∑3÷66ÜVEvfVf˜&“áG&6≤í«&˜fñFW#◊6fTñ÷vRáG&6≥ÚÁvfVf˜&’˜W&¬ì∞¢ñbáV∑2ó∂V∆V÷VÁBÁ7Gñ∆RÁ6WE&˜W'GíÇr“◊vfR÷÷6≤r«∆ñW$6˜&RÁvfVf˜&‘÷6¥g&ˆ’V∑2áV∑2∆&'2íì∂V∆V÷VÁBÊFF6WBÁvfVf˜&”“w&˜fñFW"s∑&WGW&Á–¢ñbá&˜fñFW"ó∂V∆V÷VÁBÁ7Gñ∆RÁ6WE&˜W'GíÇr“◊vfR÷÷6≤r∆W&¬Ç"G∑&˜fñFW'“"ñì∂V∆V÷VÁBÊFF6WBÁvfVf˜&”“w&˜fñFW"s∑66ÜVGV∆UvfVf˜&‘áñG&Fñˆ‚ÜV∆V÷VÁB«G&6≤∆&'2ì∑&WGW&Á–¢V∆V÷VÁBÁ7Gñ∆RÁ6WE&˜W'GíÇr“◊vfR÷÷6≤r«∆ñW$6˜&RÁvfVf˜&‘÷6≤ávfVf˜&‘∂WíáG&6≤í∆&'2íì∂V∆V÷VÁBÊFF6WBÁvfVf˜&”“w7ñÁFÜWFñ2s∞ß–†¶gVÊ7Fñˆ‚6÷T˜&ñvñ‰÷VFñáG&6≤ó∑G'ó∑&WGW&‚ÊWrU$¬áG&6≥ÚÁ7G&V’˜W&¬∆∆ˆ6Fñˆ‚Êá&VbíÊ˜&ñvñ„””÷∆ˆ6Fñˆ‚Ê˜&ñvñÁ÷6F6á∑&WGW&‚f«6W◊–¶gVÊ7Fñˆ‚6GW&VEvfVf˜&“áG&6≤∆6GW&VBó∞¢6ˆÁ7Bf∆∆&6≥◊∆ñW$6˜&RÁvfVf˜&‘&'2ávfVf˜&‘∂WíáG&6≤í√Éì∞¢&WGW&‚f∆∆&6≤Ê÷Çáf«VR∆ñÊFWÇì”Ê6GW&VE∂ñÊFWÖ”„ˆ6GW&VE∂ñÊFWÖ”ßf«VRì∞ß–¶gVÊ7Fñˆ‚WFFT6GW&VEvfVf˜&“áG&6≤∆6GW&VBó∞¢6ˆÁ7BV∑3÷6GW&VEvfVf˜&“áG&6≤∆6GW&VBí∆7FófS÷Fˆ7V÷VÁBÁVW'ï6V∆V7F˜"ÇrÁG&6≤Ê7FófRÁG&6≤◊vfVf˜&“rí∆Üˆ÷S÷Fˆ7V÷VÁBÁVW'ï6V∆V7F˜"ÇrÊÜˆ÷R◊G&6≤÷6&BÊ7FófRÊÜˆ÷R◊G&6≤÷÷WFW"rì∞¢ñbÜ7FófRó∂7FófRÁ7Gñ∆RÁ6WE&˜W'GíÇr“◊vfR÷÷6≤r«∆ñW$6˜&RÁvfVf˜&‘÷6¥g&ˆ’V∑2áV∑2√sBíì∂7FófRÊFF6WBÁvfVf˜&”“v6GW&VBw–¢ñbÜÜˆ÷Ró∂Üˆ÷RÁ7Gñ∆RÁ6WE&˜W'GíÇr“◊vfR÷÷6≤r«∆ñW$6˜&RÁvfVf˜&‘÷6¥g&ˆ’V∑2áV∑2√SÇíì∂Üˆ÷RÊFF6WBÁvfVf˜&”“v6GW&VBw–¢ñbá7FFRÊ7FófSÚÊñC””◊G&6≤ÊñBó∑VíÁvfU&ˆw&W72Á7Gñ∆RÁ6WE&˜W'GíÇr“◊vfR÷÷6≤r«∆ñW$6˜&RÁvfVf˜&‘÷6¥g&ˆ’V∑2áV∑2√3"íì∑VíÁvfU&ˆw&W72ÊFF6WBÁvfVf˜&”“v6GW&VBw–ß–¶gVÊ7Fñˆ‚6fT6GW&VEvfVf˜&“Çó∞¢6ˆÁ7B6GW&S◊7FFRÁvfVf˜&‘6GW&S∂ñbÇ6GW&Ró&WGW&„∞¢6ˆÁ7B6◊∆VC÷6GW&RÁV∑2Êfñ«FW"áf«VS”Áf«VS„íÊ∆VÊwFÉ∂ñbá6◊∆VC√2ó&WGW&„∞¢6ˆÁ7B6˜fW&vS◊6◊∆VBˆ6GW&RÁV∑2Ê∆VÊwFÇ«V∑3÷6GW&VEvfVf˜&“Ü6GW&RÁG&6≤∆6GW&RÁV∑2ì∞¢7F˜&UvfVf˜&“Ü6GW&RÁG&6≤«V∑2«∂˜&ñvñ„¢v6GW&VBr∆6GW&VC¶6GW&RÁV∑2∆6˜fW&vW“ì∑WFFT6GW&VEvfVf˜&“Ü6GW&RÁG&6≤∆6GW&RÁV∑2ì∂6GW&RÁ6fVDC◊W&f˜&÷Ê6RÊÊ˜rÇì∞ß–¶gVÊ7Fñˆ‚7F˜vfVf˜&‘6GW&Rá6fS◊G'VRó∞¢ñbá7FFRÁvfVf˜&‘6GW&Tg&÷Rñ6Ê6VƒÊñ÷Fñˆ‰g&÷Rá7FFRÁvfVf˜&‘6GW&Tg&÷Rì∑7FFRÁvfVf˜&‘6GW&Tg&÷S÷ÁV∆√∞¢ñbá6fRó6fT6GW&VEvfVf˜&“Çì∑7FFRÁvfVf˜&‘6GW&S÷ÁV∆√∞ß–¶gVÊ7Fñˆ‚7F'EvfVf˜&‘6GW&RáG&6≤ó∞¢ñbÇG&6∑««G&6≤Á6˜W&6S””“wñ˜WGV&Rw««G&6≤ÁvfVf˜&’˜W&««¬6÷T˜&ñvñ‰÷VFñáG&6≤íó&WGW&„∞¢6ˆÁ7B6ˆÁFWáC◊vñÊF˜r‰VFñÙ6ˆÁFWáG««vñÊF˜rÁvV&∂óDVFñÙ6ˆÁFWáC∂ñbÇ6ˆÁFWáBó&WGW&„∞¢6ˆÁ7BVÁG'ì◊vfVf˜&‘VÁG'íáG&6≤ì∂ñbÜVÁG'ìÚÊ˜&ñvñ„””“w&˜fñFW"w«ƒÁV÷&W"ÜVÁG'ìÚÊ6˜fW&vRì„“„íó&WGW&„∞¢G'ó∞¢ñbÇ7FFRÊVFñÙw&Çó∂6ˆÁ7B÷VFñ7G&V”◊VíÊVFñÚÊ6GW&U7G&V”Ú‚Çó««VíÊVFñÚÊ÷˜§6GW&U7G&V”Ú‚Çì∂ñbÇ÷VFñ7G&V“ó&WGW&„∂6ˆÁ7B6ˆÁFWáC÷ÊWr6ˆÁFWáBÇí∆Ê«ó6W#÷6ˆÁFWáBÊ7&VFTÊ«ó6W"Çí«6˜W&6S÷6ˆÁFWáBÊ7&VFT÷VFñ7G&V’6˜W&6RÜ÷VFñ7G&V“í«6ñ∆VÁC÷6ˆÁFWáBÊ7&VFTvñ‚Çì∂Ê«ó6W"ÊfgE6ó¶S”#C∂Ê«ó6W"Á6÷ˆ˜FÜñÊuFñ÷T6ˆÁ7FÁC“„cc∑6ñ∆VÁBÊvñ‚Áf«VS”∑6˜W&6RÊ6ˆÊÊV7BÜÊ«ó6W"ì∂Ê«ó6W"Ê6ˆÊÊV7Bá6ñ∆VÁBì∑6ñ∆VÁBÊ6ˆÊÊV7BÜ6ˆÁFWáBÊFW7FñÊFñˆ‚ì∑7FFRÊVFñÙw&É◊∂6ˆÁFWáB∆Ê«ó6W"«6˜W&6R«6ñ∆VÁB∆'VffW#¶ÊWrVñÁCÑ'&íÜÊ«ó6W"ÊfgE6ó¶Ró◊–¢fˆñB7FFRÊVFñÙw&ÇÊ6ˆÁFWáBÁ&W7V÷RÇì∞¢÷6F6á∑&WGW&Á–¢7F˜vfVf˜&‘6GW&RÜf«6Rì∞¢6ˆÁ7B7F˜&VC‘'&íÊó4'&íÜVÁG'ìÚÊ6GW&VBìˆVÁG'íÊ6GW&VBÁ6∆ñ6RÉ√Éì•µ“«V∑3‘'&íÊg&ˆ“á∂∆VÊwFÉ£É“¬ÖÚ∆ñÊFWÇì”Á7F˜&VE∂ñÊFWÖ◊«√ì∞¢7FFRÁvfVf˜&‘6GW&S◊∑G&6≤«V∑2«6fVDCßW&f˜&÷Ê6RÊÊ˜rÇó”∞¢6ˆÁ7B6◊∆S“Çì”Á∞¢6ˆÁ7B6GW&S◊7FFRÁvfVf˜&‘6GW&R∆w&É◊7FFRÊVFñÙw&É∂ñbÇ6GW&W«¬w&á««7FFRÊ7FófSÚÊñB”◊G&6≤ÊñBó&WGW&„∞¢ñbÇVíÊVFñÚÁW6VBbdÁV÷&W"Êó4fñÊóFRáVíÊVFñÚÊGW&Fñˆ‚íbgVíÊVFñÚÊGW&Fñˆ„„ó∞¢w&ÇÊÊ«ó6W"ÊvWD'óFUFñ÷TFˆ÷ñ‰FFÜw&ÇÊ'VffW"ì∂∆WB◊∆óGVFS”∂f˜"Ü6ˆÁ7Bf«VRˆbw&ÇÊ'VffW"ñ◊∆óGVFS‘÷FÇÊ÷ÇÜ◊∆óGVFRƒ÷FÇÊ'2áf«VR”#ÇíÛ#Çì∞¢6ˆÁ7BñÊFWÉ‘÷FÇÊ÷ñ‚Ésíƒ÷FÇÊ÷ÇÉƒ÷FÇÊf∆ˆ˜"ÇáVíÊVFñÚÊ7W'&VÁEFñ÷R˜VíÊVFñÚÊGW&Fñˆ‚í£Éííí∆ÜVñváC‘÷FÇÊ÷ÇÉÇƒ÷FÇÊ÷ñ‚Éƒ÷FÇÁ&˜VÊBÜ◊∆óGVFR£CRííì∞¢6GW&RÁV∑5∂ñÊFWÖ”‘÷FÇÊ÷ÇÜ6GW&RÁV∑5∂ñÊFWÖ“∆ÜVñváBì∞¢ñbáW&f˜&÷Ê6RÊÊ˜rÇí÷6GW&RÁ6fVDC„ó6fT6GW&VEvfVf˜&“Çì∂V«6RñbÜñÊFWÇS3”””óWFFT6GW&VEvfVf˜&“áG&6≤∆6GW&RÁV∑2ì∞¢–¢7FFRÁvfVf˜&‘6GW&Tg&÷S◊&WVW7DÊñ÷Fñˆ‰g&÷Rá6◊∆Rì∞¢”∞¢7FFRÁvfVf˜&‘6GW&Tg&÷S◊&WVW7DÊñ÷Fñˆ‰g&÷Rá6◊∆Rì∞ß–†¶gVÊ7Fñˆ‚W'6ó7BÇó∞¢∆ˆ6≈7F˜&vRÁ6WDóFV“ÇvwV‚÷∆ñ'&'írƒ•4Ù‚Á7G&ñÊvñgíá7FFRÁ6fVBíì∞¢∆ˆ6≈7F˜&vRÁ6WDóFV“ÇvwV‚◊&V6VÁBrƒ•4Ù‚Á7G&ñÊvñgíá7FFRÁ&V6VÁG2Á6∆ñ6RÉ√"ííì∞¢W'6ó7EVWVRÇì∞¢VíÊ∆ñ'&'î'WGFˆ‚ÁVW'ï6V∆V7F˜"Çv"ríÁFWáD6ˆÁFVÁC’7G&ñÊrá7FFRÁ6fVBÊ∆VÊwFÇíÁE7F'BÉ"¬srì∞ß–†¶gVÊ7Fñˆ‚W'6ó7EVWVRÇó∞¢7FFRÁVWVS◊∆ñW$6˜&RÁVÊóVUG&6∑2á7FFRÁVWVRì∞¢∆ˆ6≈7F˜&vRÁ6WDóFV“ÇvwV‚◊VWVR◊crƒ•4Ù‚Á7G&ñÊvñgíá∑fW'6ñˆ„£∆÷ˆFSß7FFRÁVWVT÷ˆFR∆óFV◊3ß7FFRÁVWVW“íì∞ß–†¶gVÊ7Fñˆ‚6WD÷W76vRáFWáC“rr∆∂ñÊC“rró∞¢VíÊ÷W76vRÁFWáD6ˆÁFVÁC◊FWáC∞¢VíÊ÷W76vRÊ6∆74Ê÷S÷÷W76vRG∂∂ñÊG÷ÁG&ñ“Çì∞ß–†¶gVÊ7Fñˆ‚«ïfó7V¬á6fS◊G'VRó∞¢6ˆÁ7BFÜV÷S◊fó7V≈FÜV÷W5∑7FFRÁFÜV÷U◊««fó7V≈FÜV÷W2Ê6ñC∞¢Fˆ7V÷VÁBÊFˆ7V÷VÁDV∆V÷VÁBÊFF6WBÁFÜV÷S◊7FFRÁFÜV÷S∞¢Fˆ7V÷VÁBÊFˆ7V÷VÁDV∆V÷VÁBÊFF6WBÊ÷˜Fñˆ„◊7FFRÊ÷˜Fñˆ„∞¢Fˆ7V÷VÁBÊFˆ7V÷VÁDV∆V÷VÁBÊFF6WBÊFV6˜#◊7FFRÊFV6˜#∞¢Fˆ7V÷VÁBÊFˆ7V÷VÁDV∆V÷VÁBÊFF6WBÊFVÁ6óGì◊7FFRÊFVÁ6óGì∞¢VíÁFÜV÷T∆&V¬ÁFWáD6ˆÁFVÁC◊BáFÜV÷RÊ∆&Vƒ∂Wíì∞¢VíÁFÜV÷T6ˆ∆˜"Ê6ˆÁFVÁC◊FÜV÷RÊ6ˆ∆˜#∞¢VíÊ÷˜FñˆÂf«VRÁFWáD6ˆÁFVÁC◊Bá7FFRÊ÷˜Fñˆ„””“vˆ‚sÚvˆ‚s¢vˆfbrì∞¢VíÊFV6˜%f«VRÁFWáD6ˆÁFVÁC◊Bá7FFRÊFV6˜#””“v÷ñÊñ÷¬sÚv÷ñÊñ÷¬s¢vVFóF˜&ñ¬rì∞¢VíÊFVÁ6óGïf«VRÁFWáD6ˆÁFVÁC◊Bá7FFRÊFVÁ6óGíì∞¢VíÊ÷˜FñˆÂFˆvv∆RÁ6WDGG&ñ'WFRÇv&ñ◊&W76VBr≈7G&ñÊrá7FFRÊ÷˜Fñˆ„””“vˆ‚ríì∞¢VíÊFV6˜%Fˆvv∆RÁ6WDGG&ñ'WFRÇv&ñ◊&W76VBr≈7G&ñÊrá7FFRÊFV6˜#””“v÷ñÊñ÷¬ríì∞¢VíÊFVÁ6óGïFˆvv∆RÊFF6WBÁf«VS◊7FFRÊFVÁ6óGì∞¢Fˆ7V÷VÁBÁVW'ï6V∆V7F˜$∆¬Çu∂FF◊FÜV÷R÷6Üˆñ6U“ríÊf˜$V6ÇÜ'WGFˆ„”Ê'WGFˆ‚Á6WDGG&ñ'WFRÇv&ñ◊&W76VBr≈7G&ñÊrÜ'WGFˆ‚ÊFF6WBÁFÜV÷T6Üˆñ6S””◊7FFRÁFÜV÷Rííì∞¢ñbá6fRñ∆ˆ6≈7F˜&vRÁ6WDóFV“ÇvwV‚◊fó7V¬rƒ•4Ù‚Á7G&ñÊvñgíá∑FÜV÷Sß7FFRÁFÜV÷R∆÷˜Fñˆ„ß7FFRÊ÷˜Fñˆ‚∆FV6˜#ß7FFRÊFV6˜"∆FVÁ6óGìß7FFRÊFVÁ6óGó“íì∞ß–†¶gVÊ7Fñˆ‚˜VÂFÜV÷UÊV¬Çó∑6WEVWVT˜V‚Üf«6Rì∑6WE∆ñW$WáÊFVBÜf«6Rì∂ñbÜFˆ7V÷VÁBÊ&ˆGíÊ6∆74∆ó7BÊ6ˆÁFñÁ2Çvf∆˜r◊67&VV‚÷˜V‚ríñFˆ7V÷VÁBÊvWDV∆V÷VÁD'îñBÇvf∆˜t6∆˜6RrìÚÊ6∆ñ6≤Çì∑VíÊñ◊˜'EÊV¬ÊÜñFFV„◊G'VS∑VíÊñ◊˜'D&6∂G&˜ÊÜñFFV„◊G'VS∑VíÊñ◊˜'D'WGFˆ‚Á6WDGG&ñ'WFRÇv&ñ÷WáÊFVBr¬vf«6Rrì∑VíÊFñvÊ˜7Fñ75ÊV¬ÊÜñFFV„◊G'VS∑VíÊFñvÊ˜7Fñ74'WGFˆ‚Á6WDGG&ñ'WFRÇv&ñ÷WáÊFVBr¬vf«6Rrì∑VíÁFÜV÷UÊV¬ÊÜñFFV„÷f«6S∑VíÁFÜV÷T&6∂G&˜ÊÜñFFV„÷f«6S∑VíÁFÜV÷T'WGFˆ‚Á6WDGG&ñ'WFRÇv&ñ÷WáÊFVBr¬wG'VRrì∑&WVW7DÊñ÷Fñˆ‰g&÷RÇÇì”ÊFˆ7V÷VÁBÊ&ˆGíÊ6∆74∆ó7BÊFBÇwfó7V¬÷˜V‚ríó–¶gVÊ7Fñˆ‚6∆˜6UFÜV÷UÊV¬Çó∂Fˆ7V÷VÁBÊ&ˆGíÊ6∆74∆ó7BÁ&V÷˜fRÇwfó7V¬÷˜V‚rì∑VíÁFÜV÷T'WGFˆ‚Á6WDGG&ñ'WFRÇv&ñ÷WáÊFVBr¬vf«6Rrì∑VíÊFñvÊ˜7Fñ74'WGFˆ‚Á6WDGG&ñ'WFRÇv&ñ÷WáÊFVBr¬vf«6Rrì∑6WEFñ÷V˜WBÇÇì”Á∑VíÁFÜV÷UÊV¬ÊÜñFFV„◊G'VS∑VíÊFñvÊ˜7Fñ75ÊV¬ÊÜñFFV„◊G'VS∑VíÁFÜV÷T&6∂G&˜ÊÜñFFV„◊G'VW“√Éó–¶gVÊ7Fñˆ‚˜V‰FñvÊ˜7Fñ75ÊV¬Çó∑6WEVWVT˜V‚Üf«6Rì∑6WE∆ñW$WáÊFVBÜf«6Rì∑VíÁFÜV÷UÊV¬ÊÜñFFV„◊G'VS∑VíÁFÜV÷T'WGFˆ‚Á6WDGG&ñ'WFRÇv&ñ÷WáÊFVBr¬vf«6Rrì∑VíÊFñvÊ˜7Fñ75ÊV¬ÊÜñFFV„÷f«6S∑VíÊFñvÊ˜7Fñ74'WGFˆ‚Á6WDGG&ñ'WFRÇv&ñ÷WáÊFVBr¬wG'VRrì∑VíÁFÜV÷T&6∂G&˜ÊÜñFFV„÷f«6S∑&VÊFW$FñvÊ˜7Fñ72Çì∑&WVW7DÊñ÷Fñˆ‰g&÷RÇÇì”ÊFˆ7V÷VÁBÊ&ˆGíÊ6∆74∆ó7BÊFBÇwfó7V¬÷˜V‚ríì∑fˆñB&Vg&W6Ö7FGW2Çó–¶gVÊ7Fñˆ‚˜V‰ñ◊˜'EÊV¬Çó∑VíÁFÜV÷UÊV¬ÊÜñFFV„◊G'VS∑VíÊFñvÊ˜7Fñ75ÊV¬ÊÜñFFV„◊G'VS∑VíÁFÜV÷T&6∂G&˜ÊÜñFFV„◊G'VS∑VíÁFÜV÷T'WGFˆ‚Á6WDGG&ñ'WFRÇv&ñ÷WáÊFVBr¬vf«6Rrì∑VíÊñ◊˜'EÊV¬ÊÜñFFV„÷f«6S∑VíÊñ◊˜'D&6∂G&˜ÊÜñFFV„÷f«6S∑VíÊñ◊˜'D'WGFˆ‚Á6WDGG&ñ'WFRÇv&ñ÷WáÊFVBr¬wG'VRrì∑&WVW7DÊñ÷Fñˆ‰g&÷RÇÇì”ÊFˆ7V÷VÁBÊ&ˆGíÊ6∆74∆ó7BÊFBÇwfó7V¬÷˜V‚ríó–¶gVÊ7Fñˆ‚6∆˜6Tñ◊˜'EÊV¬Çó∂Fˆ7V÷VÁBÊ&ˆGíÊ6∆74∆ó7BÁ&V÷˜fRÇwfó7V¬÷˜V‚rì∑VíÊñ◊˜'D'WGFˆ‚Á6WDGG&ñ'WFRÇv&ñ÷WáÊFVBr¬vf«6Rrì∑6WEFñ÷V˜WBÇÇì”Á∑VíÊñ◊˜'EÊV¬ÊÜñFFV„◊G'VS∑VíÊñ◊˜'D&6∂G&˜ÊÜñFFV„◊G'VW“√Éó–¶gVÊ7Fñˆ‚6WEVWVT˜V‚Ü˜V‚ó∞¢6ˆÁ7BÊWáC‘&ˆˆ∆V‚Ü˜V‚ì∑VíÁ∆ñW"Ê6∆74∆ó7BÁFˆvv∆RÇwVWVR÷˜V‚r∆ÊWáBì∂Fˆ7V÷VÁBÊ&ˆGíÊ6∆74∆ó7BÁFˆvv∆RÇwVWVR÷˜V‚r∆ÊWáBì∑VíÁVWVUFˆvv∆SÚÁ6WDGG&ñ'WFRÇv&ñ÷WáÊFVBr≈7G&ñÊrÜÊWáBíì∞ß–¶gVÊ7Fñˆ‚6WE∆ñW$WáÊFVBÜ˜V‚ó∞¢6ˆÁ7BÊWáC‘&ˆˆ∆V‚Ü˜V‚ì∂ñbÜÊWáBó6WEVWVT˜V‚Üf«6Rì∑VíÁ∆ñW"Ê6∆74∆ó7BÁFˆvv∆RÇvWáÊFVB◊∆ñW"r∆ÊWáBì∂Fˆ7V÷VÁBÊ&ˆGíÊ6∆74∆ó7BÁFˆvv∆RÇw∆ñW"÷WáÊFVBr∆ÊWáBì∑VíÊWáÊE∆ñW#ÚÁ6WDGG&ñ'WFRÇv&ñ÷WáÊFVBr≈7G&ñÊrÜÊWáBíì∞ß–¶gVÊ7Fñˆ‚WFFT6∆ˆ6≤Çó∑VíÁFV∆V÷WG'î6∆ˆ6≤ÁFWáD6ˆÁFVÁC÷ÊWrñÁF¬‰FFUFñ÷Tf˜&÷BÜ∆ÊwVvS””“w'RsÚw'R’%Rs¢vV‚‘t"r«∂Ü˜W#¢s"÷FñvóBr∆÷ñÁWFS¢s"÷FñvóBr«6V6ˆÊC¢s"÷FñvóBr∆Ü˜W##¶f«6W“íÊf˜&÷BÜÊWrFFRÇíó–†¶gVÊ7Fñˆ‚ñÊFWÑ6F∆ˆt∆ñÊ≤Ü'Fó7B«FóF∆Ró∑&WGW&‚áGG3¢Úˆ◊W6ñ2ÁñÊFWÇÁ'R˜6V&6É˜FWáC“G∂VÊ6ˆFUU$î6ˆ◊ˆÊVÁBÜG∂'Fó7G«¬rw“G∑FóF∆W«¬rw÷ÁG&ñ“Çíó÷–¶gVÊ7Fñˆ‚ñ◊˜'D∂WíÜ'Fó7B«FóF∆Ró∑&WGW&‚Gµ7G&ñÊrÜ'Fó7G«¬rríÁG&ñ“ÇíÁFÙ∆ˆ6∆T∆˜vW$66RÇó’«SGµ7G&ñÊráFóF∆W«¬rríÁG&ñ“ÇíÁFÙ∆ˆ6∆T∆˜vW$66RÇó÷–¶gVÊ7Fñˆ‚ñ◊˜'DñBÜ'Fó7B«FóF∆Ró∂∆WBÜ6É”#cc3c#c∂f˜"Ü6ˆÁ7B6Ü&7FW"ˆbñ◊˜'D∂WíÜ'Fó7B«FóF∆Ríó∂Ü6Ö„÷6Ü&7FW"Ê6Ü$6ˆFTBÉì∂Ü6É‘÷FÇÊñ◊V¬ÜÜ6Ç√cssscíó◊&WGW&‚ñ’ÚG≤ÜÜ6É„„„íÁFı7G&ñÊrÉ3bó÷–¶gVÊ7Fñˆ‚7∆óDñ◊˜'FVDÊ÷Ráf«VRó∞¢6ˆÁ7B6∆V„’7G&ñÊráf«VW«¬rríÁ&W∆6RÇıÂ«2•∆Bµ≤‚ï’«2¢Ú¬rríÁG&ñ“Çì∞¢6ˆÁ7B'G3÷6∆V‚Á7∆óBÇı«2≤ÉÛÆ(	GŒ(	7¬◊≈«¬ï«2∑≈«B≤Úì∞¢ñbá'G2Ê∆VÊwFÉ√"ó&WGW&Á∂'Fó7C¢rr«FóF∆S¶6∆VÁ”∞¢&WGW&Á∂'Fó7Cß'G2Á6ÜñgBÇíÁG&ñ“Çí«FóF∆Sß'G2Ê¶ˆñ‚Çr(	BríÁG&ñ“Çó”∞ß–¶gVÊ7Fñˆ‚ñ◊˜'FVEG&6≤Ü'Fó7B«FóF∆Ró∞¢'Fó7C’7G&ñÊrÜ'Fó7G«¬rríÁG&ñ“Çì∑FóF∆S’7G&ñÊráFóF∆W«¬rríÁG&ñ“Çì∞¢ñbÇFóF∆Ró&WGW&‚ÁV∆√∞¢&WGW&Á∂ñC¶ñ◊˜'DñBÜ'Fó7B«FóF∆Rí«FóF∆R∆'Fó7C¶'Fó7G«¬uñÊFWÇ◊W6ñ2r∆GW&Fñˆ„£«V∆óGì¢uî“r«6˜W&6S¢wñÊFWÖˆ◊W6ñ2r«7G&V’˜W&√¢rr∆F˜vÊ∆ˆE˜W&√¶ÁV∆¬«FáV÷&Êñ√¶ÁV∆¬∆ñ◊˜'Eˆ˜&ñvñ„¢wñÊFWÖˆ◊W6ñ2r∆6F∆ˆuˆ∆ñÊ∑3ß∑ñÊFWÖˆ◊W6ñ3ßñÊFWÑ6F∆ˆt∆ñÊ≤Ü'Fó7B«FóF∆Ró◊”∞ß–¶gVÊ7Fñˆ‚'6TFV∆ñ÷óFVD∆ñÊRÜ∆ñÊR∆FV∆ñ÷óFW"ó∞¢6ˆÁ7Bf«VW3’µ”∂∆WB7W'&VÁC“rr«V˜FVC÷f«6S∞¢f˜"Ü∆WBñÊFWÉ”∂ñÊFWÉ∆∆ñÊRÊ∆VÊwFÉ∂ñÊFWÇ≥”ó∂6ˆÁ7B6Ü&7FW#÷∆ñÊU∂ñÊFWÖ”∂ñbÜ6Ü&7FW#””“r"ró∂ñbáV˜FVBbf∆ñÊU∂ñÊFWÇ≥”””“r"ró∂7W'&VÁB≥“r"s∂ñÊFWÇ≥”÷V«6RV˜FVC“V˜FVG÷V«6RñbÜ6Ü&7FW#””÷FV∆ñ÷óFW"bbV˜FVBó∑f«VW2ÁW6ÇÜ7W'&VÁBÁG&ñ“Çíì∂7W'&VÁC“rw÷V«6R7W'&VÁB≥÷6Ü&7FW'–¢f«VW2ÁW6ÇÜ7W'&VÁBÁG&ñ“Çíì∑&WGW&‚f«VW3∞ß–¶gVÊ7Fñˆ‚'6Tß6ˆ‰∆ñ'&'íá&ró∞¢6ˆÁ7Bñ∆ˆC‘•4Ù‚Á'6Rá&rì∂6ˆÁ7BVÁG&ñW3‘'&íÊó4'&íáñ∆ˆBì˜ñ∆ˆCßñ∆ˆBÁG&6∑7««ñ∆ˆBÊóFV◊7««ñ∆ˆBÁ∆ñ∆ó7CÚÁG&6∑7««ñ∆ˆBÁ&W7V«CÚÁG&6∑7«≈µ”∞¢ñbÇ'&íÊó4'&íÜVÁG&ñW2íó&WGW&Âµ”∞¢&WGW&‚VÁG&ñW2Ê÷ÜVÁG'ì”Á∂6ˆÁ7BóFV”÷VÁG'ìÚÁG&6∑«∆VÁG'ó««∑”∂6ˆÁ7BFóF∆S÷óFV“ÁFóF∆W«∆óFV“ÊÊ÷W«∆óFV“ÁG&6∑«∆óFV“ÁG&6¥Ê÷W«¬rs∂∆WB'Fó7C÷óFV“Ê'Fó7G«∆óFV“Ê'Fó7EˆÊ÷W«∆óFV“Ê'Fó7DÊ÷W«¬rs∂ñbÑ'&íÊó4'&íÜóFV“Ê'Fó7G2íñ'Fó7C÷óFV“Ê'Fó7G2Ê÷áf«VS”ÁGóVˆbf«VS””“w7G&ñÊrs˜f«VSßf«VSÚÊÊ÷RíÊfñ«FW"Ñ&ˆˆ∆V‚íÊ¶ˆñ‚Çr¬rì∂V«6RñbÜ'Fó7BbgGóVˆb'Fó7C””“vˆ&¶V7Brñ'Fó7C÷'Fó7BÊÊ÷W«¬rs∑&WGW&‚ñ◊˜'FVEG&6≤Ü'Fó7B«FóF∆Ró“íÊfñ«FW"Ñ&ˆˆ∆V‚ì∞ß–¶gVÊ7Fñˆ‚'6T77d∆ñ'&'íá&ró∞¢6ˆÁ7B∆ñÊW3◊&rÁ7∆óBÇı«#ı∆‚ÚíÊfñ«FW"Ü∆ñÊS”Ê∆ñÊRÁG&ñ“Çíì∂ñbÇ∆ñÊW2Ê∆VÊwFÇó&WGW&Âµ”∞¢6ˆÁ7BFV∆ñ÷óFW#“Ü∆ñÊW5≥“Ê÷F6ÇÇÛ≤ˆró«≈µ“íÊ∆VÊwFÉ‚Ü∆ñÊW5≥“Ê÷F6ÇÇÚ¬ˆró«≈µ“íÊ∆VÊwFÉÚs≤s¶∆ñÊW5≥“ÊñÊ6«VFW2Çu«BrìÚu«Bs¢r¬s∞¢6ˆÁ7BÜVFW'3◊'6TFV∆ñ÷óFVD∆ñÊRÜ∆ñÊW5≥“∆FV∆ñ÷óFW"íÊ÷áf«VS”Áf«VRÁFÙ∆ˆ6∆T∆˜vW$66RÇíÁ&W∆6RÇıµ«5Ú’“ˆr¬rríì∞¢6ˆÁ7BFóF∆TñÊFWÉ÷ÜVFW'2ÊfñÊDñÊFWÇáf«VS”Â≤wFóF∆Rr¬wG&6≤r¬wG&6∑FóF∆Rr¬vÊ÷Rr¬w6ˆÊru“ÊñÊ6«VFW2áf«VRíì∞¢6ˆÁ7B'Fó7DñÊFWÉ÷ÜVFW'2ÊfñÊDñÊFWÇáf«VS”Â≤v'Fó7Br¬v'Fó7G2r¬v'Fó7FÊ÷Rr¬wW&f˜&÷W"r¬vWFÜ˜"u“ÊñÊ6«VFW2áf«VRíì∞¢6ˆÁ7BÜ4ÜVFW#◊FóF∆TñÊFWÉ„”«∆'Fó7DñÊFWÉ„”∂6ˆÁ7B7F'C÷Ü4ÜVFW#Û£∞¢&WGW&‚∆ñÊW2Á6∆ñ6Rá7F'BíÊ÷Ü∆ñÊS”Á∂6ˆÁ7Bf«VW3◊'6TFV∆ñ÷óFVD∆ñÊRÜ∆ñÊR∆FV∆ñ÷óFW"ì∂6ˆÁ7BFóF∆S◊f«VW5∑FóF∆TñÊFWÉ„”˜FóF∆TñÊFWÉ£◊«¬rs∂6ˆÁ7B'Fó7C◊f«VW5∂'Fó7DñÊFWÉ„”ˆ'Fó7DñÊFWÉ£◊«¬rs∑&WGW&‚ñ◊˜'FVEG&6≤Ü'Fó7B«FóF∆Ró“íÊfñ«FW"Ñ&ˆˆ∆V‚ì∞ß–¶gVÊ7Fñˆ‚'6T”7T∆ñ'&'íá&ró∑&WGW&‚&rÁ7∆óBÇı«#ı∆‚ÚíÊfñ«FW"Ü∆ñÊS”‚ı‚4UÖDî‰c¢ˆíÁFW7BÜ∆ñÊRííÊ÷Ü∆ñÊS”Á7∆óDñ◊˜'FVDÊ÷RÜ∆ñÊRÁ6∆ñ6RÜ∆ñÊRÊñÊFWÑˆbÇr¬rí≥íííÊ÷Çá∂'Fó7B«FóF∆W“ì”Êñ◊˜'FVEG&6≤Ü'Fó7B«FóF∆RííÊfñ«FW"Ñ&ˆˆ∆V‚ó–¶gVÊ7Fñˆ‚'6UFWáD∆ñ'&'íá&ró∑&WGW&‚&rÁ7∆óBÇı«#ı∆‚ÚíÊ÷Ü∆ñÊS”Ê∆ñÊRÁG&ñ“ÇííÊfñ«FW"Ü∆ñÊS”Ê∆ñÊRbb∆ñÊRÁ7F'G5vóFÇÇr2rííÊ÷á7∆óDñ◊˜'FVDÊ÷RíÊ÷Çá∂'Fó7B«FóF∆W“ì”Êñ◊˜'FVEG&6≤Ü'Fó7B«FóF∆RííÊfñ«FW"Ñ&ˆˆ∆V‚ó–¶gVÊ7Fñˆ‚'6Tñ◊˜'FVD∆ñ'&'íá&r∆fñ∆TÊ÷S“rró∞¢6ˆÁ7BWáFVÁ6ñˆ„÷fñ∆TÊ÷RÁFÙ∆ˆ6∆T∆˜vW$66RÇíÁ7∆óBÇr‚ríÁ˜Çì∂∆WBG&6∑3’µ”∞¢ñbÜWáFVÁ6ñˆ„””“vß6ˆ‚w«¬ıÂµ«5∆Â“•µ≈∑µ“ÚÁFW7Bá&ríó∑G'ó∑G&6∑3◊'6Tß6ˆ‰∆ñ'&'íá&ró÷6F6á∂ñbÜWáFVÁ6ñˆ„””“vß6ˆ‚róFá&˜rÊWrW'&˜"áBÇvß6ˆ‰ñÁf∆ñBríó◊–¢ñbÇG&6∑2Ê∆VÊwFÇbbÜWáFVÁ6ñˆ„””“v”7Rw«∆WáFVÁ6ñˆ„””“v”7SÇw«¬Ú4UÖDî‰c¢ˆíÁFW7Bá&rííóG&6∑3◊'6T”7T∆ñ'&'íá&rì∞¢ñbÇG&6∑2Ê∆VÊwFÇbbÜWáFVÁ6ñˆ„””“v77bw«¬ı∆"ÉÛ¶'Fó7G«W&f˜&÷W"ï≤√µ«E“‚¢ÉÛßFóF∆W«G&6∑∆Ê÷RíˆíÁFW7Bá&rÁ7∆óBÇı«#ı∆‚Úï≥◊«¬rrííóG&6∑3◊'6T77d∆ñ'&'íá&rì∞¢ñbÇG&6∑2Ê∆VÊwFÇóG&6∑3◊'6UFWáD∆ñ'&'íá&rì∞¢6ˆÁ7BVÊóVS÷ÊWr÷Çì∑G&6∑2Êf˜$V6ÇáG&6≥”ÁVÊóVRÁ6WBÜñ◊˜'D∂WíáG&6≤Ê'Fó7C””“uñÊFWÇ◊W6ñ2sÚrsßG&6≤Ê'Fó7B«G&6≤ÁFóF∆Rí«G&6≤íì∑&WGW&‚≤‚‚ÁVÊóVRÁf«VW2Çï“Á6∆ñ6RÉ√ì∞ß–¶7ñÊ2gVÊ7Fñˆ‚ñ◊˜'D∆ñ'&'íÇó∞¢G'ó∞¢6ˆÁ7BG&6∑3◊'6Tñ◊˜'FVD∆ñ'&'íáVíÊñ◊˜'EFWáBÁf«VR«VíÊ∆ñ'&'îfñ∆RÊfñ∆W3ÚÂ≥”ÚÊÊ÷W«¬rrì∂ñbÇG&6∑2Ê∆VÊwFÇóFá&˜rÊWrW'&˜"áBÇvÊÙñ◊˜'DVÁG&ñW2ríì∞¢vóB÷F6ÑÊE6fTñ◊˜'FVBáG&6∑2ì∞¢÷6F6ÇÜW'&˜"ó∑VíÊñ◊˜'E7FGW2ÁFWáD6ˆÁFVÁC÷W'&˜"Ê÷W76vW««BÇvñ◊˜'Dfñ∆VBró–ß–†¶gVÊ7Fñˆ‚6WE&ÊvRá&ÊvR«f«VRó∞¢6ˆÁ7B÷ñ„‘ÁV÷&W"á&ÊvRÊ÷ñ‚ó«√∆÷É‘ÁV÷&W"á&ÊvRÊ÷Çó«√∞¢6ˆÁ7BW&6VÁC‘÷FÇÊ÷ÇÉƒ÷FÇÊ÷ñ‚É¬ÇÑÁV÷&W"áf«VRí÷÷ñ‚íÚÜ÷Ç÷÷ñ‚íí£íì∞¢&ÊvRÁf«VS’7G&ñÊráf«VRì∞¢&ÊvRÁ7Gñ∆RÁ6WE&˜W'GíÇr“◊f«VRr∆G∑W&6VÁG“Vì∞¢ñbá&ÊvRÊ6∆74∆ó7BÊ6ˆÁFñÁ2Çw&ˆw&W72ríó&ÊvRÁ&VÁDV∆V÷VÁCÚÁ7Gñ∆RÁ6WE&˜W'GíÇr“◊f«VRr∆G∑W&6VÁG“Vì∞ß–†¶gVÊ7Fñˆ‚6˜W&6T'WGFˆÁ2Çó∑&WGW&‚≤‚‚ÊFˆ7V÷VÁBÁVW'ï6V∆V7F˜$∆¬Çu∂FF◊6˜W&6U“rï◊–†¶6ˆÁ7BFñvÊ˜7Fñ56˜W&6W3’≤w6˜VÊF6∆˜VBr¬wñ˜WGV&Rr¬vVFóW2r¬v¶÷VÊFÚr¬vñÁFW&ÊWEˆ&6ÜófRu”∞¶gVÊ7Fñˆ‚FñvÊ˜7Fñ4˜&ñvñ‚Ü˜&ñvñ‚ó∑&WGW&‚Bá∂∆ˆ6√¢vFñvÊ˜7Fñ4∆ˆ6ƒír∆f∆∆&6≥¢vFñvÊ˜7Fñ4f∆∆&6¥ír∆6ˆÊfñwW&VC¢vFñvÊ˜7Fñ46ˆÊfñwW&VDír∆7W'&VÁC¢vFñvÊ˜7Fñ47W'&VÁDíw’∂˜&ñvñÂ◊«¬vFñvÊ˜7Fñ5VÊ∂Ê˜v‰író–¶gVÊ7Fñˆ‚FñvÊ˜7Fñ5Fñ÷Ráf«VRó∞¢ñbÇf«VRó&WGW&‚BÇvFñvÊ˜7Fñ4ÊWfW"rì∞¢6ˆÁ7BFFS÷ÊWrFFRáf«VRì∂ñbÑÁV÷&W"Êó4Ê‚ÜFFRÊvWEFñ÷RÇííó&WGW&‚BÇvFñvÊ˜7Fñ4ÊWfW"rì∞¢&WGW&‚ÊWrñÁF¬‰FFUFñ÷Tf˜&÷BÜ∆ÊwVvS””“w'RsÚw'R’%Rs¢vV‚‘t"r«∂Ü˜W#¢s"÷FñvóBr∆÷ñÁWFS¢s"÷FñvóBr«6V6ˆÊC¢s"÷FñvóBr∆Fì¢s"÷FñvóBr∆÷ˆÁFÉ¢s"÷FñvóBw“íÊf˜&÷BÜFFRì∞ß–¶gVÊ7Fñˆ‚&VÊFW$FñvÊ˜7Fñ72Çó∞¢ñbÇVíÊFñvÊ˜7Fñ74∆ó7Bó&WGW&„∞¢6ˆÁ7B6Ê6Ü˜C◊7FFRÊFñvÊ˜7Fñ72∆FF◊6Ê6Ü˜CÚÊFF««∑“∆ÜV«FÉ÷FFÁ6˜W&6UˆÜV«Fá««∑“∆fñ∆&∆S÷ÊWr6WBÜFFÁ6˜W&6W7«≈µ“ì∞¢VíÊFñvÊ˜7Fñ74VÊGˆñÁBÁFWáD6ˆÁFVÁC◊6Ê6Ü˜CˆG∂FñvÊ˜7Fñ4˜&ñvñ‚á6Ê6Ü˜BÊ˜&ñvñ‚ó“+rG∑6Ê6Ü˜BÊVÊGˆñÁEˆ∆FVÊ7ïˆ◊3ÛÚ~(	Bw“G∑BÇv÷ñ∆∆ó6V6ˆÊG56Ü˜'Bró÷ßBÇvFñvÊ˜7Fñ46ÜV6∂ñÊrrì∞¢VíÊFñvÊ˜7Fñ746ÜV6∂VBÁFWáD6ˆÁFVÁC◊6Ê6Ü˜CÚÊ6ÜV6∂VEˆCˆFñvÊ˜7Fñ5Fñ÷Rá6Ê6Ü˜BÊ6ÜV6∂VEˆBìßBÇvFñvÊ˜7Fñ4ÊWfW"rì∞¢VíÊFñvÊ˜7Fñ74∆ó7BÁ&W∆6T6Üñ∆G&V‚Çì∞¢FñvÊ˜7Fñ56˜W&6W2Êf˜$V6Çá6˜W&6S”Á∞¢6ˆÁ7B&˜fñFW#÷FFÁ&˜fñFW'3ÚÂ∑6˜W&6U◊««∑“«6◊∆S÷ÜV«FÖ∑6˜W&6U◊««∑“∆VÊ&∆VC÷fñ∆&∆RÊÜ2á6˜W&6Ríbg&˜fñFW"ÊVÊ&∆VB”÷f«6S∞¢6ˆÁ7B7FGW3◊6Ê6Ü˜CÚÊW'&˜#ÚwVÊfñ∆&∆Rs¶VÊ&∆VCÚá6◊∆RÁ7FGW7«¬wVÊ∂Ê˜v‚rì¢vFó6&∆VBs∞¢6ˆÁ7B&˜s÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇv'Fñ6∆Rrì∑&˜rÊ6∆74Ê÷S÷FñvÊ˜7Fñ2◊6˜W&6RG∑7FGW7÷∞¢6ˆÁ7BÜVC÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇvFóbrì∂6ˆÁ7BñFVÁFóGì÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇvFóbrì∂6ˆÁ7BF˜C÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇvírì∂F˜BÁ6WDGG&ñ'WFRÇv&ñ÷ÜñFFV‚r¬wG'VRrì∂6ˆÁ7BÊ÷S÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇw7G&ˆÊrrì∂Ê÷RÁFWáD6ˆÁFVÁC◊6˜W&6T∆&V«5∑6˜W&6U◊««6˜W&6S∂ñFVÁFóGíÊVÊBÜF˜B∆Ê÷Rì∂6ˆÁ7B&FvS÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇw7‚rì∂&FvRÁFWáD6ˆÁFVÁC◊BÜFñvÊ˜7Fñ57FGW5ÚG∑7FGW7÷ì∂ÜVBÊVÊBÜñFVÁFóGí∆&FvRì∞¢6ˆÁ7B÷WG&ñ73÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇvF¬rì∞¢6ˆÁ7BfñV∆G3’∞¢∑BÇvFñvÊ˜7Fñ4∆FVÊ7írí«6◊∆RÁ6◊∆W3ˆG∑6◊∆RÊfW&vUˆ∆FVÊ7ïˆ◊7“G∑BÇv÷ñ∆∆ó6V6ˆÊG56Ü˜'Bró÷¢~(	Bu“¿¢∑BÇvFñvÊ˜7Fñ57V66W72rí«6◊∆RÁ6◊∆W3ˆG¥÷FÇÁ&˜VÊBÇÑÁV÷&W"á6◊∆RÁ7V66W75˜&FRó«√í£ó“V¢~(	Bu“¿¢∑BÇvFñvÊ˜7Fñ4∆7D6ÜV6≤rí∆FñvÊ˜7Fñ5Fñ÷Rá6◊∆RÊ∆7Eˆ6ÜV6∂VEˆBï–¢”∞¢fñV∆G2Êf˜$V6ÇÇÖ∂∆&V¬«f«VU“ì”Á∂6ˆÁ7Bw&˜W÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇvFóbrì∂6ˆÁ7BFW&”÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇvGBrì∑FW&“ÁFWáD6ˆÁFVÁC÷∆&V√∂6ˆÁ7BFWFñ√÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇvFBrì∂FWFñ¬ÁFWáD6ˆÁFVÁC◊f«VS∂w&˜WÊVÊBáFW&“∆FWFñ¬ì∂÷WG&ñ72ÊVÊBÜw&˜Wó“ì∞¢6ˆÁ7BW'&˜#÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇwrì∂W'&˜"ÁFWáD6ˆÁFVÁC◊6◊∆RÊ∆7EˆW'&˜#ˆG∑BÇvFñvÊ˜7Fñ4∆7DW'&˜"ró“+rG∂FñvÊ˜7Fñ5Fñ÷Rá6◊∆RÊ∆7EˆW'&˜%ˆBó”¢Gµ7G&ñÊrá6◊∆RÊ∆7EˆW'&˜"íÁ6∆ñ6RÉ√#Có÷ßBá7FGW3””“vFó6&∆VBsÚvFñvÊ˜7Fñ4Fó6&∆VDÜñÁBs¢vFñvÊ˜7Fñ4ÊÙW'&˜'2rì∞¢&˜rÊVÊBÜÜVB∆÷WG&ñ72∆W'&˜"ì∑VíÊFñvÊ˜7Fñ74∆ó7BÊVÊBá&˜rì∞¢“ì∞ß–¶gVÊ7Fñˆ‚FñvÊ˜7Fñ75&W˜'BÇó∞¢6ˆÁ7B6Ê6Ü˜C◊7FFRÊFñvÊ˜7Fñ72∆FF◊6Ê6Ü˜CÚÊFF««∑“∆ÜV«FÉ÷FFÁ6˜W&6UˆÜV«Fá««∑”∞¢&WGW&‚•4Ù‚Á7G&ñÊvñgíá∞¢¢tuT‚r«fW'6ñˆ„¶FFÁfW'6ñˆÁ«¬wVÊ∂Ê˜v‚r∆7&VFVEˆC¶ÊWrFFRÇíÁFÙï4ı7G&ñÊrÇí«∆Ff˜&”ß'VÁFñ÷U∆Ff˜&“¿¢ìß∂÷ˆFSß6Ê6Ü˜CÚÊ˜&ñvñÁ«¬wVÊfñ∆&∆Rr∆∆FVÊ7ïˆ◊3ß6Ê6Ü˜CÚÊVÊGˆñÁEˆ∆FVÊ7ïˆ◊3ÛˆÁV∆¬∆W'&˜#ß6Ê6Ü˜CÚÊW'&˜'«∆ÁV∆«“¿¢6˜W&6W3¶FñvÊ˜7Fñ56˜W&6W2Ê÷á6˜W&6S”‚á∑6˜W&6R∆VÊ&∆VC¢ÜFFÁ6˜W&6W7«≈µ“íÊñÊ6«VFW2á6˜W&6Rí«7FGW3¶ÜV«FÖ∑6˜W&6U”ÚÁ7FGW7«¬wVÊ∂Ê˜v‚r∆fW&vUˆ∆FVÊ7ïˆ◊3¶ÜV«FÖ∑6˜W&6U”ÚÊfW&vUˆ∆FVÊ7ïˆ◊3ÛˆÁV∆¬«7V66W75˜&FS¶ÜV«FÖ∑6˜W&6U”ÚÁ7V66W75˜&FSÛˆÁV∆¬«6◊∆W3¶ÜV«FÖ∑6˜W&6U”ÚÁ6◊∆W3ÛÛ∆∆7Eˆ6ÜV6∂VEˆC¶ÜV«FÖ∑6˜W&6U”ÚÊ∆7Eˆ6ÜV6∂VEˆG«∆ÁV∆¬∆∆7E˜7V66W75ˆC¶ÜV«FÖ∑6˜W&6U”ÚÊ∆7E˜7V66W75ˆG«∆ÁV∆¬∆∆7EˆW'&˜%ˆC¶ÜV«FÖ∑6˜W&6U”ÚÊ∆7EˆW'&˜%ˆG«∆ÁV∆¬∆∆7EˆW'&˜#¶ÜV«FÖ∑6˜W&6U”ÚÊ∆7EˆW'&˜'«∆ÁV∆«“íê¢“∆ÁV∆¬√"ì∞ß–¶7ñÊ2gVÊ7Fñˆ‚6˜îFñvÊ˜7Fñ72Çó∞¢6ˆÁ7B&W˜'C÷FñvÊ˜7Fñ75&W˜'BÇì∞¢G'ó∞¢ñbÜÊfñvF˜"Ê6∆ó&ˆ&CÚÁw&óFUFWáBñvóBÊfñvF˜"Ê6∆ó&ˆ&BÁw&óFUFWáBá&W˜'Bì∞¢V«6W∂6ˆÁ7B&V÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇwFWáF&Vrì∂&VÁf«VS◊&W˜'C∂&VÁ7Gñ∆RÁ˜6óFñˆ„“vfóÜVBs∂&VÁ7Gñ∆RÊ˜6óGì“ss∂Fˆ7V÷VÁBÊ&ˆGíÊVÊBÜ&Vì∂&VÁ6V∆V7BÇì∂Fˆ7V÷VÁBÊWÜV46ˆ÷÷ÊBÇv6˜írì∂&VÁ&V÷˜fRÇó–¢VíÊFñvÊ˜7Fñ746˜ï7FGW2ÁFWáD6ˆÁFVÁC◊BÇvFñvÊ˜7Fñ46˜ñVBrì∞¢÷6F6á∑VíÊFñvÊ˜7Fñ746˜ï7FGW2ÁFWáD6ˆÁFVÁC◊BÇvFñvÊ˜7Fñ46˜îfñ∆VBró–ß–†¶7ñÊ2gVÊ7Fñˆ‚&Vg&W6Ö7FGW2Çó∞¢VíÊFñvÊ˜7Fñ75&Vg&W6ÉÚÁ6WDGG&ñ'WFRÇv&ñ÷'W7ír¬wG'VRrì∞¢G'ó∞¢6ˆÁ7B6Ê6Ü˜C÷vóB&WVW7DÜV«FÖ6Ê6Ü˜BÇí∆FF◊6Ê6Ü˜BÊFF∑7FFRÊFñvÊ˜7Fñ73◊6Ê6Ü˜C∞¢7FFRÊfñ∆&∆S÷ÊWr6WBÜFFÁ6˜W&6W7«≈µ“ì∞¢7FFRÊvVÊóW4VÊ&∆VC‘&ˆˆ∆V‚ÜFFÁ&˜fñFW'3ÚÁG&6µ˜7F˜&ñW3ÚÊvVÊóW5ˆÊÊ˜FFñˆÁ2ì∞¢7FFRÁ6˜W&6W3÷ÊWr6WBÖ≤‚‚Á7FFRÁ6˜W&6W5“Êfñ«FW"á6˜W&6S”Á7FFRÊfñ∆&∆RÊÜ2á6˜W&6Rííì∞¢ñbÇ7FFRÁ6˜W&6W2Á6ó¶Ró7FFRÊfñ∆&∆RÊf˜$V6Çá6˜W&6S”Á7FFRÁ6˜W&6W2ÊFBá6˜W&6Ríì∞¢6˜W&6T'WGFˆÁ2ÇíÊf˜$V6ÇÜ'WGFˆ„”Á∞¢6ˆÁ7B6˜W&6S÷'WGFˆ‚ÊFF6WBÁ6˜W&6S∞¢6ˆÁ7Bfñ∆&∆S◊7FFRÊfñ∆&∆RÊÜ2á6˜W&6Rì∞¢'WGFˆ‚ÊFó6&∆VC“fñ∆&∆S∞¢'WGFˆ‚Ê6∆74∆ó7BÁFˆvv∆RÇvˆ‚r∆fñ∆&∆Rbg7FFRÁ6˜W&6W2ÊÜ2á6˜W&6Ríì∞¢'WGFˆ‚ÁVW'ï6V∆V7F˜"Çw6÷∆¬ríÁFWáD6ˆÁFVÁC◊BÜfñ∆&∆SÚv7FófRs¢vÊ˜D6ˆÊÊV7FVBrì∞¢'WGFˆ‚ÁFóF∆S◊BÜfñ∆&∆SÚw6˜W&6Tfñ∆&∆Rs¢w6˜W&6UVÊfñ∆&∆Rr«∑6˜W&6Sß6˜W&6T∆&V«5∑6˜W&6U◊“ì∞¢“ì∞¢6ˆÁ7BÊ÷W3’≤‚‚Á7FFRÊfñ∆&∆U“Ê÷á6˜W&6S”Á6˜W&6T∆&V«5∑6˜W&6U◊««6˜W&6Rì∞¢VíÁ7FGW2Ê6∆74Ê÷S“w7FGW2∆ófRs∞¢VíÁ7FGW2ÁVW'ï6V∆V7F˜"Çv"ríÁFWáD6ˆÁFVÁC÷Ê÷W2Ê∆VÊwFÉ˜BÇv∆ófU6˜W&6W2r«∑6˜W&6W3¶Ê÷W2Ê¶ˆñ‚ÇrÚríÁFıWW$66RÇó“ìßBÇv∆ófTÊı6˜W&6W2rì∞¢VíÁ6V&6Ñ÷WFÁFWáD6ˆÁFVÁC÷Ê÷W2Ê∆VÊwFÉ˜BÜÊ÷W2Ê∆VÊwFÉ”””Úw6˜W&6TˆÊ∆ñÊRs¢w6˜W&6W4ˆÊ∆ñÊRr«∂6˜VÁC¶Ê÷W2Ê∆VÊwFá“ìßBÇv∆ˆ6ƒÊı6˜W&6W2rì∞¢÷6F6ÇÜW'&˜"ó∞¢7FFRÊFñvÊ˜7Fñ73◊∂W'&˜#¶W'&˜#ÚÊ÷W76vW««BÇvÜV«FÑfñ∆VBrí∆˜&ñvñ„¢wVÊfñ∆&∆Rr∆VÊGˆñÁEˆ∆FVÊ7ïˆ◊3¶ÁV∆¬∆6ÜV6∂VEˆC¶ÊWrFFRÇíÁFÙï4ı7G&ñÊrÇí∆FFß∑6˜W&6W3•µ“«6˜W&6UˆÜV«FÉß∑“«&˜fñFW'3ß∑◊◊”∞¢VíÁ7FGW2Ê6∆74Ê÷S“w7FGW2ˆff∆ñÊRs∞¢VíÁ7FGW2ÁVW'ï6V∆V7F˜"Çv"ríÁFWáD6ˆÁFVÁC◊BÇvˆff∆ñÊRrì∞¢VíÁ6V&6Ñ÷WFÁFWáD6ˆÁFVÁC◊BÇvÜV«FÑfñ∆VBrì∞¢6˜W&6T'WGFˆÁ2ÇíÊf˜$V6ÇÜ'WGFˆ„”Á∂'WGFˆ‚ÊFó6&∆VC◊G'VS∂'WGFˆ‚Ê6∆74∆ó7BÁ&V÷˜fRÇvˆ‚rì∂'WGFˆ‚ÁVW'ï6V∆V7F˜"Çw6÷∆¬ríÁFWáD6ˆÁFVÁC◊BÇvˆff∆ñÊRró“ì∞¢÷fñÊ∆«ó∑VíÊFñvÊ˜7Fñ75&Vg&W6ÉÚÁ&V÷˜fTGG&ñ'WFRÇv&ñ÷'W7írì∑&VÊFW$FñvÊ˜7Fñ72Çó–ß–†¶gVÊ7Fñˆ‚∆ˆFñÊu&˜w2Çó∞¢VíÁG&6¥∆ó7BÁ&W∆6T6Üñ∆G&V‚Çì∞¢f˜"Ü∆WBñÊFWÉ”∂ñÊFWÉ√C∂ñÊFWÇ≥”ó∞¢6ˆÁ7B&˜s÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇv∆írì∑&˜rÊ6∆74Ê÷S“w6∂V∆WFˆ‚s∞¢f˜"Ü∆WB'C”∑'C√C∑'B≥”ó&˜rÊVÊBÜFˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇvíríì∞¢VíÁG&6¥∆ó7BÊVÊBá&˜rì∞¢–ß–†¶6ˆÁ7B&V6ˆ÷÷VÊFFñˆÂ6WG3’∞¢∑FóF∆S¢tÊˆ7GW&Ê¬V∆V7G&ˆÊñ6r«7V'FóF∆S¢t÷&ñVÁB+rV∆V7G&ˆÊñ2r«VW'ì¢vÊˆ7GW&Ê¬V∆V7G&ˆÊñ6r∆6∆74Ê÷S¢w&V6ˆ÷÷VÊFFñˆ‚÷ÊñváBw“¿¢∑FóF∆S¢t6ñÊV÷Fñ2ñÊÚr«7V'FóF∆S¢tñÁ7G'V÷VÁF¬+rfˆ7W2r«VW'ì¢v6ñÊV÷Fñ2ñÊÚr∆6∆74Ê÷S¢w&V6ˆ÷÷VÊFFñˆ‚◊ñÊÚw“¿¢∑FóF∆S¢tF&≤÷&ñVÁBr«7V'FóF∆S¢tF÷˜7ÜW&ñ2+r6∆˜rr«VW'ì¢vF&≤÷&ñVÁBr∆6∆74Ê÷S¢w&V6ˆ÷÷VÊFFñˆ‚÷÷&ñVÁBw“¿¢∑FóF∆S¢t∆Ú‘fí7GVGír«7V'FóF∆S¢t&VG2+rfˆ7W2r«VW'ì¢v∆Ú÷fí7GVGír∆6∆74Ê÷S¢w&V6ˆ÷÷VÊFFñˆ‚÷∆ˆfíw–•”∞†¶gVÊ7Fñˆ‚&V÷V÷&W%&V6VÁBáG&6≤ó∞¢7FFRÁ&V6VÁG3’∑G&6≤¬‚‚Á7FFRÁ&V6VÁG2Êfñ«FW"ÜóFV””ÊóFV“ÊñB”◊G&6≤ÊñBï“Á6∆ñ6RÉ√"ì∞¢W'6ó7BÇì∞ß–†¶gVÊ7Fñˆ‚&VÊFW$Üˆ÷RÇó∞¢ñbÇVíÁ&V6VÁD∆ó7G«¬VíÁ&V6ˆ÷÷VÊFFñˆ‰w&ñBó&WGW&„∞¢6ˆÁ7B&V6VÁE6˜W&6S◊7FFRÁ&V6VÁG2Ê∆VÊwFÉ˜7FFRÁ&V6VÁG3ß7FFRÁ6fVC∞¢VíÁ&V6VÁD∆ó7BÁ&W∆6T6Üñ∆G&V‚Çì∞¢&V6VÁE6˜W&6RÁ6∆ñ6RÉ√BíÊf˜$V6ÇÇáG&6≤∆ñÊFWÇì”Á∞¢6ˆÁ7B6&C÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇv∆írì∂6&BÊ6∆74Ê÷S÷Üˆ÷R◊G&6≤÷6&BG∑7FFRÊ7FófSÚÊñC””◊G&6≤ÊñCÚv7FófRs¢rw÷ÁG&ñ“Çì∂6&BÁ7Gñ∆RÁ6WE&˜W'GíÇr“÷ír∆ñÊFWÇì∞¢6ˆÁ7B6˜fW#÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇvFóbrì∂6˜fW"Ê6∆74Ê÷S“vÜˆ÷R◊G&6≤÷6˜fW"s∂6ˆÁ7Bñ÷vS◊6fTñ÷vRáG&6≤ÁFáV÷&Êñ¬ì∂ñbÜñ÷vRñ6˜fW"Á7Gñ∆RÊ&6∂w&˜VÊDñ÷vS÷W&¬Ç"G∂ñ÷vW“"ñ∂V«6R6˜fW"ÁFWáD6ˆÁFVÁC÷FV6ˆFUFWáBáG&6≤ÁFóF∆W«¬trríÁ6∆ñ6RÉ√"íÁFıWW$66RÇì∞¢6ˆÁ7B7FófFS“Çì”Á7FFRÊ7FófSÚÊñC””◊G&6≤ÊñC˜Fˆvv∆U∆ñ&6≤Çìß∆ïG&6≤áG&6≤ì∞¢6ˆÁ7B∆ì÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇv'WGFˆ‚rì∑∆íÁGóS“v'WGFˆ‚s∑∆íÊ6∆74Ê÷S“vÜˆ÷R◊G&6≤◊∆ís∑∆íÁFWáD6ˆÁFVÁC◊7FFRÊ7FófSÚÊñC””◊G&6≤ÊñCÚ~(Zs¢~)kbs∑∆íÁ6WDGG&ñ'WFRÇv&ñ÷∆&V¬r«BÇw∆ïG&6¥&ñr«∑FóF∆S¶FV6ˆFUFWáBáG&6≤ÁFóF∆Ró“íì∑∆íÊˆÊ6∆ñ6≥÷7FófFS∞¢6˜fW"ÊVÊBá∆íì∞¢6ˆÁ7B÷WFW#÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇw7‚rì∂÷WFW"Ê6∆74Ê÷S“vÜˆ÷R◊G&6≤÷÷WFW"s∂÷WFW"Á6WDGG&ñ'WFRÇv&ñ÷ÜñFFV‚r¬wG'VRrì∂«ïvfVf˜&“Ü÷WFW"«G&6≤√SÇì∂6˜fW"ÊVÊBÜ÷WFW"ì∞¢6ˆÁ7B&ˆGì÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇvFóbrì∂&ˆGíÊ6∆74Ê÷S“vÜˆ÷R◊G&6≤÷&ˆGís∂6ˆÁ7BFóF∆S÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇv'WGFˆ‚rì∑FóF∆RÁGóS“v'WGFˆ‚s∑FóF∆RÊ6∆74Ê÷S“vÜˆ÷R◊G&6≤◊FóF∆Rs∑FóF∆RÁFWáD6ˆÁFVÁC÷FV6ˆFUFWáBáG&6≤ÁFóF∆Ró««BÇwVÊ∂Ê˜vÂFóF∆Rrì∑FóF∆RÊˆÊ6∆ñ6≥÷7FófFS∂6ˆÁ7B'Fó7C÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇw7‚rì∂'Fó7BÊ6∆74Ê÷S“vÜˆ÷R◊G&6≤÷'Fó7Bs∂'Fó7BÁFWáD6ˆÁFVÁC÷FV6ˆFUFWáBáG&6≤Ê'Fó7Bó««BÇwVÊ∂Ê˜v‰'Fó7Brì∂&ˆGíÊVÊBáFóF∆R∆'Fó7Bì∞¢6ˆÁ7Bfˆ˜FW#÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇvFóbrì∂fˆ˜FW"Ê6∆74Ê÷S“vÜˆ÷R◊G&6≤÷fˆ˜FW"s∂6ˆÁ7BGW&Fñˆ„÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇw7‚rì∂GW&Fñˆ‚Ê6∆74Ê÷S“vÜˆ÷R◊G&6≤÷GW&Fñˆ‚s∂GW&Fñˆ‚ÁFWáD6ˆÁFVÁC÷f˜&÷EFñ÷RáG&6≤ÊGW&Fñˆ‚ì∂6ˆÁ7B6fS÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇv'WGFˆ‚rì∑6fRÁGóS“v'WGFˆ‚s∑6fRÊ6∆74Ê÷S÷Üˆ÷R◊G&6≤◊6fRG∑6V∆V7FVDñG2ÇíÊÜ2áG&6≤ÊñBìÚw6fVBs¢rw÷∑6fRÁFWáD6ˆÁFVÁC◊6V∆V7FVDñG2ÇíÊÜ2áG&6≤ÊñBìÚ~)öRs¢~)ös∑6fRÁ6WDGG&ñ'WFRÇv&ñ÷∆&V¬r«Bá6V∆V7FVDñG2ÇíÊÜ2áG&6≤ÊñBìÚw6fVBs¢vFD∆ñ'&'íríì∑6fRÊˆÊ6∆ñ6≥÷WfVÁC”Á∂WfVÁBÁ7F˜&˜vFñˆ‚Çì∑Fˆvv∆U6fRáG&6≤ó”∂fˆ˜FW"ÊVÊBÜGW&Fñˆ‚«6fRì∂6&BÊVÊBÜ6˜fW"∆&ˆGí∆fˆ˜FW"ì∂6&BÊˆÊ6∆ñ6≥÷WfVÁC”Á∂ñbÇWfVÁBÁF&vWBÊ6∆˜6W7BÇv'WGFˆ‚ríñ7FófFRÇó”∑VíÁ&V6VÁD∆ó7BÊVÊBÜ6&Bì∞¢“ì∞¢ñbÇ&V6VÁE6˜W&6RÊ∆VÊwFÇó∂6ˆÁ7BV◊Gì÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇv∆írì∂V◊GíÊ6∆74Ê÷S“vÜˆ÷R÷V◊Gís∂V◊GíÊñÊÊW$ÖD‘√÷«7„‚G∑BÇvÊ˜FÜñÊu∆ññÊrró”¬˜7„„∆'WGFˆ‚GóS“&'WGFˆ‚#‚G∑BÇw6V&6Çró”¬ˆ'WGFˆ„Ê∂V◊GíÁVW'ï6V∆V7F˜"Çv'WGFˆ‚ríÊˆÊ6∆ñ6≥“Çì”ÁVíÁ6V&6ÑñÁWBÊfˆ7W2Çì∑VíÁ&V6VÁD∆ó7BÊVÊBÜV◊Gíó–¢VíÁ&V6ˆ÷÷VÊFFñˆ‰w&ñBÁ&W∆6T6Üñ∆G&V‚Çì∑&V6ˆ÷÷VÊFFñˆÂ6WG2Êf˜$V6ÇÇá6WB∆ñÊFWÇì”Á∂6ˆÁ7B6&C÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇv'WGFˆ‚rì∂6&BÁGóS“v'WGFˆ‚s∂6&BÊ6∆74Ê÷S÷&V6ˆ÷÷VÊFFñˆ‚÷6&BG∑6WBÊ6∆74Ê÷W÷∂6&BÁ7Gñ∆RÁ6WE&˜W'GíÇr“÷ír∆ñÊFWÇì∂6&BÊFF6WBÁVW'ì◊6WBÁVW'ì∂6ˆÁ7BFóF∆S÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇw7G&ˆÊrrì∑FóF∆RÁFWáD6ˆÁFVÁC◊6WBÁFóF∆S∂6ˆÁ7B7V'FóF∆S÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇw7‚rì∑7V'FóF∆RÁFWáD6ˆÁFVÁC◊6WBÁ7V'FóF∆S∂6ˆÁ7B7Fñˆ„÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇv"rì∂7Fñˆ‚ÁFWáD6ˆÁFVÁC÷G∑BÇw6V&6Çró“(iv∂6&BÊVÊBáFóF∆R«7V'FóF∆R∆7Fñˆ‚ì∂6&BÊˆÊ6∆ñ6≥“Çì”Á∑VíÁ6V&6ÑñÁWBÁf«VS◊6WBÁVW'ì∑6V&6Çá6WBÁVW'íó”∑VíÁ&V6ˆ÷÷VÊFFñˆ‰w&ñBÊVÊBÜ6&Bó“ì∞ß–†¶gVÊ7Fñˆ‚6VVD6ˆÁFWáEVWVRáG&6≤ó∞¢ñbá7FFRÁVWVT÷ˆFS””“v÷ÁV¬rbg7FFRÁVWVRÊ∆VÊwFÇó&WGW&„∞¢6ˆÁ7B∆ó7C÷7W'&VÁD∆ó7BÇì∂6ˆÁ7BñÊFWÉ÷∆ó7BÊfñÊDñÊFWÇÜóFV””ÊóFV“ÊñC””◊G&6≤ÊñBì∞¢7FFRÁVWVS÷ñÊFWÉ„”˜∆ñW$6˜&RÁVÊóVUG&6∑2Ü∆ó7BÁ6∆ñ6RÜñÊFWÇ≥íì•µ”∞¢7FFRÁVWVT÷ˆFS“v6ˆÁFWáBs∑W'6ó7EVWVRÇì∞ß–†¶gVÊ7Fñˆ‚&W∆6UVWVRáG&6∑2∆÷ˆFS“v6ˆÁFWáBró∞¢7FFRÁVWVS◊∆ñW$6˜&RÁVÊóVUG&6∑2áG&6∑2íÊfñ«FW"áG&6≥”ÁG&6≤ÊñB”◊7FFRÊ7FófSÚÊñBì∞¢7FFRÁVWVT÷ˆFS÷÷ˆFS””“v÷ÁV¬sÚv÷ÁV¬s¢v6ˆÁFWáBs∑W'6ó7EVWVRÇì∑&VÊFW%VWVRÇì∞ß–†¶gVÊ7Fñˆ‚VÊEVWVRáG&6∑2∆÷ˆFS◊7FFRÁVWVT÷ˆFRó∞¢7FFRÁVWVS◊∆ñW$6˜&RÁVÊóVUG&6∑2Ö≤‚‚Á7FFRÁVWVR¬‚‚ÁG&6∑5“íÊfñ«FW"áG&6≥”ÁG&6≤ÊñB”◊7FFRÊ7FófSÚÊñBì∞¢7FFRÁVWVT÷ˆFS÷÷ˆFS””“v÷ÁV¬sÚv÷ÁV¬s¢v6ˆÁFWáBs∑W'6ó7EVWVRÇì∑&VÊFW%VWVRÇì∞ß–†¶gVÊ7Fñˆ‚VWVUG&6≤áG&6≤«˜6óFñˆ‚ó∞¢7FFRÁVWVS◊∆ñW$6˜&RÊVÁVWVRá7FFRÁVWVR«G&6≤«˜6óFñˆ‚ì∞¢7FFRÁVWVT÷ˆFS“v÷ÁV¬s∑W'6ó7EVWVRÇì∑&VÊFW"Çì∞¢6WD÷W76vRáBá˜6óFñˆ„””“vÊWáBsÚwVWVVDÊWáBs¢wVWVVDVÊBr«∑G&6≥¶FV6ˆFUFWáBáG&6≤ÁFóF∆Ró“í¬vÊ˜Fñ6Rrì∞ß–†¶gVÊ7Fñˆ‚&V÷˜fUVWVVEG&6≤áG&6¥ñBó∞¢7FFRÁVWVS◊∆ñW$6˜&RÁ&V÷˜fRá7FFRÁVWVR«G&6¥ñBì∑7FFRÁVWVT÷ˆFS“v÷ÁV¬s∑W'6ó7EVWVRÇì∑&VÊFW"Çì∞ß–†¶gVÊ7Fñˆ‚÷˜fUVWVVEG&6≤Üg&ˆ‘ñÊFWÇ«FÙñÊFWÇó∞¢6ˆÁ7BÊWáC‘÷FÇÊ÷ÇÉƒ÷FÇÊ÷ñ‚á7FFRÁVWVRÊ∆VÊwFÇ”«FÙñÊFWÇíì∞¢7FFRÁVWVS◊∆ñW$6˜&RÊ÷˜fRá7FFRÁVWVR∆g&ˆ‘ñÊFWÇ∆ÊWáBì∑7FFRÁVWVT÷ˆFS“v÷ÁV¬s∑W'6ó7EVWVRÇì∑&VÊFW"Çì∞ß–†¶7ñÊ2gVÊ7Fñˆ‚∆ïVWVVEG&6≤áG&6≤ó∞¢&V÷˜fUVWVVEG&6≤áG&6≤ÊñBì∑6WEVWVT˜V‚Üf«6Rì∂vóB∆ïG&6≤áG&6≤«∑&W6W'fUVWVSßG'VW“ì∞ß–†¶gVÊ7Fñˆ‚&VÊFW%VWVRÇó∞¢ñbÇVíÁVWVT∆ó7G«¬VíÁVWVTV◊Gíó&WGW&„∞¢VíÁVWVT∆ó7BÁ&W∆6T6Üñ∆G&V‚Çì∑VíÁVWVTV◊GíÊÜñFFV„‘&ˆˆ∆V‚á7FFRÁVWVRÊ∆VÊwFÇì∞¢7FFRÁVWVRÊf˜$V6ÇÇáG&6≤∆ñÊFWÇì”Á∞¢6ˆÁ7BóFV”÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇv∆írì∂óFV“Ê6∆74Ê÷S“wVWVR÷óFV“s∂óFV“ÊG&vv&∆S◊G'VS∂óFV“ÊFF6WBÁVWVTñC◊G&6≤ÊñC∞¢6ˆÁ7Bw&ó÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇw7‚rì∂w&óÊ6∆74Ê÷S“wVWVR÷w&ós∂w&óÁFWáD6ˆÁFVÁC“~(∫Ó(∫‚s∂w&óÁ6WDGG&ñ'WFRÇv&ñ÷ÜñFFV‚r¬wG'VRrì∞¢6ˆÁ7Bñ÷vS◊6fTñ÷vRáG&6≤ÁFáV÷&Êñ¬ì∂6ˆÁ7B6˜fW#÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇw7‚rì∂6˜fW"Ê6∆74Ê÷S“wVWVR÷6˜fW"s∂ñbÜñ÷vRñ6˜fW"Á7Gñ∆RÊ&6∂w&˜VÊDñ÷vS÷W&¬Ç"G∂ñ÷vW“"ñ∂V«6R6˜fW"ÁFWáD6ˆÁFVÁC÷FV6ˆFUFWáBáG&6≤ÁFóF∆W«¬trríÁ6∆ñ6RÉ√"íÁFıWW$66RÇì∞¢6ˆÁ7B'WGFˆ„÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇv'WGFˆ‚rì∂'WGFˆ‚ÁGóS“v'WGFˆ‚s∂'WGFˆ‚Ê6∆74Ê÷S“wVWVR◊G&6≤s∂6ˆÁ7BFóF∆S÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇw7G&ˆÊrrì∑FóF∆RÁFWáD6ˆÁFVÁC÷FV6ˆFUFWáBáG&6≤ÁFóF∆Ró««BÇwVÊ∂Ê˜vÂFóF∆Rrì∂6ˆÁ7B'Fó7C÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇw7‚rì∂'Fó7BÁFWáD6ˆÁFVÁC÷FV6ˆFUFWáBáG&6≤Ê'Fó7Bó««BÇwVÊ∂Ê˜v‰'Fó7Brì∂'WGFˆ‚ÊVÊBáFóF∆R∆'Fó7Bì∂'WGFˆ‚ÊˆÊ6∆ñ6≥“Çì”Á∆ïVWVVEG&6≤áG&6≤ì∞¢6ˆÁ7BGW&Fñˆ„÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇwFñ÷Rrì∂GW&Fñˆ‚ÁFWáD6ˆÁFVÁC÷f˜&÷EFñ÷RáG&6≤ÊGW&Fñˆ‚ì∞¢6ˆÁ7B6ˆÁG&ˆ«3÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇvFóbrì∂6ˆÁG&ˆ«2Ê6∆74Ê÷S“wVWVR÷6ˆÁG&ˆ«2s∞¢6ˆÁ7BW÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇv'WGFˆ‚rì∑WÁGóS“v'WGFˆ‚s∑WÁFWáD6ˆÁFVÁC“~(is∑WÊFó6&∆VC÷ñÊFWÉ”””∑WÁ6WDGG&ñ'WFRÇv&ñ÷∆&V¬r«BÇwVWVT÷˜fUW&ñr«∑G&6≥¶FV6ˆFUFWáBáG&6≤ÁFóF∆Ró“íì∑WÊˆÊ6∆ñ6≥“Çì”Ê÷˜fUVWVVEG&6≤ÜñÊFWÇ∆ñÊFWÇ”ì∞¢6ˆÁ7BF˜v„÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇv'WGFˆ‚rì∂F˜v‚ÁGóS“v'WGFˆ‚s∂F˜v‚ÁFWáD6ˆÁFVÁC“~(i2s∂F˜v‚ÊFó6&∆VC÷ñÊFWÉ””◊7FFRÁVWVRÊ∆VÊwFÇ”∂F˜v‚Á6WDGG&ñ'WFRÇv&ñ÷∆&V¬r«BÇwVWVT÷˜fTF˜v‰&ñr«∑G&6≥¶FV6ˆFUFWáBáG&6≤ÁFóF∆Ró“íì∂F˜v‚ÊˆÊ6∆ñ6≥“Çì”Ê÷˜fUVWVVEG&6≤ÜñÊFWÇ∆ñÊFWÇ≥ì∞¢6ˆÁ7B&V÷˜fS÷Fˆ7V÷VÁBÊ7&VFTV∆V÷VÁBÇv'WGFˆ‚rì∑&V÷˜fRÁGóS“v'WGFˆ‚s∑&V÷˜fRÁFWáD6ˆÁFVÁC“|9rs∑&V÷˜fRÁ6WDGG&ñ'WFRÇv&ñ÷∆&V¬r«BÇwVWVU&V÷˜fT&ñr«∑G&6≥¶FV6ˆFUFWáBáG&6≤ÁFóF∆Ró“íì∑&V÷˜fRÊˆÊ6∆ñ6≥“Çì”Á&V÷˜fUVWVVEG&6≤áG&6≤ÊñBì∂6ˆÁG&ˆ«2ÊVÊBáW∆F˜v‚«&V÷˜fRì∞¢óFV“ÊFDWfVÁD∆ó7FVÊW"ÇvG&w7F'BrÕ|ÛÀhëÈÏ∂ªßq´^tπç±ÖÕÕ9ÖµîÙùçÖ—Ö±Ωúµ±•π≠ÃúÏ(ÄÄÄÅmlùÕ¡Ω—•ô‰ú∞ùMA=Q%dùt±lùÖ¡¡±ï}µ’Õ•åú∞ùAA1ùt±lùÂÖπëï·}µ’Õ•åú∞ùe9`ùutπôΩ…Öç††°m¡…ΩŸ•ëï»±±Öâï±t§Ù˘ÌçΩπÕ–Å°…ïòı—…Öç¨πçÖ—Ö±Ωù}±•π≠Ã¸πm¡…ΩŸ•ëï…tÌ•ò†Ö°…ïò•…ï—’…∏ÌçΩπÕ–Å±•π¨ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùÑú§Ì±•π¨πç±ÖÕÕ9ÖµîÙùçÖ—Ö±Ωúµ±•π¨úÌ±•π¨π°…ïòı°…ïòÌ±•π¨π—Ö…ùï–Ùù}â±Öπ¨úÌ±•π¨π…ï∞ÙùπΩΩ¡ïπï»ÅπΩ…ïôï……ï»úÌ±•π¨π—ï·—Ωπ—ïπ–ıÄëÌ±Öâï±ÙÉä]ÄÌ±•π¨πÕï———…•â’—î†ùÖ…•Ñµ±Öâï∞ú±–†ùô•πëÖ—Ö±Ωù…•Ñú±Ì—•—±îÈëïçΩëïQï·–°—…Öç¨π—•—±î§±ÕΩ’…çîÈ±Öâï±Ù§§ÌçÖ—Ö±ΩúπÖ¡¡ïπê°±•π¨•Ù§Ï(ÄÄÄÅ•ò°çÖ—Ö±Ωúπç°•±ë±ïµïπ—Ω’π–•Öç—•ΩπÃπÖ¡¡ïπê°çÖ—Ö±Ωú§Ï(ÄÄÄÅ…Ω‹πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú±ïŸïπ–Ù˘Ì•ò†ÖïŸïπ–π—Ö…ùï–πç±ΩÕïÕ–†ùâ’——Ω∏±Ñ±•π¡’–±—ï·—Ö…ïÑ±Õï±ïç–±ëï—Ö•±Ã±Õ’µµÖ…‰ú§•Öç—•ŸÖ—ïQ…Öç¨†•Ù§Ï(ÄÄÄÅ…Ω‹πÖ¡¡ïπê°çΩŸï»±¡±Ö‰±πÖµî±›ÖŸïôΩ…¥±ÕΩ’…çî±≈’Ö±•—‰±ë’…Ö—•Ω∏±Öç—•ΩπÃ§Ï(ÄÄÄÅ•ò°Õ—Ö—îπï·¡ÖπëïêÙÙı—…Öç¨π•ê•…Ω‹πÖ¡¡ïπê°…ïπëï…M—Ω…‰°—…Öç¨§§Ï(ÄÄÄÅ’§π—…Öç≠1•Õ–πÖ¡¡ïπê°…Ω‹§Ï(ÄÅÙ§Ï)Ù()ô’πç—•Ω∏ÅçΩµµïπ—-ï‰°—…Öç¨±±•πî•Ì…ï—’…∏ÅÄëÌ—…Öç¨π•ëıq‘¿¿¿¿ëÌ±•πîπ•πëï·ıq‘¿¿¿¿ëÌµÖ—ç°Qï·–°±•πîπ—ï·–§πÕ±•çî†¿∞‡¿•ıÅÙ)ô’πç—•Ω∏Å¡ï…Õ•Õ—1•πïΩµµïπ—Ã†•Ì±ΩçÖ±M—Ω…ÖùîπÕï—%—ï¥†ùÖ›’∏µ±•πîµçΩµµïπ—Ãµÿƒú±)M=8πÕ—…•πù•ô‰°Õ—Ö—îπ±•πïΩµµïπ—Ã§•Ù)ô’πç—•Ω∏Å±ΩçÖ±Ωµµïπ—Ã°—…Öç¨±±•πî•ÌçΩπÕ–ÅŸÖ±’îıÕ—Ö—îπ±•πïΩµµïπ—ÕmçΩµµïπ—-ï‰°—…Öç¨±±•πî•tÌ…ï—’…∏Å……Ö‰π•Õ……Ö‰°ŸÖ±’î§˝ŸÖ±’îÈmuÙ()ô’πç—•Ω∏ÅÖëë1•πïΩµµïπ–°—…Öç¨±±•πî±ŸÖ±’î•Ï(ÄÅçΩπÕ–Å—ï·–ıM—…•πú°ŸÖ±’ïÒúú§π—…•¥†§πÕ±•çî†¿∞‘¿¿§Ì•ò†Ö—ï·–•…ï—’…∏Ï(ÄÅçΩπÕ–Å≠ï‰ıçΩµµïπ—-ï‰°—…Öç¨±±•πî§±çΩµµïπ—Ãı±ΩçÖ±Ωµµïπ—Ã°—…Öç¨±±•πî§Ï(ÄÅÕ—Ö—îπ±•πïΩµµïπ—Õm≠ïÂtıl∏∏πçΩµµïπ—Ã±Ì•êÈÅ±ΩçÖ±|ëÌÖ—îππΩ‹†•ıÄ±—ï·–±ç…ïÖ—ïë}Ö–Èπï‹ÅÖ—î†§π—Ω%M=M—…•πú†•ıtπÕ±•çî†¥»¿§Ï(ÄÅÕ—Ö—îπΩ¡ïπ1•πïÃπÖëê°ÄëÌ—…Öç¨π•ëÙËëÌ±•πîπ•πëï·ıÄ§Ì¡ï…Õ•Õ—1•πïΩµµïπ—Ã†§Ì…ïπëï»†§Ï)Ù()ô’πç—•Ω∏Å…ïµΩŸï1•πïΩµµïπ–°—…Öç¨±±•πî±•ê•Ï(ÄÅçΩπÕ–Å≠ï‰ıçΩµµïπ—-ï‰°—…Öç¨±±•πî§ÌÕ—Ö—îπ±•πïΩµµïπ—Õm≠ïÂtı±ΩçÖ±Ωµµïπ—Ã°—…Öç¨±±•πî§πô•±—ï»°çΩµµïπ–Ù˘çΩµµïπ–π•êÑÙı•ê§Ì¡ï…Õ•Õ—1•πïΩµµïπ—Ã†§Ì…ïπëï»†§Ï)Ù()ô’πç—•Ω∏Å—Ωùù±ï1•πî°—…Öç¨±±•πî•ÌçΩπÕ–Å≠ï‰ıÄëÌ—…Öç¨π•ëÙËëÌ±•πîπ•πëï·ıÄÌÕ—Ö—îπΩ¡ïπ1•πïÃπ°ÖÃ°≠ï‰§˝Õ—Ö—îπΩ¡ïπ1•πïÃπëï±ï—î°≠ï‰§ÈÕ—Ö—îπΩ¡ïπ1•πïÃπÖëê°≠ï‰§Ì…ïπëï»†•Ù()ô’πç—•Ω∏Å…ïπëï…M—Ω…‰°—…Öç¨•Ï(ÄÅçΩπÕ–Å¡Öπï∞ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùÕïç—•Ω∏ú§Ì¡Öπï∞πç±ÖÕÕ9ÖµîÙù—…Öç¨µÕ—Ω…‰úÌ¡Öπï∞πÕï———…•â’—î†ùÖ…•Ñµ±Öâï∞ú±–†ù—…Öç≠M—Ω…Â…•Ñú±Ì—•—±îÈëïçΩëïQï·–°—…Öç¨π—•—±î•Ù§§Ì¡Öπï∞πΩπç±•ç¨ıïŸïπ–Ù˘ïŸïπ–πÕ—Ω¡A…Ω¡ÖùÖ—•Ω∏†§Ï(ÄÅçΩπÕ–Å°ïÖë•πúıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ù°ïÖëï»ú§Ì°ïÖë•πúπç±ÖÕÕ9ÖµîÙùÕ—Ω…‰µ°ïÖêúÌçΩπÕ–Å±Öâï∞ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùë•ÿú§ÌçΩπÕ–Å≠•ç≠ï»ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùÕ¡Ö∏ú§Ì≠•ç≠ï»π—ï·—Ωπ—ïπ–ı–†ù—…Öç≠M—Ω…‰ú§ÌçΩπÕ–Å—•—±îıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ù†»ú§Ì—•—±îπ—ï·—Ωπ—ïπ–ıëïçΩëïQï·–°—…Öç¨π—•—±î§ÌçΩπÕ–ÅÖ…—•Õ–ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ù¿ú§ÌÖ…—•Õ–π—ï·—Ωπ—ïπ–ıëïçΩëïQï·–°—…Öç¨πÖ…—•Õ–§Ì±Öâï∞πÖ¡¡ïπê°≠•ç≠ï»±—•—±î±Ö…—•Õ–§ÌçΩπÕ–Åç±ΩÕîıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùâ’——Ω∏ú§Ìç±ΩÕîπ—Â¡îÙùâ’——Ω∏úÌç±ΩÕîπ—ï·—Ωπ—ïπ–Ùü\úÌç±ΩÕîπÕï———…•â’—î†ùÖ…•Ñµ±Öâï∞ú±–†ùç±ΩÕïQ…Öç≠M—Ω…Â…•Ñú§§Ìç±ΩÕîπΩπç±•ç¨Ù†§Ù˘—Ωùù±ïM—Ω…‰°—…Öç¨§Ì°ïÖë•πúπÖ¡¡ïπê°±Öâï∞±ç±ΩÕî§Ì¡Öπï∞πÖ¡¡ïπê°°ïÖë•πú§Ï(ÄÅçΩπÕ–Åëï—Ö•±ÃıÕ—Ö—îπëï—Ö•±Ãπùï–°—…Öç¨π•ê§Ï(ÄÅ•ò†Öëï—Ö•±ÕÒÒëï—Ö•±Ãπ±ΩÖë•πú•ÌçΩπÕ–Å±ΩÖë•πúıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùë•ÿú§Ì±ΩÖë•πúπç±ÖÕÕ9ÖµîÙùÕ—Ω…‰µ±ΩÖë•πúúÌ±ΩÖë•πúπ—ï·—Ωπ—ïπ–ı–†ùô•πë•πù1Â…•çÃú§Ì¡Öπï∞πÖ¡¡ïπê°±ΩÖë•πú§Ì…ï—’…∏Å¡Öπï±Ù(ÄÅ•ò°ëï—Ö•±Ãπï……Ω»•ÌçΩπÕ–Åï……Ω»ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ù¿ú§Ìï……Ω»πç±ÖÕÕ9ÖµîÙùÕ—Ω…‰µïµ¡—‰úÌï……Ω»π—ï·—Ωπ—ïπ–ıëï—Ö•±Ãπï……Ω»Ì¡Öπï∞πÖ¡¡ïπê°ï……Ω»§Ì…ï—’…∏Å¡Öπï±Ù(ÄÅçΩπÕ–Åµï—ÑıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùë•ÿú§Ìµï—Ñπç±ÖÕÕ9ÖµîÙùÕ—Ω…‰µµï—ÑúÌçΩπÕ–ÅÕΩ’…çîıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùÕ¡Ö∏ú§ÌÕΩ’…çîπ—ï·—Ωπ—ïπ–ı–°ëï—Ö•±Ãπ±Â…•çÕ}ÕΩ’…çî¸ù±Â…•çÕŸÖ•±Öâ±îúËù±Â…•çÕUπÖŸÖ•±Öâ±îú§ÌçΩπÕ–ÅÕÂπåıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùÕ¡Ö∏ú§ÌÕÂπåπ—ï·—Ωπ—ïπ–ı–°ëï—Ö•±Ãπ±•πïÃ¸π±ïπù—†¸°ëï—Ö•±ÃπÕÂπçïê¸ù—•µïMÂπçïêúËù¡±Ö•πQï·–ú§ËùπΩQï·–ú§ÌçΩπÕ–ÅÖππΩ—Ö—•ΩπÃıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùÕ¡Ö∏ú§ÌçΩπÕ–Åùïπ•’Õ1Öâï±ÃıÌµÖ—ç°ïêÈÄëÌ–†ùùïπ•’Õ5Ö—ç°ïêú•ÙëÌëï—Ö•±ÃπÖππΩ—Ö—•Ωπ}çΩ’π–˝ÄÉ
-‹ÄëÌëï—Ö•±ÃπÖππΩ—Ö—•Ωπ}çΩ’π—ıÄËúùıÄ±πΩ—}ôΩ’πêÈ–†ùùïπ•’Õ9Ω5Ö—ç†ú§±ï……Ω»È–†ùùïπ•’Õ……Ω»ú§±ë•ÕÖâ±ïêÈ–†ùùïπ•’Õ=¡—•ΩπÖ∞ú•ÙÌÖππΩ—Ö—•ΩπÃπ—ï·—Ωπ—ïπ–ıùïπ•’Õ1Öâï±Õmëï—Ö•±Ãπùïπ•’Õ}Õ—Ö—’ÕuÒÒ–†ùùïπ•’Õ°ïç≠•πúú§ÌÖππΩ—Ö—•ΩπÃπëÖ—ÖÕï–πÕ—Ö—’Ãıëï—Ö•±Ãπùïπ•’Õ}Õ—Ö—’ÕÒù’π≠πΩ›∏úÌµï—ÑπÖ¡¡ïπê°ÕΩ’…çî±ÕÂπå±ÖππΩ—Ö—•ΩπÃ§Ì¡Öπï∞πÖ¡¡ïπê°µï—Ñ§Ï(ÄÅ•ò°ëï—Ö•±ÃπµÖ—ç°}—Â¡îÙÙÙùçÖπΩπ•çÖ∞úòôëï—Ö•±ÃπµÖ—ç°ïë}—•—±î•ÌçΩπÕ–ÅµÖ—ç†ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ù¿ú§ÌµÖ—ç†πç±ÖÕÕ9ÖµîÙùÕ—Ω…‰µµÖ—ç†úÌµÖ—ç†π—ï·—Ωπ—ïπ–ı–†ùçÖπΩπ•çÖ±5Ö—ç†ú±Ì—…Öç¨Èmëï—Ö•±ÃπµÖ—ç°ïë}Ö…—•Õ–±ëï—Ö•±ÃπµÖ—ç°ïë}—•—±ïtπô•±—ï»°	ΩΩ±ïÖ∏§πµÖ¿°ëïçΩëïQï·–§π©Ω•∏†úÉäPÄú•Ù§Ì¡Öπï∞πÖ¡¡ïπê°µÖ—ç†•Ù(ÄÅ•ò°ëï—Ö•±ÃπµïÕÕÖùî•ÌçΩπÕ–ÅπΩ—îıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ù¿ú§ÌπΩ—îπç±ÖÕÕ9ÖµîÙùÕ—Ω…‰µπΩ—îúÌπΩ—îπ—ï·—Ωπ—ïπ–ıëï—Ö•±ÃπµïÕÕÖùîÌ¡Öπï∞πÖ¡¡ïπê°πΩ—î•Ù(ÄÅ•ò†Öëï—Ö•±Ãπ±•πïÃ¸π±ïπù—†•ÌçΩπÕ–Åïµ¡—‰ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ù¿ú§Ìïµ¡—‰πç±ÖÕÕ9ÖµîÙùÕ—Ω…‰µïµ¡—‰úÌïµ¡—‰π—ï·—Ωπ—ïπ–ı–†ùπΩ1Â…•çÕIï—’…πïêú§Ì¡Öπï∞πÖ¡¡ïπê°ïµ¡—‰•Ù(ÄÅçΩπÕ–Å±Â…•çÃıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùë•ÿú§Ì±Â…•çÃπç±ÖÕÕ9ÖµîÙù±Â…•çÃúÏ(ÄÄ°ëï—Ö•±Ãπ±•πïÕÒÒmt§πôΩ…Öç†°±•πîÙ˘Ï(ÄÄÄÅçΩπÕ–Å±•πï-ï‰ıÄëÌ—…Öç¨π•ëÙËëÌ±•πîπ•πëï·ıÄ±çΩµµïπ—Ãı±ΩçÖ±Ωµµïπ—Ã°—…Öç¨±±•πî§±Ω¡ï∏ıÕ—Ö—îπΩ¡ïπ1•πïÃπ°ÖÃ°±•πï-ï‰§ÌçΩπÕ–Å…Ω‹ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùÖ…—•ç±îú§Ì…Ω‹πç±ÖÕÕ9ÖµîıÅ±Â…•åµ±•πîÄëÌΩ¡ï∏¸ùΩ¡ï∏úËúùıÄÏ(ÄÄÄÅçΩπÕ–Å—•µîıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùâ’——Ω∏ú§Ì—•µîπ—Â¡îÙùâ’——Ω∏úÌ—•µîπç±ÖÕÕ9ÖµîÙù±Â…•åµ—•µîúÌ—•µîπ—ï·—Ωπ—ïπ–ı±•πîπ—•µîÙıπ’±∞¸ü
-‹úÈôΩ…µÖ—Q•µî°±•πîπ—•µî§Ì—•µîπë•ÕÖâ±ïêı±•πîπ—•µîÙıπ’±∞Ì—•µîπ—•—±îı–°±•πîπ—•µîÙıπ’±∞¸ùπΩQ•µïÕ—Öµ¿úËù¡±ÖÂ…Ωµ1•πîú§Ì—•µîπΩπç±•ç¨Ù†§Ù˘Ì•ò°Õ—Ö—îπÖç—•Ÿî¸π•êÑÙı—…Öç¨π•ê•¡±ÖÂQ…Öç¨°—…Öç¨§π—°ï∏††§Ù˘Õï—Q•µïΩ’–††§Ù˘Õïï≠Qº°±•πîπ—•µïÒ¿±—…’î§∞ÿ‘¿§§Ìï±ÕîÅÕïï≠Qº°±•πîπ—•µïÒ¿±—…’î•ÙÏ(ÄÄÄÅçΩπÕ–Å—ï·–ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùâ’——Ω∏ú§Ì—ï·–π—Â¡îÙùâ’——Ω∏úÌ—ï·–πç±ÖÕÕ9ÖµîÙù±Â…•åµ—ï·–úÌ—ï·–π—ï·—Ωπ—ïπ–ıëïçΩëïQï·–°±•πîπ—ï·–§Ì—ï·–πÕï———…•â’—î†ùÖ…•Ñµï·¡Öπëïêú±M—…•πú°Ω¡ï∏§§Ì—ï·–πΩπç±•ç¨Ù†§Ù˘—Ωùù±ï1•πî°—…Öç¨±±•πî§Ï(ÄÄÄÅçΩπÕ–ÅçΩ’π–ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùâ’——Ω∏ú§ÌçΩ’π–π—Â¡îÙùâ’——Ω∏úÌçΩ’π–πç±ÖÕÕ9ÖµîÙùÖππΩ—Ö—•Ω∏µçΩ’π–úÌçΩ’π–π—ï·—Ωπ—ïπ–ıÄëÏ°±•πîπÖππΩ—Ö—•ΩπÃ¸π±ïπù—°Ò¿§≠çΩµµïπ—Ãπ±ïπù—°ıÄÌçΩ’π–πÕï———…•â’—î†ùÖ…•Ñµ±Öâï∞ú±–†ùçΩµµïπ—Ω’π–ú±ÌçΩ’π–Ë°±•πîπÖππΩ—Ö—•ΩπÃ¸π±ïπù—°Ò¿§≠çΩµµïπ—Ãπ±ïπù—°Ù§§ÌçΩ’π–πΩπç±•ç¨Ù†§Ù˘—Ωùù±ï1•πî°—…Öç¨±±•πî§Ì…Ω‹πÖ¡¡ïπê°—•µî±—ï·–±çΩ’π–§Ï(ÄÄÄÅ•ò°Ω¡ï∏•ÌçΩπÕ–Å—°…ïÖêıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùë•ÿú§Ì—°…ïÖêπç±ÖÕÕ9ÖµîÙù±•πîµ—°…ïÖêúÏ(ÄÄÄÄÄÄ°±•πîπÖππΩ—Ö—•ΩπÕÒÒmt§πôΩ…Öç†°ÖππΩ—Ö—•Ω∏Ù˘ÌçΩπÕ–Å•—ï¥ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùâ±Ωç≠≈’Ω—îú§ÌçΩπÕ–ÅâΩë‰ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ù¿ú§ÌâΩë‰π—ï·—Ωπ—ïπ–ıëïçΩëïQï·–°ÖππΩ—Ö—•Ω∏π—ï·–§ÌçΩπÕ–ÅôΩΩ—ï»ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùôΩΩ—ï»ú§ÌçΩπÕ–Åâ‰ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùÕ¡Ö∏ú§Ìâ‰π—ï·—Ωπ—ïπ–ıÅ9%ULëÌÖππΩ—Ö—•Ω∏πÖ’—°Ω»˝ÄÉ
-‹ÄëÌëïçΩëïQï·–°ÖππΩ—Ö—•Ω∏πÖ’—°Ω»•ıÄËúùÙëÌÖππΩ—Ö—•Ω∏πŸΩ—ïÃ˝ÄÉ
-‹ÄëÌ–†ùŸΩ—ïÃú±ÌçΩ’π–ÈÖππΩ—Ö—•Ω∏πŸΩ—ïÕÙ•ıÄËúùıÄÌôΩΩ—ï»πÖ¡¡ïπê°â‰§Ì•ò°ÖππΩ—Ö—•Ω∏π’…∞•ÌçΩπÕ–Å±•π¨ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùÑú§Ì±•π¨π°…ïòıÖππΩ—Ö—•Ω∏π’…∞Ì±•π¨π—Ö…ùï–Ùù}â±Öπ¨úÌ±•π¨π…ï∞ÙùπΩΩ¡ïπï»ÅπΩ…ïôï……ï»úÌ±•π¨π—ï·—Ωπ—ïπ–ı–†ùΩ¡ï∏ú§ÌôΩΩ—ï»πÖ¡¡ïπê°±•π¨•ı•—ï¥πÖ¡¡ïπê°âΩë‰±ôΩΩ—ï»§Ì—°…ïÖêπÖ¡¡ïπê°•—ï¥•Ù§Ï(ÄÄÄÄÄÅçΩµµïπ—ÃπôΩ…Öç†°çΩµµïπ–Ù˘ÌçΩπÕ–Å•—ï¥ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùâ±Ωç≠≈’Ω—îú§Ì•—ï¥πç±ÖÕÕ9ÖµîÙù±ΩçÖ∞µçΩµµïπ–úÌçΩπÕ–ÅâΩë‰ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ù¿ú§ÌâΩë‰π—ï·—Ωπ—ïπ–ıçΩµµïπ–π—ï·–ÌçΩπÕ–ÅôΩΩ—ï»ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùôΩΩ—ï»ú§ÌçΩπÕ–Åâ‰ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùÕ¡Ö∏ú§Ìâ‰π—ï·—Ωπ—ïπ–ı–†ùÂΩ’…9Ω—îú§ÌçΩπÕ–Å…ïµΩŸîıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùâ’——Ω∏ú§Ì…ïµΩŸîπ—Â¡îÙùâ’——Ω∏úÌ…ïµΩŸîπ—ï·—Ωπ—ïπ–ı–†ùëï±ï—îú§Ì…ïµΩŸîπΩπç±•ç¨Ù†§Ù˘…ïµΩŸï1•πïΩµµïπ–°—…Öç¨±±•πî±çΩµµïπ–π•ê§ÌôΩΩ—ï»πÖ¡¡ïπê°â‰±…ïµΩŸî§Ì•—ï¥πÖ¡¡ïπê°âΩë‰±ôΩΩ—ï»§Ì—°…ïÖêπÖ¡¡ïπê°•—ï¥•Ù§Ï(ÄÄÄÄÄÅçΩπÕ–ÅôΩ…¥ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùôΩ…¥ú§ÌôΩ…¥πç±ÖÕÕ9ÖµîÙù±•πîµçΩµµïπ–µôΩ…¥úÌçΩπÕ–Å•π¡’–ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ù•π¡’–ú§Ì•π¡’–πµÖ·1ïπù—†Ù‘¿¿Ì•π¡’–π¡±Öçï°Ω±ëï»ı–†ùÖëë9Ω—ïA±Öçï°Ω±ëï»ú§Ì•π¡’–πÕï———…•â’—î†ùÖ…•Ñµ±Öâï∞ú±–†ùÖëë9Ω—ï…•Ñú§§ÌçΩπÕ–ÅÕ’âµ•–ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùâ’——Ω∏ú§ÌÕ’âµ•–π—Â¡îÙùÕ’âµ•–úÌÕ’âµ•–π—ï·—Ωπ—ïπ–ı–†ùÖëêú§ÌôΩ…¥πÖ¡¡ïπê°•π¡’–±Õ’âµ•–§ÌôΩ…¥πΩπÕ’âµ•–ıïŸïπ–Ù˘ÌïŸïπ–π¡…ïŸïπ—ïôÖ’±–†§ÌÖëë1•πïΩµµïπ–°—…Öç¨±±•πî±•π¡’–πŸÖ±’î•ÙÌ—°…ïÖêπÖ¡¡ïπê°ôΩ…¥§Ì…Ω‹πÖ¡¡ïπê°—°…ïÖê•Ù(ÄÄÄÅ±Â…•çÃπÖ¡¡ïπê°…Ω‹§(ÄÅÙ§Ì¡Öπï∞πÖ¡¡ïπê°±Â…•çÃ§Ï(ÄÅçΩπÕ–ÅôΩΩ—ï»ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùôΩΩ—ï»ú§ÌôΩΩ—ï»πç±ÖÕÕ9ÖµîÙùÕ—Ω…‰µôΩΩ—ï»úÌçΩπÕ–ÅÖ——…•â’—•Ω∏ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùÕ¡Ö∏ú§ÌÖ——…•â’—•Ω∏π—ï·—Ωπ—ïπ–ı–†ù±Â…•çÕ9Ω—•çîú§ÌôΩΩ—ï»πÖ¡¡ïπê°Ö——…•â’—•Ω∏§Ì•ò°ëï—Ö•±Ãπùïπ•’Õ}’…∞•ÌçΩπÕ–Å±•π¨ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùÑú§Ì±•π¨π°…ïòıëï—Ö•±Ãπùïπ•’Õ}’…∞Ì±•π¨π—Ö…ùï–Ùù}â±Öπ¨úÌ±•π¨π…ï∞ÙùπΩΩ¡ïπï»ÅπΩ…ïôï……ï»úÌ±•π¨π—ï·—Ωπ—ïπ–ı–†ùŸ•ï›ïπ•’Ãú§ÌôΩΩ—ï»πÖ¡¡ïπê°±•π¨•ı¡Öπï∞πÖ¡¡ïπê°ôΩΩ—ï»§Ì…ï—’…∏Å¡Öπï∞Ï)Ù()ÖÕÂπåÅô’πç—•Ω∏Å±ΩÖëM—Ω…‰°—…Öç¨•Ï(ÄÅÕ—Ö—îπëï—Ö•±ÕΩπ—…Ω±±ï»¸πÖâΩ…–†§ÌÕ—Ö—îπëï—Ö•±ÕΩπ—…Ω±±ï»ıπï‹ÅâΩ…—Ωπ—…Ω±±ï»†§ÌÕ—Ö—îπëï—Ö•±ÃπÕï–°—…Öç¨π•ê±Ì±ΩÖë•πúÈ—…’ïÙ§Ì…ïπëï»†§Ï(ÄÅ—…ÂÌçΩπÕ–Å¡Ö…ÖµÃıπï‹ÅUI1MïÖ…ç°AÖ…ÖµÃ°ÌÖ…—•Õ–ÈëïçΩëïQï·–°—…Öç¨πÖ…—•Õ–§±—•—±îÈëïçΩëïQï·–°—…Öç¨π—•—±î§±ë’…Ö—•Ω∏ÈM—…•πú°—…Öç¨πë’…Ö—•ΩπÒ¿•Ù§ÌçΩπÕ–Å…ïÕ¡ΩπÕîıÖ›Ö•–ÅÖ›’πï—ç†°ÄΩÖ¡§ΩÿƒΩ—…Öç¨µëï—Ö•±Ã¸ëÌ¡Ö…ÖµÕıÄ±ÌÕ•ùπÖ∞ÈÕ—Ö—îπëï—Ö•±ÕΩπ—…Ω±±ï»πÕ•ùπÖ±Ù§ÌçΩπÕ–ÅëÖ—ÑıÖ›Ö•–Å…ïÕ¡ΩπÕîπ©ÕΩ∏†§Ì•ò†Ö…ïÕ¡ΩπÕîπΩ¨•—°…Ω‹Åπï‹Å……Ω»°ëÖ—Ñπëï—Ö•±ÒÒ–†ùÕ—Ω…ÂUπÖŸÖ•±Öâ±îú§§ÌÕ—Ö—îπëï—Ö•±ÃπÕï–°—…Öç¨π•ê±ëÖ—Ñ§Ì…ïπëï»†•ıçÖ—ç†°ï……Ω»•Ì•ò°ï……Ω»ππÖµîÙÙÙùâΩ…—……Ω»ú•…ï—’…∏ÌÕ—Ö—îπëï—Ö•±ÃπÕï–°—…Öç¨π•ê±Ìï……Ω»Èï……Ω»πµïÕÕÖùïÒÒ–†ùÕ—Ω…ÂUπÖŸÖ•±Öâ±îú•Ù§Ì…ïπëï»†•Ù)Ù()ô’πç—•Ω∏Å—Ωùù±ïM—Ω…‰°—…Öç¨•Ï(ÄÅçΩπÕ–ÅΩ¡ïπ•πúıÕ—Ö—îπï·¡ÖπëïêÑÙı—…Öç¨π•êÌÕ—Ö—îπï·¡ÖπëïêıΩ¡ïπ•πú˝—…Öç¨π•êÈπ’±∞Ì…ïπëï»†§Ì•ò°Ω¡ïπ•πúòòÖÕ—Ö—îπëï—Ö•±Ãπ°ÖÃ°—…Öç¨π•ê§•±ΩÖëM—Ω…‰°—…Öç¨§Ï)Ù()ô’πç—•Ω∏Å—Ωùù±ïMÖŸî°—…Öç¨•Ï(ÄÅçΩπÕ–Å•πëï‡ıÕ—Ö—îπÕÖŸïêπô•πë%πëï‡°•—ï¥Ù˘•—ï¥π•êÙÙı—…Öç¨π•ê§Ï(ÄÅ•ò°•πëï‡¯Ù¿•Õ—Ö—îπÕÖŸïêπÕ¡±•çî°•πëï‡∞ƒ§Ìï±ÕîÅÕ—Ö—îπÕÖŸïêπ’πÕ°•ô–°Ï∏∏π—…Öç¨±—•—±îÈëïçΩëïQï·–°—…Öç¨π—•—±î§±Ö…—•Õ–ÈëïçΩëïQï·–°—…Öç¨πÖ…—•Õ–•Ù§Ï(ÄÅ¡ï…Õ•Õ–†§Ì…ïπëï»†§Ìïµ•—›’∏†ù±•â…Ö…‰ú±Ì—…Öç¨±ÕÖŸïêÈ•πëï‡¡Ù§Ï)Ù()ô’πç—•Ω∏Å¡…Ωù…ïÕÕ•ŸïQ…Öç≠Ã°—…Öç≠Õ	ÂMΩ’…çî±ÕΩ’…çï=…ëï»±±•µ•–•Ï(ÄÅ…ï—’…∏Å¡±ÖÂï…Ω…îπ•π—ï…±ïÖŸïQ…Öç≠Ã°—…Öç≠Õ	ÂMΩ’…çî±ÕΩ’…çï=…ëï»±±•µ•–§Ï)Ù)ô’πç—•Ω∏Åµï…ùïA…Ωù…ïÕÕ•ŸïÖ—Ñ°Öùù…ïùÖ—î±ëÖ—Ñ±ÕΩ’…çî±ÕΩ’…çï=…ëï»±±•µ•–•Ï(ÄÅÖùù…ïùÖ—îπ—…Öç≠Õ}âÂ}ÕΩ’…çïmÕΩ’…çïtı¡±ÖÂï…Ω…îπ’π•≈’ïQ…Öç≠Ã°l∏∏∏°Öùù…ïùÖ—îπ—…Öç≠Õ}âÂ}ÕΩ’…çïmÕΩ’…çïuÒÒmt§∞∏∏∏°ëÖ—Ñπ—…Öç≠ÕÒÒmt•t§Ï(ÄÅÖùù…ïùÖ—îπ—…Öç≠Ãı¡…Ωù…ïÕÕ•ŸïQ…Öç≠Ã°Öùù…ïùÖ—îπ—…Öç≠Õ}âÂ}ÕΩ’…çî±ÕΩ’…çï=…ëï»±±•µ•–§Ï(ÄÅÖùù…ïùÖ—îπÕïÖ…ç°ïë}ÕΩ’…çïÃıl∏∏ππï‹ÅMï–°l∏∏πÖùù…ïùÖ—îπÕïÖ…ç°ïë}ÕΩ’…çïÃ∞∏∏∏°ëÖ—ÑπÕïÖ…ç°ïë}ÕΩ’…çïÕÒÒmt§±ÕΩ’…çït•tÏ(ÄÅÖùù…ïùÖ—îπ≈’ï…Â}ŸÖ…•Öπ—Ãıl∏∏ππï‹ÅMï–°l∏∏πÖùù…ïùÖ—îπ≈’ï…Â}ŸÖ…•Öπ—Ã∞∏∏∏°ëÖ—Ñπ≈’ï…Â}ŸÖ…•Öπ—ÕÒÒmt•t•tÏ(ÄÅÖùù…ïùÖ—îπï±Ö¡Õïë}µÃı5Ö—†πµÖ‡°Öùù…ïùÖ—îπï±Ö¡Õïë}µÃ±9’µâï»°ëÖ—Ñπï±Ö¡Õïë}µÃ•Ò¿§Ï(ÄÅ•ò°ëÖ—Ñπï……Ω…Ã¸πmÕΩ’…çït•Öùù…ïùÖ—îπï……Ω…ÕmÕΩ’…çïtıëÖ—Ñπï……Ω…ÕmÕΩ’…çïtÌï±ÕîÅëï±ï—îÅÖùù…ïùÖ—îπï……Ω…ÕmÕΩ’…çïtÏ(ÄÅ…ï—’…∏ÅÖùù…ïùÖ—îÏ)Ù()ÖÕÂπåÅô’πç—•Ω∏ÅÕïÖ…ç†°≈’ï…‰ı’§πÕïÖ…ç°%π¡’–πŸÖ±’îπ—…•¥†§•Ï(ÄÅ•ò†Ö≈’ï…‰•…ï—’…∏Ï(ÄÅ•ò†ÖÕ—Ö—îπÕΩ’…çïÃπÕ•Èî•ÌÕï—5ïÕÕÖùî°–†ùπΩMΩ’…çïÕ……Ω»ú§∞ùï……Ω»ú§Ì…ï—’…πÙ(ÄÅÕ—Ö—îπçΩπ—…Ω±±ï»¸πÖâΩ…–†§ÌÕ—Ö—îπçΩπ—…Ω±±ï»ıπï‹ÅâΩ…—Ωπ—…Ω±±ï»†§ÌÕ—Ö—îπ±•â…Ö…‰ıôÖ±ÕîÌÕ—Ö—îπ°ÖÕMïÖ…ç°ïêı—…’îÌ’§π±•â…Ö…Â	’——Ω∏πç±ÖÕÕ1•Õ–π…ïµΩŸî†ùÖç—•Ÿîú§Ì’§π±•â…Ö…Â	’——Ω∏πÕï———…•â’—î†ùÖ…•Ñµ¡…ïÕÕïêú∞ùôÖ±Õîú§Ï(ÄÅ’§π…ïÕ’±—ÃπÕï———…•â’—î†ùÖ…•Ñµâ’Õ‰ú∞ù—…’îú§Ì’§πïµ¡—Â’•ëîπ°•ëëï∏ı—…’îÌ’§πÕïÖ…ç°	’——Ω∏πç±ÖÕÕ1•Õ–πÖëê†ùÕïÖ…ç°•πúú§ÌëΩç’µïπ–πâΩë‰πç±ÖÕÕ1•Õ–πÖëê†ù•ÃµÕïÖ…ç°•πúú§ÌÕï—5ïÕÕÖùî°–†ùÕïÖ…ç°•πùMΩ’…çïÃú§∞ù±ΩÖë•πúú§Ì±ΩÖë•πùIΩ›Ã†§Ì’§π…ïÕ’±—Q•—±îπ—ï·—Ωπ—ïπ–ı–†ùÕïÖ…ç°•πúú§Ì’§π…ïÕ’±—Ω’π–π—ï·—Ωπ—ïπ–ÙüäPúÌ’§π…ïÕ’±—Q•µîπ—ï·—Ωπ—ïπ–ı–†ù¡±ïÖÕï]Ö•–ú§Ï(ÄÅçΩπÕ–ÅÕ—Ö…—ïêı¡ï…ôΩ…µÖπçîππΩ‹†§±çΩπ—…Ω±±ï»ıÕ—Ö—îπçΩπ—…Ω±±ï»±ÕΩ’…çïÃıl∏∏πÕ—Ö—îπÕΩ’…çïÕt±¡ï…MΩ’…çï1•µ•–ı5Ö—†πµ•∏°Õ—Ö—îπ…ïÕ’±—1•µ•–±5Ö—†πµÖ‡†‡±5Ö—†πçï•∞†°Õ—Ö—îπ…ïÕ’±—1•µ•–ΩÕΩ’…çïÃπ±ïπù—†§®ƒ∏ÿ§§§Ï(ÄÅçΩπÕ–ÅÖùù…ïùÖ—îıÌ≈’ï…‰±—…Öç≠ÃÈmt±—…Öç≠Õ}âÂ}ÕΩ’…çîÈÌÙ±—Ω—Ö∞Ë¿±ÕïÖ…ç°ïë}ÕΩ’…çïÃÈmt±…ïù•Ω∏ÈÕ—Ö—îπ…ïù•Ω∏±≈’ï…Â}ŸÖ…•Öπ—ÃÈmt±ï……Ω…ÃÈÌÙ±ï±Ö¡Õïë}µÃË¡ÙÏ(ÄÅ±ï–ÅçΩµ¡±ï—ïêÙ¿Ï(ÄÅçΩπÕ–ÅÖ¡¡±ÂIïÕ’±—ÃÙ°ô•πÖ∞ıôÖ±Õî§Ù˘Ï(ÄÄÄÅ•ò°Õ—Ö—îπçΩπ—…Ω±±ï»ÑÙıçΩπ—…Ω±±ï…ÒÒçΩπ—…Ω±±ï»πÕ•ùπÖ∞πÖâΩ…—ïê•…ï—’…∏Ï(ÄÄÄÅÖùù…ïùÖ—îπ—Ω—Ö∞ıÖùù…ïùÖ—îπ—…Öç≠Ãπ±ïπù—†ÌÕ—Ö—îπ—…Öç≠ÃıÖùù…ïùÖ—îπ—…Öç≠ÃÏ(ÄÄÄÅçΩπÕ–ÅôÖ•±’…ïÃı=â©ïç–π≠ïÂÃ°Öùù…ïùÖ—îπï……Ω…Ã§πµÖ¿°ÕΩ’…çîÙ˘ÕΩ’…çï1Öâï±ÕmÕΩ’…çïuÒÒÕΩ’…çî§±¡ïπë•πúı5Ö—†πµÖ‡†¿±ÕΩ’…çïÃπ±ïπù—†µçΩµ¡±ï—ïê§Ï(ÄÄÄÅ•ò†Öô•πÖ∞òô¡ïπë•πú•ÌÕï—5ïÕÕÖùî°–†ù¡…Ωù…ïÕÕ•ŸïIïÕ’±—Ãú±ÌçΩ’π–ÈÕ—Ö—îπ—…Öç≠Ãπ±ïπù—†±¡ïπë•πùÙ§∞ù±ΩÖë•πúú§Ì’§π…ïÕ’±—Q•µîπ—ï·—Ωπ—ïπ–ı–†ù¡…Ωù…ïÕÕ•ŸïMΩ’…çïÃú±ÌëΩπîÈçΩµ¡±ï—ïê±—Ω—Ö∞ÈÕΩ’…çïÃπ±ïπù—°Ù§ÌÙ(ÄÄÄÅï±ÕîÅ•ò°Õ—Ö—îπ—…Öç≠Ãπ±ïπù—†•Õï—5ïÕÕÖùî°ôÖ•±’…ïÃπ±ïπù—†˝–†ù¡Ö…—•Ö±IïÕ’±—Ãú±ÌÕΩ’…çïÃÈôÖ•±’…ïÃπ©Ω•∏†ú∞Äú•Ù§È–†ùÕï±ïç—Q…Öç¨ú§±ôÖ•±’…ïÃπ±ïπù—†¸ùπΩ—•çîúËúú§Ï(ÄÄÄÅï±ÕîÅÕï—5ïÕÕÖùî°ôÖ•±’…ïÃπ±ïπù—†˝–†ùπΩA±ÖÂÖâ±ïIïÕ’±—Ãú±ÌÕΩ’…çïÃÈôÖ•±’…ïÃπ©Ω•∏†ú∞Äú•Ù§È–†ùπΩ—°•πùΩ’πêú§∞ùï……Ω»ú§Ï(ÄÄÄÅ•ò°ô•πÖ∞•ÌçΩπÕ–ÅŸÖ…•Öπ—Ãı5Ö—†πµÖ‡†ƒ±Öùù…ïùÖ—îπ≈’ï…Â}ŸÖ…•Öπ—Ãπ±ïπù—°Òƒ§Ì’§π…ïÕ’±—Q•µîπ—ï·—Ωπ—ïπ–ı–†ùÕïÖ…ç°Q•µ•πúú±ÌµÃÈ5Ö—†π…Ω’πê°¡ï…ôΩ…µÖπçîππΩ‹†§µÕ—Ö…—ïê§±ŸÖ…•Öπ—ÕÙ•Ù(ÄÄÄÅ•ò°Õ—Ö—îπ—…Öç≠Ãπ±ïπù—°ÒÒô•πÖ∞•…ïπëï»†§Ï(ÄÅÙÏ(ÄÅ—…ÂÏ(ÄÄÄÅçΩπÕ–Å¡ÖÂ±ΩÖêıÌ≈’ï…‰±±•µ•–È¡ï…MΩ’…çï1•µ•–±…ïù•Ω∏ÈÕ—Ö—îπ…ïù•Ω∏±±ΩçÖ±îÈπÖŸ•ùÖ—Ω»π±Öπù’ÖùïÒÒπ’±±ÙÏ(ÄÄÄÅÖ›Ö•–ÅA…Ωµ•ÕîπÖ±∞°ÕΩ’…çïÃπµÖ¿°ÖÕÂπåÅÕΩ’…çîÙ˘Ï(ÄÄÄÄÄÅ—…ÂÏ(ÄÄÄÄÄÄÄÅçΩπÕ–ÅÌëÖ—Ñ±Õ’¡¡±ïµïπ—ÙıÖ›Ö•–Å…ï≈’ïÕ—MïÖ…ç†°Ï∏∏π¡ÖÂ±ΩÖê±ÕΩ’…çïÃÈmÕΩ’…çïuÙ±ÌÕ•ùπÖ∞ÈçΩπ—…Ω±±ï»πÕ•ùπÖ±Ù§Ï(ÄÄÄÄÄÄÄÅ•ò°çΩπ—…Ω±±ï»πÕ•ùπÖ∞πÖâΩ…—ïê•…ï—’…∏Ï(ÄÄÄÄÄÄÄÅµï…ùïA…Ωù…ïÕÕ•ŸïÖ—Ñ°Öùù…ïùÖ—î±ëÖ—Ñ±ÕΩ’…çî±ÕΩ’…çïÃ±Õ—Ö—îπ…ïÕ’±—1•µ•–§ÌÖ¡¡±ÂIïÕ’±—Ã°ôÖ±Õî§Ï(ÄÄÄÄÄÄÄÅ•ò°Õ’¡¡±ïµïπ–•ÌçΩπÕ–Åµï…ùïêıÖ›Ö•–ÅÕ’¡¡±ïµïπ–Ì•ò°µï…ùïêòòÖçΩπ—…Ω±±ï»πÕ•ùπÖ∞πÖâΩ…—ïê•Ìµï…ùïA…Ωù…ïÕÕ•ŸïÖ—Ñ°Öùù…ïùÖ—î±µï…ùïê±ÕΩ’…çî±ÕΩ’…çïÃ±Õ—Ö—îπ…ïÕ’±—1•µ•–§ÌÖ¡¡±ÂIïÕ’±—Ã°ôÖ±Õî•ıÙ(ÄÄÄÄÄÅıçÖ—ç†°ï……Ω»•Ì•ò°ï……Ω»¸ππÖµîÑÙÙùâΩ…—……Ω»ú•Öùù…ïùÖ—îπï……Ω…ÕmÕΩ’…çïtıï……Ω»¸πµïÕÕÖùïÒÒ–†ùÕïÖ…ç°Ö•±ïêú•Ù(ÄÄÄÄÄÅô•πÖ±±ÂÌçΩµ¡±ï—ïê¨ÙƒÌ•ò†ÖçΩπ—…Ω±±ï»πÕ•ùπÖ∞πÖâΩ…—ïê•Ö¡¡±ÂIïÕ’±—Ã°ôÖ±Õî•Ù(ÄÄÄÅÙ§§Ï(ÄÄÄÅ•ò°çΩπ—…Ω±±ï»πÕ•ùπÖ∞πÖâΩ…—ïê•…ï—’…∏Ï(ÄÄÄÅÖ¡¡±ÂIïÕ’±—Ã°—…’î§Ï(ÄÄÄÅçΩπÕ–Å¡Ö…ÖµÃıπï‹ÅUI1MïÖ…ç°AÖ…ÖµÃ°…’π—•µïAÖ…ÖµÃ§Ì¡Ö…ÖµÃπÕï–†ùƒú±≈’ï…‰§Ì•ò°Õ—Ö—îπ…ïù•Ω∏ÑÙÙùUQ<ú•¡Ö…ÖµÃπÕï–†ù…ïù•Ω∏ú±Õ—Ö—îπ…ïù•Ω∏§Ìï±ÕîÅ¡Ö…ÖµÃπëï±ï—î†ù…ïù•Ω∏ú§Ì•ò°Õ—Ö—îπ…ïÕ’±—1•µ•–ÑÙÙÿ¿•¡Ö…ÖµÃπÕï–†ù±•µ•–ú±M—…•πú°Õ—Ö—îπ…ïÕ’±—1•µ•–§§Ìï±ÕîÅ¡Ö…ÖµÃπëï±ï—î†ù±•µ•–ú§Ì°•Õ—Ω…‰π…ï¡±ÖçïM—Ö—î°π’±∞∞úú±ÄëÌ±ΩçÖ—•Ω∏π¡Ö—°πÖµïÙ¸ëÌ¡Ö…ÖµÕıÄ§Ï(ÄÅıçÖ—ç†°ï……Ω»•Ï(ÄÄÄÅ•ò°ï……Ω»ππÖµîÙÙÙùâΩ…—……Ω»ú•…ï—’…∏Ï(ÄÄÄÅÕ—Ö—îπ—…Öç≠ÃımtÌ…ïπëï»†§ÌÕï—5ïÕÕÖùî°ï……Ω»πµïÕÕÖùïÒÒ–†ùÕïÖ…ç°UπÖŸÖ•±Öâ±îú§∞ùï……Ω»ú§Ì’§π…ïÕ’±—Q•µîπ—ï·—Ωπ—ïπ–ı–†ùôÖ•±ïêú§Ï(ÄÅıô•πÖ±±ÂÌ•ò°Õ—Ö—îπçΩπ—…Ω±±ï»ÙÙıçΩπ—…Ω±±ï»•Ì’§π…ïÕ’±—ÃπÕï———…•â’—î†ùÖ…•Ñµâ’Õ‰ú∞ùôÖ±Õîú§Ì’§πÕïÖ…ç°	’——Ω∏πç±ÖÕÕ1•Õ–π…ïµΩŸî†ùÕïÖ…ç°•πúú§ÌëΩç’µïπ–πâΩë‰πç±ÖÕÕ1•Õ–π…ïµΩŸî†ù•ÃµÕïÖ…ç°•πúú•ıÙ)Ù()ô’πç—•Ω∏ÅÂΩ’—’âï%ê°—…Öç¨•Ï(ÄÅ•ò°—…Öç¨π•ê¸πÕ—Ö…—Õ]•—††ùÂ—|ú§•…ï—’…∏Å—…Öç¨π•êπÕ±•çî†Ã§Ï(ÄÅ—…ÂÌ…ï—’…∏Åπï‹ÅUI0°—…Öç¨πÕ—…ïÖµ}’…∞§πÕïÖ…ç°AÖ…ÖµÃπùï–†ùÿú•ÒúùıçÖ—ç°Ì…ï—’…∏úùÙ)Ù()ô’πç—•Ω∏ÅïπÕ’…ïeΩ’Q’âï¡§†•Ï(ÄÅ•ò°›•πëΩ‹πeP¸πA±ÖÂï»•…ï—’…∏ÅA…Ωµ•Õîπ…ïÕΩ±Ÿî°›•πëΩ‹πeP§Ï(ÄÅ•ò°Õ—Ö—îπÂΩ’—’âï¡§•…ï—’…∏ÅÕ—Ö—îπÂΩ’—’âï¡§Ï(ÄÅÕ—Ö—îπÂΩ’—’âï¡§ıπï‹ÅA…Ωµ•Õî†°…ïÕΩ±Ÿî±…ï©ïç–§Ù˘Ï(ÄÄÄÅçΩπÕ–Å¡…ïŸ•Ω’Ãı›•πëΩ‹πΩπeΩ’Q’âï%ô…ÖµïA%IïÖë‰Ï(ÄÄÄÅ›•πëΩ‹πΩπeΩ’Q’âï%ô…ÖµïA%IïÖë‰Ù†§Ù˘Ì•ò°—Â¡ïΩòÅ¡…ïŸ•Ω’ÃÙÙÙùô’πç—•Ω∏ú•¡…ïŸ•Ω’Ã†§Ì…ïÕΩ±Ÿî°›•πëΩ‹πeP•ÙÏ(ÄÄÄÅçΩπÕ–ÅÕç…•¡–ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùÕç…•¡–ú§ÌÕç…•¡–πÕ…åÙù°——¡ÃËºΩ››‹πÂΩ’—’âîπçΩ¥Ω•ô…Öµï}Ö¡§úÌÕç…•¡–πÖÕÂπåı—…’îÌÕç…•¡–πΩπï……Ω»Ù†§Ù˘…ï©ïç–°πï‹Å……Ω»°–†ùÂΩ’—’âïA±ÖÂï…1ΩÖëÖ•±ïêú§§§ÌëΩç’µïπ–π°ïÖêπÖ¡¡ïπê°Õç…•¡–§Ï(ÄÄÄÅÕï—Q•µïΩ’–††§Ù˘Ì•ò†Ö›•πëΩ‹πeP¸πA±ÖÂï»•…ï©ïç–°πï‹Å……Ω»°–†ùÂΩ’—’âïA±ÖÂï…Q•µïΩ’–ú§§•Ù∞ƒ‘¿¿¿§Ï(ÄÅÙ§Ï(ÄÅ…ï—’…∏ÅÕ—Ö—îπÂΩ’—’âï¡§Ï)Ù()ô’πç—•Ω∏ÅÕ—Ω¡eΩ’Q’âî†•Ï(ÄÅç±ïÖ…%π—ï…ŸÖ∞°Õ—Ö—îπÂΩ’—’âïQ•ç≠ï»§ÌÕ—Ö—îπÂΩ’—’âïQ•ç≠ï»ıπ’±∞Ï(ÄÅ•ò°Õ—Ö—îπÂΩ’—’âî•Ì—…ÂÌÕ—Ö—îπÂΩ’—’âîπëïÕ—…Ω‰†•ıçÖ—ç°ÌıÕ—Ö—îπÂΩ’—’âîıπ’±±Ù(ÄÅ’§πÂΩ’—’âïA±ÖÂï»π…ï¡±Öçï°•±ë…ï∏†§Ì’§πÂΩ’—’âïΩç¨π°•ëëï∏ı—…’îÏ)Ù()ô’πç—•Ω∏ÅÕ—Ω¡!±Ã†•Ï(ÄÅ•ò°Õ—Ö—îπ°±Ã•Ì—…ÂÌÕ—Ö—îπ°±ÃπëïÕ—…Ω‰†•ıçÖ—ç°ÌıÕ—Ö—îπ°±Ãıπ’±±Ù)Ù()ô’πç—•Ω∏ÅÕï—A±ÖÂ•πú°¡±ÖÂ•πú•Ì’§π¡±ÖÂAÖ’Õîπ≈’ï…ÂMï±ïç—Ω»†ùÕ¡Ö∏ú§π—ï·—Ωπ—ïπ–ı¡±ÖÂ•πú¸üäÑúËüäZÿúÌ’§π¡±ÖÂAÖ’ÕîπÕï———…•â’—î†ùÖ…•Ñµ±Öâï∞ú±–°¡±ÖÂ•πú¸ù¡Ö’Õï…•ÑúËù¡±ÖÂ…•Ñú§§ÌëΩç’µïπ–πâΩë‰πç±ÖÕÕ1•Õ–π—Ωùù±î†ù•Ãµ¡±ÖÂ•πúú±¡±ÖÂ•πú§Ì’§π¡±ÖÂï»πç±ÖÕÕ1•Õ–π—Ωùù±î†ù•Ãµ¡±ÖÂ•πúú±¡±ÖÂ•πú•Ù()ô’πç—•Ω∏ÅÖ¡¡±ÂIï¡ïÖ—5Ωëî°ÕÖŸîı—…’î•Ï(ÄÅçΩπÕ–Å±Öâï±ÃıÌΩôòËù…ï¡ïÖ—=ôòú±Ö±∞Ëù…ï¡ïÖ—±∞ú±ΩπîËù…ï¡ïÖ—=πîùÙ±ëïÕç…•¡—•ΩπÃıÌΩôòËù…ï¡ïÖ—=ôô…•Ñú±Ö±∞Ëù…ï¡ïÖ—±±…•Ñú±ΩπîËù…ï¡ïÖ—=πï…•ÑùÙÏ(ÄÅ’§π…ï¡ïÖ—5Ωëîπ≈’ï…ÂMï±ïç—Ω»†ùÕµÖ±∞ú§π—ï·—Ωπ—ïπ–ı–°±Öâï±ÕmÕ—Ö—îπ…ï¡ïÖ—5Ωëït§Ì’§π…ï¡ïÖ—5ΩëîπÕï———…•â’—î†ùÖ…•Ñµ±Öâï∞ú±–°ëïÕç…•¡—•ΩπÕmÕ—Ö—îπ…ï¡ïÖ—5Ωëït§§Ì’§π…ï¡ïÖ—5ΩëîπÕï———…•â’—î†ùÖ…•Ñµ¡…ïÕÕïêú±M—…•πú°Õ—Ö—îπ…ï¡ïÖ—5ΩëîÑÙÙùΩôòú§§Ì’§π…ï¡ïÖ—5Ωëîπç±ÖÕÕ1•Õ–π—Ωùù±î†ùÖç—•Ÿîú±Õ—Ö—îπ…ï¡ïÖ—5ΩëîÑÙÙùΩôòú§Ì’§π…ï¡ïÖ—5ΩëîπëÖ—ÖÕï–πµΩëîıÕ—Ö—îπ…ï¡ïÖ—5ΩëîÏ(ÄÅ•ò°ÕÖŸî•±ΩçÖ±M—Ω…ÖùîπÕï—%—ï¥†ùÖ›’∏µ…ï¡ïÖ–µµΩëîú±Õ—Ö—îπ…ï¡ïÖ—5Ωëî§Ï)Ù()ô’πç—•Ω∏ÅçÂç±ïIï¡ïÖ—5Ωëî†•ÌçΩπÕ–ÅµΩëïÃılùΩôòú∞ùÖ±∞ú∞ùΩπîùtÌÕ—Ö—îπ…ï¡ïÖ—5ΩëîıµΩëïÕl°µΩëïÃπ•πëï·=ò°Õ—Ö—îπ…ï¡ïÖ—5Ωëî§¨ƒ§ïµΩëïÃπ±ïπù—°tÌÖ¡¡±ÂIï¡ïÖ—5Ωëî†•Ù()ô’πç—•Ω∏Å’¡ëÖ—ïQ•µï±•πî°ç’……ïπ–±ë’…Ö—•Ω∏•Ï(ÄÅçΩπÕ–Å¡ï…çïπ–ıë’…Ö—•Ω∏˝5Ö—†πµÖ‡†¿±5Ö—†πµ•∏†ƒ¿¿∞°ç’……ïπ–Ωë’…Ö—•Ω∏§®ƒ¿¿§§Ë¿Ï(ÄÅÕ—Ö—îπ¡±ÖÂâÖç≠AΩÕ•—•Ω∏ı5Ö—†πµÖ‡†¿±9’µâï»°ç’……ïπ–•Ò¿§Ï(ÄÅ•ò†ÖÕ—Ö—îπÕïï≠•πú•Õï—IÖπùî°’§π¡…Ωù…ïÕÃ±5Ö—†π…Ω’πê°¡ï…çïπ–®ƒ¿§§Ï(ÄÅëΩç’µïπ–π≈’ï…ÂMï±ïç—Ω»†úπ—…Öç¨πÖç—•ŸîÄπ—…Öç¨µ›ÖŸïôΩ…¥ú§¸πÕ—Â±îπÕï—A…Ω¡ï…—‰†ú¥µ—…Öç¨µ¡…Ωù…ïÕÃú±ÄëÌ¡ï…çïπ—ÙïÄ§Ï(ÄÅëΩç’µïπ–π≈’ï…ÂMï±ïç—Ω»†úπ°Ωµîµ—…Öç¨µçÖ…êπÖç—•ŸîÄπ°Ωµîµ—…Öç¨µµï—ï»ú§¸πÕ—Â±îπÕï—A…Ω¡ï…—‰†ú¥µ—…Öç¨µ¡…Ωù…ïÕÃú±ÄëÌ¡ï…çïπ—ÙïÄ§Ï(ÄÅ’§πï±Ö¡Õïêπ—ï·—Ωπ—ïπ–ıôΩ…µÖ—Q•µî°ç’……ïπ–§Ì’§π—Ω—Ö±Q•µîπ—ï·—Ωπ—ïπ–ıôΩ…µÖ—Q•µî°ë’…Ö—•Ω∏§Ï)Ù()ÖÕÂπåÅô’πç—•Ω∏Å¡±ÖÂeΩ’Q’âî°—…Öç¨±Õ—Ö…—–Ù¿•Ï(ÄÅÕ—Ö—îπÖ’ë•ΩQ…Öç≠%êıπ’±∞Ì’§πÖ’ë•ºπ¡Ö’Õî†§Ì’§πÖ’ë•ºπ…ïµΩŸï——…•â’—î†ùÕ…åú§ÌÕ—Ω¡!±Ã†§ÌÕ—Ω¡eΩ’Q’âî†§Ì’§πÂΩ’—’âïΩç¨π°•ëëï∏ıôÖ±ÕîÌ’§πÂΩ’—’âïΩç¨πç±ÖÕÕ1•Õ–π…ïµΩŸî†ùµ•π•µ•Èïêú§Ï(ÄÅçΩπÕ–ÅePıÖ›Ö•–ÅïπÕ’…ïeΩ’Q’âï¡§†§±Ÿ•ëïΩ%êıÂΩ’—’âï%ê°—…Öç¨§Ì•ò†ÖŸ•ëïΩ%ê•—°…Ω‹Åπï‹Å……Ω»°–†ù•πŸÖ±•ëeΩ’—’âïIïÕ’±–ú§§Ï(ÄÅçΩπÕ–Å—Ö…ùï–ıëΩç’µïπ–πç…ïÖ—ï±ïµïπ–†ùë•ÿú§Ì’§πÂΩ’—’âïA±ÖÂï»π…ï¡±Öçï°•±ë…ï∏°—Ö…ùï–§Ï(ÄÅÖ›Ö•–Åπï‹ÅA…Ωµ•Õî†°…ïÕΩ±Ÿî±…ï©ïç–§Ù˘Ï(ÄÄÄÅ±ï–Å…ïÖë‰ıôÖ±ÕîÏ(ÄÄÄÅÕ—Ö—îπÂΩ’—’âîıπï‹ÅePπA±ÖÂï»°—Ö…ùï–±Ì›•ë—†Ëúƒ¿¿îú±°ï•ù°–Ëúƒ¿¿îú±Ÿ•ëïΩ%ê±¡±ÖÂï…YÖ…ÃÈÌÖ’—Ω¡±Ö‰Ëƒ±çΩπ—…Ω±ÃËƒ±¡±ÖÂÕ•π±•πîËƒ±…ï∞Ë¿±Ω…•ù•∏È±ΩçÖ—•Ω∏πΩ…•ù•πÙ±ïŸïπ—ÃÈÏ(ÄÄÄÄÄÅΩπIïÖë‰ÈïŸïπ–Ù˘Ì…ïÖë‰ı—…’îÌïŸïπ–π—Ö…ùï–πÕï—YΩ±’µî°9’µâï»°’§πŸΩ±’µîπŸÖ±’î§§Ì•ò°Õ—Ö…—–¯¿•ïŸïπ–π—Ö…ùï–πÕïï≠Qº°Õ—Ö…—–±—…’î§ÌïŸïπ–π—Ö…ùï–π¡±ÖÂY•ëïº†§ÌÕï—A±ÖÂ•πú°—…’î§ÌÕ—Ö—îπÂΩ’—’âïQ•ç≠ï»ıÕï—%π—ï…ŸÖ∞††§Ù˘Ì•ò°Õ—Ö—îπÂΩ’—’âî¸πùï—’……ïπ—Q•µî•’¡ëÖ—ïQ•µï±•πî°Õ—Ö—îπÂΩ’—’âîπùï—’……ïπ—Q•µî†§±Õ—Ö—îπÂΩ’—’âîπùï—’…Ö—•Ω∏†§•Ù∞‘¿¿§Ì…ïÕΩ±Ÿî†•Ù∞(ÄÄÄÄÄÅΩπM—Ö—ï°ÖπùîÈïŸïπ–Ù˘Ì•ò°ïŸïπ–πëÖ—ÑÙÙıePπA±ÖÂï…M—Ö—îπA1e%9•Õï—A±ÖÂ•πú°—…’î§Ì•ò°ïŸïπ–πëÖ—ÑÙÙıePπA±ÖÂï…M—Ö—îπAUM•Õï—A±ÖÂ•πú°ôÖ±Õî§Ì•ò°ïŸïπ–πëÖ—ÑÙÙıePπA±ÖÂï…M—Ö—îπ9•°Öπë±ïQ…Öç≠πëïê†•Ù∞(ÄÄÄÄÄÅΩπ……Ω»Ë†§Ù˘ÌçΩπÕ–Åï……Ω»ıπï‹Å……Ω»°–†ùÂΩ’—’âïµâïë……Ω»ú§§Ì•ò°…ïÖë‰•…ïçΩŸï…A±ÖÂâÖç¨°ï……Ω»§Ìï±ÕîÅ…ï©ïç–°ï……Ω»•Ù(ÄÄÄÅıÙ§Ï(ÄÅÙ§Ï)Ù()ô’πç—•Ω∏ÅÖ¡¡±Â’ë•ΩM—Ö…–°Õ—Ö…—–•Ï(ÄÅ•ò†Ñ°Õ—Ö…—–¯¿§•…ï—’…∏Ï(ÄÅçΩπÕ–ÅÕïï¨Ù†§Ù˘Ì—…ÂÌ’§πÖ’ë•ºπç’……ïπ—Q•µîıÕ—Ö…——ıçÖ—ç°ÌıÙÏ(ÄÅ•ò°’§πÖ’ë•ºπ…ïÖëÂM—Ö—î¯Ùƒ•Õïï¨†§Ìï±ÕîÅ’§πÖ’ë•ºπÖëëŸïπ—1•Õ—ïπï»†ù±ΩÖëïëµï—ÖëÖ—Ñú±Õïï¨±ÌΩπçîÈ—…’ïÙ§Ï)Ù()ÖÕÂπåÅô’πç—•Ω∏Å¡±ÖÂ’ë•º°—…Öç¨±Õ—Ö…—–Ù¿•Ï(ÄÅÕ—Ω¡eΩ’Q’âî†§ÌÕ—Ω¡!±Ã†§ÌÕ—Ö—îπÖ’ë•ΩQ…Öç≠%êıπ’±∞Ì’§πÖ’ë•ºπ¡Ö’Õî†§Ì’§πÖ’ë•ºπ…ïµΩŸï——…•â’—î†ùÕ…åú§Ì’§πÖ’ë•ºπ±ΩÖê†§Ì’§πÖ’ë•ºπŸΩ±’µîı9’µâï»°’§πŸΩ±’µîπŸÖ±’î§ºƒ¿¿ÌÕ—Ö—îπÖ’ë•ΩQ…Öç≠%êı—…Öç¨π•êÏ(ÄÅ•ò°—…Öç¨πÕΩ’…çîÙÙÙùÕΩ’πëç±Ω’êúòô›•πëΩ‹π!±Ã¸π•ÕM’¡¡Ω…—ïê¸∏†§•Ï(ÄÄÄÅçΩπÕ–Å°±Ãıπï‹Å›•πëΩ‹π!±Ã°ÌïπÖâ±ï]Ω…≠ï»È—…’ïÙ§ÌÕ—Ö—îπ°±Ãı°±ÃÏ(ÄÄÄÅÖ›Ö•–Åπï‹ÅA…Ωµ•Õî†°…ïÕΩ±Ÿî±…ï©ïç–§Ù˘Ï(ÄÄÄÄÄÅ±ï–ÅÕï——±ïêıôÖ±ÕîÏ(ÄÄÄÄÄÅçΩπÕ–Åô•π•Õ†Ù°çÖ±±âÖç¨±ŸÖ±’î§Ù˘Ì•ò°Õï——±ïê•…ï—’…∏ÌÕï——±ïêı—…’îÌçÖ±±âÖç¨°ŸÖ±’î•ÙÏ(ÄÄÄÄÄÅ°±ÃπΩ∏°›•πëΩ‹π!±ÃπŸïπ—ÃπII=H∞°}ïŸïπ–±ëÖ—Ñ§Ù˘Ì•ò†ÖëÖ—ÑπôÖ—Ö∞•…ï—’…∏Ì•ò°Õï——±ïê•…ïçΩŸï…A±ÖÂâÖç¨°πï‹Å……Ω»°–†ù¡±ÖÂâÖç≠Ö•±ïêú§§§Ìï±ÕîÅô•π•Õ†°…ï©ïç–±πï‹Å……Ω»°–†ù¡±ÖÂâÖç≠Ö•±ïêú§§•Ù§Ï(ÄÄÄÄÄÅ°±ÃπΩ∏°›•πëΩ‹π!±ÃπŸïπ—Ãπ59%MQ}AIM±ÖÕÂπå†§Ù˘Ï(ÄÄÄÄÄÄÄÅ—…ÂÌÖ¡¡±Â’ë•ΩM—Ö…–°Õ—Ö…—–§ÌÖ›Ö•–Å’§πÖ’ë•ºπ¡±Ö‰†§ÌÕï—A±ÖÂ•πú°—…’î§Ìô•π•Õ†°…ïÕΩ±Ÿî•ıçÖ—ç†°ï……Ω»•Ìô•π•Õ†°…ï©ïç–±ï……Ω»•Ù(ÄÄÄÄÄÅÙ§Ï(ÄÄÄÄÄÅ°±ÃπΩ∏°›•πëΩ‹π!±ÃπŸïπ—Ãπ5%}QQ!∞†§Ù˘°±Ãπ±ΩÖëMΩ’…çî°—…Öç¨πÕ—…ïÖµ}’…∞§§Ï(ÄÄÄÄÄÅ°±ÃπÖ——Öç°5ïë•Ñ°’§πÖ’ë•º§Ï(ÄÄÄÅÙ§Ï(ÄÄÄÅ…ï—’…∏Ï(ÄÅÙ(ÄÅ’§πÖ’ë•ºπÕ…åı—…Öç¨πÕ—…ïÖµ}’…∞Ï(ÄÅÖ¡¡±Â’ë•ΩM—Ö…–°Õ—Ö…—–§ÌÖ›Ö•–Å’§πÖ’ë•ºπ¡±Ö‰†§ÌÕï—A±ÖÂ•πú°—…’î§Ï)Ù()ô’πç—•Ω∏Å’¡ëÖ—ï5ïë•ÖMïÕÕ•Ω∏°—…Öç¨•Ï(ÄÅ•ò†Ñ†ùµïë•ÖMïÕÕ•Ω∏ù•∏ÅπÖŸ•ùÖ—Ω»•ÒÑ†ù5ïë•Ö5ï—ÖëÖ—Ñù•∏Å›•πëΩ‹§•…ï—’…∏Ï(ÄÅçΩπÕ–ÅÖ…—›Ω…¨ıÕÖôï%µÖùî°—…Öç¨π—°’µâπÖ•∞§ÌπÖŸ•ùÖ—Ω»πµïë•ÖMïÕÕ•Ω∏πµï—ÖëÖ—Ñıπï‹Å5ïë•Ö5ï—ÖëÖ—Ñ°Ì—•—±îÈëïçΩëïQï·–°—…Öç¨π—•—±î§±Ö…—•Õ–ÈëïçΩëïQï·–°—…Öç¨πÖ…—•Õ–§±Ö±â’¥ÈÅ]U8É
-‹ÄëÌÕΩ’…çï1Öâï±Õm—…Öç¨πÕΩ’…çïuÒÒ—…Öç¨πÕΩ’…çïıÄ±Ö…—›Ω…¨ÈÖ…—›Ω…¨˝mÌÕ…åÈÖ…—›Ω…≠ıtÈmuÙ§Ï(ÄÅçΩπÕ–ÅÖç—•ΩπÃıÌ¡±Ö‰Ë†§Ù˘…ïÕ’µïA±ÖÂâÖç¨†§±¡Ö’ÕîË†§Ù˘¡Ö’ÕïA±ÖÂâÖç¨†§±¡…ïŸ•Ω’Õ—…Öç¨Ë†§Ù˘¡…ïŸ•Ω’ÕQ…Öç¨†§±πï·——…Öç¨Ë†§Ù˘πï·—Q…Öç¨†§±Õïï≠âÖç≠›Ö…êÈëï—Ö•±ÃÙ˘Õïï≠Iï±Ö—•Ÿî†¥°ëï—Ö•±ÃπÕïï≠=ôôÕï—Òƒ¿§§±Õïï≠ôΩ…›Ö…êÈëï—Ö•±ÃÙ˘Õïï≠Iï±Ö—•Ÿî°ëï—Ö•±ÃπÕïï≠=ôôÕï—Òƒ¿•ÙÏ(ÄÅ=â©ïç–πïπ—…•ïÃ°Öç—•ΩπÃ§πôΩ…Öç††°mÖç—•Ω∏±°Öπë±ï…t§Ù˘Ì—…ÂÌπÖŸ•ùÖ—Ω»πµïë•ÖMïÕÕ•Ω∏πÕï—ç—•Ωπ!Öπë±ï»°Öç—•Ω∏±°Öπë±ï»•ıçÖ—ç°ÌıÙ§Ï)Ù()ô’πç—•Ω∏ÅµÖ—ç°Qï·–°ŸÖ±’î•Ì…ï—’…∏ÅëïçΩëïQï·–°ŸÖ±’î§π—Ω1ΩçÖ±ï1Ω›ï…ÖÕî†§ππΩ…µÖ±•Èî†ù9-ú§π…ï¡±Öçî†Ωmyq¡Ì1ıq¡Ì9ıt¨Ωù‘∞úÄú§π—…•¥†•Ù)ô’πç—•Ω∏ÅµÖ—ç°MçΩ…î°çÖπë•ëÖ—î±•µ¡Ω…—ïê•Ï(ÄÅçΩπÕ–Å—•—±îıµÖ—ç°Qï·–°çÖπë•ëÖ—îπ—•—±î§±Ö…—•Õ–ıµÖ—ç°Qï·–°çÖπë•ëÖ—îπÖ…—•Õ–§±›Öπ—ïëQ•—±îıµÖ—ç°Qï·–°•µ¡Ω…—ïêπ—•—±î§±›Öπ—ïë…—•Õ–ıµÖ—ç°Qï·–°•µ¡Ω…—ïêπÖ…—•Õ–ÙÙÙùeÖπëï‡Å5’Õ•åú¸úúÈ•µ¡Ω…—ïêπÖ…—•Õ–§Ï(ÄÅ±ï–ÅÕçΩ…îı9’µâï»°çÖπë•ëÖ—îπÕçΩ…î•Ò¿Ì•ò°—•—±îÙÙı›Öπ—ïëQ•—±î•ÕçΩ…î¨Ù‡¿Ìï±ÕîÅ•ò°—•—±îπ•πç±’ëïÃ°›Öπ—ïëQ•—±î•ÒÒ›Öπ—ïëQ•—±îπ•πç±’ëïÃ°—•—±î§•ÕçΩ…î¨ÙÃ‘Ì•ò°›Öπ—ïë…—•Õ–òò°Ö…—•Õ–ÙÙı›Öπ—ïë…—•Õ—ÒÒÖ…—•Õ–π•πç±’ëïÃ°›Öπ—ïë…—•Õ–•ÒÒ›Öπ—ïë…—•Õ–π•πç±’ëïÃ°Ö…—•Õ–§§•ÕçΩ…î¨Ù‘‘Ì…ï—’…∏ÅÕçΩ…îÏ)Ù)ÖÕÂπåÅô’πç—•Ω∏ÅµÖ—ç°%µ¡Ω…—ïëQ…Öç¨°—…Öç¨•Ï(ÄÅÕï—5ïÕÕÖùî°–†ùµÖ—ç°•πùQ…Öç¨ú±Ì—…Öç¨ÈÄëÌëïçΩëïQï·–°—…Öç¨πÖ…—•Õ–•ÙÉäPÄëÌëïçΩëïQï·–°—…Öç¨π—•—±î•ıÅÙ§∞ù±ΩÖë•πúú§Ï(ÄÅ—…ÂÏ(ÄÄÄÅçΩπÕ–ÅÕΩ’…çïÃıl∏∏πÕ—Ö—îπÕΩ’…çïÕtπô•±—ï»°ÕΩ’…çîÙ˘Õ—Ö—îπÖŸÖ•±Öâ±îπ°ÖÃ°ÕΩ’…çî§§Ï(ÄÄÄÅçΩπÕ–ÅÌëÖ—ÖÙıÖ›Ö•–Å…ï≈’ïÕ—MïÖ…ç†°Ì≈’ï…‰ÈÄëÌ—…Öç¨πÖ…—•Õ–ÙÙÙùeÖπëï‡Å5’Õ•åú¸úúÈ—…Öç¨πÖ…—•Õ—ÙÄëÌ—…Öç¨π—•—±ïıÄπ—…•¥†§±±•µ•–Ëƒ»±ÕΩ’…çïÃÈÕΩ’…çïÃπ±ïπù—†˝ÕΩ’…çïÃÈl∏∏πÕ—Ö—îπÖŸÖ•±Öâ±ït±…ïù•Ω∏ÈÕ—Ö—îπ…ïù•Ω∏±±ΩçÖ±îÈπÖŸ•ùÖ—Ω»π±Öπù’ÖùïÒÒπ’±±Ù±Ì›Ö•—Ω…Ö±±âÖç¨È—…’ïÙ§Ï(ÄÄÄÅçΩπÕ–ÅçÖπë•ëÖ—ïÃıëÖ—Ñπ—…Öç≠ÕÒÒmtÌ•ò†ÖçÖπë•ëÖ—ïÃπ±ïπù—†•—°…Ω‹Åπï‹Å……Ω»°–†ùπΩA±ÖÂÖâ±ï5Ö—ç†ú§§Ï(ÄÄÄÅçΩπÕ–Åô…ïÕ†ıl∏∏πçÖπë•ëÖ—ïÕtπÕΩ…–†°±ïô–±…•ù°–§Ù˘µÖ—ç°MçΩ…î°…•ù°–±—…Öç¨§µµÖ—ç°MçΩ…î°±ïô–±—…Öç¨§•l¡tÌô…ïÕ†πçÖ—Ö±Ωù}±•π≠ÃıÏ∏∏πô…ïÕ†πçÖ—Ö±Ωù}±•π≠Ã∞∏∏π—…Öç¨πçÖ—Ö±Ωù}±•π≠ÕÙÌô…ïÕ†π•µ¡Ω…—}Ω…•ù•∏ÙùÂÖπëï·}µ’Õ•åúÏ(ÄÄÄÅçΩπÕ–ÅÕÖŸïë%πëï‡ıÕ—Ö—îπÕÖŸïêπô•πë%πëï‡°•—ï¥Ù˘•—ï¥π•êÙÙı—…Öç¨π•ê§Ì•ò°ÕÖŸïë%πëï‡¯Ù¿•Õ—Ö—îπÕÖŸïëmÕÖŸïë%πëï·tıô…ïÕ†Ì¡ï…Õ•Õ–†§Ì…ïπëï»†§ÌÕï—5ïÕÕÖùî°–†ùµÖ—ç°ïë=∏ú±ÌÕΩ’…çîÈÕΩ’…çï1Öâï±Õmô…ïÕ†πÕΩ’…çïuÒÒô…ïÕ†πÕΩ’…çïÙ§∞ùπΩ—•çîú§ÌÖ›Ö•–Å¡±ÖÂQ…Öç¨°ô…ïÕ†§Ï(ÄÅıçÖ—ç†°ï……Ω»•ÌÕï—5ïÕÕÖùî°ï……Ω»πµïÕÕÖùïÒÒ–†ù•µ¡Ω…—ïë5Ö—ç°Ö•±ïêú§∞ùï……Ω»ú•Ù)Ù()ô’πç—•Ω∏Åë•…ïç—%µ¡Ω…—ïëQ…Öç¨°ïπ—…‰•Ï(ÄÅ•ò°ïπ—…‰πÕΩ’…çîÑÙÙùÂΩ’—’âîùÒÖïπ—…‰πï·—ï…πÖ±}•ê•…ï—’…∏Åπ’±∞Ï(ÄÅ…ï—’…πÌ•êÈÅÂ—|ëÌïπ—…‰πï·—ï…πÖ±}•ëıÄ±—•—±îÈïπ—…‰π—•—±î±Ö…—•Õ–Èïπ—…‰πÖ…—•Õ—ÒùeΩ’Q’âîú±ë’…Ö—•Ω∏Ë¿±≈’Ö±•—‰ËùY%<ú±ÕΩ’…çîËùÂΩ’—’âîú±Õ—…ïÖµ}’…∞Èïπ—…‰πï·—ï…πÖ±}’…±ÒÒÅ°——¡ÃËºΩ››‹πÂΩ’—’âîπçΩ¥Ω›Ö—ç†˝ÿÙëÌïπ—…‰πï·—ï…πÖ±}•ëıÄ±ëΩ›π±ΩÖë}’…∞Èπ’±∞±—°’µâπÖ•∞Èïπ—…‰π—°’µâπÖ•±ÒÒπ’±∞±ÕçΩ…îË‡»±çÖ—Ö±Ωù}±•π≠ÃÈÌÂΩ’—’âîÈïπ—…‰πï·—ï…πÖ±}’…±ÒÒÅ°——¡ÃËºΩ››‹πÂΩ’—’âîπçΩ¥Ω›Ö—ç†˝ÿÙëÌïπ—…‰πï·—ï…πÖ±}•ëıÅıÙÏ)Ù)ÖÕÂπåÅô’πç—•Ω∏Åô•πë%µ¡Ω…—ïë5Ö—ç†°—…Öç¨•Ï(ÄÅ•ò°—…Öç¨πÕΩ’…çîÙÙÙùÂΩ’—’âîúòô—…Öç¨πï·—ï…πÖ±}•ê•…ï—’…∏Åë•…ïç—%µ¡Ω…—ïëQ…Öç¨°—…Öç¨§Ï(ÄÅçΩπÕ–ÅÕΩ’…çïÃıl∏∏πÕ—Ö—îπÕΩ’…çïÕtπô•±—ï»°ÕΩ’…çîÙ˘Õ—Ö—îπÖŸÖ•±Öâ±îπ°ÖÃ°ÕΩ’…çî§§Ï(ÄÅçΩπÕ–ÅÌëÖ—ÖÙıÖ›Ö•–Å…ï≈’ïÕ—MïÖ…ç†°Ì≈’ï…‰ÈÄëÌ—…Öç¨πÖ…—•Õ–ÙÙÙùeÖπëï‡Å5’Õ•åú¸úúÈ—…Öç¨πÖ…—•Õ—ÙÄëÌ—…Öç¨π—•—±ïıÄπ—…•¥†§±±•µ•–Ë‡±ÕΩ’…çïÃÈÕΩ’…çïÃπ±ïπù—†˝ÕΩ’…çïÃÈl∏∏πÕ—Ö—îπÖŸÖ•±Öâ±ït±…ïù•Ω∏ÈÕ—Ö—îπ…ïù•Ω∏±±ΩçÖ±îÈπÖŸ•ùÖ—Ω»π±Öπù’ÖùïÒÒπ’±±Ù±Ì›Ö•—Ω…Ö±±âÖç¨È—…’ïÙ§Ï(ÄÅ…ï—’…∏Ål∏∏∏°ëÖ—Ñπ—…Öç≠ÕÒÒmt•tπÕΩ…–†°±ïô–±…•ù°–§Ù˘µÖ—ç°MçΩ…î°…•ù°–±—…Öç¨§µµÖ—ç°MçΩ…î°±ïô–±—…Öç¨§•l¡uÒÒπ’±∞Ï)Ù)ÖÕÂπåÅô’πç—•Ω∏ÅµÖ—ç°πëMÖŸï%µ¡Ω…—ïê°—…Öç≠Ã•Ï(ÄÅ•ò†Ö—…Öç≠Ãπ±ïπù—†•—°…Ω‹Åπï‹Å……Ω»°–†ùπΩQ…Öç≠Õ%π1•â…Ö…‰ú§§Ï(ÄÅçΩπÕ–Å≈’ï’îı—…Öç≠ÃπÕ±•çî†¿∞ƒ¿¿§±µÖ—ç°ïêımt±µ•ÕÕïêımtÌ±ï–Åç’…ÕΩ»Ù¿±ëΩπîÙ¿Ï(ÄÅ’§π•µ¡Ω…—M’âµ•–πë•ÕÖâ±ïêı—…’îÌ’§π•µ¡Ω…—U…±M’âµ•–πë•ÕÖâ±ïêı—…’îÌ’§π•µ¡Ω…—A…Ωù…ïÕÃπ°•ëëï∏ıôÖ±ÕîÌ’§π•µ¡Ω…—A…Ωù…ïÕÃπµÖ‡ı≈’ï’îπ±ïπù—†Ì’§π•µ¡Ω…—A…Ωù…ïÕÃπŸÖ±’îÙ¿Ï(ÄÅçΩπÕ–Å›Ω…≠ï»ıÖÕÂπå†§Ù˘Ì›°•±î°ç’…ÕΩ»Ò≈’ï’îπ±ïπù—†•ÌçΩπÕ–Å—…Öç¨ı≈’ï’ïmç’…ÕΩ»¨≠tÌ—…ÂÌçΩπÕ–Å…ïÕ’±–ıÖ›Ö•–Åô•πë%µ¡Ω…—ïë5Ö—ç†°—…Öç¨§Ì•ò°…ïÕ’±–•Ì…ïÕ’±–π•µ¡Ω…—}Ω…•ù•∏Ùù±•â…Ö…Â}±•π¨úÌµÖ—ç°ïêπ¡’Õ†°…ïÕ’±–•ıï±ÕîÅµ•ÕÕïêπ¡’Õ†°—…Öç¨•ıçÖ—ç°Ìµ•ÕÕïêπ¡’Õ†°—…Öç¨•ıô•πÖ±±ÂÌëΩπî¨ÙƒÌ’§π•µ¡Ω…—A…Ωù…ïÕÃπŸÖ±’îıëΩπîÌ’§π•µ¡Ω…—M—Ö—’Ãπ—ï·—Ωπ—ïπ–ı–†ùµÖ—ç°•πùA…Ωù…ïÕÃú±ÌëΩπî±—Ω—Ö∞È≈’ï’îπ±ïπù—†±ôΩ’πêÈµÖ—ç°ïêπ±ïπù—°Ù§ÌııÙÏ(ÄÅ—…ÂÌÖ›Ö•–ÅA…Ωµ•ÕîπÖ±∞°……Ö‰πô…Ω¥°Ì±ïπù—†È5Ö—†πµ•∏†Ã±≈’ï’îπ±ïπù—†•Ù±›Ω…≠ï»§§ÌçΩπÕ–Åï·•Õ—•πúıπï‹ÅMï–°Õ—Ö—îπÕÖŸïêπµÖ¿°—…Öç¨Ù˘—…Öç¨π•ê§§ÌçΩπÕ–ÅÖëë•—•ΩπÃıµÖ—ç°ïêπô•±—ï»°—…Öç¨Ù¯Öï·•Õ—•πúπ°ÖÃ°—…Öç¨π•ê§§ÌÕ—Ö—îπÕÖŸïêıl∏∏πÖëë•—•ΩπÃ∞∏∏πÕ—Ö—îπÕÖŸïëtπÕ±•çî†¿∞ƒ‘¿¿§Ì¡ï…Õ•Õ–†§ÌÕ—Ö—îπ±•â…Ö…‰ı—…’îÌ’§π±•â…Ö…Â	’——Ω∏πç±ÖÕÕ1•Õ–πÖëê†ùÖç—•Ÿîú§Ì’§π±•â…Ö…Â	’——Ω∏πÕï———…•â’—î†ùÖ…•Ñµ¡…ïÕÕïêú∞ù—…’îú§Ì…ïπëï»†§Ì’§π•µ¡Ω…—M—Ö—’Ãπ—ï·—Ωπ—ïπ–ı–†ù•µ¡Ω…—Ωπîú±ÌÖëëïêÈÖëë•—•ΩπÃπ±ïπù—†±µ•ÕÕïêÈµ•ÕÕïêπ±ïπù—†±±•µ•–È—…Öç≠Ãπ±ïπù—†¯ƒ¿¿˝–†ùô•…Õ–ƒ¿¿ú§ËúùÙ§ÌÕï—5ïÕÕÖùî°–†ù•µ¡Ω…—M’µµÖ…‰ú±ÌÖëëïêÈÖëë•—•ΩπÃπ±ïπù—†±µ•ÕÕïêÈµ•ÕÕïêπ±ïπù—°Ù§∞ùπΩ—•çîú§ÌÙ(ÄÅô•πÖ±±ÂÌ’§π•µ¡Ω…—M’âµ•–πë•ÕÖâ±ïêıôÖ±ÕîÌ’§π•µ¡Ω…—U…±M’âµ•–πë•ÕÖâ±ïêıôÖ±ÕîÌÙ)Ù)ÖÕÂπåÅô’πç—•Ω∏Å•µ¡Ω…—1•â…Ö…ÂU…∞†•Ï(ÄÅçΩπÕ–Å’…∞ı’§π•µ¡Ω…—U…∞πŸÖ±’îπ—…•¥†§Ì•ò†Ö’…∞•Ì’§π•µ¡Ω…—M—Ö—’Ãπ—ï·—Ωπ—ïπ–ı–†ù¡ÖÕ—ïA±ÖÂ±•Õ—•…Õ–ú§Ì…ï—’…πÙ(ÄÅ’§π•µ¡Ω…—U…±M’âµ•–πë•ÕÖâ±ïêı—…’îÌ’§π•µ¡Ω…—M—Ö—’Ãπ—ï·—Ωπ—ïπ–ı–†ù…ïÖë•πùA±ÖÂ±•Õ–ú§Ï(ÄÅ—…ÂÌçΩπÕ–Å…ïÕ¡ΩπÕîıÖ›Ö•–ÅÖ›’πï—ç††úΩÖ¡§ΩÿƒΩ±•â…Ö…‰Ω•µ¡Ω…–µ’…∞ú±Ìµï—°ΩêËùA=MPú±°ïÖëï…ÃÈÏùΩπ—ïπ–µQÂ¡îúËùÖ¡¡±•çÖ—•Ω∏Ω©ÕΩ∏ùÙ±âΩë‰È)M=8πÕ—…•πù•ô‰°Ì’…∞±µÖ·}—…Öç≠ÃËƒ¿¡Ù•Ù§ÌçΩπÕ–ÅëÖ—ÑıÖ›Ö•–Å…ïÕ¡ΩπÕîπ©ÕΩ∏†§Ì•ò†Ö…ïÕ¡ΩπÕîπΩ¨•—°…Ω‹Åπï‹Å……Ω»°ëÖ—Ñπëï—Ö•±ÒÒ–†ù¡±ÖÂ±•Õ—IïÖëÖ•±ïêú§§Ì’§π•µ¡Ω…—M—Ö—’Ãπ—ï·—Ωπ—ïπ–ı–†ù—…Öç≠ÕIïÖêú±ÌçΩ’π–ÈëÖ—Ñπ—…Öç≠Ãπ±ïπù—°Ù§ÌÖ›Ö•–ÅµÖ—ç°πëMÖŸï%µ¡Ω…—ïê°ëÖ—Ñπ—…Öç≠ÕÒÒmt•Ù(ÄÅçÖ—ç†°ï……Ω»•Ì’§π•µ¡Ω…—M—Ö—’Ãπ—ï·—Ωπ—ïπ–ıï……Ω»πµïÕÕÖùïÒÒ–†ù¡±ÖÂ±•Õ—%µ¡Ω…—Ö•±ïêú•Ù(ÄÅô•πÖ±±ÂÌ’§π•µ¡Ω…—U…±M’âµ•–πë•ÕÖâ±ïêıôÖ±ÕïÙ)Ù()ÖÕÂπåÅô’πç—•Ω∏Å¡±ÖÂQ…Öç¨°—…Öç¨±Ω¡—•ΩπÃıÌÙ•Ï(ÄÅ•ò°—…Öç¨πÕΩ’…çîÙÙÙùÂÖπëï·}µ’Õ•åú•ÌÖ›Ö•–ÅµÖ—ç°%µ¡Ω…—ïëQ…Öç¨°—…Öç¨§Ì…ï—’…∏ÅôÖ±ÕïÙ(ÄÅçΩπÕ–Å¡…ïÕï…ŸïE’ï’îı	ΩΩ±ïÖ∏°Ω¡—•ΩπÃπ¡…ïÕï…ŸïE’ï’î§±…ïçΩŸï…ïêı	ΩΩ±ïÖ∏°Ω¡—•ΩπÃπ…ïçΩŸï…ïê§±…ïÕ’µï–ı5Ö—†πµÖ‡†¿±9’µâï»°Ω¡—•ΩπÃπ…ïÕ’µï–•Ò¿§Ï(ÄÅçΩπÕ–Å¡±ÖÂâÖç≠ïπï…Ö—•Ω∏ı…ïçΩŸï…ïê¸°9’µâï»°Ω¡—•ΩπÃπ¡±ÖÂâÖç≠ïπï…Ö—•Ω∏•ÒÒÕ—Ö—îπ¡±ÖÂâÖç≠ïπï…Ö—•Ω∏§Ë°Õ—Ö—îπ¡±ÖÂâÖç≠ïπï…Ö—•Ω∏¨Ùƒ§Ï(ÄÅ±ï–Å…ïô…ïÕ°——ïµ¡—ïêıôÖ±Õî±…ïô…ïÕ°M’ççïïëïêıôÖ±ÕîÏ(ÄÅçΩπÕ–ÅÕïÕÕ•Ωπ…ïÕ†ÙÖ…ïçΩŸï…ïê˝ô…ïÕ°Q…Öç≠Õ	Â-ï‰πùï–°—…Öç≠MïÕÕ•Ωπ-ï‰°—…Öç¨§§Èπ’±∞Ï(ÄÅ•ò°ÕïÕÕ•Ωπ…ïÕ†òôÕïÕÕ•Ωπ…ïÕ†πÕ—…ïÖµ}’…∞ÑÙı—…Öç¨πÕ—…ïÖµ}’…∞•—…Öç¨ı…ï¡±ÖçïM—Ω…ïëQ…Öç¨°—…Öç¨±ÕïÕÕ•Ωπ…ïÕ†§Ï(ÄÅ•ò†Ö…ïçΩŸï…ïêòôΩ¡—•ΩπÃπ…ïô…ïÕ°M—Ω…ïêÑÙıôÖ±ÕîòôÕ°Ω’±ëIïô…ïÕ°	ïôΩ…ïA±ÖÂâÖç¨°—…Öç¨§•Ï(ÄÄÄÅ…ïô…ïÕ°——ïµ¡—ïêı—…’îÌÕ—Ö—îπÕÖµïMΩ’…çïIïô…ïÕ°ïπï…Ö—•Ω∏ı¡±ÖÂâÖç≠ïπï…Ö—•Ω∏ÌÕï—5ïÕÕÖùî°–†ù…ïô…ïÕ°•πù1•π¨ú§∞ù±ΩÖë•πúú§Ï(ÄÄÄÅ—…ÂÏ(ÄÄÄÄÄÅçΩπÕ–Å…ïô…ïÕ°ïêıÖ›Ö•–Å…ïô…ïÕ°Q…Öç≠1•π¨°—…Öç¨§Ï(ÄÄÄÄÄÅ•ò°¡±ÖÂâÖç≠ïπï…Ö—•Ω∏ÑÙıÕ—Ö—îπ¡±ÖÂâÖç≠ïπï…Ö—•Ω∏•…ï—’…∏ÅôÖ±ÕîÏ(ÄÄÄÄÄÅ•ò°…ïô…ïÕ°ïê•Ì—…Öç¨ı…ï¡±ÖçïM—Ω…ïëQ…Öç¨°—…Öç¨±…ïô…ïÕ°ïê§Ì…ïô…ïÕ°M’ççïïëïêı—…’îÌÕï—5ïÕÕÖùî°–†ù±•π≠Iïô…ïÕ°ïêú§∞ùπΩ—•çîú•Ù(ÄÄÄÅıçÖ—ç†°ï……Ω»•Ì•ò°ï……Ω»¸ππÖµîÙÙÙùâΩ…—……Ω»ú•…ï—’…∏ÅôÖ±ÕïÙ(ÄÅÙ(ÄÅ•ò†Ö¡…ïÕï…ŸïE’ï’î•ÕïïëΩπ—ï·—E’ï’î°—…Öç¨§Ï(ÄÅÕ—Ö—îπ≈’ï’îı¡±ÖÂï…Ω…îπ…ïµΩŸî°Õ—Ö—îπ≈’ï’î±—…Öç¨π•ê§Ì¡ï…Õ•Õ—E’ï’î†§Ï(ÄÅçΩπÕ–Åô•…Õ—IïŸïÖ∞ÙÖÕ—Ö—îπÖç—•Ÿî±¡…ïŸ•Ω’ÃıÕ—Ö—îπÖç—•ŸîÌÕ—Ö—îπÖç—•Ÿîı—…Öç¨Ï(ÄÅ•ò†Ö…ïçΩŸï…ïê•ÌÕ—Ö—îπ¡±ÖÂâÖç≠=…•ù•∏ı—…Öç¨ÌÕ—Ö—îπôÖ•±ïëMΩ’…çïÃπç±ïÖ»†§ÌÕ—Ö—îπÕÖµïMΩ’…çïIïô…ïÕ°ïπï…Ö—•Ω∏ı…ïô…ïÕ°——ïµ¡—ïê˝¡±ÖÂâÖç≠ïπï…Ö—•Ω∏Èπ’±±Ù(ÄÅï±ÕîÅÕ—Ö—îπ¡±ÖÂâÖç≠=…•ù•∏ıΩ¡—•ΩπÃπΩ…•ù•πÒÒÕ—Ö—îπ¡±ÖÂâÖç≠=…•ù•πÒÒ—…Öç¨Ï(ÄÅ…ïµïµâï…Iïçïπ–°—…Öç¨§Ì’§π¡±ÖÂï»πç±ÖÕÕ1•Õ–π…ïµΩŸî†ù¡±ÖÂï»µïµ¡—‰ú§Ì’§π•ë±ïM—ÖùîπÕï———…•â’—î†ùÖ…•Ñµ°•ëëï∏ú∞ù—…’îú§ÌëΩç’µïπ–πâΩë‰πç±ÖÕÕ1•Õ–πÖëê†ù°ÖÃµ¡±ÖÂï»ú§Ì’§π¡±ÖÂï»πç±ÖÕÕ1•Õ–π…ïµΩŸî†ù—…Öç¨µïπ—ï»ú∞ù—…Öç¨µÕ›Ö¿ú§ÌŸΩ•êÅ’§π¡±ÖÂï»πΩôôÕï—]•ë—†Ì’§π¡±ÖÂï»πç±ÖÕÕ1•Õ–πÖëê°ô•…Õ—IïŸïÖ∞¸ù—…Öç¨µïπ—ï»úËù—…Öç¨µÕ›Ö¿ú§Ì’§ππΩ›Q•—±îπ—ï·—Ωπ—ïπ–ıëïçΩëïQï·–°—…Öç¨π—•—±î§Ì’§ππΩ›…—•Õ–π—ï·—Ωπ—ïπ–ıÄëÌëïçΩëïQï·–°—…Öç¨πÖ…—•Õ–•ÙÉ
-‹ÄëÌÕΩ’…çï1Öâï±Õm—…Öç¨πÕΩ’…çïuÒÒ—…Öç¨πÕΩ’…çïıÄÌ’§ππΩ›MΩ’…çîπ—ï·—Ωπ—ïπ–ıÕΩ’…çï1Öâï±Õm—…Öç¨πÕΩ’…çïuÒÒ—…Öç¨πÕΩ’…çîÏ(ÄÅçΩπÕ–Å•µÖùîıÕÖôï%µÖùî°—…Öç¨π—°’µâπÖ•∞§±µΩπΩù…Ö¥ı’§π¡±ÖÂï……—›Ω…¨π≈’ï…ÂMï±ïç—Ω»†úπŸ•πÂ∞µµΩπΩù…Ö¥ú§Ï(ÄÅ’§π¡±ÖÂï……—›Ω…¨πÕ—Â±îπÕï—A…Ω¡ï…—‰†ú¥µŸ•πÂ∞µçΩŸï»ú±•µÖùî˝Å’…∞†àëÌ•µÖùïÙà•ÄËùπΩπîú§Ï(ÄÅ’§π¡±ÖÂï……—›Ω…¨πç±ÖÕÕ1•Õ–π—Ωùù±î†ù°ÖÃµÖ…—›Ω…¨ú±	ΩΩ±ïÖ∏°•µÖùî§§Ï(ÄÅÖ¡¡±Â]ÖŸïôΩ…¥°’§π›ÖŸïA…Ωù…ïÕÃ±—…Öç¨∞ƒÃ»§Ï(ÄÅ•ò°µΩπΩù…Ö¥•µΩπΩù…Ö¥π—ï·—Ωπ—ïπ–ı•µÖùî¸úúË°ëïçΩëïQï·–°—…Öç¨π—•—±î•Òù\ú§πÕ±•çî†¿∞»§π—ΩU¡¡ï…ÖÕî†§Ï(ÄÅ’¡ëÖ—ïQ•µï±•πî°…ïÕ’µï–±—…Öç¨πë’…Ö—•ΩπÒ¿§Ì’¡ëÖ—ï5ïë•ÖMïÕÕ•Ω∏°—…Öç¨§Ì…ïπëï»†§Ìïµ•—›’∏†ù¡±Ö‰ú±Ì—…Öç¨±¡…ïŸ•Ω’Ã±…ïçΩŸï…ïëÙ§Ï(ÄÅ—…ÂÏ(ÄÄÄÅ•ò°—…Öç¨πÕΩ’…çîÙÙÙùÂΩ’—’âîú•Ö›Ö•–Å¡±ÖÂeΩ’Q’âî°—…Öç¨±…ïÕ’µï–§Ìï±ÕîÅÖ›Ö•–Å¡±ÖÂ’ë•º°—…Öç¨±…ïÕ’µï–§Ï(ÄÄÄÅ•ò°…ïô…ïÕ°——ïµ¡—ïêòòÖ…ïô…ïÕ°M’ççïïëïê•Õï—5ïÕÕÖùî†úú§Ï(ÄÄÄÅ…ï—’…∏Å—…’îÏ(ÄÅıçÖ—ç†°ï……Ω»•Ï(ÄÄÄÅÕ—Ω¡!±Ã†§ÌÕï—A±ÖÂ•πú°ôÖ±Õî§Ï(ÄÄÄÅ•ò°ï……Ω»¸ππÖµîÙÙÙù9Ω—±±Ω›ïë……Ω»ú•…ï—’…∏ÅôÖ±ÕîÏ(ÄÄÄÅ•ò°Ω¡—•ΩπÃπ…ïçΩŸï…=πÖ•±’…îÙÙıôÖ±Õî•…ï—’…∏ÅôÖ±ÕîÏ(ÄÄÄÅ≈’ï’ï5•ç…Ω—ÖÕ¨††§Ù˘…ïçΩŸï…A±ÖÂâÖç¨°ï……Ω»±¡±ÖÂâÖç≠ïπï…Ö—•Ω∏§§Ì…ï—’…∏ÅôÖ±ÕîÏ(ÄÅÙ)Ù()ô’πç—•Ω∏Å¡Ö’ÕïA±ÖÂâÖç¨†•Ì•ò°Õ—Ö—îπÖç—•Ÿî¸πÕΩ’…çîÙÙÙùÂΩ’—’âîú•Ì—…ÂÌÕ—Ö—îπÂΩ’—’âî¸π¡Ö’ÕïY•ëïº†•ıçÖ—ç°Ìııï±ÕîÅ’§πÖ’ë•ºπ¡Ö’Õî†§ÌÕï—A±ÖÂ•πú°ôÖ±Õî•Ù)ô’πç—•Ω∏Å…ïÕ’µïA±ÖÂâÖç¨†•Ì•ò°Õ—Ö—îπÖç—•Ÿî¸πÕΩ’…çîÙÙÙùÂΩ’—’âîú•Ì—…ÂÌÕ—Ö—îπÂΩ’—’âî¸π¡±ÖÂY•ëïº†•ıçÖ—ç°Ìııï±ÕîÅ’§πÖ’ë•ºπ¡±Ö‰†§πçÖ—ç†††§Ù˘ÌÙ§ÌÕï—A±ÖÂ•πú°—…’î•Ù)ô’πç—•Ω∏Å—Ωùù±ïA±ÖÂâÖç¨†•Ì•ò†ÖÕ—Ö—îπÖç—•Ÿî•…ï—’…∏ÌçΩπÕ–Å¡±ÖÂ•πúıÕ—Ö—îπÖç—•ŸîπÕΩ’…çîÙÙÙùÂΩ’—’âîú˝Õ—Ö—îπÂΩ’—’âî¸πùï—A±ÖÂï…M—Ö—î¸∏†§ÙÙÙƒËÖ’§πÖ’ë•ºπ¡Ö’ÕïêÌ¡±ÖÂ•πú˝¡Ö’ÕïA±ÖÂâÖç¨†§È…ïÕ’µïA±ÖÂâÖç¨†•Ù()ô’πç—•Ω∏ÅÖë©Öçïπ—Q…Öç¨°ë•…ïç—•Ω∏•ÌçΩπÕ–Å±•Õ–ıç’……ïπ—1•Õ–†§Ì•ò†Ö±•Õ–π±ïπù—†•…ï—’…∏Åπ’±∞ÌçΩπÕ–Å•πëï‡ı5Ö—†πµÖ‡†¿±±•Õ–πô•πë%πëï‡°—…Öç¨Ù˘—…Öç¨π•êÙÙıÕ—Ö—îπÖç—•Ÿî¸π•ê§§Ì…ï—’…∏Å±•Õ—l°•πëï‡≠ë•…ïç—•Ω∏≠±•Õ–π±ïπù—†§ï±•Õ–π±ïπù—°uÙ)ô’πç—•Ω∏Å¡…ïŸ•Ω’ÕQ…Öç¨†•ÌçΩπÕ–Å—…Öç¨ıÖë©Öçïπ—Q…Öç¨†¥ƒ§Ì•ò†Ö—…Öç¨•…ï—’…∏Ì•ò°Õ—Ö—îπÖç—•Ÿî•Õ—Ö—îπ≈’ï’îı¡±ÖÂï…Ω…îπïπ≈’ï’î°Õ—Ö—îπ≈’ï’î±Õ—Ö—îπÖç—•Ÿî∞ùπï·–ú§ÌÕ—Ö—îπ≈’ï’ï5ΩëîÙùµÖπ’Ö∞úÌ¡ï…Õ•Õ—E’ï’î†§Ì¡±ÖÂQ…Öç¨°—…Öç¨±Ì¡…ïÕï…ŸïE’ï’îÈ—…’ïÙ•Ù)ô’πç—•Ω∏Åπï·—Q…Öç¨°Ö’—ΩµÖ—•åıôÖ±Õî•Ï(ÄÅ•ò†ÖÕ—Ö—îπ≈’ï’îπ±ïπù—†òôÕ—Ö—îπ…ï¡ïÖ—5ΩëîÙÙÙùÖ±∞ú•Ï(ÄÄÄÅÕ—Ö—îπ≈’ï’îı¡±ÖÂï…Ω…îπ’π•≈’ïQ…Öç≠Ã°ç’……ïπ—1•Õ–†§πô•±—ï»°—…Öç¨Ù˘—…Öç¨π•êÑÙıÕ—Ö—îπÖç—•Ÿî¸π•ê§§ÌÕ—Ö—îπ≈’ï’ï5ΩëîÙùçΩπ—ï·–úÌ¡ï…Õ•Õ—E’ï’î†§Ï(ÄÅÙ(ÄÅçΩπÕ–Å—…Öç¨ıÕ—Ö—îπ≈’ï’ïl¡tÌ•ò†Ö—…Öç¨•…ï—’…∏ÅôÖ±ÕîÏ(ÄÅÕ—Ö—îπ≈’ï’îıÕ—Ö—îπ≈’ï’îπÕ±•çî†ƒ§Ì¡ï…Õ•Õ—E’ï’î†§Ì…ïπëï»†§Ì•ò†ÖÖ’—ΩµÖ—•å•ïµ•—›’∏†ùÕ≠•¿ú±Ì—…Öç¨ÈÕ—Ö—îπÖç—•Ÿî±πï·–È—…Öç≠Ù§Ì¡±ÖÂQ…Öç¨°—…Öç¨±Ì¡…ïÕï…ŸïE’ï’îÈ—…’ïÙ§Ì…ï—’…∏Å—…’îÏ)Ù)ô’πç—•Ω∏Å°Öπë±ïQ…Öç≠πëïê†•Ï(ÄÅ•ò†ÖÕ—Ö—îπÖç—•Ÿî•…ï—’…∏Ï(ÄÅ•ò°Õ—Ö—îπ…ï¡ïÖ—5ΩëîÙÙÙùΩπîú•ÌÕïï≠Qº†¿±—…’î§Ì…ïÕ’µïA±ÖÂâÖç¨†§Ì…ï—’…πÙ(ÄÅïµ•—›’∏†ùçΩµ¡±ï—îú±Ì—…Öç¨ÈÕ—Ö—îπÖç—•ŸïÙ§Ï(ÄÅ•ò°πï·—Q…Öç¨°—…’î§•…ï—’…∏Ï(ÄÅÕï—A±ÖÂ•πú°ôÖ±Õî§ÌçΩπÕ–Åë’…Ö—•Ω∏ıÕ—Ö—îπÖç—•ŸîπÕΩ’…çîÙÙÙùÂΩ’—’âîú˝Õ—Ö—îπÂΩ’—’âî¸πùï—’…Ö—•Ω∏¸∏†§È’§πÖ’ë•ºπë’…Ö—•Ω∏Ì’¡ëÖ—ïQ•µï±•πî°ë’…Ö—•ΩπÒÒÕ—Ö—îπÖç—•Ÿîπë’…Ö—•ΩπÒ¿±ë’…Ö—•ΩπÒÒÕ—Ö—îπÖç—•Ÿîπë’…Ö—•ΩπÒ¿§Ï)Ù)ô’πç—•Ω∏ÅÕïï≠Iï±Ö—•Ÿî°ΩôôÕï–•ÌçΩπÕ–Åë’…Ö—•Ω∏ıÕ—Ö—îπÖç—•Ÿî¸πÕΩ’…çîÙÙÙùÂΩ’—’âîú˝Õ—Ö—îπÂΩ’—’âî¸πùï—’…Ö—•Ω∏¸∏†§È’§πÖ’ë•ºπë’…Ö—•Ω∏ÌçΩπÕ–Åç’……ïπ–ıÕ—Ö—îπÖç—•Ÿî¸πÕΩ’…çîÙÙÙùÂΩ’—’âîú˝Õ—Ö—îπÂΩ’—’âî¸πùï—’……ïπ—Q•µî¸∏†§È’§πÖ’ë•ºπç’……ïπ—Q•µîÌÕïï≠Qº°5Ö—†πµÖ‡†¿±5Ö—†πµ•∏°ë’…Ö—•ΩπÒ¿∞°ç’……ïπ—Ò¿§≠ΩôôÕï–§§±—…’î•Ù)ô’πç—•Ω∏ÅÕïï≠Qº°ÕïçΩπëÃ±Ö±±Ω›Mïï¨ı—…’î•Ì•ò°Õ—Ö—îπÖç—•Ÿî¸πÕΩ’…çîÙÙÙùÂΩ’—’âîú•Ì—…ÂÌÕ—Ö—îπÂΩ’—’âî¸πÕïï≠Qº°ÕïçΩπëÃ±Ö±±Ω›Mïï¨•ıçÖ—ç°Ìııï±ÕîÅ•ò°9’µâï»π•Õ•π•—î°’§πÖ’ë•ºπë’…Ö—•Ω∏§•’§πÖ’ë•ºπç’……ïπ—Q•µîıÕïçΩπëÕÙ()ô’πç—•Ω∏Åç’……ïπ—A±ÖÂâÖç≠Q•µî†•Ï(ÄÅçΩπÕ–Åç’……ïπ–ıÕ—Ö—îπÖç—•Ÿî¸πÕΩ’…çîÙÙÙùÂΩ’—’âîú˝Õ—Ö—îπÂΩ’—’âî¸πùï—’……ïπ—Q•µî¸∏†§È’§πÖ’ë•ºπç’……ïπ—Q•µîÏ(ÄÅ…ï—’…∏Å5Ö—†πµÖ‡†¿±9’µâï»°ç’……ïπ–•Ò¿±Õ—Ö—îπ¡±ÖÂâÖç≠AΩÕ•—•ΩπÒ¿§Ï)Ù()ô’πç—•Ω∏ÅÕ°Ω’±ëIïô…ïÕ°	ïôΩ…ïA±ÖÂâÖç¨°—…Öç¨•Ï(ÄÅ…ï—’…∏Å	ΩΩ±ïÖ∏°—…Öç¨¸π•êòô—…Öç¨πÕΩ’…çîÑÙÙùÂΩ’—’âîúòô—…Öç¨πÕΩ’…çîÑÙÙùÂÖπëï·}µ’Õ•åúòòÖô…ïÕ°Q…Öç≠Õ	Â-ï‰π°ÖÃ°—…Öç≠MïÕÕ•Ωπ-ï‰°—…Öç¨§§§Ï)Ù()ÖÕÂπåÅô’πç—•Ω∏Å…ïô…ïÕ°Q…Öç≠1•π¨°—…Öç¨•Ï(ÄÅ•ò†Ö—…Öç¨¸π•ëÒÖ—…Öç¨πÕΩ’…çïÒÒ—…Öç¨πÕΩ’…çîÙÙÙùÂÖπëï·}µ’Õ•åú•…ï—’…∏Åπ’±∞Ï(ÄÅçΩπÕ–Å≈’ï…‰ıÄëÌëïçΩëïQï·–°—…Öç¨πÖ…—•Õ–•ÙÄëÌëïçΩëïQï·–°—…Öç¨π—•—±î•ıÄπ—…•¥†§Ï(ÄÅ•ò†Ö≈’ï…‰•…ï—’…∏Åπ’±∞Ï(ÄÅçΩπÕ–ÅÌëÖ—ÖÙıÖ›Ö•–Å…ï≈’ïÕ—MïÖ…ç†°Ì≈’ï…‰±±•µ•–Ëƒ»±ÕΩ’…çïÃÈm—…Öç¨πÕΩ’…çït±…ïù•Ω∏ÈÕ—Ö—îπ…ïù•Ω∏±±ΩçÖ±îÈπÖŸ•ùÖ—Ω»π±Öπù’ÖùïÒÒπ’±∞±ôÖÕ–È—…’ïÙ±Ì›Ö•—Ω…Ö±±âÖç¨È—…’ïÙ§Ï(ÄÅçΩπÕ–ÅçÖπë•ëÖ—ïÃÙ°ëÖ—Ñπ—…Öç≠ÕÒÒmt§πô•±—ï»°çÖπë•ëÖ—îÙ˘çÖπë•ëÖ—îπÕΩ’…çîÙÙı—…Öç¨πÕΩ’…çî§Ï(ÄÅ…ï—’…∏ÅçÖπë•ëÖ—ïÃπô•πê°çÖπë•ëÖ—îÙ˘çÖπë•ëÖ—îπ•êÙÙı—…Öç¨π•ê•ÒÒ¡±ÖÂï…Ω…îπ…Öπ≠±—ï…πÖ—•ŸïÃ°—…Öç¨±çÖπë•ëÖ—ïÃ±πï‹ÅMï–†§•l¡uÒÒπ’±∞Ï)Ù()ô’πç—•Ω∏Å…ï¡±ÖçïM—Ω…ïëQ…Öç¨°Ω…•ù•∏±…ï¡±Öçïµïπ–•Ï(ÄÅçΩπÕ–Åµï…ùïêıÏ∏∏π…ï¡±Öçïµïπ–±çÖ—Ö±Ωù}±•π≠ÃÈÏ∏∏∏°Ω…•ù•∏πçÖ—Ö±Ωù}±•π≠ÕÒÒÌÙ§∞∏∏∏°…ï¡±Öçïµïπ–πçÖ—Ö±Ωù}±•π≠ÕÒÒÌÙ•ıÙÏ(ÄÅçΩπÕ–Å…ï¡±Öçîı•—ïµÃÙ˘ÌçΩπÕ–ÅÕïï∏ıπï‹ÅMï–†§Ì…ï—’…∏Å•—ïµÃπµÖ¿°—…Öç¨Ù˘—…Öç¨π•êÙÙıΩ…•ù•∏π•ê˝µï…ùïêÈ—…Öç¨§πô•±—ï»°—…Öç¨Ù˘Ì•ò†Ö—…Öç¨¸π•ëÒÒÕïï∏π°ÖÃ°—…Öç¨π•ê§•…ï—’…∏ÅôÖ±ÕîÌÕïï∏πÖëê°—…Öç¨π•ê§Ì…ï—’…∏Å—…’ïÙ•ÙÏ(ÄÅÕ—Ö—îπÕÖŸïêı…ï¡±Öçî°Õ—Ö—îπÕÖŸïê§ÌÕ—Ö—îπ…ïçïπ—Ãı…ï¡±Öçî°Õ—Ö—îπ…ïçïπ—Ã§ÌÕ—Ö—îπ≈’ï’îı…ï¡±Öçî°Õ—Ö—îπ≈’ï’î§ÌÕ—Ö—îπ—…Öç≠Ãı…ï¡±Öçî°Õ—Ö—îπ—…Öç≠Ã§Ï(ÄÅô…ïÕ°Q…Öç≠Õ	Â-ï‰πÕï–°—…Öç≠MïÕÕ•Ωπ-ï‰°µï…ùïê§±µï…ùïê§Ï(ÄÅ¡ï…Õ•Õ–†§Ï(ÄÅ…ï—’…∏Åµï…ùïêÏ)Ù()ÖÕÂπåÅô’πç—•Ω∏Å…ïçΩŸï…A±ÖÂâÖç¨°}ï……Ω»±ï·¡ïç—ïëïπï…Ö—•Ω∏ıÕ—Ö—îπ¡±ÖÂâÖç≠ïπï…Ö—•Ω∏•Ï(ÄÅ•ò†ÖÕ—Ö—îπÖç—•ŸïÒÒï·¡ïç—ïëïπï…Ö—•Ω∏ÑÙıÕ—Ö—îπ¡±ÖÂâÖç≠ïπï…Ö—•ΩπÒÒÕ—Ö—îπ…ïçΩŸï…•πùïπï…Ö—•Ω∏ÙÙıï·¡ïç—ïëïπï…Ö—•Ω∏•…ï—’…∏ÅôÖ±ÕîÏ(ÄÅçΩπÕ–ÅôÖ•±ïêıÕ—Ö—îπÖç—•Ÿî±Ω…•ù•∏ıÕ—Ö—îπ¡±ÖÂâÖç≠=…•ù•πÒÒôÖ•±ïê±…ïÕ’µï–ıç’……ïπ—A±ÖÂâÖç≠Q•µî†§±ô…Ω¥ıÕΩ’…çï1Öâï±ÕmôÖ•±ïêπÕΩ’…çïuÒÒôÖ•±ïêπÕΩ’…çîÏ(ÄÅÕ—Ö—îπ…ïçΩŸï…•πùïπï…Ö—•Ω∏ıï·¡ïç—ïëïπï…Ö—•Ω∏Ï(ÄÅ—…ÂÏ(ÄÄÄÅ•ò°Õ—Ö—îπÕÖµïMΩ’…çïIïô…ïÕ°ïπï…Ö—•Ω∏ÑÙıï·¡ïç—ïëïπï…Ö—•Ω∏•Ï(ÄÄÄÄÄÅÕ—Ö—îπÕÖµïMΩ’…çïIïô…ïÕ°ïπï…Ö—•Ω∏ıï·¡ïç—ïëïπï…Ö—•Ω∏ÌÕï—5ïÕÕÖùî°–†ù…ïô…ïÕ°•πù1•π¨ú§∞ù±ΩÖë•πúú§Ï(ÄÄÄÄÄÅ±ï–Å…ïô…ïÕ°ïêıπ’±∞Ï(ÄÄÄÄÄÅ—…ÂÌ…ïô…ïÕ°ïêıÖ›Ö•–Å…ïô…ïÕ°Q…Öç≠1•π¨°ôÖ•±ïê•ıçÖ—ç°ÌÙ(ÄÄÄÄÄÅ•ò°ï·¡ïç—ïëïπï…Ö—•Ω∏ÑÙıÕ—Ö—îπ¡±ÖÂâÖç≠ïπï…Ö—•Ω∏•…ï—’…∏ÅôÖ±ÕîÏ(ÄÄÄÄÄÅ•ò°…ïô…ïÕ°ïê•Ï(ÄÄÄÄÄÄÄÅçΩπÕ–ÅÕ—Ö…—ïêıÖ›Ö•–Å¡±ÖÂQ…Öç¨°…ïô…ïÕ°ïê±Ì¡…ïÕï…ŸïE’ï’îÈ—…’î±…ïçΩŸï…ïêÈ—…’î±…ïÕ’µï–±Ω…•ù•∏±¡±ÖÂâÖç≠ïπï…Ö—•Ω∏Èï·¡ïç—ïëïπï…Ö—•Ω∏±…ïçΩŸï…=πÖ•±’…îÈôÖ±ÕïÙ§Ï(ÄÄÄÄÄÄÄÅ•ò°ï·¡ïç—ïëïπï…Ö—•Ω∏ÑÙıÕ—Ö—îπ¡±ÖÂâÖç≠ïπï…Ö—•Ω∏•…ï—’…∏ÅôÖ±ÕîÏ(ÄÄÄÄÄÄÄÅ•ò°Õ—Ö…—ïê•Ì…ï¡±ÖçïM—Ω…ïëQ…Öç¨°Ω…•ù•∏±…ïô…ïÕ°ïê§ÌÕï—5ïÕÕÖùî°–†ù±•π≠Iïô…ïÕ°ïêú§∞ùπΩ—•çîú§Ì…ï—’…∏Å—…’ïÙ(ÄÄÄÄÄÅÙ(ÄÄÄÅÙ(ÄÄÄÅÕ—Ö—îπôÖ•±ïëMΩ’…çïÃπÖëê°ôÖ•±ïêπÕΩ’…çî§ÌÕï—5ïÕÕÖùî°–†ùô•πë•πù±—ï…πÖ—•Ÿîú±ÌÕΩ’…çîÈô…ΩµÙ§∞ù±ΩÖë•πúú§Ï(ÄÄÄÅçΩπÕ–ÅÕΩ’…çïÃıl∏∏πÕ—Ö—îπÖŸÖ•±Öâ±ïtπô•±—ï»°ÕΩ’…çîÙ¯ÖÕ—Ö—îπôÖ•±ïëMΩ’…çïÃπ°ÖÃ°ÕΩ’…çî§òôÕΩ’…çîÑÙÙùÂÖπëï·}µ’Õ•åú§Ì•ò†ÖÕΩ’…çïÃπ±ïπù—†•—°…Ω‹Åπï‹Å……Ω»†§Ï(ÄÄÄÅçΩπÕ–ÅÌëÖ—ÖÙıÖ›Ö•–Å…ï≈’ïÕ—MïÖ…ç†°Ì≈’ï…‰ÈÄëÌΩ…•ù•∏πÖ…—•Õ—ÙÄëÌΩ…•ù•∏π—•—±ïıÄ±±•µ•–Ë»¿±ÕΩ’…çïÃ±…ïù•Ω∏ÈÕ—Ö—îπ…ïù•Ω∏±±ΩçÖ±îÈπÖŸ•ùÖ—Ω»π±Öπù’ÖùïÒÒπ’±±Ù±Ì›Ö•—Ω…Ö±±âÖç¨È—…’ïÙ§Ï(ÄÄÄÅ•ò°ï·¡ïç—ïëïπï…Ö—•Ω∏ÑÙıÕ—Ö—îπ¡±ÖÂâÖç≠ïπï…Ö—•Ω∏•…ï—’…∏ÅôÖ±ÕîÏ(ÄÄÄÅçΩπÕ–ÅÖ±—ï…πÖ—•ŸïÃı¡±ÖÂï…Ω…îπ…Öπ≠±—ï…πÖ—•ŸïÃ°Ω…•ù•∏±ëÖ—Ñπ—…Öç≠ÕÒÒmt±Õ—Ö—îπôÖ•±ïëMΩ’…çïÃ§Ï(ÄÄÄÅôΩ»°çΩπÕ–ÅçÖπë•ëÖ—îÅΩòÅÖ±—ï…πÖ—•ŸïÃ•Ï(ÄÄÄÄÄÅ•ò°ï·¡ïç—ïëïπï…Ö—•Ω∏ÑÙıÕ—Ö—îπ¡±ÖÂâÖç≠ïπï…Ö—•Ω∏•…ï—’…∏ÅôÖ±ÕîÏ(ÄÄÄÄÄÅçΩπÕ–ÅÕ—Ö…—ïêıÖ›Ö•–Å¡±ÖÂQ…Öç¨°çÖπë•ëÖ—î±Ì¡…ïÕï…ŸïE’ï’îÈ—…’î±…ïçΩŸï…ïêÈ—…’î±…ïÕ’µï–±Ω…•ù•∏±¡±ÖÂâÖç≠ïπï…Ö—•Ω∏Èï·¡ïç—ïëïπï…Ö—•Ω∏±…ïçΩŸï…=πÖ•±’…îÈôÖ±ÕïÙ§Ï(ÄÄÄÄÄÅ•ò°ï·¡ïç—ïëïπï…Ö—•Ω∏ÑÙıÕ—Ö—îπ¡±ÖÂâÖç≠ïπï…Ö—•Ω∏•…ï—’…∏ÅôÖ±ÕîÏ(ÄÄÄÄÄÅ•ò°Õ—Ö…—ïê•Ì…ï¡±ÖçïM—Ω…ïëQ…Öç¨°Ω…•ù•∏±çÖπë•ëÖ—î§ÌÕï—5ïÕÕÖùî°–†ùÕΩ’…çïM›•—ç°ïêú±Ìô…Ω¥±—ºÈÕΩ’…çï1Öâï±ÕmçÖπë•ëÖ—îπÕΩ’…çïuÒÒçÖπë•ëÖ—îπÕΩ’…çïÙ§∞ùπΩ—•çîú§Ì…ï—’…∏Å—…’ïÙ(ÄÄÄÄÄÅÕ—Ö—îπôÖ•±ïëMΩ’…çïÃπÖëê°çÖπë•ëÖ—îπÕΩ’…çî§Ï(ÄÄÄÅÙ(ÄÄÄÅ—°…Ω‹Åπï‹Å……Ω»†§Ï(ÄÅıçÖ—ç°ÌÕï—A±ÖÂ•πú°ôÖ±Õî§ÌÕï—5ïÕÕÖùî°–†ùÖ±±MΩ’…çïÕÖ•±ïêú§∞ùï……Ω»ú§Ì…ï—’…∏ÅôÖ±ÕïÙ(ÄÅô•πÖ±±ÂÌ•ò°Õ—Ö—îπ…ïçΩŸï…•πùïπï…Ö—•Ω∏ÙÙıï·¡ïç—ïëïπï…Ö—•Ω∏•Õ—Ö—îπ…ïçΩŸï…•πùïπï…Ö—•Ω∏ıπ’±±Ù)Ù()ÕΩ’…çï	’——ΩπÃ†§πôΩ…Öç†°â’——Ω∏Ù˘â’——Ω∏πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘ÌçΩπÕ–ÅÕΩ’…çîıâ’——Ω∏πëÖ—ÖÕï–πÕΩ’…çîÌ•ò†ÖÕ—Ö—îπÖŸÖ•±Öâ±îπ°ÖÃ°ÕΩ’…çî§•…ï—’…∏Ì•ò°Õ—Ö—îπÕΩ’…çïÃπ°ÖÃ°ÕΩ’…çî§•Õ—Ö—îπÕΩ’…çïÃπëï±ï—î°ÕΩ’…çî§Ìï±ÕîÅÕ—Ö—îπÕΩ’…çïÃπÖëê°ÕΩ’…çî§Ìâ’——Ω∏πç±ÖÕÕ1•Õ–π—Ωùù±î†ùΩ∏ú±Õ—Ö—îπÕΩ’…çïÃπ°ÖÃ°ÕΩ’…çî§•Ù§§Ï)’§πÖ±±MΩ’…çïÕ	’——Ω∏¸πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘ÌÕ—Ö—îπÕΩ’…çïÃıπï‹ÅMï–°Õ—Ö—îπÖŸÖ•±Öâ±î§ÌÕΩ’…çï	’——ΩπÃ†§πôΩ…Öç†°â’——Ω∏Ù˘â’——Ω∏πç±ÖÕÕ1•Õ–π—Ωùù±î†ùΩ∏ú±Õ—Ö—îπÕΩ’…çïÃπ°ÖÃ°â’——Ω∏πëÖ—ÖÕï–πÕΩ’…çî§§•Ù§Ï)’§π…ïù•ΩπMï±ïç–πÖëëŸïπ—1•Õ—ïπï»†ùç°Öπùîú∞†§Ù˘ÌÕ—Ö—îπ…ïù•Ω∏ı…ïù•ΩπÃπ•πç±’ëïÃ°’§π…ïù•ΩπMï±ïç–πŸÖ±’î§˝’§π…ïù•ΩπMï±ïç–πŸÖ±’îËùUQ<úÌ±ΩçÖ±M—Ω…ÖùîπÕï—%—ï¥†ùÖ›’∏µ…ïù•Ω∏ú±Õ—Ö—îπ…ïù•Ω∏•Ù§Ï)’§π±•µ•—Mï±ïç–πÖëëŸïπ—1•Õ—ïπï»†ùç°Öπùîú∞†§Ù˘ÌçΩπÕ–ÅŸÖ±’îı9’µâï»°’§π±•µ•—Mï±ïç–πŸÖ±’î§ÌÕ—Ö—îπ…ïÕ’±—1•µ•–ı…ïÕ’±—1•µ•—Ãπ•πç±’ëïÃ°ŸÖ±’î§˝ŸÖ±’îËÿ¿Ì±ΩçÖ±M—Ω…ÖùîπÕï—%—ï¥†ùÖ›’∏µ…ïÕ’±–µ±•µ•–ú±M—…•πú°Õ—Ö—îπ…ïÕ’±—1•µ•–§•Ù§Ï)’§π—°ïµï	’——Ω∏πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘’§π—°ïµïAÖπï∞π°•ëëï∏˝Ω¡ïπQ°ïµïAÖπï∞†§Èç±ΩÕïQ°ïµïAÖπï∞†§§Ì’§π—°ïµï±ΩÕîπÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú±ç±ΩÕïQ°ïµïAÖπï∞§Ì’§π—°ïµï	Öç≠ë…Ω¿πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú±ç±ΩÕïQ°ïµïAÖπï∞§Ì’§πë•ÖùπΩÕ—•çÕ	’——Ω∏πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú±Ω¡ïπ•ÖùπΩÕ—•çÕAÖπï∞§Ì’§πë•ÖùπΩÕ—•çÕ±ΩÕîπÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú±ç±ΩÕïQ°ïµïAÖπï∞§Ì’§πë•ÖùπΩÕ—•çÕIïô…ïÕ†πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú±…ïô…ïÕ°M—Ö—’Ã§Ì’§πë•ÖùπΩÕ—•çÕΩ¡‰πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú±çΩ¡Â•ÖùπΩÕ—•çÃ§ÌëΩç’µïπ–πùï—±ïµïπ—	Â%ê†ùô±Ω›	’——Ω∏ú§¸πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘ÌÕï—E’ï’ï=¡ï∏°ôÖ±Õî§ÌÕï—A±ÖÂï…·¡Öπëïê°ôÖ±Õî§Ì•ò†Ö’§π—°ïµïAÖπï∞π°•ëëïπÒÖ’§πë•ÖùπΩÕ—•çÕAÖπï∞π°•ëëï∏•ç±ΩÕïQ°ïµïAÖπï∞†•Ù§Ï)’§π•µ¡Ω…—	’——Ω∏πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘’§π•µ¡Ω…—AÖπï∞π°•ëëï∏˝Ω¡ïπ%µ¡Ω…—AÖπï∞†§Èç±ΩÕï%µ¡Ω…—AÖπï∞†§§Ì’§π•µ¡Ω…—±ΩÕîπÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú±ç±ΩÕï%µ¡Ω…—AÖπï∞§Ì’§π•µ¡Ω…—	Öç≠ë…Ω¿πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú±ç±ΩÕï%µ¡Ω…—AÖπï∞§Ì’§π•µ¡Ω…—•±ï	’——Ω∏πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘’§π±•â…Ö…Â•±îπç±•ç¨†§§Ì’§π•µ¡Ω…—M’âµ•–πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú±•µ¡Ω…—1•â…Ö…‰§Ì’§π•µ¡Ω…—U…±M’âµ•–πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú±•µ¡Ω…—1•â…Ö…ÂU…∞§Ï)’§π±•â…Ö…Â•±îπÖëëŸïπ—1•Õ—ïπï»†ùç°Öπùîú±ÖÕÂπå†§Ù˘ÌçΩπÕ–Åô•±îı’§π±•â…Ö…Â•±îπô•±ïÃ¸πl¡tÌ•ò†Öô•±î•…ï—’…∏Ì•ò°ô•±îπÕ•Èî¯»®ƒ¿»–®ƒ¿»–•Ì’§π•µ¡Ω…—M—Ö—’Ãπ—ï·—Ωπ—ïπ–ı–†ùô•±ïQΩΩ1Ö…ùîú§Ì…ï—’…πı—…ÂÌ’§π•µ¡Ω…—Qï·–πŸÖ±’îıÖ›Ö•–Åô•±îπ—ï·–†§Ì’§π•µ¡Ω…—•±ï9Öµîπ—ï·—Ωπ—ïπ–ıô•±îππÖµîÌçΩπÕ–ÅçΩ’π–ı¡Ö…Õï%µ¡Ω…—ïë1•â…Ö…‰°’§π•µ¡Ω…—Qï·–πŸÖ±’î±ô•±îππÖµî§π±ïπù—†Ì’§π•µ¡Ω…—M—Ö—’Ãπ—ï·—Ωπ—ïπ–ı–†ù’π•≈’ïQ…Öç≠ÕIïÖë‰ú±ÌçΩ’π—Ù•ıçÖ—ç†°ï……Ω»•Ì’§π•µ¡Ω…—M—Ö—’Ãπ—ï·—Ωπ—ïπ–ıï……Ω»πµïÕÕÖùïÒÒ–†ùô•±ïIïÖëÖ•±ïêú•ıÙ§Ï)ëΩç’µïπ–π≈’ï…ÂMï±ïç—Ω…±∞†ùmëÖ—Ñµ—°ïµîµç°Ω•çïtú§πôΩ…Öç†°â’——Ω∏Ù˘â’——Ω∏πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘ÌÕ—Ö—îπ—°ïµîıâ’——Ω∏πëÖ—ÖÕï–π—°ïµï°Ω•çîÌÖ¡¡±ÂY•Õ’Ö∞†•Ù§§Ï)ëΩç’µïπ–π≈’ï…ÂMï±ïç—Ω…±∞†ùmëÖ—Ñµ°ΩµîµÖç—•Ωπtú§πôΩ…Öç†°â’——Ω∏Ù˘â’——Ω∏πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘Ì•ò°â’——Ω∏πëÖ—ÖÕï–π°Ωµïç—•Ω∏ÙÙÙùÖ±∞µ…ïçïπ–úòôÕ—Ö—îπ…ïçïπ—Ãπ±ïπù—†•ÌÕ—Ö—îπ±•â…Ö…‰ıôÖ±ÕîÌÕ—Ö—îπ°ÖÕMïÖ…ç°ïêı—…’îÌÕ—Ö—îπ—…Öç≠Ãıl∏∏πÕ—Ö—îπ…ïçïπ—ÕtÌ…ïπëï»†§Ì…ï—’…πı’§πÕïÖ…ç°%π¡’–πôΩç’Ã°Ì¡…ïŸïπ—Mç…Ω±∞È—…’ïÙ§Ì’§πÕïÖ…ç°%π¡’–πÕç…Ω±±%π—ΩY•ï‹°Ìâï°ÖŸ•Ω»ÈëΩç’µïπ–πëΩç’µïπ—±ïµïπ–πëÖ—ÖÕï–πµΩ—•Ω∏ÙÙÙùΩôòú¸ùÖ’—ºúËùÕµΩΩ—†ú±â±Ωç¨Ëùçïπ—ï»ùÙ•Ù§§Ï)’§πµΩ—•ΩπQΩùù±îπÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘ÌÕ—Ö—îπµΩ—•Ω∏ıÕ—Ö—îπµΩ—•Ω∏ÙÙÙùΩ∏ú¸ùΩôòúËùΩ∏úÌÖ¡¡±ÂY•Õ’Ö∞†•Ù§Ì’§πëïçΩ…QΩùù±îπÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘ÌÕ—Ö—îπëïçΩ»ıÕ—Ö—îπëïçΩ»ÙÙÙùô’±∞ú¸ùµ•π•µÖ∞úËùô’±∞úÌÖ¡¡±ÂY•Õ’Ö∞†•Ù§Ì’§πëïπÕ•—ÂQΩùù±îπÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘ÌçΩπÕ–ÅµΩëïÃılùçΩµ¡Öç–ú∞ùÕ—ÖπëÖ…êú∞ùÖ•…‰ùtÌÕ—Ö—îπëïπÕ•—‰ıµΩëïÕl°µΩëïÃπ•πëï·=ò°Õ—Ö—îπëïπÕ•—‰§¨ƒ§ïµΩëïÃπ±ïπù—°tÌÖ¡¡±ÂY•Õ’Ö∞†•Ù§Ï)’§πÕïÖ…ç°Ω…¥πÖëëŸïπ—1•Õ—ïπï»†ùÕ’âµ•–ú±ïŸïπ–Ù˘ÌïŸïπ–π¡…ïŸïπ—ïôÖ’±–†§ÌÕïÖ…ç††•Ù§Ï)’§π±Öπù’Öùï	’——Ω∏πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘§ƒ·∏πÕï—1Öπù’Öùî°±Öπù’ÖùîÙÙÙùï∏ú¸ù…‘úËùï∏ú§§ÌëΩç’µïπ–π≈’ï…ÂMï±ïç—Ω…±∞†ùmëÖ—ÑµÕïÖ…ç†µÕ’ùùïÕ—•Ωπtú§πôΩ…Öç†°â’——Ω∏Ù˘â’——Ω∏πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘Ì’§πÕïÖ…ç°%π¡’–πŸÖ±’îıâ’——Ω∏πëÖ—ÖÕï–πÕïÖ…ç°M’ùùïÕ—•Ω∏ÌÕïÖ…ç†°â’——Ω∏πëÖ—ÖÕï–πÕïÖ…ç°M’ùùïÕ—•Ω∏•Ù§§Ì’§πù’•ëïMïÖ…ç†πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘’§πÕïÖ…ç°%π¡’–πôΩç’Ã†§§Ì’§πù’•ëï]ÖŸîπÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘ëΩç’µïπ–πùï—±ïµïπ—	Â%ê†ùô±Ω›	’——Ω∏ú§πç±•ç¨†§§Ì’§πù’•ëï%µ¡Ω…–πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘’§π•µ¡Ω…—	’——Ω∏πç±•ç¨†§§Ì’§π•ë±ïMïÖ…ç°	’——Ω∏¸πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘Ì’§πÕïÖ…ç°%π¡’–πôΩç’Ã°Ì¡…ïŸïπ—Mç…Ω±∞È—…’ïÙ§Ì’§πÕïÖ…ç°%π¡’–πÕç…Ω±±%π—ΩY•ï‹°Ìâï°ÖŸ•Ω»ÈëΩç’µïπ–πëΩç’µïπ—±ïµïπ–πëÖ—ÖÕï–πµΩ—•Ω∏ÙÙÙùΩôòú¸ùÖ’—ºúËùÕµΩΩ—†ú±â±Ωç¨Ëùçïπ—ï»ùÙ•Ù§Ì’§π•ë±ï]ÖŸï	’——Ω∏¸πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘ëΩç’µïπ–πùï—±ïµïπ—	Â%ê†ùô±Ω›	’——Ω∏ú§πç±•ç¨†§§Ï)ô’πç—•Ω∏ÅÕï—1•â…Ö…ÂY•ï‹°ïπÖâ±ïê•ÌÕï—E’ï’ï=¡ï∏°ôÖ±Õî§ÌÕï—A±ÖÂï…·¡Öπëïê°ôÖ±Õî§Ì•ò†Ö’§π—°ïµïAÖπï∞π°•ëëïπÒÖ’§πë•ÖùπΩÕ—•çÕAÖπï∞π°•ëëï∏•ç±ΩÕïQ°ïµïAÖπï∞†§ÌÕ—Ö—îπ±•â…Ö…‰ıïπÖâ±ïêÌÕ—Ö—îπ°ÖÕMïÖ…ç°ïêıïπÖâ±ïêÌ’§π±•â…Ö…Â	’——Ω∏πç±ÖÕÕ1•Õ–π—Ωùù±î†ùÖç—•Ÿîú±ïπÖâ±ïê§Ì’§π±•â…Ö…Â	’——Ω∏πÕï———…•â’—î†ùÖ…•Ñµ¡…ïÕÕïêú±M—…•πú°ïπÖâ±ïê§§Ì’§πÕïÖ…ç°9ÖŸ	’——Ω∏πç±ÖÕÕ1•Õ–π—Ωùù±î†ùÖç—•Ÿîú∞ÖïπÖâ±ïê§Ì’§πÕïÖ…ç°9ÖŸ	’——Ω∏πÕï———…•â’—î†ùÖ…•Ñµ¡…ïÕÕïêú±M—…•πú†ÖïπÖâ±ïê§§ÌÕï—5ïÕÕÖùî°ïπÖâ±ïê˝–°Õ—Ö—îπÕÖŸïêπ±ïπù—†¸ù±•â…Ö…ÂM—Ω…ïêúËù±•â…Ö…Âµ¡—‰ú§Ëúú§Ì…ïπëï»†•Ù)’§π±•â…Ö…Â	’——Ω∏πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘Õï—1•â…Ö…ÂY•ï‹†ÖÕ—Ö—îπ±•â…Ö…‰§§Ï)’§π¡±ÖÂAÖ’ÕîπÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú±—Ωùù±ïA±ÖÂâÖç¨§Ì’§π¡…ïŸ•Ω’ÕQ…Öç¨πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú±¡…ïŸ•Ω’ÕQ…Öç¨§Ì’§ππï·—Q…Öç¨πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú±πï·—Q…Öç¨§Ì’§π…ï¡ïÖ—5ΩëîπÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú±çÂç±ïIï¡ïÖ—5Ωëî§Ï)’§π≈’ï’ïQΩùù±î¸πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘Ì•ò°Õ—Ö—îπÖç—•Ÿî•Õï—E’ï’ï=¡ï∏†Ö’§π¡±ÖÂï»πç±ÖÕÕ1•Õ–πçΩπ—Ö•πÃ†ù≈’ï’îµΩ¡ï∏ú§•Ù§Ì’§π≈’ï’ï±ΩÕî¸πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘Õï—E’ï’ï=¡ï∏°ôÖ±Õî§§Ì’§πï·¡ÖπëA±ÖÂï»¸πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘Ì•ò°Õ—Ö—îπÖç—•Ÿî•Õï—A±ÖÂï…·¡Öπëïê°—…’î•Ù§Ì’§πçΩ±±Ö¡ÕïA±ÖÂï»¸πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘Õï—A±ÖÂï…·¡Öπëïê°ôÖ±Õî§§Ï)’§πç±ΩÕïA±ÖÂï»πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘ÌÕï—E’ï’ï=¡ï∏°ôÖ±Õî§ÌÕï—A±ÖÂï…·¡Öπëïê°ôÖ±Õî§ÌÕ—Ö—îπ¡±ÖÂâÖç≠ïπï…Ö—•Ω∏¨ÙƒÌÕ—Ö—îπÖ’ë•ΩQ…Öç≠%êıπ’±∞Ì¡Ö’ÕïA±ÖÂâÖç¨†§ÌÕ—Ω¡eΩ’Q’âî†§ÌÕ—Ω¡!±Ã†§Ì’§πÖ’ë•ºπ…ïµΩŸï——…•â’—î†ùÕ…åú§Ì’§π•ë±ïM—ÖùîπÕï———…•â’—î†ùÖ…•Ñµ°•ëëï∏ú∞ùôÖ±Õîú§Ì’§π¡±ÖÂï»πç±ÖÕÕ1•Õ–π…ïµΩŸî†ù—…Öç¨µïπ—ï»ú∞ù—…Öç¨µÕ›Ö¿ú§Ì’§π¡±ÖÂï»πç±ÖÕÕ1•Õ–πÖëê†ù¡±ÖÂï»µïµ¡—‰ú§ÌëΩç’µïπ–πâΩë‰πç±ÖÕÕ1•Õ–π…ïµΩŸî†ù°ÖÃµ¡±ÖÂï»ú§ÌÕ—Ö—îπÖç—•Ÿîıπ’±∞Ì’§ππΩ›Q•—±îπ—ï·—Ωπ—ïπ–ı–†ùπΩ—°•πùA±ÖÂ•πúú§Ì’§ππΩ›…—•Õ–π—ï·—Ωπ—ïπ–Ùù]U8úÌ’§ππΩ›MΩ’…çîπ—ï·—Ωπ—ïπ–ÙüäPúÌ…ïπëï»†•Ù§Ï)’§πÕïÖ…ç°9ÖŸ	’——Ω∏πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘ÌÕï—1•â…Ö…ÂY•ï‹°ôÖ±Õî§ÌÕ—Ö—îπ°ÖÕMïÖ…ç°ïêıôÖ±ÕîÌ…ïπëï»†§Ì’§πÕïÖ…ç°%π¡’–πôΩç’Ã°Ì¡…ïŸïπ—Mç…Ω±∞È—…’ïÙ§Ì’§πÕïÖ…ç°%π¡’–πÕç…Ω±±%π—ΩY•ï‹°Ìâï°ÖŸ•Ω»ÈëΩç’µïπ–πëΩç’µïπ—±ïµïπ–πëÖ—ÖÕï–πµΩ—•Ω∏ÙÙÙùΩôòú¸ùÖ’—ºúËùÕµΩΩ—†ú±â±Ωç¨Ëùçïπ—ï»ùÙ•Ù§Ï)’§πç±ïÖ…E’ï’î¸πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘ÌÕ—Ö—îπ≈’ï’îımtÌÕ—Ö—îπ≈’ï’ï5ΩëîÙùµÖπ’Ö∞úÌ¡ï…Õ•Õ—E’ï’î†§Ì…ïπëï»†•Ù§Ï)’§πµ•π•µ•ÈïY•ëïºπÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘Ì’§πÂΩ’—’âïΩç¨πç±ÖÕÕ1•Õ–π—Ωùù±î†ùµ•π•µ•Èïêú§Ì’§πµ•π•µ•ÈïY•ëïºπ—ï·—Ωπ—ïπ–ı’§πÂΩ’—’âïΩç¨πç±ÖÕÕ1•Õ–πçΩπ—Ö•πÃ†ùµ•π•µ•Èïêú§¸üäZÑúËüäPùÙ§Ï)’§π¡…Ωù…ïÕÃπÖëëŸïπ—1•Õ—ïπï»†ù¡Ω•π—ï…ëΩ›∏ú∞†§Ù˘ÌÕ—Ö—îπÕïï≠•πúı—…’ïÙ§Ì’§π¡…Ωù…ïÕÃπÖëëŸïπ—1•Õ—ïπï»†ù¡Ω•π—ï…’¿ú∞†§Ù˘ÌÕ—Ö—îπÕïï≠•πúıôÖ±ÕîÌçΩπÕ–Åë’…Ö—•Ω∏ıÕ—Ö—îπÖç—•Ÿî¸πÕΩ’…çîÙÙÙùÂΩ’—’âîú˝Õ—Ö—îπÂΩ’—’âî¸πùï—’…Ö—•Ω∏¸∏†§È’§πÖ’ë•ºπë’…Ö—•Ω∏ÌÕïï≠Qº†°9’µâï»°’§π¡…Ωù…ïÕÃπŸÖ±’î§ºƒ¿¿¿§®°ë’…Ö—•ΩπÒ¿§±—…’î•Ù§Ì’§π¡…Ωù…ïÕÃπÖëëŸïπ—1•Õ—ïπï»†ù•π¡’–ú∞†§Ù˘ÌÕï—IÖπùî°’§π¡…Ωù…ïÕÃ±’§π¡…Ωù…ïÕÃπŸÖ±’î§ÌçΩπÕ–Åë’…Ö—•Ω∏ıÕ—Ö—îπÖç—•Ÿî¸πÕΩ’…çîÙÙÙùÂΩ’—’âîú˝Õ—Ö—îπÂΩ’—’âî¸πùï—’…Ö—•Ω∏¸∏†§È’§πÖ’ë•ºπë’…Ö—•Ω∏Ì’§πï±Ö¡Õïêπ—ï·—Ωπ—ïπ–ıôΩ…µÖ—Q•µî†°9’µâï»°’§π¡…Ωù…ïÕÃπŸÖ±’î§ºƒ¿¿¿§®°ë’…Ö—•ΩπÒ¿§•Ù§Ï)’§πŸΩ±’µîπÖëëŸïπ—1•Õ—ïπï»†ù•π¡’–ú∞†§Ù˘ÌÕï—IÖπùî°’§πŸΩ±’µî±’§πŸΩ±’µîπŸÖ±’î§ÌçΩπÕ–ÅŸÖ±’îı9’µâï»°’§πŸΩ±’µîπŸÖ±’î§Ì’§πÖ’ë•ºπŸΩ±’µîıŸÖ±’îºƒ¿¿Ì—…ÂÌÕ—Ö—îπÂΩ’—’âî¸πÕï—YΩ±’µî°ŸÖ±’î•ıçÖ—ç°Ìı’§πµ’—ï	’——Ω∏π—ï·—Ωπ—ïπ–ı–°ŸÖ±’î¸ùŸΩ±’µîúËùµ’—îú•Ù§Ï)’§πµ’—ï	’——Ω∏πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú∞†§Ù˘ÌçΩπÕ–Åµ’—ïêı9’µâï»°’§πŸΩ±’µîπŸÖ±’î§ÙÙÙ¿Ì•ò°µ’—ïê•Õï—IÖπùî°’§πŸΩ±’µî±5Ö—†π…Ω’πê°Õ—Ö—îπ±ÖÕ—YΩ±’µî®ƒ¿¿•Ò‡»§Ìï±ÕïÌÕ—Ö—îπ±ÖÕ—YΩ±’µîı9’µâï»°’§πŸΩ±’µîπŸÖ±’î§ºƒ¿¿ÌÕï—IÖπùî°’§πŸΩ±’µî∞¿•ı’§πŸΩ±’µîπë•Õ¡Ö—ç°Ÿïπ–°πï‹ÅŸïπ–†ù•π¡’–ú§•Ù§Ï)’§πÖ’ë•ºπÖëëŸïπ—1•Õ—ïπï»†ù—•µï’¡ëÖ—îú∞†§Ù˘’¡ëÖ—ïQ•µï±•πî°’§πÖ’ë•ºπç’……ïπ—Q•µî±’§πÖ’ë•ºπë’…Ö—•Ω∏§§Ì’§πÖ’ë•ºπÖëëŸïπ—1•Õ—ïπï»†ù±ΩÖëïëµï—ÖëÖ—Ñú∞†§Ù˘’¡ëÖ—ïQ•µï±•πî°’§πÖ’ë•ºπç’……ïπ—Q•µî±’§πÖ’ë•ºπë’…Ö—•Ω∏§§Ì’§πÖ’ë•ºπÖëëŸïπ—1•Õ—ïπï»†ù¡±Ö‰ú∞†§Ù˘ÌÕï—A±ÖÂ•πú°—…’î§ÌÕ—Ö…—]ÖŸïôΩ…µÖ¡—’…î°Õ—Ö—îπÖç—•Ÿî•Ù§Ì’§πÖ’ë•ºπÖëëŸïπ—1•Õ—ïπï»†ù¡Ö’Õîú∞†§Ù˘ÌÕ—Ω¡]ÖŸïôΩ…µÖ¡—’…î†§ÌÕï—A±ÖÂ•πú°ôÖ±Õî•Ù§Ì’§πÖ’ë•ºπÖëëŸïπ—1•Õ—ïπï»†ùïπëïêú∞†§Ù˘ÌÕ—Ω¡]ÖŸïôΩ…µÖ¡—’…î†§Ì°Öπë±ïQ…Öç≠πëïê†•Ù§Ì’§πÖ’ë•ºπÖëëŸïπ—1•Õ—ïπï»†ùï……Ω»ú∞†§Ù˘ÌÕ—Ω¡]ÖŸïôΩ…µÖ¡—’…î†§Ì•ò°Õ—Ö—îπÖç—•Ÿî¸π•êÙÙıÕ—Ö—îπÖ’ë•ΩQ…Öç≠%ê•…ïçΩŸï…A±ÖÂâÖç¨†•Ù§Ï)›•πëΩ‹πÖëëŸïπ—1•Õ—ïπï»†ùâïôΩ…ï•πÕ—Ö±±¡…Ωµ¡–ú±ïŸïπ–Ù˘ÌïŸïπ–π¡…ïŸïπ—ïôÖ’±–†§Ì•πÕ—Ö±±A…Ωµ¡–ıïŸïπ–Ì’§π•πÕ—Ö±±	’——Ω∏π°•ëëï∏ıôÖ±ÕïÙ§Ì›•πëΩ‹πÖëëŸïπ—1•Õ—ïπï»†ùÖ¡¡•πÕ—Ö±±ïêú∞†§Ù˘Ì•πÕ—Ö±±A…Ωµ¡–ıπ’±∞Ì’§π•πÕ—Ö±±	’——Ω∏π°•ëëï∏ı—…’îÌÕï—5ïÕÕÖùî°–†ù•πÕ—Ö±±ïêú§∞ùπΩ—•çîú•Ù§Ì’§π•πÕ—Ö±±	’——Ω∏πÖëëŸïπ—1•Õ—ïπï»†ùç±•ç¨ú±ÖÕÂπå†§Ù˘Ì•ò†Ö•πÕ—Ö±±A…Ωµ¡–•…ï—’…∏Ì•πÕ—Ö±±A…Ωµ¡–π¡…Ωµ¡–†§ÌÖ›Ö•–Å•πÕ—Ö±±A…Ωµ¡–π’Õï…°Ω•çîÌ•πÕ—Ö±±A…Ωµ¡–ıπ’±∞Ì’§π•πÕ—Ö±±	’——Ω∏π°•ëëï∏ı—…’ïÙ§Ï)ëΩç’µïπ–πÖëëŸïπ—1•Õ—ïπï»†ù≠ïÂëΩ›∏ú±ïŸïπ–Ù˘Ì•ò°ïŸïπ–π≠ï‰ÙÙÙùÕçÖ¡îúòô’§π¡±ÖÂï»πç±ÖÕÕ1•Õ–πçΩπ—Ö•πÃ†ù≈’ï’îµΩ¡ï∏ú§•ÌÕï—E’ï’ï=¡ï∏°ôÖ±Õî§Ì…ï—’…πı•ò°ïŸïπ–π≠ï‰ÙÙÙùÕçÖ¡îúòô’§π¡±ÖÂï»πç±ÖÕÕ1•Õ–πçΩπ—Ö•πÃ†ùï·¡Öπëïêµ¡±ÖÂï»ú§•ÌÕï—A±ÖÂï…·¡Öπëïê°ôÖ±Õî§Ì…ï—’…πı•ò°ïŸïπ–π≠ï‰ÙÙÙùÕçÖ¡îúòòÖ’§π•µ¡Ω…—AÖπï∞π°•ëëï∏•Ìç±ΩÕï%µ¡Ω…—AÖπï∞†§Ì…ï—’…πı•ò°ïŸïπ–π≠ï‰ÙÙÙùÕçÖ¡îúòò†Ö’§π—°ïµïAÖπï∞π°•ëëïπÒÖ’§πë•ÖùπΩÕ—•çÕAÖπï∞π°•ëëï∏§•Ìç±ΩÕïQ°ïµïAÖπï∞†§Ì…ï—’…πı•ò°ïŸïπ–πçΩëîÙÙÙùM¡ÖçîúòòÖlù%9AUPú∞ùQaQIú∞ù	UQQ=8ùtπ•πç±’ëïÃ°ëΩç’µïπ–πÖç—•Ÿï±ïµïπ–¸π—Öù9Öµî§òôÕ—Ö—îπÖç—•Ÿî•ÌïŸïπ–π¡…ïŸïπ—ïôÖ’±–†§Ì—Ωùù±ïA±ÖÂâÖç¨†•ıÙ§Ï()ÖÕÂπåÅô’πç—•Ω∏ÅâΩΩ—Õ—…Ö¿†•Ï(ÄÅçΩπÕ–Å’…∞ı…’π—•µïAÖ…ÖµÃ±…ï≈’ïÕ—ïëIïù•Ω∏ı’…∞πùï–†ù…ïù•Ω∏ú§¸π—ΩU¡¡ï…ÖÕî†§±…ï≈’ïÕ—ïë1•µ•–ı9’µâï»°’…∞πùï–†ù±•µ•–ú§§Ì•ò°…ïù•ΩπÃπ•πç±’ëïÃ°…ï≈’ïÕ—ïëIïù•Ω∏§•ÌÕ—Ö—îπ…ïù•Ω∏ı…ï≈’ïÕ—ïëIïù•Ω∏Ì±ΩçÖ±M—Ω…ÖùîπÕï—%—ï¥†ùÖ›’∏µ…ïù•Ω∏ú±Õ—Ö—îπ…ïù•Ω∏•ı•ò°…ïÕ’±—1•µ•—Ãπ•πç±’ëïÃ°…ï≈’ïÕ—ïë1•µ•–§•ÌÕ—Ö—îπ…ïÕ’±—1•µ•–ı…ï≈’ïÕ—ïë1•µ•–Ì±ΩçÖ±M—Ω…ÖùîπÕï—%—ï¥†ùÖ›’∏µ…ïÕ’±–µ±•µ•–ú±M—…•πú°…ï≈’ïÕ—ïë1•µ•–§•ı’§π…ïù•ΩπMï±ïç–πŸÖ±’îıÕ—Ö—îπ…ïù•Ω∏Ì’§π±•µ•—Mï±ïç–πŸÖ±’îıM—…•πú°Õ—Ö—îπ…ïÕ’±—1•µ•–§Ï(ÄÅ•ò†Ö¡±ÖÂM—Ω…ï5ΩëîòòùÕï…Ÿ•çï]Ω…≠ï»ù•∏ÅπÖŸ•ùÖ—Ω»•πÖŸ•ùÖ—Ω»πÕï…Ÿ•çï]Ω…≠ï»π…ïù•Õ—ï»†úΩÕï…Ÿ•çîµ›Ω…≠ï»π©Ãú§πçÖ—ç†††§Ù˘ÌÙ§Ì’§π¡±ÖÂï»π°•ëëï∏ıôÖ±ÕîÌ’§π¡±ÖÂï»πç±ÖÕÕ1•Õ–πÖëê†ù¡±ÖÂï»µïµ¡—‰ú§ÌÖ¡¡±Â1Öπù’Öùî†§ÌÖ¡¡±ÂY•Õ’Ö∞°ôÖ±Õî§ÌÖ¡¡±ÂIï¡ïÖ—5Ωëî°ôÖ±Õî§Ì’¡ëÖ—ï±Ωç¨†§ÌÕï—%π—ï…ŸÖ∞°’¡ëÖ—ï±Ωç¨∞ƒ¿¿¿§Ì¡ï…Õ•Õ–†§ÌÕï—IÖπùî°’§πŸΩ±’µî∞‡»§ÌÕï—IÖπùî°’§π¡…Ωù…ïÕÃ∞¿§Ì…ïπëï»†§ÌÖ›Ö•–Å…ïô…ïÕ°M—Ö—’Ã†§Ï(ÄÅçΩπÕ–Å≈’ï…‰ı’…∞πùï–†ùƒú§Ì•ò°≈’ï…‰•Ì’§πÕïÖ…ç°%π¡’–πŸÖ±’îı≈’ï…‰ÌÕïÖ…ç†°≈’ï…‰•Ù)Ù)›•πëΩ‹πÖ›’π¡¿ıÌÕ—Ö—î±’§±¡±ÖÂQ…Öç¨±…ïπëï»±ÕïÖ…ç†±—Ωùù±ïMÖŸî±ç’……ïπ—1•Õ–±Õï—5ïÕÕÖùî±ÕΩ’…çï1Öâï±Ã±ëïçΩëïQï·–±µÖ—ç°Qï·–±±ΩÖë•πùIΩ›Ã±Ö›’πï—ç†±…ï≈’ïÕ—MïÖ…ç†±¡Ö’ÕïA±ÖÂâÖç¨±¡±ÖÂM—Ω…ï5Ωëî±Ö¡•	ÖÕî±ôÖ±±âÖç≠¡•	ÖÕî±Ö¡•U…∞±…ïô…ïÕ°M—Ö—’Ã±…ï¡±ÖçïE’ï’î±Ö¡¡ïπëE’ï’ïÙÏ)ëΩç’µïπ–πÖëëŸïπ—1•Õ—ïπï»†ùÖ›’∏È±Öπù’Öùîú±ïŸïπ–Ù˘Ì±Öπù’ÖùîıïŸïπ–πëï—Ö•∞π±Öπù’ÖùîÌÖ¡¡±ÂY•Õ’Ö∞°ôÖ±Õî§ÌÖ¡¡±ÂIï¡ïÖ—5Ωëî°ôÖ±Õî§Ì…ïπëï»†§Ì…ïπëï…•ÖùπΩÕ—•çÃ†§Ì…ïô…ïÕ°M—Ö—’Ã†•Ù§Ï)âΩΩ—Õ—…Ö¿†§Ï
+const sourceLabels={youtube:'YouTube',soundcloud:'SoundCloud',audius:'Audius',jamendo:'Jamendo',internet_archive:'Internet Archive',yandex_music:'Yandex Music'};
+const regions=['AUTO','CIS','EUROPE','USA','LATAM','ASIA','GLOBAL'];
+const resultLimits=[30,60,100];
+const i18n=window.awunI18n;
+const playerCore=window.awunPlayerCore;
+const t=(key,values={})=>i18n.t(key,values);
+const $=id=>document.getElementById(id);
+const runtimeParams=new URLSearchParams(location.search);
+const runtimePlatform=runtimeParams.get('platform')||'web';
+const playStoreMode=runtimePlatform==='android-play';
+function runtimeApiBase(name){
+  const candidate=(runtimeParams.get(name)||'').trim();
+  if(!candidate)return'';
+  try{
+    const parsed=new URL(candidate);
+    if(!['http:','https:'].includes(parsed.protocol)||parsed.search||parsed.hash)return'';
+    if(parsed.protocol==='http:'&&!['localhost','127.0.0.1','[::1]'].includes(parsed.hostname))return'';
+    return parsed.href.replace(/\/+$/,'');
+  }catch{return''}
+}
+const apiBase=runtimeApiBase('api');
+const fallbackApiBase=runtimeApiBase('fallback_api');
+document.documentElement.dataset.platform=runtimePlatform;
+const remoteRetryStatuses=new Set([502,503,504]);
+const remoteFallbackTimeoutMs=60000;
+function endpointUrl(base,input){return base&&typeof input==='string'&&input.startsWith('/')?`${base}${input}`:input}
+function apiUrl(input){return endpointUrl(apiBase,input)}
+function fallbackApiUrl(input){return endpointUrl(fallbackApiBase,input)}
+function requestOptions(init={}){
+  const headers=new Headers(init.headers||{});
+  if(playStoreMode)headers.set('X-AWUN-Client','android-play');
+  return{...init,headers};
+}
+function awunFetch(input,init={}){
+  const options=requestOptions(init);
+  const target=apiUrl(input);
+  if(apiBase&&target!==input&&typeof input==='string'){
+    return fetch(target,options).then(response=>remoteRetryStatuses.has(response.status)?fetch(input,options):response).catch(()=>fetch(input,options));
+  }
+  if(fallbackApiBase&&typeof input==='string'&&input.startsWith('/')){
+    return fetch(input,options).then(response=>remoteRetryStatuses.has(response.status)?fetch(fallbackApiUrl(input),options):response).catch(()=>fetch(fallbackApiUrl(input),options));
+  }
+  return fetch(target,options);
+}
+
+async function fetchHealthCandidate(url,origin,timeoutMs){
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs),started=performance.now();
+  try{
+    const response=await fetch(url,requestOptions({cache:'no-store',signal:controller.signal}));
+    if(!response.ok)throw new Error(t('healthFailed'));
+    return{data:await response.json(),origin,endpoint_latency_ms:Math.round(performance.now()-started),checked_at:new Date().toISOString()};
+  }finally{clearTimeout(timer)}
+}
+async function requestHealthSnapshot(){
+  const candidates=[];
+  if(apiBase)candidates.push({url:apiUrl('/health'),origin:'configured',timeout:8000});
+  else candidates.push({url:'/health',origin:runtimePlatform==='desktop'?'local':'current',timeout:8000});
+  if(fallbackApiBase)candidates.push({url:fallbackApiUrl('/health'),origin:'fallback',timeout:remoteFallbackTimeoutMs});
+  if(apiBase&&typeof location.origin==='string'&&location.origin.startsWith('http'))candidates.push({url:'/health',origin:'current',timeout:8000});
+  let failure;
+  for(const candidate of candidates){
+    try{return await fetchHealthCandidate(candidate.url,candidate.origin,candidate.timeout)}
+    catch(error){failure=error}
+  }
+  throw failure||new Error(t('healthFailed'));
+}
+
+function trackSessionKey(track){return `${track?.source||''}:${track?.id||''}`}
+const freshTracksByKey=new Map();
+function markFreshTracks(tracks){(Array.isArray(tracks)?tracks:[]).forEach(track=>freshTracksByKey.set(trackSessionKey(track),track))}
+async function readSearchData(response){
+  const data=await response.json();
+  if(!response.ok)throw new Error(data.detail||t('searchFailed'));
+  markFreshTracks(data.tracks);
+  return data;
+}
+function mergeSearchData(primary,fallback,requestedSources=[]){
+  if(!fallback)return primary;
+  const tracks=playerCore.uniqueTracks([...(primary.tracks||[]),...(fallback.tracks||[])]);
+  const errors={...(primary.errors||{})};
+  requestedSources.forEach(source=>{if(fallback.errors?.[source])errors[source]=fallback.errors[source];else delete errors[source]});
+  return{...primary,tracks,total:tracks.length,searched_sources:[...new Set([...(primary.searched_sources||[]),...(fallback.searched_sources||[])])],query_variants:[...new Set([...(primary.query_variants||[]),...(fallback.query_variants||[])])],errors,elapsed_ms:Math.max(Number(primary.elapsed_ms)||0,Number(fallback.elapsed_ms)||0)};
+}
+function fallbackSearch(payload,signal){
+  const controller=new AbortController();
+  const relayAbort=()=>controller.abort(signal?.reason);
+  if(signal?.aborted)relayAbort();else signal?.addEventListener('abort',relayAbort,{once:true});
+  const timer=setTimeout(()=>controller.abort(),remoteFallbackTimeoutMs);
+  const options=requestOptions({method:'POST',headers:{'Content-Type':'application/json'},signal:controller.signal,body:JSON.stringify(payload)});
+  return fetch(fallbackApiUrl('/api/v1/search'),options).then(readSearchData).catch(error=>{
+    if(error?.name==='AbortError'&&!signal?.aborted)throw new Error(t('searchUnavailable'));
+    throw error;
+  }).finally(()=>{clearTimeout(timer);signal?.removeEventListener('abort',relayAbort)});
+}
+async function requestSearch(payload,{signal,waitForFallback=false}={}){
+  const options=requestOptions({method:'POST',headers:{'Content-Type':'application/json'},signal,body:JSON.stringify(payload)});
+  if(!fallbackApiBase||apiBase){return{data:await readSearchData(await awunFetch('/api/v1/search',options)),supplement:null}}
+  let local;
+  try{local=await readSearchData(await fetch('/api/v1/search',options))}
+  catch(error){if(error?.name==='AbortError')throw error;return{data:await fallbackSearch(payload,signal),supplement:null}}
+  const requested=Array.isArray(payload.sources)?payload.sources:[];
+  const failed=requested.filter(source=>Object.prototype.hasOwnProperty.call(local.errors||{},source));
+  if(!failed.length)return{data:local,supplement:null};
+  const remote=fallbackSearch({...payload,sources:failed},signal).then(data=>mergeSearchData(local,data,failed));
+  if(waitForFallback||!(local.tracks||[]).length){
+    try{return{data:(await remote)||local,supplement:null}}
+    catch(error){if(error?.name==='AbortError'&&signal?.aborted)throw error;return{data:local,supplement:null}}
+  }
+  return{data:local,supplement:remote.catch(()=>null)};
+}
+const ui={
+  status:$('status'),searchNavButton:$('searchNavButton'),libraryButton:$('libraryButton'),allSourcesButton:$('allSourcesButton'),installButton:$('installButton'),languageButton:$('languageButton'),languageLabel:$('languageLabel'),emptyGuide:$('emptyGuide'),idleStage:$('idleStage'),idleSearchButton:$('idleSearchButton'),idleWaveButton:$('idleWaveButton'),guideSearch:$('guideSearch'),guideWave:$('guideWave'),guideImport:$('guideImport'),searchForm:$('searchForm'),searchInput:$('searchInput'),searchButton:$('searchButton'),homeSections:$('homeSections'),recentList:$('recentList'),recommendationGrid:$('recommendationGrid'),queueList:$('queueList'),queueEmpty:$('queueEmpty'),clearQueue:$('clearQueue'),
+  sources:$('sources'),regionSelect:$('regionSelect'),limitSelect:$('limitSelect'),results:$('results'),trackList:$('trackList'),message:$('message'),resultTitle:$('resultTitle'),resultCount:$('resultCount'),resultTime:$('resultTime'),searchMeta:$('searchMeta'),
+  player:$('player'),playerArtwork:$('playerArtwork'),nowTitle:$('nowTitle'),nowArtist:$('nowArtist'),nowSource:$('nowSource'),audio:$('audio'),youtubeDock:$('youtubeDock'),youtubePlayer:$('youtubePlayer'),
+  previousTrack:$('previousTrack'),playPause:$('playPause'),nextTrack:$('nextTrack'),repeatMode:$('repeatMode'),waveProgress:$('waveProgress'),progress:$('progress'),elapsed:$('elapsed'),totalTime:$('totalTime'),volume:$('volume'),muteButton:$('muteButton'),closePlayer:$('closePlayer'),minimizeVideo:$('minimizeVideo'),queueToggle:$('queueToggle'),queueClose:$('queueClose'),expandPlayer:$('expandPlayer'),collapsePlayer:$('collapsePlayer'),
+  themeButton:$('themeButton'),themeLabel:$('themeLabel'),themePanel:$('themePanel'),themeClose:$('themeClose'),themeBackdrop:$('themeBackdrop'),themeColor:$('themeColor'),motionToggle:$('motionToggle'),motionValue:$('motionValue'),decorToggle:$('decorToggle'),decorValue:$('decorValue'),densityToggle:$('densityToggle'),densityValue:$('densityValue'),telemetryClock:$('telemetryClock'),diagnosticsButton:$('diagnosticsButton'),diagnosticsPanel:$('diagnosticsPanel'),diagnosticsClose:$('diagnosticsClose'),diagnosticsRefresh:$('diagnosticsRefresh'),diagnosticsCopy:$('diagnosticsCopy'),diagnosticsList:$('diagnosticsList'),diagnosticsEndpoint:$('diagnosticsEndpoint'),diagnosticsChecked:$('diagnosticsChecked'),diagnosticsCopyStatus:$('diagnosticsCopyStatus'),
+  importButton:$('importButton'),importPanel:$('importPanel'),importClose:$('importClose'),importBackdrop:$('importBackdrop'),libraryFile:$('libraryFile'),importFileButton:$('importFileButton'),importFileName:$('importFileName'),importText:$('importText'),importStatus:$('importStatus'),importSubmit:$('importSubmit'),importUrl:$('importUrl'),importUrlSubmit:$('importUrlSubmit'),importProgress:$('importProgress')
+};
+
+function loadLibrary(){try{const value=JSON.parse(localStorage.getItem('awun-library')||'[]');return Array.isArray(value)?value:[]}catch{return[]}}
+function loadRegion(){const value=localStorage.getItem('awun-region')||'AUTO';return regions.includes(value)?value:'AUTO'}
+function loadResultLimit(){const value=Number(localStorage.getItem('awun-result-limit')||60);return resultLimits.includes(value)?value:60}
+function loadRepeatMode(){const value=localStorage.getItem('awun-repeat-mode')||'off';return ['off','all','one'].includes(value)?value:'off'}
+function loadRecents(){try{const value=JSON.parse(localStorage.getItem('awun-recent')||'[]');return Array.isArray(value)?value.filter(item=>item&&item.id):[]}catch{return[]}}
+function loadQueueState(){
+  try{
+    const value=JSON.parse(localStorage.getItem('awun-queue-v1')||'{}');
+    const items=Array.isArray(value)?value:value.items;
+    return{items:playerCore.uniqueTracks(items),mode:value.mode==='manual'?'manual':'context'};
+  }catch{return{items:[],mode:'context'}}
+}
+function loadVisual(){try{const value=JSON.parse(localStorage.getItem('awun-visual')||'{}');return{theme:['black','white','acid','ultraviolet','cobalt','ember'].includes(value.theme)?value.theme:'black',motion:value.motion==='off'?'off':'on',decor:value.decor==='minimal'?'minimal':'full',density:['compact','standard','airy'].includes(value.density)?value.density:'standard'}}catch{return{theme:'black',motion:'on',decor:'full',density:'standard'}}}
+function loadLineComments(){try{const value=JSON.parse(localStorage.getItem('awun-line-comments-v1')||'{}');return value&&typeof value==='object'&&!Array.isArray(value)?value:{}}catch{return{}}}
+const visualThemes={black:{labelKey:'themeBlackShort',color:'#050505'},white:{labelKey:'themeWhiteShort',color:'#e7e8df'},acid:{labelKey:'themeAcidShort',color:'#050a05'},ultraviolet:{labelKey:'themeUltravioletShort',color:'#07050c'},cobalt:{labelKey:'themeCobaltShort',color:'#040a0e'},ember:{labelKey:'themeEmberShort',color:'#080704'}};
+const restoredQueue=loadQueueState();
+const state={
+  tracks:[],saved:loadLibrary(),recents:loadRecents(),queue:restoredQueue.items,queueMode:restoredQueue.mode,available:new Set(),sources:new Set(),region:loadRegion(),resultLimit:loadResultLimit(),repeatMode:loadRepeatMode(),library:false,hasSearched:false,active:null,controller:null,
+  youtube:null,youtubeApi:null,youtubeTicker:null,hls:null,audioGraph:null,waveformCapture:null,waveformCaptureFrame:null,seeking:false,recoveringGeneration:null,sameSourceRefreshGeneration:null,playbackGeneration:0,audioTrackId:null,failedSources:new Set(),playbackOrigin:null,playbackPosition:0,lastVolume:.82,expanded:null,details:new Map(),detailsController:null,openLines:new Set(),lineComments:loadLineComments(),geniusEnabled:false,diagnostics:null,...loadVisual()
+};
+let installPrompt=null;
+let language=i18n.language;
+function applyLanguage(){language=i18n.language;i18n.apply();applyVisual(false);applyRepeatMode(false);render();renderDiagnostics();refreshStatus()}
+
+function emitAwun(type,detail={}){document.dispatchEvent(new CustomEvent(`awun:${type}`,{detail}))}
+
+const formatTime=value=>{const seconds=Math.max(0,Math.floor(Number(value)||0));return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`};
+const decodeText=value=>{const node=document.createElement('textarea');node.innerHTML=String(value||'');return node.value};
+const safeImage=value=>{try{const url=new URL(value);return ['http:','https:'].includes(url.protocol)?url.href:''}catch{return''}};
+const currentList=()=>state.library?state.saved:state.tracks;
+const selectedIds=()=>new Set(state.saved.map(track=>track.id));
+const waveformKey=track=>[track?.source,track?.id,track?.artist,track?.title,track?.duration].filter(value=>value!==undefined&&value!==null).join('|')||'awun';
+const waveformCacheKey='awun-waveforms-v1';
+const waveformLoads=new Map();
+const waveformTargets=new WeakMap();
+let waveformObserver=null;
+function loadWaveformCache(){
+  try{const value=JSON.parse(localStorage.getItem(waveformCacheKey)||'{}');return value&&typeof value==='object'&&!Array.isArray(value)?value:{}}
+  catch{return{}}
+}
+const waveformCache=loadWaveformCache();
+function waveformEntry(track){
+  const embedded=Array.isArray(track?.waveform_peaks)?track.waveform_peaks:null;
+  if(embedded?.length)return{peaks:embedded,origin:'provider',coverage:1};
+  return waveformCache[waveformKey(track)]||null;
+}
+function cachedWaveform(track){const entry=waveformEntry(track),peaks=entry?.peaks;return Array.isArray(peaks)&&peaks.length>=16?peaks:null}
+function storeWaveform(track,peaks,{origin='provider',captured=null,coverage=1}={}){
+  const normalized=playerCore.waveformPeaks(peaks,180);if(normalized.length<16)return;
+  waveformCache[waveformKey(track)]={peaks:normalized,origin,coverage:Math.max(0,Math.min(1,Number(coverage)||0)),captured:Array.isArray(captured)?captured.map(value=>Math.max(0,Math.min(100,Math.round(Number(value)||0)))):undefined,updated_at:Date.now()};
+  const entries=Object.entries(waveformCache).sort((left,right)=>(right[1]?.updated_at||0)-(left[1]?.updated_at||0));
+  entries.slice(160).forEach(([key])=>delete waveformCache[key]);
+  try{localStorage.setItem(waveformCacheKey,JSON.stringify(waveformCache))}catch{}
+}
+function waveformImagePeaks(url){
+  return new Promise((resolve,reject)=>{
+    const image=new Image();image.crossOrigin='anonymous';image.decoding='async';
+    image.onerror=()=>reject(new Error('waveform image unavailable'));
+    image.onload=()=>{
+      try{
+        const width=180,height=80,canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;
+        const context=canvas.getContext('2d',{willReadFrequently:true});if(!context)throw new Error('canvas unavailable');
+        context.clearRect(0,0,width,height);context.drawImage(image,0,0,width,height);
+        const pixels=context.getImageData(0,0,width,height).data;
+        const corner=[pixels[0],pixels[1],pixels[2],pixels[3]],transparent=corner[3]<24;
+        const peaks=[];
+        for(let x=0;x<width;x+=1){
+          let top=height,bottom=-1;
+          for(let y=0;y<height;y+=1){
+            const index=(y*width+x)*4,alpha=pixels[index+3];
+            const difference=Math.abs(pixels[index]-corner[0])+Math.abs(pixels[index+1]-corner[1])+Math.abs(pixels[index+2]-corner[2]);
+            if((transparent&&alpha>28)||(!transparent&&alpha>28&&difference>36)){top=Math.min(top,y);bottom=Math.max(bottom,y)}
+          }
+          peaks.push(bottom>=top?Math.round(((bottom-top+1)/height)*100):0);
+        }
+        const useful=peaks.filter(value=>value>=8).length;
+        if(useful<width*.2||peaks.filter(value=>value>=96).length>width*.85)throw new Error('waveform image has no usable alpha profile');
+        resolve(peaks);
+      }catch(error){reject(error)}
+    };
+    image.src=url;
+  });
+}
+async function hydrateWaveform(element,track,bars){
+  const url=safeImage(track?.waveform_url);if(!url||cachedWaveform(track))return;
+  const key=waveformKey(track);
+  let pending=waveformLoads.get(key);
+  if(!pending){pending=waveformImagePeaks(url).then(peaks=>{storeWaveform(track,peaks,{origin:'provider'});return peaks}).finally(()=>waveformLoads.delete(key));waveformLoads.set(key,pending)}
+  try{const peaks=await pending;if(element.isConnected){element.style.setProperty('--wave-mask',playerCore.waveformMaskFromPeaks(peaks,bars));element.dataset.waveform='provider'}}catch{}
+}
+function scheduleWaveformHydration(element,track,bars){
+  if(!element||!track?.waveform_url||cachedWaveform(track))return;
+  waveformTargets.set(element,{track,bars});
+  if(!('IntersectionObserver'in window)){void hydrateWaveform(element,track,bars);return}
+  if(!waveformObserver)waveformObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(!entry.isIntersecting)return;waveformObserver.unobserve(entry.target);const target=waveformTargets.get(entry.target);if(target)void hydrateWaveform(entry.target,target.track,target.bars)}),{rootMargin:'160px'});
+  waveformObserver.observe(element);
+}
+function applyWaveform(element,track,bars=96){
+  if(!element)return;
+  const peaks=cachedWaveform(track),provider=safeImage(track?.waveform_url);
+  if(peaks){element.style.setProperty('--wave-mask',playerCore.waveformMaskFromPeaks(peaks,bars));element.dataset.waveform='provider';return}
+  if(provider){element.style.setProperty('--wave-mask',`url("${provider}")`);element.dataset.waveform='provider';scheduleWaveformHydration(element,track,bars);return}
+  element.style.setProperty('--wave-mask',playerCore.waveformMask(waveformKey(track),bars));element.dataset.waveform='synthetic';
+}
+
+function sameOriginMedia(track){try{return new URL(track?.stream_url,location.href).origin===location.origin}catch{return false}}
+function capturedWaveform(track,captured){
+  const fallback=playerCore.waveformBars(waveformKey(track),180);
+  return fallback.map((value,index)=>captured[index]>0?captured[index]:value);
+}
+function updateCapturedWaveform(track,captured){
+  const peaks=capturedWaveform(track,captured),active=document.querySelector('.track.active .track-waveform'),home=document.querySelector('.home-track-card.active .home-track-meter');
+  if(active){active.style.setProperty('--wave-mask',playerCore.waveformMaskFromPeaks(peaks,74));active.dataset.waveform='captured'}
+  if(home){home.style.setProperty('--wave-mask',playerCore.waveformMaskFromPeaks(peaks,58));home.dataset.waveform='captured'}
+  if(state.active?.id===track.id){ui.waveProgress.style.setProperty('--wave-mask',playerCore.waveformMaskFromPeaks(peaks,132));ui.waveProgress.dataset.waveform='captured'}
+}
+function saveCapturedWaveform(){
+  const capture=state.waveformCapture;if(!capture)return;
+  const sampled=capture.peaks.filter(value=>value>0).length;if(sampled<3)return;
+  const coverage=sampled/capture.peaks.length,peaks=capturedWaveform(capture.track,capture.peaks);
+  storeWaveform(capture.track,peaks,{origin:'captured',captured:capture.peaks,coverage});updateCapturedWaveform(capture.track,capture.peaks);capture.savedAt=performance.now();
+}
+function stopWaveformCapture(save=true){
+  if(state.waveformCaptureFrame)cancelAnimationFrame(state.waveformCaptureFrame);state.waveformCaptureFrame=null;
+  if(save)saveCapturedWaveform();state.waveformCapture=null;
+}
+function startWaveformCapture(track){
+  if(!track||track.source==='youtube'||track.waveform_url||!sameOriginMedia(track))return;
+  const Context=window.AudioContext||window.webkitAudioContext;if(!Context)return;
+  const entry=waveformEntry(track);if(entry?.origin==='provider'||Number(entry?.coverage)>=.9)return;
+  try{
+    if(!state.audioGraph){const mediaStream=ui.audio.captureStream?.()||ui.audio.mozCaptureStream?.();if(!mediaStream)return;const context=new Context(),analyser=context.createAnalyser(),source=context.createMediaStreamSource(mediaStream),silent=context.createGain();analyser.fftSize=1024;analyser.smoothingTimeConstant=.66;silent.gain.value=0;source.connect(analyser);analyser.connect(silent);silent.connect(context.destination);state.audioGraph={context,analyser,source,silent,buffer:new Uint8Array(analyser.fftSize)}}
+    void state.audioGraph.context.resume();
+  }catch{return}
+  stopWaveformCapture(false);
+  const stored=Array.isArray(entry?.captured)?entry.captured.slice(0,180):[],peaks=Array.from({length:180},(_,index)=>stored[index]||0);
+  state.waveformCapture={track,peaks,savedAt:performance.now()};
+  const sample=()=>{
+    const capture=state.waveformCapture,graph=state.audioGraph;if(!capture||!graph||state.active?.id!==track.id)return;
+    if(!ui.audio.paused&&Number.isFinite(ui.audio.duration)&&ui.audio.duration>0){
+      graph.analyser.getByteTimeDomainData(graph.buffer);let amplitude=0;for(const value of graph.buffer)amplitude=Math.max(amplitude,Math.abs(value-128)/128);
+      const index=Math.min(179,Math.max(0,Math.floor((ui.audio.currentTime/ui.audio.duration)*180))),height=Math.max(8,Math.min(100,Math.round(amplitude*145)));
+      capture.peaks[index]=Math.max(capture.peaks[index],height);
+      if(performance.now()-capture.savedAt>10000)saveCapturedWaveform();else if(index%3===0)updateCapturedWaveform(track,capture.peaks);
+    }
+    state.waveformCaptureFrame=requestAnimationFrame(sample);
+  };
+  state.waveformCaptureFrame=requestAnimationFrame(sample);
+}
+
+function persist(){
+  localStorage.setItem('awun-library',JSON.stringify(state.saved));
+  localStorage.setItem('awun-recent',JSON.stringify(state.recents.slice(0,12)));
+  persistQueue();
+  ui.libraryButton.querySelector('b').textContent=String(state.saved.length).padStart(2,'0');
+}
+
+function persistQueue(){
+  state.queue=playerCore.uniqueTracks(state.queue);
+  localStorage.setItem('awun-queue-v1',JSON.stringify({version:1,mode:state.queueMode,items:state.queue}));
+}
+
+function setMessage(text='',kind=''){
+  ui.message.textContent=text;
+  ui.message.className=`message ${kind}`.trim();
+}
+
+function applyVisual(save=true){
+  const theme=visualThemes[state.theme]||visualThemes.acid;
+  document.documentElement.dataset.theme=state.theme;
+  document.documentElement.dataset.motion=state.motion;
+  document.documentElement.dataset.decor=state.decor;
+  document.documentElement.dataset.density=state.density;
+  ui.themeLabel.textContent=t(theme.labelKey);
+  ui.themeColor.content=theme.color;
+  ui.motionValue.textContent=t(state.motion==='on'?'on':'off');
+  ui.decorValue.textContent=t(state.decor==='minimal'?'minimal':'editorial');
+  ui.densityValue.textContent=t(state.density);
+  ui.motionToggle.setAttribute('aria-pressed',String(state.motion==='on'));
+  ui.decorToggle.setAttribute('aria-pressed',String(state.decor==='minimal'));
+  ui.densityToggle.dataset.value=state.density;
+  document.querySelectorAll('[data-theme-choice]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.themeChoice===state.theme)));
+  if(save)localStorage.setItem('awun-visual',JSON.stringify({theme:state.theme,motion:state.motion,decor:state.decor,density:state.density}));
+}
+
+function openThemePanel(){setQueueOpen(false);setPlayerExpanded(false);if(document.body.classList.contains('flow-screen-open'))document.getElementById('flowClose')?.click();ui.importPanel.hidden=true;ui.importBackdrop.hidden=true;ui.importButton.setAttribute('aria-expanded','false');ui.diagnosticsPanel.hidden=true;ui.diagnosticsButton.setAttribute('aria-expanded','false');ui.themePanel.hidden=false;ui.themeBackdrop.hidden=false;ui.themeButton.setAttribute('aria-expanded','true');requestAnimationFrame(()=>document.body.classList.add('visual-open'))}
+function closeThemePanel(){document.body.classList.remove('visual-open');ui.themeButton.setAttribute('aria-expanded','false');ui.diagnosticsButton.setAttribute('aria-expanded','false');setTimeout(()=>{ui.themePanel.hidden=true;ui.diagnosticsPanel.hidden=true;ui.themeBackdrop.hidden=true},180)}
+function openDiagnosticsPanel(){setQueueOpen(false);setPlayerExpanded(false);ui.themePanel.hidden=true;ui.themeButton.setAttribute('aria-expanded','false');ui.diagnosticsPanel.hidden=false;ui.diagnosticsButton.setAttribute('aria-expanded','true');ui.themeBackdrop.hidden=false;renderDiagnostics();requestAnimationFrame(()=>document.body.classList.add('visual-open'));void refreshStatus()}
+function openImportPanel(){ui.themePanel.hidden=true;ui.diagnosticsPanel.hidden=true;ui.themeBackdrop.hidden=true;ui.themeButton.setAttribute('aria-expanded','false');ui.importPanel.hidden=false;ui.importBackdrop.hidden=false;ui.importButton.setAttribute('aria-expanded','true');requestAnimationFrame(()=>document.body.classList.add('visual-open'))}
+function closeImportPanel(){document.body.classList.remove('visual-open');ui.importButton.setAttribute('aria-expanded','false');setTimeout(()=>{ui.importPanel.hidden=true;ui.importBackdrop.hidden=true},180)}
+function setQueueOpen(open){
+  const next=Boolean(open);ui.player.classList.toggle('queue-open',next);document.body.classList.toggle('queue-open',next);ui.queueToggle?.setAttribute('aria-expanded',String(next));
+}
+function setPlayerExpanded(open){
+  const next=Boolean(open);if(next)setQueueOpen(false);ui.player.classList.toggle('expanded-player',next);document.body.classList.toggle('player-expanded',next);ui.expandPlayer?.setAttribute('aria-expanded',String(next));
+}
+function updateClock(){ui.telemetryClock.textContent=new Intl.DateTimeFormat(language==='ru'?'ru-RU':'en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date())}
+
+function yandexCatalogLink(artist,title){return `https://music.yandex.ru/search?text=${encodeURIComponent(`${artist||''} ${title||''}`.trim())}`}
+function importKey(artist,title){return `${String(artist||'').trim().toLocaleLowerCase()}\u0000${String(title||'').trim().toLocaleLowerCase()}`}
+function importId(artist,title){let hash=2166136261;for(const character of importKey(artist,title)){hash^=character.charCodeAt(0);hash=Math.imul(hash,16777619)}return `ym_${(hash>>>0).toString(36)}`}
+function splitImportedName(value){
+  const clean=String(value||'').replace(/^\s*\d+[.)]\s*/,'').trim();
+  const parts=clean.split(/\s+(?:‚Äî|‚Äì|-|\|)\s+|\t+/);
+  if(parts.length<2)return{artist:'',title:clean};
+  return{artist:parts.shift().trim(),title:parts.join(' ‚Äî ').trim()};
+}
+function importedTrack(artist,title){
+  artist=String(artist||'').trim();title=String(title||'').trim();
+  if(!title)return null;
+  return{id:importId(artist,title),title,artist:artist||'Yandex Music',duration:0,quality:'YM',source:'yandex_music',stream_url:'',download_url:null,thumbnail:null,import_origin:'yandex_music',catalog_links:{yandex_music:yandexCatalogLink(artist,title)}};
+}
+function parseDelimitedLine(line,delimiter){
+  const values=[];let current='',quoted=false;
+  for(let index=0;index<line.length;index+=1){const character=line[index];if(character==='"'){if(quoted&&line[index+1]==='"'){current+='"';index+=1}else quoted=!quoted}else if(character===delimiter&&!quoted){values.push(current.trim());current=''}else current+=character}
+  values.push(current.trim());return values;
+}
+function parseJsonLibrary(raw){
+  const payload=JSON.parse(raw);const entries=Array.isArray(payload)?payload:payload.tracks||payload.items||payload.playlist?.tracks||payload.result?.tracks||[];
+  if(!Array.isArray(entries))return[];
+  return entries.map(entry=>{const item=entry?.track||entry||{};const title=item.title||item.name||item.track||item.trackName||'';let artist=item.artist||item.artist_name||item.artistName||'';if(Array.isArray(item.artists))artist=item.artists.map(value=>typeof value==='string'?value:value?.name).filter(Boolean).join(', ');else if(artist&&typeof artist==='object')artist=artist.name||'';return importedTrack(artist,title)}).filter(Boolean);
+}
+function parseCsvLibrary(raw){
+  const lines=raw.split(/\r?\n/).filter(line=>line.trim());if(!lines.length)return[];
+  const delimiter=(lines[0].match(/;/g)||[]).length>(lines[0].match(/,/g)||[]).length?';':lines[0].includes('\t')?'\t':',';
+  const headers=parseDelimitedLine(lines[0],delimiter).map(value=>value.toLocaleLowerCase().replace(/[\s_-]/g,''));
+  const titleIndex=headers.findIndex(value=>['title','track','tracktitle','name','song'].includes(value));
+  const artistIndex=headers.findIndex(value=>['artist','artists','artistname','performer','author'].includes(value));
+  const hasHeader=titleIndex>=0||artistIndex>=0;const start=hasHeader?1:0;
+  return lines.slice(start).map(line=>{const values=parseDelimitedLine(line,delimiter);const title=values[titleIndex>=0?titleIndex:0]||'';const artist=values[artistIndex>=0?artistIndex:1]||'';return importedTrack(artist,title)}).filter(Boolean);
+}
+function parseM3uLibrary(raw){return raw.split(/\r?\n/).filter(line=>/^#EXTINF:/i.test(line)).map(line=>splitImportedName(line.slice(line.indexOf(',')+1))).map(({artist,title})=>importedTrack(artist,title)).filter(Boolean)}
+function parseTextLibrary(raw){return raw.split(/\r?\n/).map(line=>line.trim()).filter(line=>line&&!line.startsWith('#')).map(splitImportedName).map(({artist,title})=>importedTrack(artist,title)).filter(Boolean)}
+function parseImportedLibrary(raw,fileName=''){
+  const extension=fileName.toLocaleLowerCase().split('.').pop();let tracks=[];
+  if(extension==='json'||/^[\s\n]*[\[{]/.test(raw)){try{tracks=parseJsonLibrary(raw)}catch{if(extension==='json')throw new Error(t('jsonInvalid'))}}
+  if(!tracks.length&&(extension==='m3u'||extension==='m3u8'||/#EXTINF:/i.test(raw)))tracks=parseM3uLibrary(raw);
+  if(!tracks.length&&(extension==='csv'||/\b(?:artist|performer)[,;\t].*(?:title|track|name)/i.test(raw.split(/\r?\n/)[0]||'')))tracks=parseCsvLibrary(raw);
+  if(!tracks.length)tracks=parseTextLibrary(raw);
+  const unique=new Map();tracks.forEach(track=>unique.set(importKey(track.artist==='Yandex Music'?'':track.artist,track.title),track));return [...unique.values()].slice(0,1000);
+}
+async function importLibrary(){
+  try{
+    const tracks=parseImportedLibrary(ui.importText.value,ui.libraryFile.files?.[0]?.name||'');if(!tracks.length)throw new Error(t('noImportEntries'));
+    await matchAndSaveImported(tracks);
+  }catch(error){ui.importStatus.textContent=error.message||t('importFailed')}
+}
+
+function setRange(range,value){
+  const min=Number(range.min)||0,max=Number(range.max)||100;
+  const percent=Math.max(0,Math.min(100,((Number(value)-min)/(max-min))*100));
+  range.value=String(value);
+  range.style.setProperty('--value',`${percent}%`);
+  if(range.classList.contains('progress'))range.parentElement?.style.setProperty('--value',`${percent}%`);
+}
+
+function sourceButtons(){return [...document.querySelectorAll('[data-source]')]}
+
+const diagnosticSources=['soundcloud','youtube','audius','jamendo','internet_archive'];
+function diagnosticOrigin(origin){return t({local:'diagnosticLocalApi',fallback:'diagnosticFallbackApi',configured:'diagnosticConfiguredApi',current:'diagnosticCurrentApi'}[origin]||'diagnosticUnknownApi')}
+function diagnosticTime(value){
+  if(!value)return t('diagnosticNever');
+  const date=new Date(value);if(Number.isNaN(date.getTime()))return t('diagnosticNever');
+  return new Intl.DateTimeFormat(language==='ru'?'ru-RU':'en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit',day:'2-digit',month:'2-digit'}).format(date);
+}
+function renderDiagnostics(){
+  if(!ui.diagnosticsList)return;
+  const snapshot=state.diagnostics,data=snapshot?.data||{},health=data.source_health||{},available=new Set(data.sources||[]);
+  ui.diagnosticsEndpoint.textContent=snapshot?`${diagnosticOrigin(snapshot.origin)} ¬∑ ${snapshot.endpoint_latency_ms??'‚Äî'} ${t('millisecondsShort')}`:t('diagnosticChecking');
+  ui.diagnosticsChecked.textContent=snapshot?.checked_at?diagnosticTime(snapshot.checked_at):t('diagnosticNever');
+  ui.diagnosticsList.replaceChildren();
+  diagnosticSources.forEach(source=>{
+    const provider=data.providers?.[source]||{},sample=health[source]||{},enabled=available.has(source)&&provider.enabled!==false;
+    const status=snapshot?.error?'unavailable':enabled?(sample.status||'unknown'):'disabled';
+    const row=document.createElement('article');row.className=`diagnostic-source ${status}`;
+    const head=document.createElement('div');const identity=document.createElement('div');const dot=document.createElement('i');dot.setAttribute('aria-hidden','true');const name=document.createElement('strong');name.textContent=sourceLabels[source]||source;identity.append(dot,name);const badge=document.createElement('span');badge.textContent=t(`diagnosticStatus_${status}`);head.append(identity,badge);
+    const metrics=document.createElement('dl');
+    const fields=[
+      [t('diagnosticLatency'),sample.samples?`${sample.average_latency_ms} ${t('millisecondsShort')}`:'‚Äî'],
+      [t('diagnosticSuccess'),sample.samples?`${Math.round((Number(sample.success_rate)||0)*100)}%`:'‚Äî'],
+      [t('diagnosticLastCheck'),diagnosticTime(sample.last_checked_at)]
+    ];
+    fields.forEach(([label,value])=>{const group=document.createElement('div');const term=document.createElement('dt');term.textContent=label;const detail=document.createElement('dd');detail.textContent=value;group.append(term,detail);metrics.append(group)});
+    const error=document.createElement('p');error.textContent=sample.last_error?`${t('diagnosticLastError')} ¬∑ ${diagnosticTime(sample.last_error_at)}: ${String(sample.last_error).slice(0,240)}`:t(status==='disabled'?'diagnosticDisabledHint':'diagnosticNoErrors');
+    row.append(head,metrics,error);ui.diagnosticsList.append(row);
+  });
+}
+function diagnosticsReport(){
+  const snapshot=state.diagnostics,data=snapshot?.data||{},health=data.source_health||{};
+  return JSON.stringify({
+    app:'AWUN',version:data.version||'unknown',created_at:new Date().toISOString(),platform:runtimePlatform,
+    api:{mode:snapshot?.origin||'unavailable',latency_ms:snapshot?.endpoint_latency_ms??null,error:snapshot?.error||null},
+    sources:diagnosticSources.map(source=>({source,enabled:(data.sources||[]).includes(source),status:health[source]?.status||'unknown',average_latency_ms:health[source]?.average_latency_ms??null,success_rate:health[source]?.success_rate??null,samples:health[source]?.samples??0,last_checked_at:health[source]?.last_checked_at||null,last_success_at:health[source]?.last_success_at||null,last_error_at:health[source]?.last_error_at||null,last_error:health[source]?.last_error||null}))
+  },null,2);
+}
+async function copyDiagnostics(){
+  const report=diagnosticsReport();
+  try{
+    if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(report);
+    else{const area=document.createElement('textarea');area.value=report;area.style.position='fixed';area.style.opacity='0';document.body.append(area);area.select();document.execCommand('copy');area.remove()}
+    ui.diagnosticsCopyStatus.textContent=t('diagnosticCopied');
+  }catch{ui.diagnosticsCopyStatus.textContent=t('diagnosticCopyFailed')}
+}
+
+async function refreshStatus(){
+  ui.diagnosticsRefresh?.setAttribute('aria-busy','true');
+  try{
+    const snapshot=await requestHealthSnapshot(),data=snapshot.data;state.diagnostics=snapshot;
+    state.available=new Set(data.sources||[]);
+    state.geniusEnabled=Boolean(data.providers?.track_stories?.genius_annotations);
+    state.sources=new Set([...state.sources].filter(source=>state.available.has(source)));
+    if(!state.sources.size)state.available.forEach(source=>state.sources.add(source));
+    sourceButtons().forEach(button=>{
+      const source=button.dataset.source;
+      const available=state.available.has(source);
+      button.disabled=!available;
+      button.classList.toggle('on',available&&state.sources.has(source));
+      button.querySelector('small').textContent=t(available?'active':'notConnected');
+      button.title=t(available?'sourceAvailable':'sourceUnavailable',{source:sourceLabels[source]});
+    });
+    const names=[...state.available].map(source=>sourceLabels[source]||source);
+    ui.status.className='status live';
+    ui.status.querySelector('b').textContent=names.length?t('liveSources',{sources:names.join(' / ').toUpperCase()}):t('liveNoSources');
+    ui.searchMeta.textContent=names.length?t(names.length===1?'sourceOnline':'sourcesOnline',{count:names.length}):t('localNoSources');
+  }catch(error){
+    state.diagnostics={error:error?.message||t('healthFailed'),origin:'unavailable',endpoint_latency_ms:null,checked_at:new Date().toISOString(),data:{sources:[],source_health:{},providers:{}}};
+    ui.status.className='status offline';
+    ui.status.querySelector('b').textContent=t('offline');
+    ui.searchMeta.textContent=t('healthFailed');
+    sourceButtons().forEach(button=>{button.disabled=true;button.classList.remove('on');button.querySelector('small').textContent=t('offline')});
+  }finally{ui.diagnosticsRefresh?.removeAttribute('aria-busy');renderDiagnostics()}
+}
+
+function loadingRows(){
+  ui.trackList.replaceChildren();
+  for(let index=0;index<4;index+=1){
+    const row=document.createElement('li');row.className='skeleton';
+    for(let part=0;part<4;part+=1)row.append(document.createElement('i'));
+    ui.trackList.append(row);
+  }
+}
+
+const recommendationSets=[
+  {title:'Nocturnal Electronica',subtitle:'Ambient ¬∑ Electronic',query:'nocturnal electronica',className:'recommendation-night'},
+  {title:'Cinematic Piano',subtitle:'Instrumental ¬∑ Focus',query:'cinematic piano',className:'recommendation-piano'},
+  {title:'Dark Ambient',subtitle:'Atmospheric ¬∑ Slow',query:'dark ambient',className:'recommendation-ambient'},
+  {title:'Lo-Fi Study',subtitle:'Beats ¬∑ Focus',query:'lo-fi study',className:'recommendation-lofi'}
+];
+
+function rememberRecent(track){
+  state.recents=[track,...state.recents.filter(item=>item.id!==track.id)].slice(0,12);
+  persist();
+}
+
+function renderHome(){
+  if(!ui.recentList||!ui.recommendationGrid)return;
+  const recentSource=state.recents.length?state.recents:state.saved;
+  ui.recentList.replaceChildren();
+  recentSource.slice(0,4).forEach((track,index)=>{
+    const card=document.createElement('li');card.className=`home-track-card ${state.active?.id===track.id?'active':''}`.trim();card.style.setProperty('--i',index);
+    const cover=document.createElement('div');cover.className='home-track-cover';const image=safeImage(track.thumbnail);if(image)cover.style.backgroundImage=`url("${image}")`;else cover.textContent=decodeText(track.title||'AW').slice(0,2).toUpperCase();
+    const activate=()=>state.active?.id===track.id?togglePlayback():playTrack(track);
+    const play=document.createElement('button');play.type='button';play.className='home-track-play';play.textContent=state.active?.id===track.id?'‚Ö°':'‚ñ∂';play.setAttribute('aria-label',t('playTrackAria',{title:decodeText(track.title)}));play.onclick=activate;
+    cover.append(play);
+    const meter=document.createElement('span');meter.className='home-track-meter';meter.setAttribute('aria-hidden','true');applyWaveform(meter,track,58);cover.append(meter);
+    const body=document.createElement('div');body.className='home-track-body';const title=document.createElement('button');title.type='button';title.className='home-track-title';title.textContent=decodeText(track.title)||t('unknownTitle');title.onclick=activate;const artist=document.createElement('span');artist.className='home-track-artist';artist.textContent=decodeText(track.artist)||t('unknownArtist');body.append(title,artist);
+    const footer=document.createElement('div');footer.className='home-track-footer';const duration=document.createElement('span');duration.className='home-track-duration';duration.textContent=formatTime(track.duration);const save=document.createElement('button');save.type='button';save.className=`home-track-save ${selectedIds().has(track.id)?'saved':''}`;save.textContent=selectedIds().has(track.id)?'‚ô•':'‚ô°';save.setAttribute('aria-label',t(selectedIds().has(track.id)?'saved':'addLibrary'));save.onclick=event=>{event.stopPropagation();toggleSave(track)};footer.append(duration,save);card.append(cover,body,footer);card.onclick=event=>{if(!event.target.closest('button'))activate()};ui.recentList.append(card);
+  });
+  if(!recentSource.length){const empty=document.createElement('li');empty.className='home-empty';empty.innerHTML=`<span>${t('nothingPlaying')}</span><button type="button">${t('search')}</button>`;empty.querySelector('button').onclick=()=>ui.searchInput.focus();ui.recentList.append(empty)}
+  ui.recommendationGrid.replaceChildren();recommendationSets.forEach((set,index)=>{const card=document.createElement('button');card.type='button';card.className=`recommendation-card ${set.className}`;card.style.setProperty('--i',index);card.dataset.query=set.query;const title=document.createElement('strong');title.textContent=set.title;const subtitle=document.createElement('span');subtitle.textContent=set.subtitle;const action=document.createElement('b');action.textContent=`${t('search')} ‚Üó`;card.append(title,subtitle,action);card.onclick=()=>{ui.searchInput.value=set.query;search(set.query)};ui.recommendationGrid.append(card)});
+}
+
+function seedContextQueue(track){
+  if(state.queueMode==='manual'&&state.queue.length)return;
+  const list=currentList();const index=list.findIndex(item=>item.id===track.id);
+  state.queue=index>=0?playerCore.uniqueTracks(list.slice(index+1)):[];
+  state.queueMode='context';persistQueue();
+}
+
+function replaceQueue(tracks,mode='context'){
+  state.queue=playerCore.uniqueTracks(tracks).filter(track=>track.id!==state.active?.id);
+  state.queueMode=mode==='manual'?'manual':'context';persistQueue();renderQueue();
+}
+
+function appendQueue(tracks,mode=state.queueMode){
+  state.queue=playerCore.uniqueTracks([...state.queue,...tracks]).filter(track=>track.id!==state.active?.id);
+  state.queueMode=mode==='manual'?'manual':'context';persistQueue();renderQueue();
+}
+
+function queueTrack(track,position){
+  state.queue=playerCore.enqueue(state.queue,track,position);
+  state.queueMode='manual';persistQueue();render();
+  setMessage(t(position==='next'?'queuedNext':'queuedEnd',{track:decodeText(track.title)}),'notice');
+}
+
+function removeQueuedTrack(trackId){
+  state.queue=playerCore.remove(state.queue,trackId);state.queueMode='manual';persistQueue();render();
+}
+
+function moveQueuedTrack(fromIndex,toIndex){
+  const next=Math.max(0,Math.min(state.queue.length-1,toIndex));
+  state.queue=playerCore.move(state.queue,fromIndex,next);state.queueMode='manual';persistQueue();render();
+}
+
+async function playQueuedTrack(track){
+  removeQueuedTrack(track.id);setQueueOpen(false);await playTrack(track,{preserveQueue:true});
+}
+
+function renderQueue(){
+  if(!ui.queueList||!ui.queueEmpty)return;
+  ui.queueList.replaceChildren();ui.queueEmpty.hidden=Boolean(state.queue.length);
+  state.queue.forEach((track,index)=>{
+    const item=document.createElement('li');item.className='queue-item';item.draggable=true;item.dataset.queueId=track.id;
+    const grip=document.createElement('span');grip.className='queue-grip';grip.textContent='‚ãÆ‚ãÆ';grip.setAttribute('aria-hidden','true');
+    const image=safeImage(track.thumbnail);const cover=document.createElement('span');cover.className='queue-cover';if(image)cover.style.backgroundImage=`url("${image}")`;else cover.textContent=decodeText(track.title||'AW').slice(0,2).toUpperCase();
+    const button=document.createElement('button');button.type='button';button.className='queue-track';const title=document.createElement('strong');title.textContent=decodeText(track.title)||t('unknownTitle');const artist=document.createElement('span');artist.textContent=decodeText(track.artist)||t('unknownArtist');button.append(title,artist);button.onclick=()=>playQueuedTrack(track);
+    const duration=document.createElement('time');duration.textContent=formatTime(track.duration);
+    const controls=document.createElement('div');controls.className='queue-controls';
+    const up=document.createElement('button');up.type='button';up.textContent='‚Üë';up.disabled=index===0;up.setAttribute('aria-label',t('queueMoveUpAria',{track:decodeText(track.title)}));up.onclick=()=>moveQueuedTrack(index,index-1);
+    const down=document.createElement('button');down.type='button';down.textContent='‚Üì';down.disabled=index===state.queue.length-1;down.setAttribute('aria-label',t('queueMoveDownAria',{track:decodeText(track.title)}));down.onclick=()=>moveQueuedTrack(index,index+1);
+    const remove=document.createElement('button');remove.type='button';remove.textContent='√ó';remove.setAttribute('aria-label',t('queueRemoveAria',{track:decodeText(track.title)}));remove.onclick=()=>removeQueuedTrack(track.id);controls.append(up,down,remove);
+    item.addEventListener('dragstart',event=>{event.dataTransfer.effectAllowed='move';event.dataTransfer.setData('text/plain',String(index));item.classList.add('dragging')});
+    item.addEventListener('dragend',()=>item.classList.remove('dragging'));
+    item.addEventListener('dragover',event=>{event.preventDefault();event.dataTransfer.dropEffect='move'});
+    item.addEventListener('drop',event=>{event.preventDefault();const from=Number(event.dataTransfer.getData('text/plain'));if(Number.isInteger(from))moveQueuedTrack(from,index)});
+    item.append(grip,cover,button,duration,controls);ui.queueList.append(item);
+  });
+}
+
+function render(){
+  const list=currentList(),saved=selectedIds();
+  const showHome=!state.library&&!state.hasSearched;
+  ui.homeSections.hidden=!showHome;
+  ui.results.hidden=showHome;
+  renderHome();
+  renderQueue();
+  ui.emptyGuide.hidden=Boolean(list.length);
+  ui.trackList.replaceChildren();
+  ui.resultTitle.textContent=t(state.library?'yourLibrary':state.flow?.active?'wave':state.tracks.length?'searchResults':'discover');
+  ui.resultCount.textContent=t(state.library?'savedCount':'foundCount',{count:list.length});
+
+  list.forEach((track,index)=>{
+    const needsMatch=track.source==='yandex_music';
+    const row=document.createElement('li');row.className=`track ${state.active?.id===track.id?'active':''} ${state.expanded===track.id?'expanded':''}`.trim();row.dataset.source=track.source;row.style.setProperty('--i',index);row.setAttribute('aria-expanded',String(state.expanded===track.id));
+    const cover=document.createElement('div');cover.className='cover';const image=safeImage(track.thumbnail);if(image)cover.style.backgroundImage=`url("${image}")`;else cover.textContent=decodeText(track.title||'?').slice(0,2).toUpperCase();
+    const activateTrack=()=>state.active?.id===track.id?togglePlayback():playTrack(track);
+    const play=document.createElement('button');play.className='play';play.type='button';play.textContent=needsMatch?'‚Üª':state.active?.id===track.id?'‚Ö°':'‚ñ∂';play.setAttribute('aria-label',t(needsMatch?'matchAndPlayAria':'playTrackAria',{title:decodeText(track.title)}));play.onclick=event=>{event.stopPropagation();activateTrack()};
+    const name=document.createElement('button');name.className='name';name.type='button';name.setAttribute('aria-label',t('playTrackAria',{title:decodeText(track.title)}));const title=document.createElement('strong');title.textContent=decodeText(track.title)||t('unknownTitle');const artist=document.createElement('span');artist.textContent=decodeText(track.artist)||t('unknownArtist');name.append(title,artist);name.onclick=event=>{event.stopPropagation();activateTrack()};
+    const waveform=document.createElement('button');waveform.className='track-waveform';waveform.type='button';waveform.setAttribute('aria-label',t('playTrackAria',{title:decodeText(track.title)}));applyWaveform(waveform,track,74);waveform.onclick=event=>{event.stopPropagation();activateTrack()};
+    const source=document.createElement('span');source.className=`tag ${track.source}`;source.textContent=sourceLabels[track.source]||track.source;
+    const quality=document.createElement('span');quality.className='quality';quality.textContent=track.quality||'‚Äî';
+    const duration=document.createElement('span');duration.className='duration';duration.textContent=formatTime(track.duration);
+    const actions=document.createElement('div');actions.className='actions';
+    const story=document.createElement('button');story.className='story-button';story.type='button';story.textContent=t(state.expanded===track.id?'close':'story');story.setAttribute('aria-expanded',String(state.expanded===track.id));story.onclick=event=>{event.stopPropagation();toggleStory(track)};actions.append(story);
+    const save=document.createElement('button');save.className=`save ${saved.has(track.id)?'saved':''}`;save.type='button';save.textContent=t(saved.has(track.id)?'saved':'addLibrary');save.onclick=event=>{event.stopPropagation();toggleSave(track)};actions.append(save);
+    const queueMenu=document.createElement('details');queueMenu.className='track-queue-menu';const queueSummary=document.createElement('summary');queueSummary.textContent='‚ò∑';queueSummary.setAttribute('aria-label',t('queueActionsAria',{track:decodeText(track.title)}));const queueOptions=document.createElement('div');const playNext=document.createElement('button');playNext.type='button';playNext.textContent=t('playNext');playNext.onclick=event=>{event.stopPropagation();queueTrack(track,'next');queueMenu.open=false};const addQueue=document.createElement('button');addQueue.type='button';addQueue.textContent=t('addToQueue');addQueue.onclick=event=>{event.stopPropagation();queueTrack(track,'end');queueMenu.open=false};queueOptions.append(playNext,addQueue);queueMenu.append(queueSummary,queueOptions);queueMenu.addEventListener('toggle',()=>{row.classList.toggle('queue-menu-open',queueMenu.open);if(!queueMenu.open){queueMenu.classList.remove('opens-up');return}document.querySelectorAll('.track-queue-menu[open]').forEach(menu=>{if(menu!==queueMenu)menu.open=false});requestAnimationFrame(()=>{const boundary=ui.results.getBoundingClientRect(),options=queueOptions.getBoundingClientRect();queueMenu.classList.toggle('opens-up',options.bottom>boundary.bottom-8)})});actions.append(queueMenu);
+    if(track.download_url&&!playStoreMode){const download=document.createElement('a');download.className='download';download.href=track.download_url;download.download='';download.rel='noopener';download.textContent=t('download');download.onclick=event=>event.stopPropagation();actions.append(download)}
+    const catalog=document.createElement('div');catalog.className='catalog-links';
+    [['spotify','SPOTIFY'],['apple_music','APPLE'],['yandex_music','YANDEX']].forEach(([provider,label])=>{const href=track.catalog_links?.[provider];if(!href)return;const link=document.createElement('a');link.className='catalog-link';link.href=href;link.target='_blank';link.rel='noopener noreferrer';link.textContent=`${label} ‚Üó`;link.setAttribute('aria-label',t('findCatalogAria',{title:decodeText(track.title),source:label}));catalog.append(link)});
+    if(catalog.childElementCount)actions.append(catalog);
+    row.addEventListener('click',event=>{if(!event.target.closest('button,a,input,textarea,select,details,summary'))activateTrack()});
+    row.append(cover,play,name,waveform,source,quality,duration,actions);
+    if(state.expanded===track.id)row.append(renderStory(track));
+    ui.trackList.append(row);
+  });
+}
+
+function commentKey(track,line){return `${track.id}\u0000${line.index}\u0000${matchText(line.text).slice(0,80)}`}
+function persistLineComments(){localStorage.setItem('awun-line-comments-v1',JSON.stringify(state.lineComments))}
+function localComments(track,line){const value=state.lineComments[commentKey(track,line)];return Array.isArray(value)?value:[]}
+
+function addLineComment(track,line,value){
+  const text=String(value||'').trim().slice(0,500);if(!text)return;
+  const key=commentKey(track,line),comments=localComments(track,line);
+  state.lineComments[key]=[...comments,{id:`local_${Date.now()}`,text,created_at:new Date().toISOString()}].slice(-20);
+  state.openLines.add(`${track.id}:${line.index}`);persistLineComments();render();
+}
+
+function removeLineComment(track,line,id){
+  const key=commentKey(track,line);state.lineComments[key]=localComments(track,line).filter(comment=>comment.id!==id);persistLineComments();render();
+}
+
+function toggleLine(track,line){const key=`${track.id}:${line.index}`;state.openLines.has(key)?state.openLines.delete(key):state.openLines.add(key);render()}
+
+function renderStory(track){
+  const panel=document.createElement('section');panel.className='track-story';panel.setAttribute('aria-label',t('trackStoryAria',{title:decodeText(track.title)}));panel.onclick=event=>event.stopPropagation();
+  const heading=document.createElement('header');heading.className='story-head';const label=document.createElement('div');const kicker=document.createElement('span');kicker.textContent=t('trackStory');const title=document.createElement('h2');title.textContent=decodeText(track.title);const artist=document.createElement('p');artist.textContent=decodeText(track.artist);label.append(kicker,title,artist);const close=document.createElement('button');close.type='button';close.textContent='√ó';close.setAttribute('aria-label',t('closeTrackStoryAria'));close.onclick=()=>toggleStory(track);heading.append(label,close);panel.append(heading);
+  const details=state.details.get(track.id);
+  if(!details||details.loading){const loading=document.createElement('div');loading.className='story-loading';loading.textContent=t('findingLyrics');panel.append(loading);return panel}
+  if(details.error){const error=document.createElement('p');error.className='story-empty';error.textContent=details.error;panel.append(error);return panel}
+  const meta=document.createElement('div');meta.className='story-meta';const source=document.createElement('span');source.textContent=t(details.lyrics_source?'lyricsAvailable':'lyricsUnavailable');const sync=document.createElement('span');sync.textContent=t(details.lines?.length?(details.synced?'timeSynced':'plainText'):'noText');const annotations=document.createElement('span');const geniusLabels={matched:`${t('geniusMatched')}${details.annotation_count?` ¬∑ ${details.annotation_count}`:''}`,not_found:t('geniusNoMatch'),error:t('geniusError'),disabled:t('geniusOptional')};annotations.textContent=geniusLabels[details.genius_status]||t('geniusChecking');annotations.dataset.status=details.genius_status||'unknown';meta.append(source,sync,annotations);panel.append(meta);
+  if(details.match_type==='canonical'&&details.matched_title){const match=document.createElement('p');match.className='story-match';match.textContent=t('canonicalMatch',{track:[details.matched_artist,details.matched_title].filter(Boolean).map(decodeText).join(' ‚Äî ')});panel.append(match)}
+  if(details.message){const note=document.createElement('p');note.className='story-note';note.textContent=details.message;panel.append(note)}
+  if(!details.lines?.length){const empty=document.createElement('p');empty.className='story-empty';empty.textContent=t('noLyricsReturned');panel.append(empty)}
+  const lyrics=document.createElement('div');lyrics.className='lyrics';
+  (details.lines||[]).forEach(line=>{
+    const lineKey=`${track.id}:${line.index}`,comments=localComments(track,line),open=state.openLines.has(lineKey);const row=document.createElement('article');row.className=`lyric-line ${open?'open':''}`;
+    const time=document.createElement('button');time.type='button';time.className='lyric-time';time.textContent=line.time==null?'¬∑':formatTime(line.time);time.disabled=line.time==null;time.title=t(line.time==null?'noTimestamp':'playFromLine');time.onclick=()=>{if(state.active?.id!==track.id)playTrack(track).then(()=>setTimeout(()=>seekTo(line.time||0,true),650));else seekTo(line.time||0,true)};
+    const text=document.createElement('button');text.type='button';text.className='lyric-text';text.textContent=decodeText(line.text);text.setAttribute('aria-expanded',String(open));text.onclick=()=>toggleLine(track,line);
+    const count=document.createElement('button');count.type='button';count.className='annotation-count';count.textContent=`${(line.annotations?.length||0)+comments.length}`;count.setAttribute('aria-label',t('commentCount',{count:(line.annotations?.length||0)+comments.length}));count.onclick=()=>toggleLine(track,line);row.append(time,text,count);
+    if(open){const thread=document.createElement('div');thread.className='line-thread';
+      (line.annotations||[]).forEach(annotation=>{const item=document.createElement('blockquote');const body=document.createElement('p');body.textContent=decodeText(annotation.text);const footer=document.createElement('footer');const by=document.createElement('span');by.textContent=`GENIUS${annotation.author?` ¬∑ ${decodeText(annotation.author)}`:''}${annotation.votes?` ¬∑ ${t('votes',{count:annotation.votes})}`:''}`;footer.append(by);if(annotation.url){const link=document.createElement('a');link.href=annotation.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=t('open');footer.append(link)}item.append(body,footer);thread.append(item)});
+      comments.forEach(comment=>{const item=document.createElement('blockquote');item.className='local-comment';const body=document.createElement('p');body.textContent=comment.text;const footer=document.createElement('footer');const by=document.createElement('span');by.textContent=t('yourNote');const remove=document.createElement('button');remove.type='button';remove.textContent=t('delete');remove.onclick=()=>removeLineComment(track,line,comment.id);footer.append(by,remove);item.append(body,footer);thread.append(item)});
+      const form=document.createElement('form');form.className='line-comment-form';const input=document.createElement('input');input.maxLength=500;input.placeholder=t('addNotePlaceholder');input.setAttribute('aria-label',t('addNoteAria'));const submit=document.createElement('button');submit.type='submit';submit.textContent=t('add');form.append(input,submit);form.onsubmit=event=>{event.preventDefault();addLineComment(track,line,input.value)};thread.append(form);row.append(thread)}
+    lyrics.append(row)
+  });panel.append(lyrics);
+  const footer=document.createElement('footer');footer.className='story-footer';const attribution=document.createElement('span');attribution.textContent=t('lyricsNotice');footer.append(attribution);if(details.genius_url){const link=document.createElement('a');link.href=details.genius_url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=t('viewGenius');footer.append(link)}panel.append(footer);return panel;
+}
+
+async function loadStory(track){
+  state.detailsController?.abort();state.detailsController=new AbortController();state.details.set(track.id,{loading:true});render();
+  try{const params=new URLSearchParams({artist:decodeText(track.artist),title:decodeText(track.title),duration:String(track.duration||0)});const response=await awunFetch(`/api/v1/track-details?${params}`,{signal:state.detailsController.signal});const data=await response.json();if(!response.ok)throw new Error(data.detail||t('storyUnavailable'));state.details.set(track.id,data);render()}catch(error){if(error.name==='AbortError')return;state.details.set(track.id,{error:error.message||t('storyUnavailable')});render()}
+}
+
+function toggleStory(track){
+  const opening=state.expanded!==track.id;state.expanded=opening?track.id:null;render();if(opening&&!state.details.has(track.id))loadStory(track);
+}
+
+function toggleSave(track){
+  const index=state.saved.findIndex(item=>item.id===track.id);
+  if(index>=0)state.saved.splice(index,1);else state.saved.unshift({...track,title:decodeText(track.title),artist:decodeText(track.artist)});
+  persist();render();emitAwun('library',{track,saved:index<0});
+}
+
+function progressiveTracks(tracksBySource,sourceOrder,limit){
+  return playerCore.interleaveTracks(tracksBySource,sourceOrder,limit);
+}
+function mergeProgressiveData(aggregate,data,source,sourceOrder,limit){
+  aggregate.tracks_by_source[source]=playerCore.uniqueTracks([...(aggregate.tracks_by_source[source]||[]),...(data.tracks||[])]);
+  aggregate.tracks=progressiveTracks(aggregate.tracks_by_source,sourceOrder,limit);
+  aggregate.searched_sources=[...new Set([...aggregate.searched_sources,...(data.searched_sources||[]),source])];
+  aggregate.query_variants=[...new Set([...aggregate.query_variants,...(data.query_variants||[])])];
+  aggregate.elapsed_ms=Math.max(aggregate.elapsed_ms,Number(data.elapsed_ms)||0);
+  if(data.errors?.[source])aggregate.errors[source]=data.errors[source];else delete aggregate.errors[source];
+  return aggregate;
+}
+
+async function search(query=ui.searchInput.value.trim()){
+  if(!query)return;
+  if(!state.sources.size){setMessage(t('noSourcesError'),'error');return}
+  state.controller?.abort();state.controller=new AbortController();state.library=false;state.hasSearched=true;ui.libraryButton.classList.remove('active');ui.libraryButton.setAttribute('aria-pressed','false');
+  ui.results.setAttribute('aria-busy','true');ui.emptyGuide.hidden=true;ui.searchButton.classList.add('searching');document.body.classList.add('is-searching');setMessage(t('searchingSources'),'loading');loadingRows();ui.resultTitle.textContent=t('searching');ui.resultCount.textContent='‚Äî';ui.resultTime.textContent=t('pleaseWait');
+  const started=performance.now(),controller=state.controller,sources=[...state.sources],perSourceLimit=Math.min(state.resultLimit,Math.max(8,Math.ceil((state.resultLimit/sources.length)*1.6)));
+  const aggregate={query,tracks:[],tracks_by_source:{},total:0,searched_sources:[],region:state.region,query_variants:[],errors:{},elapsed_ms:0};
+  let completed=0;
+  const applyResults=(final=false)=>{
+    if(state.controller!==controller||controller.signal.aborted)return;
+    aggregate.total=aggregate.tracks.length;state.tracks=aggregate.tracks;
+    const failures=Object.keys(aggregate.errors).map(source=>sourceLabels[source]||source),pending=Math.max(0,sources.length-completed);
+    if(!final&&pending){setMessage(t('progressiveResults',{count:state.tracks.length,pending}),'loading');ui.resultTime.textContent=t('progressiveSources',{done:completed,total:sources.length});}
+    else if(state.tracks.length)setMessage(failures.length?t('partialResults',{sources:failures.join(', ')}):t('selectTrack'),failures.length?'notice':'');
+    else setMessage(failures.length?t('noPlayableResults',{sources:failures.join(', ')}):t('nothingFound'),'error');
+    if(final){const variants=Math.max(1,aggregate.query_variants.length||1);ui.resultTime.textContent=t('searchTiming',{ms:Math.round(performance.now()-started),variants})}
+    if(state.tracks.length||final)render();
+  };
+  try{
+    const payload={query,limit:perSourceLimit,region:state.region,locale:navigator.language||null};
+    await Promise.all(sources.map(async source=>{
+      try{
+        const {data,supplement}=await requestSearch({...payload,sources:[source]},{signal:controller.signal});
+        if(controller.signal.aborted)return;
+        mergeProgressiveData(aggregate,data,source,sources,state.resultLimit);applyResults(false);
+        if(supplement){const merged=await supplement;if(merged&&!controller.signal.aborted){mergeProgressiveData(aggregate,merged,source,sources,state.resultLimit);applyResults(false)}}
+      }catch(error){if(error?.name!=='AbortError')aggregate.errors[source]=error?.message||t('searchFailed')}
+      finally{completed+=1;if(!controller.signal.aborted)applyResults(false)}
+    }));
+    if(controller.signal.aborted)return;
+    applyResults(true);
+    const params=new URLSearchParams(runtimeParams);params.set('q',query);if(state.region!=='AUTO')params.set('region',state.region);else params.delete('region');if(state.resultLimit!==60)params.set('limit',String(state.resultLimit));else params.delete('limit');history.replaceState(null,'',`${location.pathname}?${params}`);
+  }catch(error){
+    if(error.name==='AbortError')return;
+    state.tracks=[];render();setMessage(error.message||t('searchUnavailable'),'error');ui.resultTime.textContent=t('failed');
+  }finally{if(state.controller===controller){ui.results.setAttribute('aria-busy','false');ui.searchButton.classList.remove('searching');document.body.classList.remove('is-searching')}}
+}
+
+function youtubeId(track){
+  if(track.id?.startsWith('yt_'))return track.id.slice(3);
+  try{return new URL(track.stream_url).searchParams.get('v')||''}catch{return''}
+}
+
+function ensureYouTubeApi(){
+  if(window.YT?.Player)return Promise.resolve(window.YT);
+  if(state.youtubeApi)return state.youtubeApi;
+  state.youtubeApi=new Promise((resolve,reject)=>{
+    const previous=window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady=()=>{if(typeof previous==='function')previous();resolve(window.YT)};
+    const script=document.createElement('script');script.src='https://www.youtube.com/iframe_api';script.async=true;script.onerror=()=>reject(new Error(t('youtubePlayerLoadFailed')));document.head.append(script);
+    setTimeout(()=>{if(!window.YT?.Player)reject(new Error(t('youtubePlayerTimeout')))},15000);
+  });
+  return state.youtubeApi;
+}
+
+function stopYouTube(){
+  clearInterval(state.youtubeTicker);state.youtubeTicker=null;
+  if(state.youtube){try{state.youtube.destroy()}catch{}state.youtube=null}
+  ui.youtubePlayer.replaceChildren();ui.youtubeDock.hidden=true;
+}
+
+function stopHls(){
+  if(state.hls){try{state.hls.destroy()}catch{}state.hls=null}
+}
+
+function setPlaying(playing){ui.playPause.querySelector('span').textContent=playing?'‚Ö°':'‚ñ∂';ui.playPause.setAttribute('aria-label',t(playing?'pauseAria':'playAria'));document.body.classList.toggle('is-playing',playing);ui.player.classList.toggle('is-playing',playing)}
+
+function applyRepeatMode(save=true){
+  const labels={off:'repeatOff',all:'repeatAll',one:'repeatOne'},descriptions={off:'repeatOffAria',all:'repeatAllAria',one:'repeatOneAria'};
+  ui.repeatMode.querySelector('small').textContent=t(labels[state.repeatMode]);ui.repeatMode.setAttribute('aria-label',t(descriptions[state.repeatMode]));ui.repeatMode.setAttribute('aria-pressed',String(state.repeatMode!=='off'));ui.repeatMode.classList.toggle('active',state.repeatMode!=='off');ui.repeatMode.dataset.mode=state.repeatMode;
+  if(save)localStorage.setItem('awun-repeat-mode',state.repeatMode);
+}
+
+function cycleRepeatMode(){const modes=['off','all','one'];state.repeatMode=modes[(modes.indexOf(state.repeatMode)+1)%modes.length];applyRepeatMode()}
+
+function updateTimeline(current,duration){
+  const percent=duration?Math.max(0,Math.min(100,(current/duration)*100)):0;
+  state.playbackPosition=Math.max(0,Number(current)||0);
+  if(!state.seeking)setRange(ui.progress,Math.round(percent*10));
+  document.querySelector('.track.active .track-waveform')?.style.setProperty('--track-progress',`${percent}%`);
+  document.querySelector('.home-track-card.active .home-track-meter')?.style.setProperty('--track-progress',`${percent}%`);
+  ui.elapsed.textContent=formatTime(current);ui.totalTime.textContent=formatTime(duration);
+}
+
+async function playYouTube(track,startAt=0){
+  state.audioTrackId=null;ui.audio.pause();ui.audio.removeAttribute('src');stopHls();stopYouTube();ui.youtubeDock.hidden=false;ui.youtubeDock.classList.remove('minimized');
+  const YT=await ensureYouTubeApi(),videoId=youtubeId(track);if(!videoId)throw new Error(t('invalidYoutubeResult'));
+  const target=document.createElement('div');ui.youtubePlayer.replaceChildren(target);
+  await new Promise((resolve,reject)=>{
+    let ready=false;
+    state.youtube=new YT.Player(target,{width:'100%',height:'100%',videoId,playerVars:{autoplay:1,controls:1,playsinline:1,rel:0,origin:location.origin},events:{
+      onReady:event=>{ready=true;event.target.setVolume(Number(ui.volume.value));if(startAt>0)event.target.seekTo(startAt,true);event.target.playVideo();setPlaying(true);state.youtubeTicker=setInterval(()=>{if(state.youtube?.getCurrentTime)updateTimeline(state.youtube.getCurrentTime(),state.youtube.getDuration())},500);resolve()},
+      onStateChange:event=>{if(event.data===YT.PlayerState.PLAYING)setPlaying(true);if(event.data===YT.PlayerState.PAUSED)setPlaying(false);if(event.data===YT.PlayerState.ENDED)handleTrackEnded()},
+      onError:()=>{const error=new Error(t('youtubeEmbedError'));if(ready)recoverPlayback(error);else reject(error)}
+    }});
+  });
+}
+
+function applyAudioStart(startAt){
+  if(!(startAt>0))return;
+  const seek=()=>{try{ui.audio.currentTime=startAt}catch{}};
+  if(ui.audio.readyState>=1)seek();else ui.audio.addEventListener('loadedmetadata',seek,{once:true});
+}
+
+async function playAudio(track,startAt=0){
+  stopYouTube();stopHls();state.audioTrackId=null;ui.audio.pause();ui.audio.removeAttribute('src');ui.audio.load();ui.audio.volume=Number(ui.volume.value)/100;state.audioTrackId=track.id;
+  if(track.source==='soundcloud'&&window.Hls?.isSupported?.()){
+    const hls=new window.Hls({enableWorker:true});state.hls=hls;
+    await new Promise((resolve,reject)=>{
+      let settled=false;
+      const finish=(callback,value)=>{if(settled)return;settled=true;callback(value)};
+      hls.on(window.Hls.Events.ERROR,(_event,data)=>{if(!data.fatal)return;if(settled)recoverPlayback(new Error(t('playbackFailed')));else finish(reject,new Error(t('playbackFailed')))});
+      hls.on(window.Hls.Events.MANIFEST_PARSED,async()=>{
+        try{applyAudioStart(startAt);await ui.audio.play();setPlaying(true);finish(resolve)}catch(error){finish(reject,error)}
+      });
+      hls.on(window.Hls.Events.MEDIA_ATTACHED,()=>hls.loadSource(track.stream_url));
+      hls.attachMedia(ui.audio);
+    });
+    return;
+  }
+  ui.audio.src=track.stream_url;
+  applyAudioStart(startAt);await ui.audio.play();setPlaying(true);
+}
+
+function updateMediaSession(track){
+  if(!('mediaSession'in navigator)||!('MediaMetadata'in window))return;
+  const artwork=safeImage(track.thumbnail);navigator.mediaSession.metadata=new MediaMetadata({title:decodeText(track.title),artist:decodeText(track.artist),album:`AWUN ¬∑ ${sourceLabels[track.source]||track.source}`,artwork:artwork?[{src:artwork}]:[]});
+  const actions={play:()=>resumePlayback(),pause:()=>pausePlayback(),previoustrack:()=>previousTrack(),nexttrack:()=>nextTrack(),seekbackward:details=>seekRelative(-(details.seekOffset||10)),seekforward:details=>seekRelative(details.seekOffset||10)};
+  Object.entries(actions).forEach(([action,handler])=>{try{navigator.mediaSession.setActionHandler(action,handler)}catch{}});
+}
+
+function matchText(value){return decodeText(value).toLocaleLowerCase().normalize('NFKD').replace(/[^\p{L}\p{N}]+/gu,' ').trim()}
+function matchScore(candidate,imported){
+  const title=matchText(candidate.title),artist=matchText(candidate.artist),wantedTitle=matchText(imported.title),wantedArtist=matchText(imported.artist==='Yandex Music'?'':imported.artist);
+  let score=Number(candidate.score)||0;if(title===wantedTitle)score+=80;else if(title.includes(wantedTitle)||wantedTitle.includes(title))score+=35;if(wantedArtist&&(artist===wantedArtist||artist.includes(wantedArtist)||wantedArtist.includes(artist)))score+=55;return score;
+}
+async function matchImportedTrack(track){
+  setMessage(t('matchingTrack',{track:`${decodeText(track.artist)} ‚Äî ${decodeText(track.title)}`}),'loading');
+  try{
+    const sources=[...state.sources].filter(source=>state.available.has(source));
+    const {data}=await requestSearch({query:`${track.artist==='Yandex Music'?'':track.artist} ${track.title}`.trim(),limit:12,sources:sources.length?sources:[...state.available],region:state.region,locale:navigator.language||null},{waitForFallback:true});
+    const candidates=data.tracks||[];if(!candidates.length)throw new Error(t('noPlayableMatch'));
+    const fresh=[...candidates].sort((left,right)=>matchScore(right,track)-matchScore(left,track))[0];fresh.catalog_links={...fresh.catalog_links,...track.catalog_links};fresh.import_origin='yandex_music';
+    const savedIndex=state.saved.findIndex(item=>item.id===track.id);if(savedIndex>=0)state.saved[savedIndex]=fresh;persist();render();setMessage(t('matchedOn',{source:sourceLabels[fresh.source]||fresh.source}),'notice');await playTrack(fresh);
+  }catch(error){setMessage(error.message||t('importedMatchFailed'),'error')}
+}
+
+function directImportedTrack(entry){
+  if(entry.source!=='youtube'||!entry.external_id)return null;
+  return{id:`yt_${entry.external_id}`,title:entry.title,artist:entry.artist||'YouTube',duration:0,quality:'VIDEO',source:'youtube',stream_url:entry.external_url||`https://www.youtube.com/watch?v=${entry.external_id}`,download_url:null,thumbnail:entry.thumbnail||null,score:82,catalog_links:{youtube:entry.external_url||`https://www.youtube.com/watch?v=${entry.external_id}`}};
+}
+async function findImportedMatch(track){
+  if(track.source==='youtube'&&track.external_id)return directImportedTrack(track);
+  const sources=[...state.sources].filter(source=>state.available.has(source));
+  const {data}=await requestSearch({query:`${track.artist==='Yandex Music'?'':track.artist} ${track.title}`.trim(),limit:8,sources:sources.length?sources:[...state.available],region:state.region,locale:navigator.language||null},{waitForFallback:true});
+  return [...(data.tracks||[])].sort((left,right)=>matchScore(right,track)-matchScore(left,track))[0]||null;
+}
+async function matchAndSaveImported(tracks){
+  if(!tracks.length)throw new Error(t('noTracksInLibrary'));
+  const queue=tracks.slice(0,100),matched=[],missed=[];let cursor=0,done=0;
+  ui.importSubmit.disabled=true;ui.importUrlSubmit.disabled=true;ui.importProgress.hidden=false;ui.importProgress.max=queue.length;ui.importProgress.value=0;
+  const worker=async()=>{while(cursor<queue.length){const track=queue[cursor++];try{const result=await findImportedMatch(track);if(result){result.import_origin='library_link';matched.push(result)}else missed.push(track)}catch{missed.push(track)}finally{done+=1;ui.importProgress.value=done;ui.importStatus.textContent=t('matchingProgress',{done,total:queue.length,found:matched.length});}}};
+  try{await Promise.all(Array.from({length:Math.min(3,queue.length)},worker));const existing=new Set(state.saved.map(track=>track.id));const additions=matched.filter(track=>!existing.has(track.id));state.saved=[...additions,...state.saved].slice(0,1500);persist();state.library=true;ui.libraryButton.classList.add('active');ui.libraryButton.setAttribute('aria-pressed','true');render();ui.importStatus.textContent=t('importDone',{added:additions.length,missed:missed.length,limit:tracks.length>100?t('first100'):''});setMessage(t('importSummary',{added:additions.length,missed:missed.length}),'notice');}
+  finally{ui.importSubmit.disabled=false;ui.importUrlSubmit.disabled=false;}
+}
+async function importLibraryUrl(){
+  const url=ui.importUrl.value.trim();if(!url){ui.importStatus.textContent=t('pastePlaylistFirst');return}
+  ui.importUrlSubmit.disabled=true;ui.importStatus.textContent=t('readingPlaylist');
+  try{const response=await awunFetch('/api/v1/library/import-url',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url,max_tracks:100})});const data=await response.json();if(!response.ok)throw new Error(data.detail||t('playlistReadFailed'));ui.importStatus.textContent=t('tracksRead',{count:data.tracks.length});await matchAndSaveImported(data.tracks||[])}
+  catch(error){ui.importStatus.textContent=error.message||t('playlistImportFailed')}
+  finally{ui.importUrlSubmit.disabled=false}
+}
+
+async function playTrack(track,options={}){
+  if(track.source==='yandex_music'){await matchImportedTrack(track);return false}
+  const preserveQueue=Boolean(options.preserveQueue),recovered=Boolean(options.recovered),resumeAt=Math.max(0,Number(options.resumeAt)||0);
+  const playbackGeneration=recovered?(Number(options.playbackGeneration)||state.playbackGeneration):(state.playbackGeneration+=1);
+  let refreshAttempted=false,refreshSucceeded=false;
+  const sessionFresh=!recovered?freshTracksByKey.get(trackSessionKey(track)):null;
+  if(sessionFresh&&sessionFresh.stream_url!==track.stream_url)track=replaceStoredTrack(track,sessionFresh);
+  if(!recovered&&options.refreshStored!==false&&shouldRefreshBeforePlayback(track)){
+    refreshAttempted=true;state.sameSourceRefreshGeneration=playbackGeneration;setMessage(t('refreshingLink'),'loading');
+    try{
+      const refreshed=await refreshTrackLink(track);
+      if(playbackGeneration!==state.playbackGeneration)return false;
+      if(refreshed){track=replaceStoredTrack(track,refreshed);refreshSucceeded=true;setMessage(t('linkRefreshed'),'notice')}
+    }catch(error){if(error?.name==='AbortError')return false}
+  }
+  if(!preserveQueue)seedContextQueue(track);
+  state.queue=playerCore.remove(state.queue,track.id);persistQueue();
+  const firstReveal=!state.active,previous=state.active;state.active=track;
+  if(!recovered){state.playbackOrigin=track;state.failedSources.clear();state.sameSourceRefreshGeneration=refreshAttempted?playbackGeneration:null}
+  else state.playbackOrigin=options.origin||state.playbackOrigin||track;
+  rememberRecent(track);ui.player.classList.remove('player-empty');ui.idleStage.setAttribute('aria-hidden','true');document.body.classList.add('has-player');ui.player.classList.remove('track-enter','track-swap');void ui.player.offsetWidth;ui.player.classList.add(firstReveal?'track-enter':'track-swap');ui.nowTitle.textContent=decodeText(track.title);ui.nowArtist.textContent=`${decodeText(track.artist)} ¬∑ ${sourceLabels[track.source]||track.source}`;ui.nowSource.textContent=sourceLabels[track.source]||track.source;
+  const image=safeImage(track.thumbnail),monogram=ui.playerArtwork.querySelector('.vinyl-monogram');
+  ui.playerArtwork.style.setProperty('--vinyl-cover',image?`url("${image}")`:'none');
+  ui.playerArtwork.classList.toggle('has-artwork',Boolean(image));
+  applyWaveform(ui.waveProgress,track,132);
+  if(monogram)monogram.textContent=image?'':(decodeText(track.title)||'AW').slice(0,2).toUpperCase();
+  updateTimeline(resumeAt,track.duration||0);updateMediaSession(track);render();emitAwun('play',{track,previous,recovered});
+  try{
+    if(track.source==='youtube')await playYouTube(track,resumeAt);else await playAudio(track,resumeAt);
+    if(refreshAttempted&&!refreshSucceeded)setMessage('');
+    return true;
+  }catch(error){
+    stopHls();setPlaying(false);
+    if(error?.name==='NotAllowedError')return false;
+    if(options.recoverOnFailure===false)return false;
+    queueMicrotask(()=>recoverPlayback(error,playbackGeneration));return false;
+  }
+}
+
+function pausePlayback(){if(state.active?.source==='youtube'){try{state.youtube?.pauseVideo()}catch{}}else ui.audio.pause();setPlaying(false)}
+function resumePlayback(){if(state.active?.source==='youtube'){try{state.youtube?.playVideo()}catch{}}else ui.audio.play().catch(()=>{});setPlaying(true)}
+function togglePlayback(){if(!state.active)return;const playing=state.active.source==='youtube'?state.youtube?.getPlayerState?.()===1:!ui.audio.paused;playing?pausePlayback():resumePlayback()}
+
+function adjacentTrack(direction){const list=currentList();if(!list.length)return null;const index=Math.max(0,list.findIndex(track=>track.id===state.active?.id));return list[(index+direction+list.length)%list.length]}
+function previousTrack(){const track=adjacentTrack(-1);if(!track)return;if(state.active)state.queue=playerCore.enqueue(state.queue,state.active,'next');state.queueMode='manual';persistQueue();playTrack(track,{preserveQueue:true})}
+function nextTrack(automatic=false){
+  if(!state.queue.length&&state.repeatMode==='all'){
+    state.queue=playerCore.uniqueTracks(currentList().filter(track=>track.id!==state.active?.id));state.queueMode='context';persistQueue();
+  }
+  const track=state.queue[0];if(!track)return false;
+  state.queue=state.queue.slice(1);persistQueue();render();if(!automatic)emitAwun('skip',{track:state.active,next:track});playTrack(track,{preserveQueue:true});return true;
+}
+function handleTrackEnded(){
+  if(!state.active)return;
+  if(state.repeatMode==='one'){seekTo(0,true);resumePlayback();return}
+  emitAwun('complete',{track:state.active});
+  if(nextTrack(true))return;
+  setPlaying(false);const duration=state.active.source==='youtube'?state.youtube?.getDuration?.():ui.audio.duration;updateTimeline(duration||state.active.duration||0,duration||state.active.duration||0);
+}
+function seekRelative(offset){const duration=state.active?.source==='youtube'?state.youtube?.getDuration?.():ui.audio.duration;const current=state.active?.source==='youtube'?state.youtube?.getCurrentTime?.():ui.audio.currentTime;seekTo(Math.max(0,Math.min(duration||0,(current||0)+offset)),true)}
+function seekTo(seconds,allowSeek=true){if(state.active?.source==='youtube'){try{state.youtube?.seekTo(seconds,allowSeek)}catch{}}else if(Number.isFinite(ui.audio.duration))ui.audio.currentTime=seconds}
+
+function currentPlaybackTime(){
+  const current=state.active?.source==='youtube'?state.youtube?.getCurrentTime?.():ui.audio.currentTime;
+  return Math.max(0,Number(current)||0,state.playbackPosition||0);
+}
+
+function shouldRefreshBeforePlayback(track){
+  return Boolean(track?.id&&track.source!=='youtube'&&track.source!=='yandex_music'&&!freshTracksByKey.has(trackSessionKey(track)));
+}
+
+async function refreshTrackLink(track){
+  if(!track?.id||!track.source||track.source==='yandex_music')return null;
+  const query=`${decodeText(track.artist)} ${decodeText(track.title)}`.trim();
+  if(!query)return null;
+  const {data}=await requestSearch({query,limit:12,sources:[track.source],region:state.region,locale:navigator.language||null,fast:true},{waitForFallback:true});
+  const candidates=(data.tracks||[]).filter(candidate=>candidate.source===track.source);
+  return candidates.find(candidate=>candidate.id===track.id)||playerCore.rankAlternatives(track,candidates,new Set())[0]||null;
+}
+
+function replaceStoredTrack(origin,replacement){
+  const merged={...replacement,catalog_links:{...(origin.catalog_links||{}),...(replacement.catalog_links||{})}};
+  const replace=items=>{const seen=new Set();return items.map(track=>track.id===origin.id?merged:track).filter(track=>{if(!track?.id||seen.has(track.id))return false;seen.add(track.id);return true})};
+  state.saved=replace(state.saved);state.recents=replace(state.recents);state.queue=replace(state.queue);state.tracks=replace(state.tracks);
+  freshTracksByKey.set(trackSessionKey(merged),merged);
+  persist();
+  return merged;
+}
+
+async function recoverPlayback(_error,expectedGeneration=state.playbackGeneration){
+  if(!state.active||expectedGeneration!==state.playbackGeneration||state.recoveringGeneration===expectedGeneration)return false;
+  const failed=state.active,origin=state.playbackOrigin||failed,resumeAt=currentPlaybackTime(),from=sourceLabels[failed.source]||failed.source;
+  state.recoveringGeneration=expectedGeneration;
+  try{
+    if(state.sameSourceRefreshGeneration!==expectedGeneration){
+      state.sameSourceRefreshGeneration=expectedGeneration;setMessage(t('refreshingLink'),'loading');
+      let refreshed=null;
+      try{refreshed=await refreshTrackLink(failed)}catch{}
+      if(expectedGeneration!==state.playbackGeneration)return false;
+      if(refreshed){
+        const started=await playTrack(refreshed,{preserveQueue:true,recovered:true,resumeAt,origin,playbackGeneration:expectedGeneration,recoverOnFailure:false});
+        if(expectedGeneration!==state.playbackGeneration)return false;
+        if(started){replaceStoredTrack(origin,refreshed);setMessage(t('linkRefreshed'),'notice');return true}
+      }
+    }
+    state.failedSources.add(failed.source);setMessage(t('findingAlternative',{source:from}),'loading');
+    const sources=[...state.available].filter(source=>!state.failedSources.has(source)&&source!=='yandex_music');if(!sources.length)throw new Error();
+    const {data}=await requestSearch({query:`${origin.artist} ${origin.title}`,limit:20,sources,region:state.region,locale:navigator.language||null},{waitForFallback:true});
+    if(expectedGeneration!==state.playbackGeneration)return false;
+    const alternatives=playerCore.rankAlternatives(origin,data.tracks||[],state.failedSources);
+    for(const candidate of alternatives){
+      if(expectedGeneration!==state.playbackGeneration)return false;
+      const started=await playTrack(candidate,{preserveQueue:true,recovered:true,resumeAt,origin,playbackGeneration:expectedGeneration,recoverOnFailure:false});
+      if(expectedGeneration!==state.playbackGeneration)return false;
+      if(started){replaceStoredTrack(origin,candidate);setMessage(t('sourceSwitched',{from,to:sourceLabels[candidate.source]||candidate.source}),'notice');return true}
+      state.failedSources.add(candidate.source);
+    }
+    throw new Error();
+  }catch{setPlaying(false);setMessage(t('allSourcesFailed'),'error');return false}
+  finally{if(state.recoveringGeneration===expectedGeneration)state.recoveringGeneration=null}
+}
+
+sourceButtons().forEach(button=>button.addEventListener('click',()=>{const source=button.dataset.source;if(!state.available.has(source))return;if(state.sources.has(source))state.sources.delete(source);else state.sources.add(source);button.classList.toggle('on',state.sources.has(source))}));
+ui.allSourcesButton?.addEventListener('click',()=>{state.sources=new Set(state.available);sourceButtons().forEach(button=>button.classList.toggle('on',state.sources.has(button.dataset.source)))});
+ui.regionSelect.addEventListener('change',()=>{state.region=regions.includes(ui.regionSelect.value)?ui.regionSelect.value:'AUTO';localStorage.setItem('awun-region',state.region)});
+ui.limitSelect.addEventListener('change',()=>{const value=Number(ui.limitSelect.value);state.resultLimit=resultLimits.includes(value)?value:60;localStorage.setItem('awun-result-limit',String(state.resultLimit))});
+ui.themeButton.addEventListener('click',()=>ui.themePanel.hidden?openThemePanel():closeThemePanel());ui.themeClose.addEventListener('click',closeThemePanel);ui.themeBackdrop.addEventListener('click',closeThemePanel);ui.diagnosticsButton.addEventListener('click',openDiagnosticsPanel);ui.diagnosticsClose.addEventListener('click',closeThemePanel);ui.diagnosticsRefresh.addEventListener('click',refreshStatus);ui.diagnosticsCopy.addEventListener('click',copyDiagnostics);document.getElementById('flowButton')?.addEventListener('click',()=>{setQueueOpen(false);setPlayerExpanded(false);if(!ui.themePanel.hidden||!ui.diagnosticsPanel.hidden)closeThemePanel()});
+ui.importButton.addEventListener('click',()=>ui.importPanel.hidden?openImportPanel():closeImportPanel());ui.importClose.addEventListener('click',closeImportPanel);ui.importBackdrop.addEventListener('click',closeImportPanel);ui.importFileButton.addEventListener('click',()=>ui.libraryFile.click());ui.importSubmit.addEventListener('click',importLibrary);ui.importUrlSubmit.addEventListener('click',importLibraryUrl);
+ui.libraryFile.addEventListener('change',async()=>{const file=ui.libraryFile.files?.[0];if(!file)return;if(file.size>2*1024*1024){ui.importStatus.textContent=t('fileTooLarge');return}try{ui.importText.value=await file.text();ui.importFileName.textContent=file.name;const count=parseImportedLibrary(ui.importText.value,file.name).length;ui.importStatus.textContent=t('uniqueTracksReady',{count})}catch(error){ui.importStatus.textContent=error.message||t('fileReadFailed')}});
+document.querySelectorAll('[data-theme-choice]').forEach(button=>button.addEventListener('click',()=>{state.theme=button.dataset.themeChoice;applyVisual()}));
+document.querySelectorAll('[data-home-action]').forEach(button=>button.addEventListener('click',()=>{if(button.dataset.homeAction==='all-recent'&&state.recents.length){state.library=false;state.hasSearched=true;state.tracks=[...state.recents];render();return}ui.searchInput.focus({preventScroll:true});ui.searchInput.scrollIntoView({behavior:document.documentElement.dataset.motion==='off'?'auto':'smooth',block:'center'})}));
+ui.motionToggle.addEventListener('click',()=>{state.motion=state.motion==='on'?'off':'on';applyVisual()});ui.decorToggle.addEventListener('click',()=>{state.decor=state.decor==='full'?'minimal':'full';applyVisual()});ui.densityToggle.addEventListener('click',()=>{const modes=['compact','standard','airy'];state.density=modes[(modes.indexOf(state.density)+1)%modes.length];applyVisual()});
+ui.searchForm.addEventListener('submit',event=>{event.preventDefault();search()});
+ui.languageButton.addEventListener('click',()=>i18n.setLanguage(language==='en'?'ru':'en'));document.querySelectorAll('[data-search-suggestion]').forEach(button=>button.addEventListener('click',()=>{ui.searchInput.value=button.dataset.searchSuggestion;search(button.dataset.searchSuggestion)}));ui.guideSearch.addEventListener('click',()=>ui.searchInput.focus());ui.guideWave.addEventListener('click',()=>document.getElementById('flowButton').click());ui.guideImport.addEventListener('click',()=>ui.importButton.click());ui.idleSearchButton?.addEventListener('click',()=>{ui.searchInput.focus({preventScroll:true});ui.searchInput.scrollIntoView({behavior:document.documentElement.dataset.motion==='off'?'auto':'smooth',block:'center'})});ui.idleWaveButton?.addEventListener('click',()=>document.getElementById('flowButton').click());
+function setLibraryView(enabled){setQueueOpen(false);setPlayerExpanded(false);if(!ui.themePanel.hidden||!ui.diagnosticsPanel.hidden)closeThemePanel();state.library=enabled;state.hasSearched=enabled;ui.libraryButton.classList.toggle('active',enabled);ui.libraryButton.setAttribute('aria-pressed',String(enabled));ui.searchNavButton.classList.toggle('active',!enabled);ui.searchNavButton.setAttribute('aria-pressed',String(!enabled));setMessage(enabled?t(state.saved.length?'libraryStored':'libraryEmpty'):'');render()}
+ui.libraryButton.addEventListener('click',()=>setLibraryView(!state.library));
+ui.playPause.addEventListener('click',togglePlayback);ui.previousTrack.addEventListener('click',previousTrack);ui.nextTrack.addEventListener('click',nextTrack);ui.repeatMode.addEventListener('click',cycleRepeatMode);
+ui.queueToggle?.addEventListener('click',()=>{if(state.active)setQueueOpen(!ui.player.classList.contains('queue-open'))});ui.queueClose?.addEventListener('click',()=>setQueueOpen(false));ui.expandPlayer?.addEventListener('click',()=>{if(state.active)setPlayerExpanded(true)});ui.collapsePlayer?.addEventListener('click',()=>setPlayerExpanded(false));
+ui.closePlayer.addEventListener('click',()=>{setQueueOpen(false);setPlayerExpanded(false);state.playbackGeneration+=1;state.audioTrackId=null;pausePlayback();stopYouTube();stopHls();ui.audio.removeAttribute('src');ui.idleStage.setAttribute('aria-hidden','false');ui.player.classList.remove('track-enter','track-swap');ui.player.classList.add('player-empty');document.body.classList.remove('has-player');state.active=null;ui.nowTitle.textContent=t('nothingPlaying');ui.nowArtist.textContent='AWUN';ui.nowSource.textContent='‚Äî';render()});
+ui.searchNavButton.addEventListener('click',()=>{setLibraryView(false);state.hasSearched=false;render();ui.searchInput.focus({preventScroll:true});ui.searchInput.scrollIntoView({behavior:document.documentElement.dataset.motion==='off'?'auto':'smooth',block:'center'})});
+ui.clearQueue?.addEventListener('click',()=>{state.queue=[];state.queueMode='manual';persistQueue();render()});
+ui.minimizeVideo.addEventListener('click',()=>{ui.youtubeDock.classList.toggle('minimized');ui.minimizeVideo.textContent=ui.youtubeDock.classList.contains('minimized')?'‚ñ°':'‚Äî'});
+ui.progress.addEventListener('pointerdown',()=>{state.seeking=true});ui.progress.addEventListener('pointerup',()=>{state.seeking=false;const duration=state.active?.source==='youtube'?state.youtube?.getDuration?.():ui.audio.duration;seekTo((Number(ui.progress.value)/1000)*(duration||0),true)});ui.progress.addEventListener('input',()=>{setRange(ui.progress,ui.progress.value);const duration=state.active?.source==='youtube'?state.youtube?.getDuration?.():ui.audio.duration;ui.elapsed.textContent=formatTime((Number(ui.progress.value)/1000)*(duration||0))});
+ui.volume.addEventListener('input',()=>{setRange(ui.volume,ui.volume.value);const value=Number(ui.volume.value);ui.audio.volume=value/100;try{state.youtube?.setVolume(value)}catch{}ui.muteButton.textContent=t(value?'volume':'mute')});
+ui.muteButton.addEventListener('click',()=>{const muted=Number(ui.volume.value)===0;if(muted)setRange(ui.volume,Math.round(state.lastVolume*100)||82);else{state.lastVolume=Number(ui.volume.value)/100;setRange(ui.volume,0)}ui.volume.dispatchEvent(new Event('input'))});
+ui.audio.addEventListener('timeupdate',()=>updateTimeline(ui.audio.currentTime,ui.audio.duration));ui.audio.addEventListener('loadedmetadata',()=>updateTimeline(ui.audio.currentTime,ui.audio.duration));ui.audio.addEventListener('play',()=>{setPlaying(true);startWaveformCapture(state.active)});ui.audio.addEventListener('pause',()=>{stopWaveformCapture();setPlaying(false)});ui.audio.addEventListener('ended',()=>{stopWaveformCapture();handleTrackEnded()});ui.audio.addEventListener('error',()=>{stopWaveformCapture();if(state.active?.id===state.audioTrackId)recoverPlayback()});
+window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();installPrompt=event;ui.installButton.hidden=false});window.addEventListener('appinstalled',()=>{installPrompt=null;ui.installButton.hidden=true;setMessage(t('installed'),'notice')});ui.installButton.addEventListener('click',async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;ui.installButton.hidden=true});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&ui.player.classList.contains('queue-open')){setQueueOpen(false);return}if(event.key==='Escape'&&ui.player.classList.contains('expanded-player')){setPlayerExpanded(false);return}if(event.key==='Escape'&&!ui.importPanel.hidden){closeImportPanel();return}if(event.key==='Escape'&&(!ui.themePanel.hidden||!ui.diagnosticsPanel.hidden)){closeThemePanel();return}if(event.code==='Space'&&!['INPUT','TEXTAREA','BUTTON'].includes(document.activeElement?.tagName)&&state.active){event.preventDefault();togglePlayback()}});
+
+async function bootstrap(){
+  const url=runtimeParams,requestedRegion=url.get('region')?.toUpperCase(),requestedLimit=Number(url.get('limit'));if(regions.includes(requestedRegion)){state.region=requestedRegion;localStorage.setItem('awun-region',state.region)}if(resultLimits.includes(requestedLimit)){state.resultLimit=requestedLimit;localStorage.setItem('awun-result-limit',String(requestedLimit))}ui.regionSelect.value=state.region;ui.limitSelect.value=String(state.resultLimit);
+  if(!playStoreMode&&'serviceWorker'in navigator)navigator.serviceWorker.register('/service-worker.js').catch(()=>{});ui.player.hidden=false;ui.player.classList.add('player-empty');applyLanguage();applyVisual(false);applyRepeatMode(false);updateClock();setInterval(updateClock,1000);persist();setRange(ui.volume,82);setRange(ui.progress,0);render();await refreshStatus();
+  const query=url.get('q');if(query){ui.searchInput.value=query;search(query)}
+}
+window.awunApp={state,ui,playTrack,render,search,toggleSave,currentList,setMessage,sourceLabels,decodeText,matchText,loadingRows,awunFetch,requestSearch,pausePlayback,playStoreMode,apiBase,fallbackApiBase,apiUrl,refreshStatus,replaceQueue,appendQueue};
+document.addEventListener('awun:language',event=>{language=event.detail.language;applyVisual(false);applyRepeatMode(false);render();renderDiagnostics();refreshStatus()});
+bootstrap();
