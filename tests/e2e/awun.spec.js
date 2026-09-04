@@ -45,6 +45,18 @@ test('an unavailable YouTube embed switches to the matching connected source', a
   await expect(page.locator('#youtubeDock')).toBeHidden();
 });
 
+test('an available YouTube track keeps the official player visible and minimizable', async ({ page }) => {
+  await openAwun(page);
+  await searchFor(page, 'midnight signal');
+  const youtube = page.locator('#trackList .track[data-source="youtube"]').first();
+  await youtube.locator('.play').click();
+
+  await expect(page.locator('#nowSource')).toHaveText('YouTube');
+  await expect(page.locator('#youtubeDock')).toBeVisible();
+  await page.locator('#minimizeVideo').click();
+  await expect(page.locator('#youtubeDock')).toHaveClass(/minimized/);
+});
+
 test('manual queue survives a page reload and remains reorderable', async ({ page }) => {
   await openAwun(page);
   await searchFor(page, 'midnight signal');
@@ -74,7 +86,7 @@ for (const viewport of [
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     await openAwun(page);
     await searchFor(page, 'midnight signal');
-    await page.locator('#trackList .track').first().locator('.play').click();
+    await page.locator('#trackList .track[data-source="audius"]').first().locator('.play').click();
     await expect(page).toHaveScreenshot(`${viewport.name}.png`, { fullPage: true });
   });
 }
