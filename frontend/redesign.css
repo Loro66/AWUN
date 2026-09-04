@@ -414,8 +414,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .home-track-meter:before,.home-track-meter:after,
 .track-waveform:before,.track-waveform:after,
 .player .wave-progress:before,.player .wave-progress:after{
+  position:absolute;
   inset:0;
   width:auto;
+  content:"";
   clip-path:none;
   background:rgba(var(--paper-rgb),.22);
   -webkit-mask-image:var(--wave-mask);
@@ -427,6 +429,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   -webkit-mask-size:100% 100%;
   mask-size:100% 100%;
 }
+.track-waveform{--track-progress:0%;position:relative;padding:0;overflow:hidden;border:0;background:transparent;cursor:pointer}
 .home-track-meter:after,.track-waveform:after{
   width:auto;
   background:var(--signal);
