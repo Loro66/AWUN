@@ -87,6 +87,10 @@ for (const viewport of [
     await openAwun(page);
     await searchFor(page, 'midnight signal');
     await page.locator('#trackList .track[data-source="audius"]').first().locator('.play').click();
+    await page.evaluate(() => {
+      document.activeElement?.blur();
+      window.scrollTo(0, 0);
+    });
     await expect(page).toHaveScreenshot(`${viewport.name}.png`, { fullPage: true });
   });
 }
