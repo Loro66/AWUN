@@ -68,6 +68,9 @@ Open `https://YOUR-AWUN-API/` after deployment.
 - Search results appear source by source instead of waiting for the slowest provider.
 - Settings opens source diagnostics with average latency, the latest provider error and a safe
   copyable report.
+- Source diagnostics stays online after results render and separates API failures from interface
+  update errors. Unavailable YouTube embeds are recorded locally and trigger cross-source recovery
+  instead of retrying the same permanent video URL.
 - At tablet and compact desktop widths, player volume and queue controls stay on one row without
   clipping; result queue menus stack above adjacent cards and open upward near the scroll edge.
 - Disabled providers are visibly marked `NOT CONNECTED` and are not sent in a

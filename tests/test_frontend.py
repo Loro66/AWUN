@@ -319,7 +319,18 @@ def test_provider_waveforms_progressive_search_and_diagnostics_are_wired() -> No
     assert 'id="diagnosticsPanel"' in html and 'id="diagnosticsCopy"' in html
     assert 'aria-controls="diagnosticsPanel"' in html
     assert "diagnosticsReport" in app and "copyDiagnostics" in app
+    assert "querySelectorAll('#sources button[data-source]')" in app
+    assert "state.diagnostics={...snapshot,ui_error:" in app
     assert '"source_health": search_engine.source_health' in api
+
+
+def test_youtube_embed_failures_skip_same_source_refresh_and_recover() -> None:
+    app = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+
+    assert "youtubeStartTimer" in app
+    assert "recordPlaybackHealth('youtube',{success:false" in app
+    assert "stopYouTube();setPlaying(false);if(ready)void recoverPlayback" in app
+    assert "failed.source!=='youtube'&&state.sameSourceRefreshGeneration" in app
 
 
 def test_listener_first_onboarding_and_language_switch_are_wired() -> None:

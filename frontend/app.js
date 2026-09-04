@@ -135,7 +135,7 @@ const visualThemes={black:{labelKey:'themeBlackShort',color:'#050505'},white:{la
 const restoredQueue=loadQueueState();
 const state={
   tracks:[],saved:loadLibrary(),recents:loadRecents(),queue:restoredQueue.items,queueMode:restoredQueue.mode,available:new Set(),sources:new Set(),region:loadRegion(),resultLimit:loadResultLimit(),repeatMode:loadRepeatMode(),library:false,hasSearched:false,active:null,controller:null,
-  youtube:null,youtubeApi:null,youtubeTicker:null,hls:null,audioGraph:null,waveformCapture:null,waveformCaptureFrame:null,seeking:false,recoveringGeneration:null,sameSourceRefreshGeneration:null,playbackGeneration:0,audioTrackId:null,failedSources:new Set(),playbackOrigin:null,playbackPosition:0,lastVolume:.82,expanded:null,details:new Map(),detailsController:null,openLines:new Set(),lineComments:loadLineComments(),geniusEnabled:false,diagnostics:null,...loadVisual()
+  youtube:null,youtubeApi:null,youtubeTicker:null,youtubeStartTimer:null,hls:null,audioGraph:null,waveformCapture:null,waveformCaptureFrame:null,seeking:false,recoveringGeneration:null,sameSourceRefreshGeneration:null,playbackGeneration:0,audioTrackId:null,failedSources:new Set(),playbackOrigin:null,playbackPosition:0,lastVolume:.82,expanded:null,details:new Map(),detailsController:null,openLines:new Set(),lineComments:loadLineComments(),geniusEnabled:false,diagnostics:null,playbackHealth:{},...loadVisual()
 };
 let installPrompt=null;
 let language=i18n.language;
@@ -373,7 +373,16 @@ function setRange(range,value){
   if(range.classList.contains('progress'))range.parentElement?.style.setProperty('--value',`${percent}%`);
 }
 
-function sourceButtons(){return [...document.querySelectorAll('[data-source]')]}
+function sourceButtons(){return [...document.querySelectorAll('#sources button[data-source]')]}
+
+function recordPlaybackHealth(source,{success,error=null,latencyMs=null}={}){
+  if(!source)return;
+  const now=new Date().toISOString(),entry=state.playbackHealth[source]||{samples:0,successes:0};entry.samples+=1;
+  if(success){entry.successes+=1;entry.last_success_at=now;if(Number.isFinite(latencyMs))entry.last_latency_ms=Math.max(0,Math.round(latencyMs))}
+  else{entry.last_error=String(error||t('playbackFailed')).slice(0,240);entry.last_error_at=now}
+  state.playbackHealth[source]=entry;
+}
+function activePlaybackFailure(entry){return Boolean(entry?.last_error_at&&(!entry.last_success_at||entry.last_error_at>entry.last_success_at))}
 
 const diagnosticSources=['soundcloud','youtube','audius','jamendo','internet_archive'];
 function diagnosticOrigin(origin){return t({local:'diagnosticLocalApi',fallback:'diagnosticFallbackApi',configured:'diagnosticConfiguredApi',current:'diagnosticCurrentApi'}[origin]||'diagnosticUnknownApi')}
@@ -389,8 +398,8 @@ function renderDiagnostics(){
   ui.diagnosticsChecked.textContent=snapshot?.checked_at?diagnosticTime(snapshot.checked_at):t('diagnosticNever');
   ui.diagnosticsList.replaceChildren();
   diagnosticSources.forEach(source=>{
-    const provider=data.providers?.[source]||{},sample=health[source]||{},enabled=available.has(source)&&provider.enabled!==false;
-    const status=snapshot?.error?'unavailable':enabled?(sample.status||'unknown'):'disabled';
+    const provider=data.providers?.[source]||{},sample=health[source]||{},playback=state.playbackHealth[source]||{},enabled=available.has(source)&&provider.enabled!==false;
+    const status=snapshot?.error?'unavailable':activePlaybackFailure(playback)?'degraded':enabled?(sample.status||'unknown'):'disabled';
     const row=document.createElement('article');row.className=`diagnostic-source ${status}`;
     const head=document.createElement('div');const identity=document.createElement('div');const dot=document.createElement('i');dot.setAttribute('aria-hidden','true');const name=document.createElement('strong');name.textContent=sourceLabels[source]||source;identity.append(dot,name);const badge=document.createElement('span');badge.textContent=t(`diagnosticStatus_${status}`);head.append(identity,badge);
     const metrics=document.createElement('dl');
@@ -400,7 +409,8 @@ function renderDiagnostics(){
       [t('diagnosticLastCheck'),diagnosticTime(sample.last_checked_at)]
     ];
     fields.forEach(([label,value])=>{const group=document.createElement('div');const term=document.createElement('dt');term.textContent=label;const detail=document.createElement('dd');detail.textContent=value;group.append(term,detail);metrics.append(group)});
-    const error=document.createElement('p');error.textContent=sample.last_error?`${t('diagnosticLastError')} · ${diagnosticTime(sample.last_error_at)}: ${String(sample.last_error).slice(0,240)}`:t(status==='disabled'?'diagnosticDisabledHint':'diagnosticNoErrors');
+    const latestError=activePlaybackFailure(playback)?playback.last_error:sample.last_error,latestErrorAt=activePlaybackFailure(playback)?playback.last_error_at:sample.last_error_at;
+    const error=document.createElement('p');error.textContent=latestError?`${t('diagnosticLastError')} · ${diagnosticTime(latestErrorAt)}: ${String(latestError).slice(0,240)}`:t(status==='disabled'?'diagnosticDisabledHint':'diagnosticNoErrors');
     row.append(head,metrics,error);ui.diagnosticsList.append(row);
   });
 }
@@ -409,7 +419,8 @@ function diagnosticsReport(){
   return JSON.stringify({
     app:'AWUN',version:data.version||'unknown',created_at:new Date().toISOString(),platform:runtimePlatform,
     api:{mode:snapshot?.origin||'unavailable',latency_ms:snapshot?.endpoint_latency_ms??null,error:snapshot?.error||null},
-    sources:diagnosticSources.map(source=>({source,enabled:(data.sources||[]).includes(source),status:health[source]?.status||'unknown',average_latency_ms:health[source]?.average_latency_ms??null,success_rate:health[source]?.success_rate??null,samples:health[source]?.samples??0,last_checked_at:health[source]?.last_checked_at||null,last_success_at:health[source]?.last_success_at||null,last_error_at:health[source]?.last_error_at||null,last_error:health[source]?.last_error||null}))
+    ui_error:snapshot?.ui_error||null,
+    sources:diagnosticSources.map(source=>({source,enabled:(data.sources||[]).includes(source),status:activePlaybackFailure(state.playbackHealth[source])?'degraded':health[source]?.status||'unknown',average_latency_ms:health[source]?.average_latency_ms??null,success_rate:health[source]?.success_rate??null,samples:health[source]?.samples??0,last_checked_at:health[source]?.last_checked_at||null,last_success_at:health[source]?.last_success_at||null,last_error_at:health[source]?.last_error_at||null,last_error:health[source]?.last_error||null,playback:state.playbackHealth[source]||null}))
   },null,2);
 }
 async function copyDiagnostics(){
@@ -423,8 +434,18 @@ async function copyDiagnostics(){
 
 async function refreshStatus(){
   ui.diagnosticsRefresh?.setAttribute('aria-busy','true');
+  let snapshot;
   try{
-    const snapshot=await requestHealthSnapshot(),data=snapshot.data;state.diagnostics=snapshot;
+    snapshot=await requestHealthSnapshot();state.diagnostics=snapshot;
+  }catch(error){
+    state.diagnostics={error:error?.message||t('healthFailed'),origin:'unavailable',endpoint_latency_ms:null,checked_at:new Date().toISOString(),data:{sources:[],source_health:{},providers:{}}};
+    if(ui.status){ui.status.className='status offline';const label=ui.status.querySelector('b');if(label)label.textContent=t('offline')}
+    if(ui.searchMeta)ui.searchMeta.textContent=t('healthFailed');
+    sourceButtons().forEach(button=>{button.disabled=true;button.classList.remove('on');const hint=button.querySelector('small');if(hint)hint.textContent=t('offline')});
+    ui.diagnosticsRefresh?.removeAttribute('aria-busy');renderDiagnostics();return;
+  }
+  try{
+    const data=snapshot.data;
     state.available=new Set(data.sources||[]);
     state.geniusEnabled=Boolean(data.providers?.track_stories?.genius_annotations);
     state.sources=new Set([...state.sources].filter(source=>state.available.has(source)));
@@ -434,19 +455,14 @@ async function refreshStatus(){
       const available=state.available.has(source);
       button.disabled=!available;
       button.classList.toggle('on',available&&state.sources.has(source));
-      button.querySelector('small').textContent=t(available?'active':'notConnected');
+      const hint=button.querySelector('small');if(hint)hint.textContent=t(available?'active':'notConnected');
       button.title=t(available?'sourceAvailable':'sourceUnavailable',{source:sourceLabels[source]});
     });
     const names=[...state.available].map(source=>sourceLabels[source]||source);
-    ui.status.className='status live';
-    ui.status.querySelector('b').textContent=names.length?t('liveSources',{sources:names.join(' / ').toUpperCase()}):t('liveNoSources');
-    ui.searchMeta.textContent=names.length?t(names.length===1?'sourceOnline':'sourcesOnline',{count:names.length}):t('localNoSources');
+    if(ui.status){ui.status.className='status live';const label=ui.status.querySelector('b');if(label)label.textContent=names.length?t('liveSources',{sources:names.join(' / ').toUpperCase()}):t('liveNoSources')}
+    if(ui.searchMeta)ui.searchMeta.textContent=names.length?t(names.length===1?'sourceOnline':'sourcesOnline',{count:names.length}):t('localNoSources');
   }catch(error){
-    state.diagnostics={error:error?.message||t('healthFailed'),origin:'unavailable',endpoint_latency_ms:null,checked_at:new Date().toISOString(),data:{sources:[],source_health:{},providers:{}}};
-    ui.status.className='status offline';
-    ui.status.querySelector('b').textContent=t('offline');
-    ui.searchMeta.textContent=t('healthFailed');
-    sourceButtons().forEach(button=>{button.disabled=true;button.classList.remove('on');button.querySelector('small').textContent=t('offline')});
+    state.diagnostics={...snapshot,ui_error:error?.message||'interface update failed'};
   }finally{ui.diagnosticsRefresh?.removeAttribute('aria-busy');renderDiagnostics()}
 }
 
@@ -710,6 +726,7 @@ function ensureYouTubeApi(){
 }
 
 function stopYouTube(){
+  clearTimeout(state.youtubeStartTimer);state.youtubeStartTimer=null;
   clearInterval(state.youtubeTicker);state.youtubeTicker=null;
   if(state.youtube){try{state.youtube.destroy()}catch{}state.youtube=null}
   ui.youtubePlayer.replaceChildren();ui.youtubeDock.hidden=true;
@@ -741,13 +758,14 @@ function updateTimeline(current,duration){
 async function playYouTube(track,startAt=0){
   state.audioTrackId=null;ui.audio.pause();ui.audio.removeAttribute('src');stopHls();stopYouTube();ui.youtubeDock.hidden=false;ui.youtubeDock.classList.remove('minimized');
   const YT=await ensureYouTubeApi(),videoId=youtubeId(track);if(!videoId)throw new Error(t('invalidYoutubeResult'));
+  const startedAt=performance.now(),expectedGeneration=state.playbackGeneration;
   const target=document.createElement('div');ui.youtubePlayer.replaceChildren(target);
   await new Promise((resolve,reject)=>{
     let ready=false;
     state.youtube=new YT.Player(target,{width:'100%',height:'100%',videoId,playerVars:{autoplay:1,controls:1,playsinline:1,rel:0,origin:location.origin},events:{
-      onReady:event=>{ready=true;event.target.setVolume(Number(ui.volume.value));if(startAt>0)event.target.seekTo(startAt,true);event.target.playVideo();setPlaying(true);state.youtubeTicker=setInterval(()=>{if(state.youtube?.getCurrentTime)updateTimeline(state.youtube.getCurrentTime(),state.youtube.getDuration())},500);resolve()},
-      onStateChange:event=>{if(event.data===YT.PlayerState.PLAYING)setPlaying(true);if(event.data===YT.PlayerState.PAUSED)setPlaying(false);if(event.data===YT.PlayerState.ENDED)handleTrackEnded()},
-      onError:()=>{const error=new Error(t('youtubeEmbedError'));if(ready)recoverPlayback(error);else reject(error)}
+      onReady:event=>{ready=true;event.target.setVolume(Number(ui.volume.value));if(startAt>0)event.target.seekTo(startAt,true);event.target.playVideo();state.youtubeTicker=setInterval(()=>{if(state.youtube?.getCurrentTime)updateTimeline(state.youtube.getCurrentTime(),state.youtube.getDuration())},500);state.youtubeStartTimer=setTimeout(()=>{if(expectedGeneration!==state.playbackGeneration||state.active?.id!==track.id||state.youtube?.getPlayerState?.()===YT.PlayerState.PLAYING)return;const error=new Error(t('youtubeEmbedError'));recordPlaybackHealth('youtube',{success:false,error:`${error.message} (start timeout)`});stopYouTube();setPlaying(false);void recoverPlayback(error,expectedGeneration)},12000);resolve()},
+      onStateChange:event=>{if(event.data===YT.PlayerState.PLAYING){clearTimeout(state.youtubeStartTimer);state.youtubeStartTimer=null;recordPlaybackHealth('youtube',{success:true,latencyMs:performance.now()-startedAt});setPlaying(true)}if(event.data===YT.PlayerState.PAUSED)setPlaying(false);if(event.data===YT.PlayerState.ENDED)handleTrackEnded()},
+      onError:event=>{const error=new Error(`${t('youtubeEmbedError')} (code ${event?.data??'unknown'})`);recordPlaybackHealth('youtube',{success:false,error:error.message});stopYouTube();setPlaying(false);if(ready)void recoverPlayback(error,expectedGeneration);else reject(error)}
     }});
   });
 }
@@ -921,7 +939,7 @@ async function recoverPlayback(_error,expectedGeneration=state.playbackGeneratio
   const failed=state.active,origin=state.playbackOrigin||failed,resumeAt=currentPlaybackTime(),from=sourceLabels[failed.source]||failed.source;
   state.recoveringGeneration=expectedGeneration;
   try{
-    if(state.sameSourceRefreshGeneration!==expectedGeneration){
+    if(failed.source!=='youtube'&&state.sameSourceRefreshGeneration!==expectedGeneration){
       state.sameSourceRefreshGeneration=expectedGeneration;setMessage(t('refreshingLink'),'loading');
       let refreshed=null;
       try{refreshed=await refreshTrackLink(failed)}catch{}
