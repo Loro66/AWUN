@@ -165,6 +165,22 @@
       diagnosticsPrivacy: 'The report contains technical status only.',
       refreshDiagnostics: 'REFRESH',
       copyDiagnostics: 'COPY REPORT',
+      localToolsAria: 'Local data, logs and updates',
+      localToolsReady: 'Local data is ready.',
+      downloadLog: 'DOWNLOAD LOG',
+      exportData: 'EXPORT DATA',
+      restoreData: 'RESTORE',
+      checkUpdates: 'CHECK FOR UPDATE',
+      openRelease: 'OPEN RELEASE',
+      dataExported: 'AWUN data exported.',
+      dataRestored: 'Data restored. Reloading AWUN.',
+      dataRestoreFailed: 'This AWUN backup could not be restored.',
+      storageSaveFailed: 'Local data could not be saved. Export a backup and free disk space.',
+      updateChecking: 'Checking GitHub Releases…',
+      updateAvailable: 'AWUN {version} is available.',
+      updateCurrent: 'You already have the latest release.',
+      updateNoRelease: 'No published release is available yet.',
+      updateFailed: 'Could not check for updates.',
       diagnosticLocalApi: 'LOCAL API',
       diagnosticFallbackApi: 'REMOTE FALLBACK',
       diagnosticConfiguredApi: 'CONFIGURED API',
@@ -277,6 +293,8 @@
       youtubeEmbedError: 'This YouTube track is unavailable in the embedded player.',
       youtubeUnavailable: 'YouTube playback is unavailable.',
       playbackFailed: 'Playback could not start. Try another result.',
+      findingYoutubeAlternative: 'This YouTube video is unavailable. Looking for another upload of the same recording…',
+      youtubeAlternative: 'The unavailable YouTube video was replaced with another playable upload.',
       findingAlternative: '{source} playback failed. Finding the same recording on another source…',
       sourceSwitched: '{from} stopped responding. Playback continued from the same position on {to}.',
       allSourcesFailed: 'This recording is currently unavailable on every connected source.',
@@ -511,6 +529,22 @@
       diagnosticsPrivacy: 'В отчёте только технические статусы.',
       refreshDiagnostics: 'ОБНОВИТЬ',
       copyDiagnostics: 'КОПИРОВАТЬ ОТЧЁТ',
+      localToolsAria: 'Локальные данные, журнал и обновления',
+      localToolsReady: 'Локальные данные готовы.',
+      downloadLog: 'СКАЧАТЬ ЛОГ',
+      exportData: 'ЭКСПОРТ ДАННЫХ',
+      restoreData: 'ВОССТАНОВИТЬ',
+      checkUpdates: 'ПРОВЕРИТЬ ОБНОВЛЕНИЕ',
+      openRelease: 'ОТКРЫТЬ РЕЛИЗ',
+      dataExported: 'Данные AWUN экспортированы.',
+      dataRestored: 'Данные восстановлены. AWUN перезапускается.',
+      dataRestoreFailed: 'Не удалось восстановить эту резервную копию AWUN.',
+      storageSaveFailed: 'Не удалось сохранить локальные данные. Экспортируй резервную копию и освободи место на диске.',
+      updateChecking: 'Проверяем GitHub Releases…',
+      updateAvailable: 'Доступна версия AWUN {version}.',
+      updateCurrent: 'Установлена последняя опубликованная версия.',
+      updateNoRelease: 'Опубликованных релизов пока нет.',
+      updateFailed: 'Не удалось проверить обновления.',
       diagnosticLocalApi: 'ЛОКАЛЬНЫЙ API',
       diagnosticFallbackApi: 'УДАЛЁННЫЙ РЕЗЕРВ',
       diagnosticConfiguredApi: 'НАСТРОЕННЫЙ API',
@@ -623,6 +657,8 @@
       youtubeEmbedError: 'Этот трек YouTube недоступен во встроенном плеере.',
       youtubeUnavailable: 'Воспроизведение YouTube сейчас недоступно.',
       playbackFailed: 'Не удалось запустить воспроизведение. Попробуй другой результат.',
+      findingYoutubeAlternative: 'Этот ролик YouTube недоступен. Ищем другую загрузку той же записи…',
+      youtubeAlternative: 'Недоступный ролик YouTube заменён другой рабочей загрузкой.',
       findingAlternative: 'Источник {source} не отвечает. Ищем ту же запись в других источниках…',
       sourceSwitched: '{from} перестал отвечать. Воспроизведение продолжено с той же позиции через {to}.',
       allSourcesFailed: 'Эта запись сейчас недоступна во всех подключённых источниках.',
@@ -696,9 +732,10 @@
 
   const params = new URLSearchParams(location.search);
   const requested = params.get('lang');
+  const storage = window.awunStorage;
   let language = ['ru', 'en'].includes(requested)
     ? requested
-    : localStorage.getItem('awun-language') || (navigator.language.toLowerCase().startsWith('ru') ? 'ru' : 'en');
+    : storage?.readText?.('awun-language', null) || (navigator.language.toLowerCase().startsWith('ru') ? 'ru' : 'en');
   if (!['ru', 'en'].includes(language)) language = 'ru';
 
   function t(key, values = {}) {
@@ -731,7 +768,7 @@
     });
     const label = document.getElementById('languageLabel');
     if (label) label.textContent = language.toUpperCase();
-    localStorage.setItem('awun-language', language);
+    storage?.writeText?.('awun-language', language);
     document.dispatchEvent(new CustomEvent('awun:language', {detail: {language}}));
   }
 

@@ -270,6 +270,15 @@
       <button id="diagnosticsRefresh" type="button" data-i18n="refreshDiagnostics">ОБНОВИТЬ</button>
       <button id="diagnosticsCopy" type="button" data-i18n="copyDiagnostics">КОПИРОВАТЬ ОТЧЁТ</button>
     </div>
+    <div class="diagnostics-tools" aria-label="Локальные данные и обновления" data-i18n-aria-label="localToolsAria">
+      <span id="diagnosticsToolsStatus" aria-live="polite" data-i18n="localToolsReady">Локальные данные готовы.</span>
+      <button id="diagnosticsLog" type="button" data-i18n="downloadLog">СКАЧАТЬ ЛОГ</button>
+      <button id="storageExport" type="button" data-i18n="exportData">ЭКСПОРТ ДАННЫХ</button>
+      <input id="storageImportFile" type="file" accept="application/json,.json" hidden>
+      <button id="storageImport" type="button" data-i18n="restoreData">ВОССТАНОВИТЬ</button>
+      <button id="updateCheck" type="button" data-i18n="checkUpdates">ПРОВЕРИТЬ ОБНОВЛЕНИЕ</button>
+      <a id="updateLink" href="https://github.com/Loro66/AWUN/releases" target="_blank" rel="noopener noreferrer" hidden data-i18n="openRelease">ОТКРЫТЬ РЕЛИЗ</a>
+    </div>
   </aside>
 
   <div id="importBackdrop" class="theme-backdrop" hidden></div>
@@ -292,6 +301,9 @@
   </aside>
 
   <script src="/static/desktop-bridge.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/storage.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/runtime-log.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/update-checker.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/i18n.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/hls.light.min.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/player-core.js?v=__AWUN_VERSION__" defer></script>

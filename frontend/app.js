@@ -3,8 +3,16 @@ const regions=['AUTO','CIS','EUROPE','USA','LATAM','ASIA','GLOBAL'];
 const resultLimits=[30,60,100];
 const i18n=window.awunI18n;
 const playerCore=window.awunPlayerCore;
+const storage=window.awunStorage;
+const runtimeLog=window.awunRuntimeLog;
+const updateChecker=window.awunUpdateChecker;
 const t=(key,values={})=>i18n.t(key,values);
 const $=id=>document.getElementById(id);
+const readStoredJson=(key,fallback)=>storage?.readJSON?.(key,fallback)??fallback;
+const readStoredText=(key,fallback=null)=>storage?.readText?.(key,fallback)??fallback;
+const writeStoredJson=(key,value,options)=>storage?.writeJSON?.(key,value,options)??false;
+const writeStoredText=(key,value,options)=>storage?.writeText?.(key,value,options)??false;
+storage?.migrate?.();
 const runtimeParams=new URLSearchParams(location.search);
 const runtimePlatform=runtimeParams.get('platform')||'web';
 const playStoreMode=runtimePlatform==='android-play';
@@ -68,9 +76,24 @@ async function requestHealthSnapshot(){
 function trackSessionKey(track){return `${track?.source||''}:${track?.id||''}`}
 const freshTracksByKey=new Map();
 function markFreshTracks(tracks){(Array.isArray(tracks)?tracks:[]).forEach(track=>freshTracksByKey.set(trackSessionKey(track),track))}
+const youtubeFailureKey='awun-youtube-failures-v1';
+const youtubeFailureTtlMs=24*60*60*1000;
+function loadYoutubeFailures(){
+  const value=readStoredJson(youtubeFailureKey,{}),now=Date.now(),active={};
+  if(value&&typeof value==='object'&&!Array.isArray(value))Object.entries(value).forEach(([id,entry])=>{if(id&&entry&&now-(Number(entry.at)||0)<youtubeFailureTtlMs)active[id]=entry});
+  return active;
+}
+const youtubeFailures=loadYoutubeFailures();
+function youtubeVideoId(track){if(track?.id?.startsWith('yt_'))return track.id.slice(3);try{return new URL(track?.stream_url).searchParams.get('v')||''}catch{return''}}
+function youtubeRecentlyFailed(track){const id=youtubeVideoId(track),entry=youtubeFailures[id];return Boolean(entry&&Date.now()-(Number(entry.at)||0)<youtubeFailureTtlMs)}
+function markYoutubeFailed(track,code){const id=youtubeVideoId(track);if(!id)return;youtubeFailures[id]={at:Date.now(),code:String(code??'unknown').slice(0,24)};writeStoredJson(youtubeFailureKey,youtubeFailures);runtimeLog?.log?.('youtube.video-unavailable',{id,code},'warning')}
+function clearYoutubeFailure(track){const id=youtubeVideoId(track);if(!id||!youtubeFailures[id])return;delete youtubeFailures[id];writeStoredJson(youtubeFailureKey,youtubeFailures)}
+function playableSearchTracks(tracks){return(Array.isArray(tracks)?tracks:[]).filter(track=>track?.source!=='youtube'||!youtubeRecentlyFailed(track))}
 async function readSearchData(response){
   const data=await response.json();
   if(!response.ok)throw new Error(data.detail||t('searchFailed'));
+  data.tracks=playableSearchTracks(data.tracks);
+  data.total=data.tracks.length;
   markFreshTracks(data.tracks);
   return data;
 }
@@ -113,29 +136,27 @@ const ui={
   sources:$('sources'),regionSelect:$('regionSelect'),limitSelect:$('limitSelect'),results:$('results'),trackList:$('trackList'),message:$('message'),resultTitle:$('resultTitle'),resultCount:$('resultCount'),resultTime:$('resultTime'),searchMeta:$('searchMeta'),
   player:$('player'),playerArtwork:$('playerArtwork'),nowTitle:$('nowTitle'),nowArtist:$('nowArtist'),nowSource:$('nowSource'),audio:$('audio'),youtubeDock:$('youtubeDock'),youtubePlayer:$('youtubePlayer'),
   previousTrack:$('previousTrack'),playPause:$('playPause'),nextTrack:$('nextTrack'),repeatMode:$('repeatMode'),waveProgress:$('waveProgress'),progress:$('progress'),elapsed:$('elapsed'),totalTime:$('totalTime'),volume:$('volume'),muteButton:$('muteButton'),closePlayer:$('closePlayer'),minimizeVideo:$('minimizeVideo'),queueToggle:$('queueToggle'),queueClose:$('queueClose'),expandPlayer:$('expandPlayer'),collapsePlayer:$('collapsePlayer'),
-  themeButton:$('themeButton'),themeLabel:$('themeLabel'),themePanel:$('themePanel'),themeClose:$('themeClose'),themeBackdrop:$('themeBackdrop'),themeColor:$('themeColor'),motionToggle:$('motionToggle'),motionValue:$('motionValue'),decorToggle:$('decorToggle'),decorValue:$('decorValue'),densityToggle:$('densityToggle'),densityValue:$('densityValue'),telemetryClock:$('telemetryClock'),diagnosticsButton:$('diagnosticsButton'),diagnosticsPanel:$('diagnosticsPanel'),diagnosticsClose:$('diagnosticsClose'),diagnosticsRefresh:$('diagnosticsRefresh'),diagnosticsCopy:$('diagnosticsCopy'),diagnosticsList:$('diagnosticsList'),diagnosticsEndpoint:$('diagnosticsEndpoint'),diagnosticsChecked:$('diagnosticsChecked'),diagnosticsCopyStatus:$('diagnosticsCopyStatus'),
+  themeButton:$('themeButton'),themeLabel:$('themeLabel'),themePanel:$('themePanel'),themeClose:$('themeClose'),themeBackdrop:$('themeBackdrop'),themeColor:$('themeColor'),motionToggle:$('motionToggle'),motionValue:$('motionValue'),decorToggle:$('decorToggle'),decorValue:$('decorValue'),densityToggle:$('densityToggle'),densityValue:$('densityValue'),telemetryClock:$('telemetryClock'),diagnosticsButton:$('diagnosticsButton'),diagnosticsPanel:$('diagnosticsPanel'),diagnosticsClose:$('diagnosticsClose'),diagnosticsRefresh:$('diagnosticsRefresh'),diagnosticsCopy:$('diagnosticsCopy'),diagnosticsList:$('diagnosticsList'),diagnosticsEndpoint:$('diagnosticsEndpoint'),diagnosticsChecked:$('diagnosticsChecked'),diagnosticsCopyStatus:$('diagnosticsCopyStatus'),diagnosticsToolsStatus:$('diagnosticsToolsStatus'),diagnosticsLog:$('diagnosticsLog'),storageExport:$('storageExport'),storageImport:$('storageImport'),storageImportFile:$('storageImportFile'),updateCheck:$('updateCheck'),updateLink:$('updateLink'),
   importButton:$('importButton'),importPanel:$('importPanel'),importClose:$('importClose'),importBackdrop:$('importBackdrop'),libraryFile:$('libraryFile'),importFileButton:$('importFileButton'),importFileName:$('importFileName'),importText:$('importText'),importStatus:$('importStatus'),importSubmit:$('importSubmit'),importUrl:$('importUrl'),importUrlSubmit:$('importUrlSubmit'),importProgress:$('importProgress')
 };
+window.addEventListener('awun:storage-error',()=>{if(ui.diagnosticsToolsStatus)ui.diagnosticsToolsStatus.textContent=t('storageSaveFailed')});
 
-function loadLibrary(){try{const value=JSON.parse(localStorage.getItem('awun-library')||'[]');return Array.isArray(value)?value:[]}catch{return[]}}
-function loadRegion(){const value=localStorage.getItem('awun-region')||'AUTO';return regions.includes(value)?value:'AUTO'}
-function loadResultLimit(){const value=Number(localStorage.getItem('awun-result-limit')||60);return resultLimits.includes(value)?value:60}
-function loadRepeatMode(){const value=localStorage.getItem('awun-repeat-mode')||'off';return ['off','all','one'].includes(value)?value:'off'}
-function loadRecents(){try{const value=JSON.parse(localStorage.getItem('awun-recent')||'[]');return Array.isArray(value)?value.filter(item=>item&&item.id):[]}catch{return[]}}
+function loadLibrary(){const value=readStoredJson('awun-library',[]);return Array.isArray(value)?value:[]}
+function loadRegion(){const value=readStoredText('awun-region','AUTO');return regions.includes(value)?value:'AUTO'}
+function loadResultLimit(){const value=Number(readStoredText('awun-result-limit','60'));return resultLimits.includes(value)?value:60}
+function loadRepeatMode(){const value=readStoredText('awun-repeat-mode','off');return ['off','all','one'].includes(value)?value:'off'}
+function loadRecents(){const value=readStoredJson('awun-recent',[]);return Array.isArray(value)?value.filter(item=>item&&item.id):[]}
 function loadQueueState(){
-  try{
-    const value=JSON.parse(localStorage.getItem('awun-queue-v1')||'{}');
-    const items=Array.isArray(value)?value:value.items;
-    return{items:playerCore.uniqueTracks(items),mode:value.mode==='manual'?'manual':'context'};
-  }catch{return{items:[],mode:'context'}}
+  const value=readStoredJson('awun-queue-v1',{}),items=Array.isArray(value)?value:value.items;
+  return{items:playerCore.uniqueTracks(items),mode:value?.mode==='manual'?'manual':'context'};
 }
-function loadVisual(){try{const value=JSON.parse(localStorage.getItem('awun-visual')||'{}');return{theme:['black','white','acid','ultraviolet','cobalt','ember'].includes(value.theme)?value.theme:'black',motion:value.motion==='off'?'off':'on',decor:value.decor==='minimal'?'minimal':'full',density:['compact','standard','airy'].includes(value.density)?value.density:'standard'}}catch{return{theme:'black',motion:'on',decor:'full',density:'standard'}}}
-function loadLineComments(){try{const value=JSON.parse(localStorage.getItem('awun-line-comments-v1')||'{}');return value&&typeof value==='object'&&!Array.isArray(value)?value:{}}catch{return{}}}
+function loadVisual(){const value=readStoredJson('awun-visual',{});return{theme:['black','white','acid','ultraviolet','cobalt','ember'].includes(value?.theme)?value.theme:'black',motion:value?.motion==='off'?'off':'on',decor:value?.decor==='minimal'?'minimal':'full',density:['compact','standard','airy'].includes(value?.density)?value.density:'standard'}}
+function loadLineComments(){const value=readStoredJson('awun-line-comments-v1',{});return value&&typeof value==='object'&&!Array.isArray(value)?value:{}}
 const visualThemes={black:{labelKey:'themeBlackShort',color:'#050505'},white:{labelKey:'themeWhiteShort',color:'#e7e8df'},acid:{labelKey:'themeAcidShort',color:'#050a05'},ultraviolet:{labelKey:'themeUltravioletShort',color:'#07050c'},cobalt:{labelKey:'themeCobaltShort',color:'#040a0e'},ember:{labelKey:'themeEmberShort',color:'#080704'}};
 const restoredQueue=loadQueueState();
 const state={
   tracks:[],saved:loadLibrary(),recents:loadRecents(),queue:restoredQueue.items,queueMode:restoredQueue.mode,available:new Set(),sources:new Set(),region:loadRegion(),resultLimit:loadResultLimit(),repeatMode:loadRepeatMode(),library:false,hasSearched:false,active:null,controller:null,
-  youtube:null,youtubeApi:null,youtubeTicker:null,youtubeStartTimer:null,hls:null,audioGraph:null,waveformCapture:null,waveformCaptureFrame:null,seeking:false,recoveringGeneration:null,sameSourceRefreshGeneration:null,playbackGeneration:0,audioTrackId:null,failedSources:new Set(),playbackOrigin:null,playbackPosition:0,lastVolume:.82,expanded:null,details:new Map(),detailsController:null,openLines:new Set(),lineComments:loadLineComments(),geniusEnabled:false,diagnostics:null,playbackHealth:{},...loadVisual()
+  youtube:null,youtubeApi:null,youtubeTicker:null,youtubeStartTimer:null,hls:null,audioGraph:null,waveformCapture:null,waveformCaptureFrame:null,seeking:false,recoveringGeneration:null,sameSourceRefreshGeneration:null,playbackGeneration:0,audioTrackId:null,failedSources:new Set(),failedTrackIds:new Set(),playbackOrigin:null,playbackPosition:0,lastVolume:.82,expanded:null,details:new Map(),detailsController:null,openLines:new Set(),lineComments:loadLineComments(),geniusEnabled:false,diagnostics:null,playbackHealth:{},...loadVisual()
 };
 let installPrompt=null;
 let language=i18n.language;
@@ -154,8 +175,7 @@ const waveformLoads=new Map();
 const waveformTargets=new WeakMap();
 let waveformObserver=null;
 function loadWaveformCache(){
-  try{const value=JSON.parse(localStorage.getItem(waveformCacheKey)||'{}');return value&&typeof value==='object'&&!Array.isArray(value)?value:{}}
-  catch{return{}}
+  const value=readStoredJson(waveformCacheKey,{});return value&&typeof value==='object'&&!Array.isArray(value)?value:{}
 }
 const waveformCache=loadWaveformCache();
 function waveformEntry(track){
@@ -169,7 +189,7 @@ function storeWaveform(track,peaks,{origin='provider',captured=null,coverage=1}=
   waveformCache[waveformKey(track)]={peaks:normalized,origin,coverage:Math.max(0,Math.min(1,Number(coverage)||0)),captured:Array.isArray(captured)?captured.map(value=>Math.max(0,Math.min(100,Math.round(Number(value)||0)))):undefined,updated_at:Date.now()};
   const entries=Object.entries(waveformCache).sort((left,right)=>(right[1]?.updated_at||0)-(left[1]?.updated_at||0));
   entries.slice(160).forEach(([key])=>delete waveformCache[key]);
-  try{localStorage.setItem(waveformCacheKey,JSON.stringify(waveformCache))}catch{}
+  writeStoredJson(waveformCacheKey,waveformCache,{backup:false});
 }
 function waveformImagePeaks(url){
   return new Promise((resolve,reject)=>{
@@ -268,15 +288,15 @@ function startWaveformCapture(track){
 }
 
 function persist(){
-  localStorage.setItem('awun-library',JSON.stringify(state.saved));
-  localStorage.setItem('awun-recent',JSON.stringify(state.recents.slice(0,12)));
+  writeStoredJson('awun-library',state.saved);
+  writeStoredJson('awun-recent',state.recents.slice(0,12));
   persistQueue();
   ui.libraryButton.querySelector('b').textContent=String(state.saved.length).padStart(2,'0');
 }
 
 function persistQueue(){
   state.queue=playerCore.uniqueTracks(state.queue);
-  localStorage.setItem('awun-queue-v1',JSON.stringify({version:1,mode:state.queueMode,items:state.queue}));
+  writeStoredJson('awun-queue-v1',{version:1,mode:state.queueMode,items:state.queue});
 }
 
 function setMessage(text='',kind=''){
@@ -299,7 +319,7 @@ function applyVisual(save=true){
   ui.decorToggle.setAttribute('aria-pressed',String(state.decor==='minimal'));
   ui.densityToggle.dataset.value=state.density;
   document.querySelectorAll('[data-theme-choice]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.themeChoice===state.theme)));
-  if(save)localStorage.setItem('awun-visual',JSON.stringify({theme:state.theme,motion:state.motion,decor:state.decor,density:state.density}));
+  if(save)writeStoredJson('awun-visual',{theme:state.theme,motion:state.motion,decor:state.decor,density:state.density});
 }
 
 function openThemePanel(){setQueueOpen(false);setPlayerExpanded(false);if(document.body.classList.contains('flow-screen-open'))document.getElementById('flowClose')?.click();ui.importPanel.hidden=true;ui.importBackdrop.hidden=true;ui.importButton.setAttribute('aria-expanded','false');ui.diagnosticsPanel.hidden=true;ui.diagnosticsButton.setAttribute('aria-expanded','false');ui.themePanel.hidden=false;ui.themeBackdrop.hidden=false;ui.themeButton.setAttribute('aria-expanded','true');requestAnimationFrame(()=>document.body.classList.add('visual-open'))}
@@ -420,6 +440,8 @@ function diagnosticsReport(){
     app:'AWUN',version:data.version||'unknown',created_at:new Date().toISOString(),platform:runtimePlatform,
     api:{mode:snapshot?.origin||'unavailable',latency_ms:snapshot?.endpoint_latency_ms??null,error:snapshot?.error||null},
     ui_error:snapshot?.ui_error||null,
+    storage:storage?.info?.()||null,
+    recent_events:runtimeLog?.report?.(40)||[],
     sources:diagnosticSources.map(source=>({source,enabled:(data.sources||[]).includes(source),status:activePlaybackFailure(state.playbackHealth[source])?'degraded':health[source]?.status||'unknown',average_latency_ms:health[source]?.average_latency_ms??null,success_rate:health[source]?.success_rate??null,samples:health[source]?.samples??0,last_checked_at:health[source]?.last_checked_at||null,last_success_at:health[source]?.last_success_at||null,last_error_at:health[source]?.last_error_at||null,last_error:health[source]?.last_error||null,playback:state.playbackHealth[source]||null}))
   },null,2);
 }
@@ -432,13 +454,38 @@ async function copyDiagnostics(){
   }catch{ui.diagnosticsCopyStatus.textContent=t('diagnosticCopyFailed')}
 }
 
+function exportLocalData(){
+  storage?.download?.(`AWUN-backup-${new Date().toISOString().slice(0,10)}.json`);ui.diagnosticsToolsStatus.textContent=t('dataExported');runtimeLog?.log?.('storage.exported');
+}
+async function importLocalData(){
+  const file=ui.storageImportFile.files?.[0];if(!file)return;
+  try{
+    if(file.size>4*1024*1024)throw new Error('backup too large');
+    await storage.importState(await file.text());ui.diagnosticsToolsStatus.textContent=t('dataRestored');runtimeLog?.log?.('storage.restored');setTimeout(()=>location.reload(),350);
+  }catch(error){ui.diagnosticsToolsStatus.textContent=t('dataRestoreFailed');runtimeLog?.log?.('storage.restore-failed',{error:error?.message||error},'error')}
+  finally{ui.storageImportFile.value=''}
+}
+async function checkForUpdates(){
+  if(!updateChecker?.check)return;
+  ui.updateCheck.setAttribute('aria-busy','true');ui.updateLink.hidden=true;ui.diagnosticsToolsStatus.textContent=t('updateChecking');
+  try{
+    if(!state.diagnostics?.data?.version)await refreshStatus();
+    const current=state.diagnostics?.data?.version||'0.0.0',result=await updateChecker.check(current);
+    if(result.status==='available'){ui.diagnosticsToolsStatus.textContent=t('updateAvailable',{version:result.latest});ui.updateLink.href=result.url;ui.updateLink.hidden=false}
+    else ui.diagnosticsToolsStatus.textContent=t(result.status==='no-release'?'updateNoRelease':'updateCurrent');
+    runtimeLog?.log?.('update.checked',{current,status:result.status,latest:result.latest||null});
+  }catch(error){ui.diagnosticsToolsStatus.textContent=t('updateFailed');runtimeLog?.log?.('update.failed',{error:error?.message||error},'warning')}
+  finally{ui.updateCheck.removeAttribute('aria-busy')}
+}
+
 async function refreshStatus(){
   ui.diagnosticsRefresh?.setAttribute('aria-busy','true');
   let snapshot;
   try{
-    snapshot=await requestHealthSnapshot();state.diagnostics=snapshot;
+    snapshot=await requestHealthSnapshot();state.diagnostics=snapshot;runtimeLog?.log?.('health.available',{origin:snapshot.origin,latency_ms:snapshot.endpoint_latency_ms,sources:snapshot.data?.sources||[]});
   }catch(error){
     state.diagnostics={error:error?.message||t('healthFailed'),origin:'unavailable',endpoint_latency_ms:null,checked_at:new Date().toISOString(),data:{sources:[],source_health:{},providers:{}}};
+    runtimeLog?.log?.('health.unavailable',{error:error?.message||error},'error');
     if(ui.status){ui.status.className='status offline';const label=ui.status.querySelector('b');if(label)label.textContent=t('offline')}
     if(ui.searchMeta)ui.searchMeta.textContent=t('healthFailed');
     sourceButtons().forEach(button=>{button.disabled=true;button.classList.remove('on');const hint=button.querySelector('small');if(hint)hint.textContent=t('offline')});
@@ -601,7 +648,7 @@ function render(){
 }
 
 function commentKey(track,line){return `${track.id}\u0000${line.index}\u0000${matchText(line.text).slice(0,80)}`}
-function persistLineComments(){localStorage.setItem('awun-line-comments-v1',JSON.stringify(state.lineComments))}
+function persistLineComments(){writeStoredJson('awun-line-comments-v1',state.lineComments)}
 function localComments(track,line){const value=state.lineComments[commentKey(track,line)];return Array.isArray(value)?value:[]}
 
 function addLineComment(track,line,value){
@@ -661,7 +708,7 @@ function progressiveTracks(tracksBySource,sourceOrder,limit){
   return playerCore.interleaveTracks(tracksBySource,sourceOrder,limit);
 }
 function mergeProgressiveData(aggregate,data,source,sourceOrder,limit){
-  aggregate.tracks_by_source[source]=playerCore.uniqueTracks([...(aggregate.tracks_by_source[source]||[]),...(data.tracks||[])]);
+  aggregate.tracks_by_source[source]=playerCore.uniqueTracks([...(aggregate.tracks_by_source[source]||[]),...playableSearchTracks(data.tracks)]);
   aggregate.tracks=progressiveTracks(aggregate.tracks_by_source,sourceOrder,limit);
   aggregate.searched_sources=[...new Set([...aggregate.searched_sources,...(data.searched_sources||[]),source])];
   aggregate.query_variants=[...new Set([...aggregate.query_variants,...(data.query_variants||[])])];
@@ -673,6 +720,7 @@ function mergeProgressiveData(aggregate,data,source,sourceOrder,limit){
 async function search(query=ui.searchInput.value.trim()){
   if(!query)return;
   if(!state.sources.size){setMessage(t('noSourcesError'),'error');return}
+  runtimeLog?.log?.('search.started',{query_length:query.length,sources:[...state.sources],region:state.region});
   state.controller?.abort();state.controller=new AbortController();state.library=false;state.hasSearched=true;ui.libraryButton.classList.remove('active');ui.libraryButton.setAttribute('aria-pressed','false');
   ui.results.setAttribute('aria-busy','true');ui.emptyGuide.hidden=true;ui.searchButton.classList.add('searching');document.body.classList.add('is-searching');setMessage(t('searchingSources'),'loading');loadingRows();ui.resultTitle.textContent=t('searching');ui.resultCount.textContent='—';ui.resultTime.textContent=t('pleaseWait');
   const started=performance.now(),controller=state.controller,sources=[...state.sources],perSourceLimit=Math.min(state.resultLimit,Math.max(8,Math.ceil((state.resultLimit/sources.length)*1.6)));
@@ -685,7 +733,7 @@ async function search(query=ui.searchInput.value.trim()){
     if(!final&&pending){setMessage(t('progressiveResults',{count:state.tracks.length,pending}),'loading');ui.resultTime.textContent=t('progressiveSources',{done:completed,total:sources.length});}
     else if(state.tracks.length)setMessage(failures.length?t('partialResults',{sources:failures.join(', ')}):t('selectTrack'),failures.length?'notice':'');
     else setMessage(failures.length?t('noPlayableResults',{sources:failures.join(', ')}):t('nothingFound'),'error');
-    if(final){const variants=Math.max(1,aggregate.query_variants.length||1);ui.resultTime.textContent=t('searchTiming',{ms:Math.round(performance.now()-started),variants})}
+    if(final){const variants=Math.max(1,aggregate.query_variants.length||1),elapsed=Math.round(performance.now()-started);ui.resultTime.textContent=t('searchTiming',{ms:elapsed,variants});runtimeLog?.log?.('search.completed',{elapsed_ms:elapsed,results:state.tracks.length,failed_sources:failures})}
     if(state.tracks.length||final)render();
   };
   try{
@@ -704,13 +752,12 @@ async function search(query=ui.searchInput.value.trim()){
     const params=new URLSearchParams(runtimeParams);params.set('q',query);if(state.region!=='AUTO')params.set('region',state.region);else params.delete('region');if(state.resultLimit!==60)params.set('limit',String(state.resultLimit));else params.delete('limit');history.replaceState(null,'',`${location.pathname}?${params}`);
   }catch(error){
     if(error.name==='AbortError')return;
-    state.tracks=[];render();setMessage(error.message||t('searchUnavailable'),'error');ui.resultTime.textContent=t('failed');
+    state.tracks=[];render();setMessage(error.message||t('searchUnavailable'),'error');ui.resultTime.textContent=t('failed');runtimeLog?.log?.('search.failed',{error:error?.message||error},'error');
   }finally{if(state.controller===controller){ui.results.setAttribute('aria-busy','false');ui.searchButton.classList.remove('searching');document.body.classList.remove('is-searching')}}
 }
 
 function youtubeId(track){
-  if(track.id?.startsWith('yt_'))return track.id.slice(3);
-  try{return new URL(track.stream_url).searchParams.get('v')||''}catch{return''}
+  return youtubeVideoId(track);
 }
 
 function ensureYouTubeApi(){
@@ -741,7 +788,7 @@ function setPlaying(playing){ui.playPause.querySelector('span').textContent=play
 function applyRepeatMode(save=true){
   const labels={off:'repeatOff',all:'repeatAll',one:'repeatOne'},descriptions={off:'repeatOffAria',all:'repeatAllAria',one:'repeatOneAria'};
   ui.repeatMode.querySelector('small').textContent=t(labels[state.repeatMode]);ui.repeatMode.setAttribute('aria-label',t(descriptions[state.repeatMode]));ui.repeatMode.setAttribute('aria-pressed',String(state.repeatMode!=='off'));ui.repeatMode.classList.toggle('active',state.repeatMode!=='off');ui.repeatMode.dataset.mode=state.repeatMode;
-  if(save)localStorage.setItem('awun-repeat-mode',state.repeatMode);
+  if(save)writeStoredText('awun-repeat-mode',state.repeatMode);
 }
 
 function cycleRepeatMode(){const modes=['off','all','one'];state.repeatMode=modes[(modes.indexOf(state.repeatMode)+1)%modes.length];applyRepeatMode()}
@@ -761,11 +808,19 @@ async function playYouTube(track,startAt=0){
   const startedAt=performance.now(),expectedGeneration=state.playbackGeneration;
   const target=document.createElement('div');ui.youtubePlayer.replaceChildren(target);
   await new Promise((resolve,reject)=>{
-    let ready=false;
+    let settled=false,successRecorded=false;
+    const current=()=>expectedGeneration===state.playbackGeneration&&state.active?.id===track.id;
+    const finish=(callback,value)=>{if(settled)return false;settled=true;callback(value);return true};
+    const fail=code=>{
+      if(!current()){finish(reject,new DOMException('Playback superseded','AbortError'));return}
+      const suffix=code==='timeout'?'start timeout':`code ${code??'unknown'}`,error=new Error(`${t('youtubeEmbedError')} (${suffix})`);
+      markYoutubeFailed(track,code);state.failedTrackIds.add(track.id);recordPlaybackHealth('youtube',{success:false,error:error.message});stopYouTube();setPlaying(false);
+      if(!finish(reject,error))void recoverPlayback(error,expectedGeneration);
+    };
     state.youtube=new YT.Player(target,{width:'100%',height:'100%',videoId,playerVars:{autoplay:1,controls:1,playsinline:1,rel:0,origin:location.origin},events:{
-      onReady:event=>{ready=true;event.target.setVolume(Number(ui.volume.value));if(startAt>0)event.target.seekTo(startAt,true);event.target.playVideo();state.youtubeTicker=setInterval(()=>{if(state.youtube?.getCurrentTime)updateTimeline(state.youtube.getCurrentTime(),state.youtube.getDuration())},500);state.youtubeStartTimer=setTimeout(()=>{if(expectedGeneration!==state.playbackGeneration||state.active?.id!==track.id||state.youtube?.getPlayerState?.()===YT.PlayerState.PLAYING)return;const error=new Error(t('youtubeEmbedError'));recordPlaybackHealth('youtube',{success:false,error:`${error.message} (start timeout)`});stopYouTube();setPlaying(false);void recoverPlayback(error,expectedGeneration)},12000);resolve()},
-      onStateChange:event=>{if(event.data===YT.PlayerState.PLAYING){clearTimeout(state.youtubeStartTimer);state.youtubeStartTimer=null;recordPlaybackHealth('youtube',{success:true,latencyMs:performance.now()-startedAt});setPlaying(true)}if(event.data===YT.PlayerState.PAUSED)setPlaying(false);if(event.data===YT.PlayerState.ENDED)handleTrackEnded()},
-      onError:event=>{const error=new Error(`${t('youtubeEmbedError')} (code ${event?.data??'unknown'})`);recordPlaybackHealth('youtube',{success:false,error:error.message});stopYouTube();setPlaying(false);if(ready)void recoverPlayback(error,expectedGeneration);else reject(error)}
+      onReady:event=>{if(!current()){try{event.target.destroy()}catch{}finish(reject,new DOMException('Playback superseded','AbortError'));return}event.target.setVolume(Number(ui.volume.value));if(startAt>0)event.target.seekTo(startAt,true);event.target.playVideo();state.youtubeTicker=setInterval(()=>{if(state.youtube?.getCurrentTime)updateTimeline(state.youtube.getCurrentTime(),state.youtube.getDuration())},500);state.youtubeStartTimer=setTimeout(()=>{if(state.youtube?.getPlayerState?.()!==YT.PlayerState.PLAYING)fail('timeout')},12000)},
+      onStateChange:event=>{if(!current())return;if(event.data===YT.PlayerState.PLAYING){clearTimeout(state.youtubeStartTimer);state.youtubeStartTimer=null;clearYoutubeFailure(track);if(!successRecorded){successRecorded=true;recordPlaybackHealth('youtube',{success:true,latencyMs:performance.now()-startedAt})}setPlaying(true);finish(resolve)}if(event.data===YT.PlayerState.PAUSED)setPlaying(false);if(event.data===YT.PlayerState.ENDED)handleTrackEnded()},
+      onError:event=>fail(event?.data)
     }});
   });
 }
@@ -847,6 +902,7 @@ async function importLibraryUrl(){
 
 async function playTrack(track,options={}){
   if(track.source==='yandex_music'){await matchImportedTrack(track);return false}
+  runtimeLog?.log?.('playback.requested',{source:track.source,id:track.id,recovered:Boolean(options.recovered)});
   const preserveQueue=Boolean(options.preserveQueue),recovered=Boolean(options.recovered),resumeAt=Math.max(0,Number(options.resumeAt)||0);
   const playbackGeneration=recovered?(Number(options.playbackGeneration)||state.playbackGeneration):(state.playbackGeneration+=1);
   let refreshAttempted=false,refreshSucceeded=false;
@@ -863,7 +919,7 @@ async function playTrack(track,options={}){
   if(!preserveQueue)seedContextQueue(track);
   state.queue=playerCore.remove(state.queue,track.id);persistQueue();
   const firstReveal=!state.active,previous=state.active;state.active=track;
-  if(!recovered){state.playbackOrigin=track;state.failedSources.clear();state.sameSourceRefreshGeneration=refreshAttempted?playbackGeneration:null}
+  if(!recovered){state.playbackOrigin=track;state.failedSources.clear();state.failedTrackIds.clear();state.sameSourceRefreshGeneration=refreshAttempted?playbackGeneration:null}
   else state.playbackOrigin=options.origin||state.playbackOrigin||track;
   rememberRecent(track);ui.player.classList.remove('player-empty');ui.idleStage.setAttribute('aria-hidden','true');document.body.classList.add('has-player');ui.player.classList.remove('track-enter','track-swap');void ui.player.offsetWidth;ui.player.classList.add(firstReveal?'track-enter':'track-swap');ui.nowTitle.textContent=decodeText(track.title);ui.nowArtist.textContent=`${decodeText(track.artist)} · ${sourceLabels[track.source]||track.source}`;ui.nowSource.textContent=sourceLabels[track.source]||track.source;
   const image=safeImage(track.thumbnail),monogram=ui.playerArtwork.querySelector('.vinyl-monogram');
@@ -878,7 +934,8 @@ async function playTrack(track,options={}){
     return true;
   }catch(error){
     stopHls();setPlaying(false);
-    if(error?.name==='NotAllowedError')return false;
+    runtimeLog?.log?.('playback.start-failed',{source:track.source,id:track.id,error:error?.message||error},'error');
+    if(error?.name==='NotAllowedError'||error?.name==='AbortError')return false;
     if(options.recoverOnFailure===false)return false;
     queueMicrotask(()=>recoverPlayback(error,playbackGeneration));return false;
   }
@@ -937,9 +994,23 @@ function replaceStoredTrack(origin,replacement){
 async function recoverPlayback(_error,expectedGeneration=state.playbackGeneration){
   if(!state.active||expectedGeneration!==state.playbackGeneration||state.recoveringGeneration===expectedGeneration)return false;
   const failed=state.active,origin=state.playbackOrigin||failed,resumeAt=currentPlaybackTime(),from=sourceLabels[failed.source]||failed.source;
+  state.failedTrackIds.add(failed.id);runtimeLog?.log?.('playback.recovery-started',{source:failed.source,id:failed.id,error:_error?.message||_error},'warning');
   state.recoveringGeneration=expectedGeneration;
   try{
-    if(failed.source!=='youtube'&&state.sameSourceRefreshGeneration!==expectedGeneration){
+    if(failed.source==='youtube'&&state.sameSourceRefreshGeneration!==expectedGeneration){
+      state.sameSourceRefreshGeneration=expectedGeneration;setMessage(t('findingYoutubeAlternative'),'loading');
+      let youtubeTracks=[];
+      try{
+        const {data}=await requestSearch({query:`${origin.artist} ${origin.title}`,limit:16,sources:['youtube'],region:state.region,locale:navigator.language||null},{waitForFallback:true});
+        youtubeTracks=playerCore.rankAlternatives(origin,data.tracks||[],new Set()).filter(candidate=>!state.failedTrackIds.has(candidate.id)&&!youtubeRecentlyFailed(candidate));
+      }catch{}
+      for(const candidate of youtubeTracks){
+        if(expectedGeneration!==state.playbackGeneration)return false;
+        const started=await playTrack(candidate,{preserveQueue:true,recovered:true,resumeAt,origin,playbackGeneration:expectedGeneration,recoverOnFailure:false});
+        if(started){replaceStoredTrack(origin,candidate);setMessage(t('youtubeAlternative'),'notice');runtimeLog?.log?.('playback.youtube-alternative',{from:failed.id,to:candidate.id});return true}
+        state.failedTrackIds.add(candidate.id);
+      }
+    }else if(failed.source!=='youtube'&&state.sameSourceRefreshGeneration!==expectedGeneration){
       state.sameSourceRefreshGeneration=expectedGeneration;setMessage(t('refreshingLink'),'loading');
       let refreshed=null;
       try{refreshed=await refreshTrackLink(failed)}catch{}
@@ -947,31 +1018,32 @@ async function recoverPlayback(_error,expectedGeneration=state.playbackGeneratio
       if(refreshed){
         const started=await playTrack(refreshed,{preserveQueue:true,recovered:true,resumeAt,origin,playbackGeneration:expectedGeneration,recoverOnFailure:false});
         if(expectedGeneration!==state.playbackGeneration)return false;
-        if(started){replaceStoredTrack(origin,refreshed);setMessage(t('linkRefreshed'),'notice');return true}
+        if(started){replaceStoredTrack(origin,refreshed);setMessage(t('linkRefreshed'),'notice');runtimeLog?.log?.('playback.link-refreshed',{source:failed.source,id:failed.id});return true}
       }
     }
     state.failedSources.add(failed.source);setMessage(t('findingAlternative',{source:from}),'loading');
     const sources=[...state.available].filter(source=>!state.failedSources.has(source)&&source!=='yandex_music');if(!sources.length)throw new Error();
     const {data}=await requestSearch({query:`${origin.artist} ${origin.title}`,limit:20,sources,region:state.region,locale:navigator.language||null},{waitForFallback:true});
     if(expectedGeneration!==state.playbackGeneration)return false;
-    const alternatives=playerCore.rankAlternatives(origin,data.tracks||[],state.failedSources);
+    const alternatives=playerCore.rankAlternatives(origin,data.tracks||[],state.failedSources).filter(candidate=>!state.failedTrackIds.has(candidate.id)&&!youtubeRecentlyFailed(candidate));
     for(const candidate of alternatives){
       if(expectedGeneration!==state.playbackGeneration)return false;
       const started=await playTrack(candidate,{preserveQueue:true,recovered:true,resumeAt,origin,playbackGeneration:expectedGeneration,recoverOnFailure:false});
       if(expectedGeneration!==state.playbackGeneration)return false;
-      if(started){replaceStoredTrack(origin,candidate);setMessage(t('sourceSwitched',{from,to:sourceLabels[candidate.source]||candidate.source}),'notice');return true}
-      state.failedSources.add(candidate.source);
+      if(started){replaceStoredTrack(origin,candidate);setMessage(t('sourceSwitched',{from,to:sourceLabels[candidate.source]||candidate.source}),'notice');runtimeLog?.log?.('playback.source-switched',{from:failed.source,to:candidate.source,id:candidate.id});return true}
+      state.failedTrackIds.add(candidate.id);state.failedSources.add(candidate.source);
     }
     throw new Error();
-  }catch{setPlaying(false);setMessage(t('allSourcesFailed'),'error');return false}
+  }catch{setPlaying(false);setMessage(t('allSourcesFailed'),'error');runtimeLog?.log?.('playback.recovery-failed',{source:failed.source,id:failed.id},'error');return false}
   finally{if(state.recoveringGeneration===expectedGeneration)state.recoveringGeneration=null}
 }
 
 sourceButtons().forEach(button=>button.addEventListener('click',()=>{const source=button.dataset.source;if(!state.available.has(source))return;if(state.sources.has(source))state.sources.delete(source);else state.sources.add(source);button.classList.toggle('on',state.sources.has(source))}));
 ui.allSourcesButton?.addEventListener('click',()=>{state.sources=new Set(state.available);sourceButtons().forEach(button=>button.classList.toggle('on',state.sources.has(button.dataset.source)))});
-ui.regionSelect.addEventListener('change',()=>{state.region=regions.includes(ui.regionSelect.value)?ui.regionSelect.value:'AUTO';localStorage.setItem('awun-region',state.region)});
-ui.limitSelect.addEventListener('change',()=>{const value=Number(ui.limitSelect.value);state.resultLimit=resultLimits.includes(value)?value:60;localStorage.setItem('awun-result-limit',String(state.resultLimit))});
+ui.regionSelect.addEventListener('change',()=>{state.region=regions.includes(ui.regionSelect.value)?ui.regionSelect.value:'AUTO';writeStoredText('awun-region',state.region)});
+ui.limitSelect.addEventListener('change',()=>{const value=Number(ui.limitSelect.value);state.resultLimit=resultLimits.includes(value)?value:60;writeStoredText('awun-result-limit',String(state.resultLimit))});
 ui.themeButton.addEventListener('click',()=>ui.themePanel.hidden?openThemePanel():closeThemePanel());ui.themeClose.addEventListener('click',closeThemePanel);ui.themeBackdrop.addEventListener('click',closeThemePanel);ui.diagnosticsButton.addEventListener('click',openDiagnosticsPanel);ui.diagnosticsClose.addEventListener('click',closeThemePanel);ui.diagnosticsRefresh.addEventListener('click',refreshStatus);ui.diagnosticsCopy.addEventListener('click',copyDiagnostics);document.getElementById('flowButton')?.addEventListener('click',()=>{setQueueOpen(false);setPlayerExpanded(false);if(!ui.themePanel.hidden||!ui.diagnosticsPanel.hidden)closeThemePanel()});
+ui.diagnosticsLog.addEventListener('click',()=>runtimeLog?.download?.(`AWUN-log-${new Date().toISOString().slice(0,10)}.json`));ui.storageExport.addEventListener('click',exportLocalData);ui.storageImport.addEventListener('click',()=>ui.storageImportFile.click());ui.storageImportFile.addEventListener('change',importLocalData);ui.updateCheck.addEventListener('click',checkForUpdates);
 ui.importButton.addEventListener('click',()=>ui.importPanel.hidden?openImportPanel():closeImportPanel());ui.importClose.addEventListener('click',closeImportPanel);ui.importBackdrop.addEventListener('click',closeImportPanel);ui.importFileButton.addEventListener('click',()=>ui.libraryFile.click());ui.importSubmit.addEventListener('click',importLibrary);ui.importUrlSubmit.addEventListener('click',importLibraryUrl);
 ui.libraryFile.addEventListener('change',async()=>{const file=ui.libraryFile.files?.[0];if(!file)return;if(file.size>2*1024*1024){ui.importStatus.textContent=t('fileTooLarge');return}try{ui.importText.value=await file.text();ui.importFileName.textContent=file.name;const count=parseImportedLibrary(ui.importText.value,file.name).length;ui.importStatus.textContent=t('uniqueTracksReady',{count})}catch(error){ui.importStatus.textContent=error.message||t('fileReadFailed')}});
 document.querySelectorAll('[data-theme-choice]').forEach(button=>button.addEventListener('click',()=>{state.theme=button.dataset.themeChoice;applyVisual()}));
@@ -995,9 +1067,10 @@ window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();ins
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&ui.player.classList.contains('queue-open')){setQueueOpen(false);return}if(event.key==='Escape'&&ui.player.classList.contains('expanded-player')){setPlayerExpanded(false);return}if(event.key==='Escape'&&!ui.importPanel.hidden){closeImportPanel();return}if(event.key==='Escape'&&(!ui.themePanel.hidden||!ui.diagnosticsPanel.hidden)){closeThemePanel();return}if(event.code==='Space'&&!['INPUT','TEXTAREA','BUTTON'].includes(document.activeElement?.tagName)&&state.active){event.preventDefault();togglePlayback()}});
 
 async function bootstrap(){
-  const url=runtimeParams,requestedRegion=url.get('region')?.toUpperCase(),requestedLimit=Number(url.get('limit'));if(regions.includes(requestedRegion)){state.region=requestedRegion;localStorage.setItem('awun-region',state.region)}if(resultLimits.includes(requestedLimit)){state.resultLimit=requestedLimit;localStorage.setItem('awun-result-limit',String(requestedLimit))}ui.regionSelect.value=state.region;ui.limitSelect.value=String(state.resultLimit);
+  runtimeLog?.log?.('app.bootstrap',{platform:runtimePlatform,storage_schema:storage?.SCHEMA_VERSION||null});
+  const url=runtimeParams,requestedRegion=url.get('region')?.toUpperCase(),requestedLimit=Number(url.get('limit'));if(regions.includes(requestedRegion)){state.region=requestedRegion;writeStoredText('awun-region',state.region)}if(resultLimits.includes(requestedLimit)){state.resultLimit=requestedLimit;writeStoredText('awun-result-limit',String(requestedLimit))}ui.regionSelect.value=state.region;ui.limitSelect.value=String(state.resultLimit);
   if(!playStoreMode&&'serviceWorker'in navigator)navigator.serviceWorker.register('/service-worker.js').catch(()=>{});ui.player.hidden=false;ui.player.classList.add('player-empty');applyLanguage();applyVisual(false);applyRepeatMode(false);updateClock();setInterval(updateClock,1000);persist();setRange(ui.volume,82);setRange(ui.progress,0);render();await refreshStatus();
-  const query=url.get('q');if(query){ui.searchInput.value=query;search(query)}
+  const query=url.get('q');if(query){ui.searchInput.value=query;search(query)}runtimeLog?.log?.('app.ready',{sources:[...state.available]});
 }
 window.awunApp={state,ui,playTrack,render,search,toggleSave,currentList,setMessage,sourceLabels,decodeText,matchText,loadingRows,awunFetch,requestSearch,pausePlayback,playStoreMode,apiBase,fallbackApiBase,apiUrl,refreshStatus,replaceQueue,appendQueue};
 document.addEventListener('awun:language',event=>{language=event.detail.language;applyVisual(false);applyRepeatMode(false);render();renderDiagnostics();refreshStatus()});

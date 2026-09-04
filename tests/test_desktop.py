@@ -1,4 +1,7 @@
 from pathlib import Path
+import json
+import sys
+from types import SimpleNamespace
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -9,6 +12,7 @@ def test_windows_builds_embed_the_awun_icon() -> None:
     workflow = (ROOT / ".github" / "workflows" / "build-windows-exe.yml").read_text(encoding="utf-8")
     spec = (ROOT / "AWUN.spec").read_text(encoding="utf-8")
     icon = ROOT / "desktop" / "assets" / "awun.ico"
+    installer = (ROOT / "installer" / "AWUN.iss").read_text(encoding="utf-8")
 
     assert "AWUN.spec" in batch
     assert "AWUN.spec" in workflow
@@ -17,6 +21,8 @@ def test_windows_builds_embed_the_awun_icon() -> None:
     assert '"VERSION"' in spec
     assert icon.read_bytes().startswith(b"\x00\x00\x01\x00")
     assert icon.stat().st_size > 10_000
+    assert "AWUN-Setup-x64" in workflow and "AWUN-Setup-x64" in installer
+    assert "PrivilegesRequired=lowest" in installer
 
 
 def test_desktop_uses_local_backend_before_the_free_remote_fallback() -> None:
@@ -50,3 +56,19 @@ def test_frontend_can_use_an_explicit_remote_api_without_rewriting_local_assets(
     assert "const target=apiUrl(input)" in script
     assert "fetch(input,options)" in script
     assert "apiBase,fallbackApiBase,apiUrl" in script
+
+
+def test_desktop_state_is_atomic_and_excludes_rebuildable_waveforms(tmp_path: Path) -> None:
+    sys.modules.setdefault("webview", SimpleNamespace())
+    from desktop.launcher import DesktopStateBridge
+
+    bridge = DesktopStateBridge(tmp_path / "desktop-state.json")
+
+    assert bridge.save_state(json.dumps({
+        "awun-library": "[]",
+        "awun-waveforms-v1": "large transient cache",
+        "unrelated": "ignored",
+    })) is True
+
+    assert json.loads(bridge.load_state()) == {"awun-library": "[]"}
+    assert not (tmp_path / "desktop-state.tmp").exists()

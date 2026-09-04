@@ -5,6 +5,7 @@
 [English](README.md) · [Русский](README.ru.md) · [Open AWUN](https://awun-1.onrender.com) · [Windows builds](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml) · [Support the project](SUPPORT.md) · [Freeware license](LICENSE.md)
 
 [![Tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&label=Windows%20build&style=flat-square)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
+[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&label=browser%20tests&style=flat-square)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Loro66/AWUN)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-live-009688?style=flat-square&logo=fastapi&logoColor=white)
@@ -43,6 +44,10 @@ components deterministic, including the light-theme waveform. Provider waveform
 profiles are extracted lazily and cached on the device instead of downloading
 full audio files for every search result. For same-origin audio without provider
 metadata, listened sections are progressively replaced with captured real peaks.
+Critical local settings can be exported, restored from an automatic on-device
+snapshot, or imported on another installation. The diagnostics screen can also
+download a redacted rolling runtime log and manually check GitHub Releases for
+an update.
 
 ## Try and install
 
@@ -250,10 +255,11 @@ language switch.
 
 For a reproducible cloud build, open **Actions → Windows desktop build → Run
 workflow**. Every pull request also creates an `AWUN-Windows-x64` test artifact.
-Download it from the completed run. Pushing a tag matching `VERSION` creates a
-GitHub Release containing the executable and
-checksum. The executable is currently unsigned, so Windows SmartScreen may
-show a warning until a code-signing certificate is added.
+Download it from the completed run. It contains both the portable executable
+and a per-user `AWUN-Setup-x64.exe` installer, with SHA-256 checksums. Pushing a
+tag matching `VERSION` publishes the same files in GitHub Releases. The binaries
+are currently unsigned, so Windows SmartScreen may show a warning until a
+code-signing certificate is added.
 
 The Windows artifact and tagged releases include `LICENSE.md` and `EULA.md`.
 Installing or using an official build means accepting those terms.

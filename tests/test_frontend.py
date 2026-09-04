@@ -173,6 +173,9 @@ def test_installable_pwa_is_wired() -> None:
     assert "hls.light.min.js" in worker
     assert "design-system.css?v=__AWUN_VERSION__" in worker
     assert "player-core.js?v=__AWUN_VERSION__" in worker
+    assert "storage.js?v=__AWUN_VERSION__" in worker
+    assert "runtime-log.js?v=__AWUN_VERSION__" in worker
+    assert "update-checker.js?v=__AWUN_VERSION__" in worker
     assert "startsWith('/static/')" in worker and "cached||fetch" in worker
     assert "/static/desktop-bridge.js" in html and "desktop-bridge.js" in worker
     assert "pywebviewready" in bridge and "save_state" in bridge and "load_state" in bridge
@@ -329,8 +332,26 @@ def test_youtube_embed_failures_skip_same_source_refresh_and_recover() -> None:
 
     assert "youtubeStartTimer" in app
     assert "recordPlaybackHealth('youtube',{success:false" in app
-    assert "stopYouTube();setPlaying(false);if(ready)void recoverPlayback" in app
-    assert "failed.source!=='youtube'&&state.sameSourceRefreshGeneration" in app
+    assert "markYoutubeFailed(track,code)" in app
+    assert "finish(reject,error)" in app
+    assert "findingYoutubeAlternative" in app
+    assert "youtubeTracks=playerCore.rankAlternatives" in app
+    assert "!state.failedTrackIds.has(candidate.id)&&!youtubeRecentlyFailed(candidate)" in app
+
+
+def test_local_storage_logs_and_update_tools_are_functional() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    app = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    storage = (ROOT / "frontend" / "storage.js").read_text(encoding="utf-8")
+    runtime_log = (ROOT / "frontend" / "runtime-log.js").read_text(encoding="utf-8")
+
+    assert all(f'id="{element}"' in html for element in (
+        "diagnosticsLog", "storageExport", "storageImport", "storageImportFile", "updateCheck", "updateLink"
+    ))
+    assert "storage?.migrate?.()" in app and "storage?.info?.()" in app
+    assert "runtimeLog?.report?.(40)" in app and "checkForUpdates" in app
+    assert "indexedDB.open" in storage and "importState" in storage and "exportState" in storage
+    assert "unhandledrejection" in runtime_log and "SECRET_KEY" in runtime_log
 
 
 def test_listener_first_onboarding_and_language_switch_are_wired() -> None:

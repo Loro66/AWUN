@@ -68,9 +68,12 @@ Open `https://YOUR-AWUN-API/` after deployment.
 - Search results appear source by source instead of waiting for the slowest provider.
 - Settings opens source diagnostics with average latency, the latest provider error and a safe
   copyable report.
+- Diagnostics can export/import local data, restore the latest on-device snapshot, download a
+  redacted rolling runtime log and manually check GitHub Releases for a newer version.
 - Source diagnostics stays online after results render and separates API failures from interface
   update errors. Unavailable YouTube embeds are recorded locally and trigger cross-source recovery
-  instead of retrying the same permanent video URL.
+  after first trying another close YouTube upload instead of retrying the same permanent video URL.
+- Chromium interaction and screenshot tests cover 1920, 1280, 1000 and 390 pixel layouts.
 - At tablet and compact desktop widths, player volume and queue controls stay on one row without
   clipping; result queue menus stack above adjacent cards and open upward near the scroll edge.
 - Disabled providers are visibly marked `NOT CONNECTED` and are not sent in a
@@ -84,19 +87,21 @@ Open `https://YOUR-AWUN-API/` after deployment.
 - With `AWUN_GENIUS_ACCESS_TOKEN`, `/health` reports Genius annotations as connected.
 - Added lyric notes survive reload on the same device and can be deleted.
 
-Provider media links are short-lived. AWUN signs them for immediate playback;
-users should run a fresh search when an older saved link expires.
+Provider media links are short-lived. Before playing a saved or queued track,
+AWUN refreshes its link on the same provider; cross-provider recovery begins
+only when that refresh fails.
 
 ## 4. Build the Windows application
 
 Open **GitHub → Actions → Windows desktop build → Run workflow**. The completed
-run contains an `AWUN-Windows-x64` artifact with `AWUN.exe` and
-`AWUN.exe.sha256`. A `v*` tag publishes both files in GitHub Releases.
+run contains an `AWUN-Windows-x64` artifact with portable `AWUN.exe`, the
+per-user `AWUN-Setup-x64.exe` installer and SHA-256 checksums. A `v*` tag
+publishes the same files in GitHub Releases.
 
 The current desktop build bundles the FastAPI backend and frontend and starts a random
-loopback port. It uses the configured public AWUN endpoint by default and falls
-back to the bundled local backend when that endpoint is unavailable. The
-interface defaults to Russian in the desktop build.
+loopback port. It queries the bundled local backend first and uses the configured
+public AWUN endpoint only as a provider-level fallback. The interface defaults
+to Russian in the desktop build.
 
 The binary is not code-signed yet. Treat code signing as a release requirement
 before broad public distribution.
@@ -111,7 +116,7 @@ latest commit** in Render if auto-deploy does not start.
 
 ## 6. Build the Google Play Android release
 
-The Android release is `com.loro66.awun`, version `1.8.0` / code `18000`, and
+The Android release is `com.loro66.awun`, version `1.10.2` / code `1100200`, and
 targets Android 16 API 36. Before building, the verified Play Console account
 owner must configure the four upload-key repository secrets documented in
 `mobile/android/play-store/RELEASE_CHECKLIST.md`.

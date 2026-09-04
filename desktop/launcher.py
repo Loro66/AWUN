@@ -24,6 +24,7 @@ from backend.core.version import APP_VERSION
 HOST = "127.0.0.1"
 STARTUP_TIMEOUT_SECONDS = 25
 MAX_DESKTOP_STATE_BYTES = 4 * 1024 * 1024
+TRANSIENT_DESKTOP_STATE_KEYS = {"awun-waveforms-v1"}
 REMOTE_API_ENV = "AWUN_REMOTE_API_URL"
 REMOTE_API_FILE = "remote-api.txt"
 # AWUN's public Render deployment is a provider fallback. The embedded local
@@ -85,7 +86,7 @@ class DesktopStateBridge:
                 safe = {
                     str(key): str(value)
                     for key, value in data.items()
-                    if str(key).startswith("awun-")
+                    if str(key).startswith("awun-") and str(key) not in TRANSIENT_DESKTOP_STATE_KEYS
                 }
                 return json.dumps(safe, ensure_ascii=False)
             except (OSError, ValueError, TypeError):
@@ -103,7 +104,7 @@ class DesktopStateBridge:
         safe = {
             str(key): str(value)
             for key, value in data.items()
-            if str(key).startswith("awun-")
+            if str(key).startswith("awun-") and str(key) not in TRANSIENT_DESKTOP_STATE_KEYS
         }
         encoded = json.dumps(safe, ensure_ascii=False, separators=(",", ":"))
         if len(encoded.encode("utf-8")) > MAX_DESKTOP_STATE_BYTES:

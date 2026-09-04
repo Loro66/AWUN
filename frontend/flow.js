@@ -2,6 +2,7 @@
   const app=window.awunApp;if(!app)return;
   const {state,ui,playTrack,render,toggleSave,setMessage,sourceLabels,decodeText,matchText,requestSearch,refreshStatus,replaceQueue,appendQueue}=app;
   const t=(key,values={})=>window.awunI18n.t(key,values);
+  const storage=window.awunStorage;
   const PROFILE_KEY='awun-wave-profile-v2';
   const moodTerms={any:'',calm:'calm mellow',energy:'energetic',focus:'focus instrumental',happy:'happy upbeat',sad:'melancholic',night:'night'};
   const activityTerms={any:'',work:'work focus',drive:'driving',training:'workout',relax:'relax'};
@@ -13,15 +14,13 @@
 
   function freshProfile(){return{version:2,discovery:'balanced',mood:'any',activity:'any',language:'any',era:'any',blockedArtists:[],signals:[]}}
   function loadProfile(){
-    try{
-      const value=JSON.parse(localStorage.getItem(PROFILE_KEY)||localStorage.getItem('awun-flow-profile-v1')||'null');if(!value||!Array.isArray(value.signals))return freshProfile();
-      return{version:2,discovery:['familiar','balanced','new'].includes(value.discovery)?value.discovery:'balanced',mood:moodTerms[value.mood]!==undefined?value.mood:'any',activity:activityTerms[value.activity]!==undefined?value.activity:'any',language:languageTerms[value.language]!==undefined?value.language:'any',era:eraTerms[value.era]!==undefined?value.era:'any',blockedArtists:Array.isArray(value.blockedArtists)?value.blockedArtists.slice(-200):[],signals:value.signals.slice(-800)};
-    }catch{return freshProfile()}
+    const value=storage?.readJSON?.(PROFILE_KEY,null)||storage?.readJSON?.('awun-flow-profile-v1',null);if(!value||!Array.isArray(value.signals))return freshProfile();
+    return{version:2,discovery:['familiar','balanced','new'].includes(value.discovery)?value.discovery:'balanced',mood:moodTerms[value.mood]!==undefined?value.mood:'any',activity:activityTerms[value.activity]!==undefined?value.activity:'any',language:languageTerms[value.language]!==undefined?value.language:'any',era:eraTerms[value.era]!==undefined?value.era:'any',blockedArtists:Array.isArray(value.blockedArtists)?value.blockedArtists.slice(-200):[],signals:value.signals.slice(-800)};
   }
   const profile=loadProfile();
   state.flow={active:false,fetching:false,baseQuery:'',queryCursor:0,controller:null,seen:new Set(),progress:new Map(),profile};
 
-  function saveProfile(){localStorage.setItem(PROFILE_KEY,JSON.stringify(profile));updateFlowUi()}
+  function saveProfile(){storage?.writeJSON?.(PROFILE_KEY,profile);updateFlowUi()}
   function trackSnapshot(track){return{id:String(track?.id||''),title:decodeText(track?.title||''),artist:decodeText(track?.artist||''),source:String(track?.source||''),at:Date.now()}}
   function record(type,track,extra={}){
     if(!track?.id)return;

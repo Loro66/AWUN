@@ -1,0 +1,1 @@
+AWUN 1.10.2 adds safer local backups, diagnostics logs, resilient YouTube recovery, an update check, and responsive browser-tested layouts.
