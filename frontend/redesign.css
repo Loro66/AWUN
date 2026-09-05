@@ -191,7 +191,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   .track-waveform{--track-progress:0%;position:relative;grid-column:4;grid-row:1;width:100%;height:26px;padding:0;overflow:hidden;border:0;background:transparent;cursor:pointer}
   .track-waveform:before,.track-waveform:after{position:absolute;inset:0;content:"";background:repeating-linear-gradient(90deg,rgba(var(--paper-rgb),.18) 0 2px,transparent 2px 5px);clip-path:var(--wave-shape)}
   .track-waveform:after{width:var(--track-progress);background:repeating-linear-gradient(90deg,var(--signal) 0 2px,transparent 2px 5px)}
-  .track.active .track-waveform:before{background:repeating-linear-gradient(90deg,rgba(var(--paper-rgb),.24) 0 2px,transparent 2px 5px)}
+  .track.active .track-waveform:before{background:rgba(var(--paper-rgb),.24)}
   body.is-playing .track.active .track-waveform{filter:drop-shadow(0 0 3px rgba(var(--accent-rgb),.12))}
   .track .tag{grid-column:5;grid-row:1;justify-self:start;max-width:100%;overflow:hidden;padding:5px 7px;border:1px solid rgba(var(--paper-rgb),.1);border-radius:6px;background:rgba(var(--paper-rgb),.035);color:rgba(var(--paper-rgb),.52);font-size:7px;text-overflow:ellipsis;white-space:nowrap}.track .tag.soundcloud{border-color:rgba(var(--accent-rgb),.34);background:rgba(var(--accent-rgb),.08);color:var(--signal-hot)}
   .track .quality{display:none}.track .duration{grid-column:6;grid-row:1;color:rgba(var(--paper-rgb),.43);font-size:8px}
@@ -528,7 +528,7 @@ html[data-theme="white"] .diagnostics-entry,html[data-theme="white"] .diagnostic
     width:auto;height:var(--awun-compact-player-height);min-height:var(--awun-compact-player-height);max-height:var(--awun-compact-player-height);
     margin:0;padding:10px 16px;flex-direction:row;align-items:center;gap:12px;overflow:visible;
     border:0;border-top:1px solid rgba(var(--paper-rgb),.13);border-radius:0;
-    background:var(--player-surface);box-shadow:0 -14px 38px rgba(0,0,0,.34);backdrop-filter:none;transform:none;
+    background:var(--player-surface);box-shadow:0 -14px 38px rgba(0,0,0,.34);backdrop-filter:none;transform:none;animation:none;
   }
   .player:before,.player.expanded-player:before{display:none}
   .player .player-panel-head,.player.expanded-player .player-panel-head{display:none}
@@ -536,20 +536,20 @@ html[data-theme="white"] .diagnostics-entry,html[data-theme="white"] .diagnostic
     position:static;order:0;flex:0 0 54px;width:54px;height:54px;aspect-ratio:auto;margin:0;align-self:center;filter:none;transform:none;
   }
   .player .player-artwork,.player.expanded-player .player-artwork{
-    width:54px;height:54px;border-radius:7px;background-position:center;background-size:cover;
+    width:54px;height:54px;border-radius:7px;background-image:var(--vinyl-cover,none);background-position:center;background-size:cover;
     box-shadow:inset 0 0 0 1px rgba(var(--paper-rgb),.13);animation:none!important;
   }
   .player .player-artwork:before,.player .player-artwork:after,
   .player.expanded-player .player-artwork:before,.player.expanded-player .player-artwork:after{display:none}
   .player .vinyl-monogram,.player.expanded-player .vinyl-monogram{font-size:12px}
   .player .player-console,.player.expanded-player .player-console{
-    position:static;order:1;flex:1 1 auto;width:auto;min-width:0;height:auto;padding:0;
+    position:static;order:1;flex:1 1 auto;width:auto;min-width:0;min-height:0;height:auto;padding:0;
     display:grid;grid-template-columns:minmax(140px,.65fr) minmax(300px,1.5fr) minmax(120px,.55fr);align-items:center;gap:12px;
-    border:0;border-radius:0;background:none;box-shadow:none;text-align:left;
+    border:0;border-radius:0;background:none;box-shadow:none;backdrop-filter:none;text-align:left;
   }
   .player .player-console:before,.player .player-console:after,
   .player.expanded-player .player-console:before,.player.expanded-player .player-console:after{display:none}
-  .player .now,.player.expanded-player .now{min-width:0;padding:0}
+  .player .now,.player.expanded-player .now{min-width:0;min-height:0;padding:0}
   .player .now-kicker,.player .mini-eq,.player.expanded-player .now-kicker,.player.expanded-player .mini-eq{display:none}
   .player .now strong,.player.expanded-player .now strong{
     display:block;overflow:hidden;color:var(--paper);font-family:Inter,ui-sans-serif,sans-serif;font-size:12px;font-weight:600;letter-spacing:0;text-overflow:ellipsis;white-space:nowrap;
@@ -626,7 +626,7 @@ html[data-theme="white"] .diagnostics-entry,html[data-theme="white"] .diagnostic
   html[data-decor="minimal"] .player.expanded-player{
     padding:9px 10px max(9px,env(safe-area-inset-bottom));align-items:flex-start;gap:9px;
   }
-  .player .turntable,.player.expanded-player .turntable{flex-basis:44px;width:44px;height:44px;margin-top:1px}
+  .player .turntable,.player.expanded-player .turntable{flex-basis:44px;width:44px;height:44px;margin-top:1px;align-self:flex-start}
   .player .player-artwork,.player.expanded-player .player-artwork{width:44px;height:44px;border-radius:6px}
   .player .vinyl-monogram,.player.expanded-player .vinyl-monogram{font-size:10px}
   .player .player-console,.player.expanded-player .player-console{
@@ -657,6 +657,8 @@ html[data-theme="white"] .diagnostics-entry,html[data-theme="white"] .diagnostic
     position:static!important;grid-column:2;grid-row:1;width:30px!important;display:grid!important;grid-template-columns:30px!important;justify-content:end!important;margin:0!important;
   }
   .player .player-tools>*,.player.expanded-player .player-tools>*{display:none!important}
+  .player .player-tools #muteButton,.player .player-tools .volume,
+  .player.expanded-player .player-tools #muteButton,.player.expanded-player .player-tools .volume{display:none!important}
   .player .player-tools #queueToggle,.player.expanded-player .player-tools #queueToggle{display:grid!important;width:30px;height:30px}
   .player .youtube-dock,.player.expanded-player .youtube-dock:not([hidden]){
     right:8px;bottom:calc(var(--awun-compact-player-height) + 8px);width:calc(100vw - 16px);padding:6px;border-radius:9px;

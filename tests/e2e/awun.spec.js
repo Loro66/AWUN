@@ -82,7 +82,7 @@ for (const viewport of [
   { name: 'compact-1000', width: 1000, height: 800 },
   { name: 'mobile-390', width: 390, height: 844 },
 ]) {
-  test(`pre-release layout ${viewport.name}`, async ({ page }) => {
+  test(`pre-release layout ${viewport.name}`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     await openAwun(page);
     await searchFor(page, 'midnight signal');
@@ -91,6 +91,28 @@ for (const viewport of [
       document.activeElement?.blur();
       window.scrollTo(0, 0);
     });
-    await expect(page).toHaveScreenshot(`${viewport.name}.png`, { fullPage: true });
+    await expect(page.locator('#nowSource')).toHaveText('Audius');
+    const layout = await page.evaluate(() => {
+      const bounds = selector => {
+        const element = document.querySelector(selector);
+        const style = getComputedStyle(element);
+        const rect = element.getBoundingClientRect();
+        return { selector, x: rect.x, y: rect.y, right: rect.right, bottom: rect.bottom,
+          width: rect.width, height: rect.height, visible: style.display !== 'none' && rect.width > 0 && rect.height > 0 };
+      };
+      return { width: innerWidth, height: innerHeight, scrollWidth: document.documentElement.scrollWidth,
+        player: bounds('#player'), controls: ['#nowTitle', '#playPause', '#waveProgress', '#queueToggle', '#muteButton', '#volume'].map(bounds) };
+    });
+    await testInfo.attach('player-layout', { body: JSON.stringify(layout, null, 2), contentType: 'application/json' });
+    expect(layout.scrollWidth).toBeLessThanOrEqual(layout.width);
+    expect(layout.player.bottom).toBeCloseTo(layout.height, 0);
+    expect(layout.player.height).toBeLessThanOrEqual(120);
+    for (const control of layout.controls.filter(item => item.visible)) {
+      expect(control.x, `${control.selector} left edge`).toBeGreaterThanOrEqual(layout.player.x - 1);
+      expect(control.y, `${control.selector} top edge`).toBeGreaterThanOrEqual(layout.player.y - 1);
+      expect(control.right, `${control.selector} right edge`).toBeLessThanOrEqual(layout.player.right + 1);
+      expect(control.bottom, `${control.selector} bottom edge`).toBeLessThanOrEqual(layout.player.bottom + 1);
+    }
+    await expect(page).toHaveScreenshot(`${viewport.name}.png`);
   });
 }
