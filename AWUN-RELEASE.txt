@@ -1,11 +1,28 @@
 AWUN release package. The canonical release number is stored in VERSION.
-Release date: 2026-07-23
+Build date: 2026-09-05
 
 The Windows application now bundles FastAPI and the complete frontend, starts
-on an ephemeral loopback port and no longer depends on Render. The desktop
+on an ephemeral loopback port. Searches use the local API first; the configured
+remote endpoint is only a fallback for an unavailable provider. The desktop
 launcher, static interface, search states, errors, player, library import,
 track stories, settings and My Wave now have complete Russian localization.
 English remains available from the language switch.
+
+This pre-release adds recoverable on-device library and queue storage, JSON
+backup export/import, a redacted runtime log and a manual update check.
+Unavailable YouTube uploads are remembered temporarily; playback tries a close
+alternative upload and then another connected source. Source diagnostics reports
+interface errors separately from API and playback failures.
+
+The responsive listening dock now uses one control layout at each breakpoint.
+Legacy CSS priorities no longer force hidden buttons or volume onto extra rows.
+Waveform bars remain visible at desktop, tablet and phone widths. Browser tests
+exercise search, My Wave, playback recovery and queue persistence, with viewport
+screenshots and control-bound checks at 1920, 1280, 1000 and 390 pixels.
+
+The Windows archive includes AWUN.exe (portable), AWUN-Setup-x64.exe (per-user
+installer), their SHA-256 checksums, LICENSE.md and EULA.md. Extract the archive
+fully before running either application.
 
 The Android app is now prepared for Google Play as com.loro66.awun. It targets
 API 36, builds a signed Android App Bundle from a manual workflow, has Russian

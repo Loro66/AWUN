@@ -117,7 +117,7 @@ html[data-theme]{
   .site-header .theme-button{margin-top:auto}
   .site-header .library:hover,.site-header .library.active,.site-header .library[aria-expanded="true"],.site-header .theme-button:hover,.site-header .theme-button[aria-expanded="true"]{border-color:rgba(167,198,112,.38);background:rgba(167,198,112,.1);transform:none}
   .site-header .search-nav.active{border-left:2px solid #b7ce83}
-  .window-chrome,.player-menu,.site-header .status{display:none}
+  .window-chrome,.player-menu,.site-header .status{display:none!important}
 
   .hero,
   html[data-decor="minimal"] .hero{
