@@ -279,16 +279,13 @@ def test_visual_settings_have_distinct_rendered_modes() -> None:
 def test_desktop_shell_has_no_legacy_chrome_and_wave_is_integrated() -> None:
     html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
     flow = (ROOT / "frontend" / "flow.js").read_text(encoding="utf-8")
-    forest = (ROOT / "frontend" / "forest.css").read_text(encoding="utf-8")
 
     assert 'class="window-chrome"' not in html
     assert 'class="player-menu"' not in html
     assert 'id="status" class="status sr-only"' in html
     assert "flow-screen-open" in flow
-    assert "right:var(--awun-player)" in forest and "left:var(--awun-nav)" in forest
-    assert ".window-chrome,.player-menu,.site-header .status{display:none!important}" in forest
-    assert ".player .player-tools .now-source,.player .player-tools .close{display:none!important}" in forest
-    assert ".player::-webkit-scrollbar{display:none}" in forest
+    # Actual visibility and player bounds are covered by the four Playwright
+    # viewport tests; matching legacy CSS text cannot verify cascade behavior.
 
 
 def test_waveform_queue_menu_and_responsive_player_regressions_are_fixed() -> None:

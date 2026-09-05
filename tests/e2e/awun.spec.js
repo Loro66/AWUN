@@ -104,6 +104,10 @@ for (const viewport of [
         player: bounds('#player'), controls: ['#nowTitle', '#playPause', '#waveProgress', '#queueToggle', '#muteButton', '#volume'].map(bounds) };
     });
     await testInfo.attach('player-layout', { body: JSON.stringify(layout, null, 2), contentType: 'application/json' });
+    await expect(page.locator('.window-chrome, .player-menu')).toHaveCount(0);
+    for (const control of await page.locator('.player-tools .now-source, .player-tools .close, .player .flow-feedback').all()) {
+      await expect(control).toBeHidden();
+    }
     expect(layout.scrollWidth).toBeLessThanOrEqual(layout.width);
     expect(layout.player.bottom).toBeCloseTo(layout.height, 0);
     expect(layout.player.height).toBeLessThanOrEqual(120);
