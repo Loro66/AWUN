@@ -39,8 +39,6 @@ import java.util.List;
 import java.util.Locale;
 
 public final class MainActivity extends Activity {
-    private static final String CLIENT_VERSION = "1.8";
-
     private FrameLayout root;
     private WebView webView;
     private ProgressBar progress;
@@ -109,7 +107,7 @@ public final class MainActivity extends Activity {
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         settings.setSupportMultipleWindows(false);
         settings.setJavaScriptCanOpenWindowsAutomatically(false);
-        settings.setUserAgentString(settings.getUserAgentString() + " AWUN-Android/" + CLIENT_VERSION);
+        settings.setUserAgentString(settings.getUserAgentString() + " AWUN-Android/" + BuildConfig.VERSION_NAME);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             settings.setSafeBrowsingEnabled(true);
         }

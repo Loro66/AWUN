@@ -12,8 +12,7 @@
   <script>
     try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');const p=new URLSearchParams(location.search);document.documentElement.dataset.theme=v.theme||'black';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full';document.documentElement.dataset.density=v.density||'standard';document.documentElement.lang=p.get('lang')||localStorage.getItem('awun-language')||(navigator.language.toLowerCase().startsWith('ru')?'ru':'en')}catch{}
   </script>
-  <link rel="stylesheet" href="/static/styles.css?v=20260830.3">
-  <link rel="stylesheet" href="/static/forest.css?v=20260830.3">
+  <link rel="stylesheet" href="/design-system.css?v=__AWUN_VERSION__">
 </head>
 <body>
   <a class="skip-link" href="#searchInput" data-i18n="skipSearch">Перейти к поиску</a>
@@ -33,11 +32,11 @@
         <button id="importButton" class="library import-button" type="button" aria-expanded="false" aria-controls="importPanel"><i aria-hidden="true">⇣</i><span data-i18n="import">ПЕРЕНОС</span><b aria-hidden="true">↗</b></button>
         <button id="languageButton" class="library language-button" type="button" aria-label="Сменить язык" data-i18n-aria-label="switchLanguageAria"><i aria-hidden="true">A</i><span data-i18n="language">ЯЗЫК</span><b id="languageLabel">RU</b></button>
         <button id="themeButton" class="theme-button" type="button" aria-expanded="false" aria-controls="themePanel">
-          <i aria-hidden="true">◐</i><span data-i18n="appearance">ВНЕШНИЙ ВИД</span><b id="themeLabel">ЧЁРНАЯ</b>
+          <i aria-hidden="true">⚙</i><span data-i18n="settings">НАСТРОЙКИ</span><b id="themeLabel">ЧЁРНАЯ</b>
         </button>
         <button id="installButton" class="library install-button" type="button" hidden><i aria-hidden="true">↓</i><span data-i18n="install">УСТАНОВИТЬ</span><b data-i18n="app">AWUN</b></button>
       </div>
-      <span id="status" class="status" title="AWUN"><i></i><b data-i18n="connecting">ПОДКЛЮЧЕНИЕ</b></span>
+      <span id="status" class="status sr-only" title="AWUN"><i></i><b data-i18n="connecting">ПОДКЛЮЧЕНИЕ</b></span>
     </header>
 
     <section class="hero" aria-labelledby="heroLabel">
@@ -61,6 +60,7 @@
           <summary><span data-i18n="searchSettings">ИСТОЧНИКИ И РЕГИОН</span><small data-i18n="searchSettingsHint">настрой поиск точнее</small></summary>
           <div class="source-row">
           <div id="sources" class="sources" aria-label="Источники поиска" data-i18n-aria-label="sourcesAria">
+            <button id="allSourcesButton" type="button" class="all-sources-button" data-i18n="allSources">ВСЕ ИСТОЧНИКИ</button>
             <button type="button" data-source="youtube" class="on"><i></i><span>YOUTUBE</span><small data-i18n="connecting">ПОДКЛЮЧЕНИЕ</small></button>
             <button type="button" data-source="soundcloud" class="on"><i></i><span>SOUNDCLOUD</span><small data-i18n="connecting">ПОДКЛЮЧЕНИЕ</small></button>
             <button type="button" data-source="audius" class="on"><i></i><span>AUDIUS</span><small data-i18n="connecting">ПОДКЛЮЧЕНИЕ</small></button>
@@ -96,6 +96,17 @@
       </div>
     </section>
 
+    <section id="homeSections" class="home-sections" aria-label="Главная AWUN">
+      <section class="dashboard-section continue-section" aria-labelledby="continueTitle">
+        <div class="section-heading"><div><span class="section-kicker" data-i18n="continueKicker">ПРОДОЛЖИМ СЛУШАТЬ</span><h1 id="continueTitle" data-i18n="continueListening">Продолжить слушать</h1></div><button class="section-link" type="button" data-home-action="all-recent" data-i18n="viewAll">СМОТРЕТЬ ВСЁ</button></div>
+        <ol id="recentList" class="home-track-grid" aria-live="polite"></ol>
+      </section>
+      <section class="dashboard-section recommendation-section" aria-labelledby="recommendTitle">
+        <div class="section-heading"><div><span class="section-kicker" data-i18n="forYouKicker">ПОД ТВОЙ РИТМ</span><h2 id="recommendTitle" data-i18n="recommendedForYou">Рекомендовано для тебя</h2></div></div>
+        <div id="recommendationGrid" class="recommendation-grid"></div>
+      </section>
+    </section>
+
     <section id="results" class="results" aria-live="polite" aria-busy="false">
       <div class="results-heading">
         <div>
@@ -117,10 +128,15 @@
     </section>
 
     <section id="idleStage" class="idle-stage" aria-labelledby="idleStageTitle">
-      <div class="idle-orbit" aria-hidden="true"><i></i><i></i><span>AW</span></div>
-      <div>
-        <span data-i18n="nothingPlaying">НИЧЕГО НЕ ИГРАЕТ</span>
+      <div class="idle-empty-card">
+        <span class="idle-kicker" data-i18n="nowPlaying">СЕЙЧАС ИГРАЕТ</span>
+        <div class="idle-art" aria-hidden="true">AW</div>
+        <span class="idle-state" data-i18n="nothingPlaying">НИЧЕГО НЕ ИГРАЕТ</span>
         <h2 id="idleStageTitle" data-i18n="selectTrack">Выбери трек, чтобы сразу его включить.</h2>
+        <div class="idle-actions">
+          <button id="idleSearchButton" type="button"><span aria-hidden="true">⌕</span><b data-i18n="search">ПОИСК</b></button>
+          <button id="idleWaveButton" type="button"><span aria-hidden="true">◌</span><b data-i18n="wave">МОЯ ВОЛНА</b></button>
+        </div>
       </div>
     </section>
 
@@ -157,6 +173,7 @@
   </main>
 
   <aside id="player" class="player" hidden aria-label="Музыкальный плеер" data-i18n-aria-label="playerAria">
+    <header class="player-panel-head"><div><span class="section-kicker" data-i18n="nowPlayingKicker">СЕЙЧАС</span><h2 data-i18n="nowPlaying">Сейчас играет</h2></div><button id="collapsePlayer" type="button" aria-label="Свернуть плеер" data-i18n-aria-label="collapsePlayerAria">×</button></header>
     <div id="youtubeDock" class="youtube-dock" hidden>
       <div class="dock-head"><span data-i18n="youtubePlayer">ОФИЦИАЛЬНЫЙ ПЛЕЕР YOUTUBE</span><button id="minimizeVideo" type="button">—</button></div>
       <div id="youtubePlayer" class="youtube-player"></div>
@@ -169,7 +186,7 @@
     </div>
     <section class="player-console">
       <div class="now">
-        <small class="now-kicker" data-i18n="nowPlaying">СЕЙЧАС ИГРАЕТ</small>
+        <small class="now-kicker" data-i18n="nowPlayingKicker">СЕЙЧАС</small>
         <strong id="nowTitle" data-i18n="nothingPlaying">НИЧЕГО НЕ ИГРАЕТ</strong>
         <span id="nowArtist">AWUN</span>
         <div class="mini-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -187,7 +204,7 @@
         </div>
         <div class="timeline">
           <span id="elapsed">0:00</span>
-          <div class="wave-progress">
+          <div id="waveProgress" class="wave-progress">
             <input id="progress" class="range progress" type="range" min="0" max="1000" value="0" aria-label="Позиция воспроизведения" data-i18n-aria-label="playbackPositionAria">
           </div>
           <span id="totalTime">0:00</span>
@@ -196,10 +213,17 @@
 
       <div class="player-tools">
         <span id="nowSource" class="now-source">—</span>
+        <button id="queueToggle" type="button" aria-label="Открыть очередь" data-i18n-aria-label="openQueueAria" aria-expanded="false">☷</button>
         <button id="muteButton" type="button" aria-label="Выключить звук" data-i18n-aria-label="muteAria">ЗВУК</button>
         <input id="volume" class="range volume" type="range" min="0" max="100" value="82" aria-label="Громкость" data-i18n-aria-label="volumeAria">
+        <button id="expandPlayer" type="button" aria-label="Развернуть плеер" data-i18n-aria-label="expandPlayerAria" aria-expanded="false">↗</button>
         <button id="closePlayer" class="close" type="button" aria-label="Закрыть плеер" data-i18n-aria-label="closePlayerAria">×</button>
       </div>
+    </section>
+    <section class="up-next" aria-labelledby="queueTitle">
+      <header><div><span class="section-kicker" data-i18n="upNext">Далее</span><h3 id="queueTitle" data-i18n="queue">Очередь</h3></div><div><button id="clearQueue" type="button" data-i18n="clearQueue">ОЧИСТИТЬ</button><button id="queueClose" type="button" aria-label="Закрыть очередь" data-i18n-aria-label="closeQueueAria">×</button></div></header>
+      <ol id="queueList" class="queue-list"></ol>
+      <p id="queueEmpty" class="queue-empty" data-i18n="queueEmpty">Очередь появится после выбора трека.</p>
     </section>
     <audio id="audio" preload="metadata"></audio>
   </aside>
@@ -224,6 +248,37 @@
       <button id="decorToggle" type="button"><span data-i18n="interface">ИНТЕРФЕЙС</span><b id="decorValue">ПОЛНЫЙ</b></button>
       <button id="densityToggle" type="button"><span data-i18n="density">ПЛОТНОСТЬ</span><b id="densityValue">ОБЫЧНАЯ</b></button>
     </div>
+    <button id="diagnosticsButton" class="diagnostics-entry" type="button" aria-controls="diagnosticsPanel" aria-expanded="false">
+      <span><small data-i18n="diagnosticsKicker">СОСТОЯНИЕ СЕТИ</small><strong data-i18n="sourceDiagnostics">ДИАГНОСТИКА ИСТОЧНИКОВ</strong></span>
+      <b data-i18n="openDiagnostics">ОТКРЫТЬ</b>
+    </button>
+  </aside>
+
+  <aside id="diagnosticsPanel" class="theme-panel diagnostics-panel" hidden aria-label="Диагностика музыкальных источников" data-i18n-aria-label="sourceDiagnosticsAria">
+    <div class="theme-panel-head">
+      <div><strong data-i18n="sourceDiagnostics">ДИАГНОСТИКА ИСТОЧНИКОВ</strong></div>
+      <button id="diagnosticsClose" type="button" aria-label="Закрыть диагностику" data-i18n-aria-label="closeDiagnosticsAria">×</button>
+    </div>
+    <p data-i18n="diagnosticsDescription">Фактическое состояние источников по последним поисковым запросам. Отчёт не содержит ключей API и личных данных.</p>
+    <div class="diagnostics-summary">
+      <div><span data-i18n="diagnosticRoute">МАРШРУТ API</span><strong id="diagnosticsEndpoint" data-i18n="diagnosticChecking">ПРОВЕРКА</strong></div>
+      <div><span data-i18n="diagnosticUpdated">ОБНОВЛЕНО</span><strong id="diagnosticsChecked">—</strong></div>
+    </div>
+    <div id="diagnosticsList" class="diagnostics-list" aria-live="polite"></div>
+    <div class="diagnostics-actions">
+      <span id="diagnosticsCopyStatus" data-i18n="diagnosticsPrivacy">В отчёте только технические статусы.</span>
+      <button id="diagnosticsRefresh" type="button" data-i18n="refreshDiagnostics">ОБНОВИТЬ</button>
+      <button id="diagnosticsCopy" type="button" data-i18n="copyDiagnostics">КОПИРОВАТЬ ОТЧЁТ</button>
+    </div>
+    <div class="diagnostics-tools" aria-label="Локальные данные и обновления" data-i18n-aria-label="localToolsAria">
+      <span id="diagnosticsToolsStatus" aria-live="polite" data-i18n="localToolsReady">Локальные данные готовы.</span>
+      <button id="diagnosticsLog" type="button" data-i18n="downloadLog">СКАЧАТЬ ЛОГ</button>
+      <button id="storageExport" type="button" data-i18n="exportData">ЭКСПОРТ ДАННЫХ</button>
+      <input id="storageImportFile" type="file" accept="application/json,.json" hidden>
+      <button id="storageImport" type="button" data-i18n="restoreData">ВОССТАНОВИТЬ</button>
+      <button id="updateCheck" type="button" data-i18n="checkUpdates">ПРОВЕРИТЬ ОБНОВЛЕНИЕ</button>
+      <a id="updateLink" href="https://github.com/Loro66/AWUN/releases" target="_blank" rel="noopener noreferrer" hidden data-i18n="openRelease">ОТКРЫТЬ РЕЛИЗ</a>
+    </div>
   </aside>
 
   <div id="importBackdrop" class="theme-backdrop" hidden></div>
@@ -245,10 +300,14 @@
     <progress id="importProgress" class="import-progress" value="0" max="100" hidden></progress>
   </aside>
 
-  <script src="/static/desktop-bridge.js?v=20260830.3" defer></script>
-  <script src="/static/i18n.js?v=20260830.3" defer></script>
-  <script src="/static/hls.light.min.js?v=20260830.3" defer></script>
-  <script src="/static/app.js?v=20260830.3" defer></script>
-  <script src="/static/flow.js?v=20260830.3" defer></script>
+  <script src="/static/desktop-bridge.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/storage.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/runtime-log.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/update-checker.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/i18n.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/hls.light.min.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/player-core.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/app.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/flow.js?v=__AWUN_VERSION__" defer></script>
 </body>
 </html>

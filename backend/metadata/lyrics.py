@@ -8,6 +8,8 @@ from typing import Any
 
 import aiohttp
 
+from backend.core.version import APP_VERSION
+
 from backend.core.config import Settings
 from backend.core.models import LyricLine, TrackAnnotation, TrackDetailsResponse
 
@@ -237,8 +239,8 @@ class TrackDetailsService:
             params["duration"] = round(duration)
         headers = {
             "Accept": "application/json",
-            "User-Agent": "AWUN/1.8.0 (+https://github.com/Loro66/AWUN)",
-            "Lrclib-Client": "AWUN/1.8.0",
+            "User-Agent": f"AWUN/{APP_VERSION} (+https://github.com/Loro66/AWUN)",
+            "Lrclib-Client": f"AWUN/{APP_VERSION}",
         }
         try:
             async with session.get(f"{self.lrclib_base_url}/api/get", params=params, headers=headers) as response:

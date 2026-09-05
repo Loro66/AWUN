@@ -78,16 +78,23 @@ def test_frontend_assets_share_cache_version() -> None:
     html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
     api = (ROOT / "backend" / "api" / "main.py").read_text(encoding="utf-8")
 
-    style_version = re.search(r'/static/styles\.css\?v=([\d.]+)', html)
-    script_version = re.search(r'/static/app\.js\?v=([\d.]+)', html)
-    flow_version = re.search(r'/static/flow\.js\?v=([\d.]+)', html)
+    asset_versions = re.findall(r'\?v=([^"\']+)', html)
 
-    assert style_version is not None
-    assert script_version is not None
-    assert flow_version is not None
-    assert style_version.group(1) == script_version.group(1)
-    assert style_version.group(1) == flow_version.group(1)
+    assert asset_versions and set(asset_versions) == {"__AWUN_VERSION__"}
+    assert 'replace("__AWUN_VERSION__", settings.app_version)' in api
     assert "CacheControlledStaticFiles" in api and "max-age=31536000, immutable" in api
+
+
+def test_design_system_has_one_entrypoint_and_explicit_layers() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    design = (ROOT / "frontend" / "design-system.css").read_text(encoding="utf-8")
+    release = (ROOT / "frontend" / "redesign.css").read_text(encoding="utf-8")
+
+    stylesheets = re.findall(r'<link rel="stylesheet" href="([^"]+)"', html)
+    assert stylesheets == ["/design-system.css?v=__AWUN_VERSION__"]
+    assert "@layer foundation, forest, release" in design
+    assert "layer(foundation)" in design and "layer(forest)" in design and "layer(release)" in design
+    assert "--color-accent:" in release and "--color-text:" in release
 
 
 def test_identity_minimal_mode_and_track_stories_are_wired() -> None:
@@ -117,7 +124,7 @@ def test_repeat_modes_are_persistent_and_handle_track_endings() -> None:
     assert "['off','all','one']" in script
     assert "handleTrackEnded" in script
     assert "YT.PlayerState.ENDED)handleTrackEnded()" in script
-    assert "addEventListener('ended',handleTrackEnded)" in script
+    assert "addEventListener('ended',()=>{stopWaveformCapture();handleTrackEnded()})" in script
 
 
 def test_flow_recommendations_are_local_persistent_and_feedback_driven() -> None:
@@ -134,9 +141,9 @@ def test_flow_recommendations_are_local_persistent_and_feedback_driven() -> None
     assert "awun-wave-profile-v2" in script
     assert "candidateScore" in script and "rankCandidates" in script
     assert all(signal in script for signal in ("'play'", "'skip'", "'listen30'", "'complete'", "'like'", "'dislike'"))
-    assert "primeLocalFlow" in script and "fast:true" in script and "/api/v1/search" in script
-    assert "perSourceLimit" in script and "Promise.all(requests)" in script
-    assert "Promise.allSettled" not in script
+    assert "primeLocalFlow" in script and "fast:true" in script and "requestSearch" in script
+    assert "replaceQueue" in script and "appendQueue" in script and "state.hasSearched=true" in script
+    assert "requestSearch" in script and "65000" in script
     assert "window.awunApp" in app and "emitAwun('play'" in app and "emitAwun('complete'" in app
     assert ".flow-panel" in styles and ".flow-feedback.active" in styles
 
@@ -161,8 +168,14 @@ def test_installable_pwa_is_wired() -> None:
     assert 'rel="manifest"' in html and 'id="installButton"' in html
     assert "beforeinstallprompt" in script and "serviceWorker.register('/service-worker.js')" in script
     assert '"display": "standalone"' in manifest and '"start_url": "/"' in manifest
-    assert "awun-shell-1.8.11" in worker and "startsWith('/api/')" in worker
+    assert "__AWUN_VERSION__" in worker and "awun-shell-${AWUN_VERSION}" in worker
+    assert "startsWith('/api/')" in worker
     assert "hls.light.min.js" in worker
+    assert "design-system.css?v=__AWUN_VERSION__" in worker
+    assert "player-core.js?v=__AWUN_VERSION__" in worker
+    assert "storage.js?v=__AWUN_VERSION__" in worker
+    assert "runtime-log.js?v=__AWUN_VERSION__" in worker
+    assert "update-checker.js?v=__AWUN_VERSION__" in worker
     assert "startsWith('/static/')" in worker and "cached||fetch" in worker
     assert "/static/desktop-bridge.js" in html and "desktop-bridge.js" in worker
     assert "pywebviewready" in bridge and "save_state" in bridge and "load_state" in bridge
@@ -177,7 +190,7 @@ def test_nocturne_redesign_and_vinyl_player_are_wired() -> None:
 
     assert background.is_file() and background.stat().st_size > 200_000
     assert source.is_file() and "unsplash.com/photos/m8RNISlL2HQ" in source.read_text(encoding="utf-8")
-    assert '/static/forest.css?v=20260830.3' in html
+    assert '/design-system.css?v=__AWUN_VERSION__' in html
     assert 'class="turntable"' in html and 'class="vinyl-monogram"' in html and 'class="player-console"' in html
     assert 'id="player" class="player" hidden' in html
     assert 'id="searchNavButton" class="library search-nav active"' in html and 'aria-pressed="true"' in html
@@ -201,7 +214,7 @@ def test_soundcloud_hls_playback_is_wired() -> None:
     hls = ROOT / "frontend" / "hls.light.min.js"
     license_file = ROOT / "frontend" / "hls.js.LICENSE.md"
 
-    assert 'src="/static/hls.light.min.js?v=20260830.3"' in html
+    assert 'src="/static/hls.light.min.js?v=__AWUN_VERSION__"' in html
     assert "track.source==='soundcloud'" in script
     assert "window.Hls" in script and "MANIFEST_PARSED" in script
     assert hls.is_file() and hls.stat().st_size > 300_000
@@ -220,7 +233,122 @@ def test_dark_forest_ritual_visual_system_is_wired() -> None:
     assert '.hero .search-form:after' in forest and '✦' in forest
     assert '.track.active:before' in forest and '.player .player-console:before' in forest
     assert 'Iowan Old Style' in forest and 'border-radius:40px 40px 18px 18px' in forest
-    assert '20260830.3' in html
+    assert '__AWUN_VERSION__' in html
+
+
+def test_soundcloud_forest_shell_uses_on_demand_player_surfaces() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    app = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    redesign = (ROOT / "frontend" / "redesign.css").read_text(encoding="utf-8")
+
+    assert 'id="advancedSearch" class="advanced-search">' in html
+    assert '/design-system.css?v=__AWUN_VERSION__' in html
+    assert 'id="idleSearchButton"' in html and 'id="idleWaveButton"' in html
+    assert 'id="queueToggle"' in html and 'id="queueClose"' in html
+    assert 'id="expandPlayer"' in html and 'id="collapsePlayer"' in html
+    assert "setQueueOpen" in app and "setPlayerExpanded" in app
+    assert "track-waveform" in app and "--track-progress" in app
+    assert "grid-template-columns:var(--awun-nav) minmax(0,1fr)" in redesign
+    assert "bottom:0;left:0" in redesign and ".player.queue-open .up-next" in redesign
+    assert "--color-accent:#ff6b1a" in redesign and ".track-waveform:after" in redesign
+
+
+def test_visual_settings_have_distinct_rendered_modes() -> None:
+    app = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    redesign = (ROOT / "frontend" / "redesign.css").read_text(encoding="utf-8")
+
+    for theme in ("black", "white", "acid", "ultraviolet", "cobalt", "ember"):
+        assert f'html[data-theme="{theme}"]' in redesign
+    assert "--color-text-rgb:24,35,28" in redesign
+    assert "--forest-moon:#18231c" in redesign
+    assert 'html[data-theme="white"] .theme-grid button' in redesign
+    assert 'html[data-theme="white"] .player .transport-buttons>button:not(.play-pause)' in redesign
+    assert 'html[data-theme="black"]' in redesign and "--color-accent:#ff6b1a" in redesign
+    assert 'rgba(var(--paper-rgb),.24)' in redesign
+    assert '.player .wave-progress:before{opacity:1' in redesign
+    assert 'html[data-theme="white"] .recommendation-card:before' in redesign
+    assert 'html[data-decor="minimal"]{--awun-nav:78px}' in redesign
+    assert 'html[data-density="compact"] .track' in redesign
+    assert 'html[data-density="airy"] .track' in redesign
+    assert "ui.motionToggle.setAttribute('aria-pressed'" in app
+    assert "ui.densityToggle.dataset.value=state.density" in app
+    assert "black:{labelKey:'themeBlackShort',color:'#050505'}" in app
+    assert "white:{labelKey:'themeWhiteShort',color:'#e7e8df'}" in app
+
+
+def test_desktop_shell_has_no_legacy_chrome_and_wave_is_integrated() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    flow = (ROOT / "frontend" / "flow.js").read_text(encoding="utf-8")
+
+    assert 'class="window-chrome"' not in html
+    assert 'class="player-menu"' not in html
+    assert 'id="status" class="status sr-only"' in html
+    assert "flow-screen-open" in flow
+    # Actual visibility and player bounds are covered by the four Playwright
+    # viewport tests; matching legacy CSS text cannot verify cascade behavior.
+
+
+def test_waveform_queue_menu_and_responsive_player_regressions_are_fixed() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    app = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    redesign = (ROOT / "frontend" / "redesign.css").read_text(encoding="utf-8")
+
+    assert 'id="waveProgress" class="wave-progress"' in html
+    assert "playerCore.waveformMask" in app and "applyWaveform(ui.waveProgress,track,132)" in app
+    assert "-webkit-mask-image:var(--wave-mask)" in redesign
+    assert "clip-path:inset(0 calc(100% - var(--value)) 0 0)" in redesign
+    assert ".track.queue-menu-open{z-index:60}" in redesign
+    assert ".track-queue-menu.opens-up>div" in redesign
+    assert "row.classList.toggle('queue-menu-open',queueMenu.open)" in app
+    assert "@media (min-width:761px) and (max-width:1099px)" in redesign
+    assert ".player .player-tools #expandPlayer{display:none!important}" in redesign
+
+
+def test_provider_waveforms_progressive_search_and_diagnostics_are_wired() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    app = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    core = (ROOT / "frontend" / "player-core.js").read_text(encoding="utf-8")
+    api = (ROOT / "backend" / "api" / "main.py").read_text(encoding="utf-8")
+
+    assert "waveformMaskFromPeaks" in core and "interleaveTracks" in core
+    assert "awun-waveforms-v1" in app and "waveformImagePeaks" in app
+    assert "captureStream" in app and "startWaveformCapture" in app
+    assert "track?.waveform_url" in app and "data.waveform_url" not in app
+    assert "Promise.all(sources.map(async source=>" in app
+    assert "mergeProgressiveData" in app and "progressiveResults" in app
+    assert 'id="diagnosticsPanel"' in html and 'id="diagnosticsCopy"' in html
+    assert 'aria-controls="diagnosticsPanel"' in html
+    assert "diagnosticsReport" in app and "copyDiagnostics" in app
+    assert "querySelectorAll('#sources button[data-source]')" in app
+    assert "state.diagnostics={...snapshot,ui_error:" in app
+    assert '"source_health": search_engine.source_health' in api
+
+
+def test_youtube_embed_failures_skip_same_source_refresh_and_recover() -> None:
+    app = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+
+    assert "youtubeStartTimer" in app
+    assert "recordPlaybackHealth('youtube',{success:false" in app
+    assert "markYoutubeFailed(track,code)" in app
+    assert "finish(reject,error)" in app
+    assert "findingYoutubeAlternative" in app
+    assert "youtubeTracks=playerCore.rankAlternatives" in app
+    assert "!state.failedTrackIds.has(candidate.id)&&!youtubeRecentlyFailed(candidate)" in app
+
+
+def test_local_storage_logs_and_update_tools_are_functional() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    app = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    storage = (ROOT / "frontend" / "storage.js").read_text(encoding="utf-8")
+    runtime_log = (ROOT / "frontend" / "runtime-log.js").read_text(encoding="utf-8")
+
+    assert all(f'id="{element}"' in html for element in (
+        "diagnosticsLog", "storageExport", "storageImport", "storageImportFile", "updateCheck", "updateLink"
+    ))
+    assert "storage?.migrate?.()" in app and "storage?.info?.()" in app
+    assert "runtimeLog?.report?.(40)" in app and "checkForUpdates" in app
+    assert "indexedDB.open" in storage and "importState" in storage and "exportState" in storage
+    assert "unhandledrejection" in runtime_log and "SECRET_KEY" in runtime_log
 
 
 def test_listener_first_onboarding_and_language_switch_are_wired() -> None:

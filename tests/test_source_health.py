@@ -20,6 +20,8 @@ def test_successful_provider_is_healthy() -> None:
     assert health.success_rate == 1
     assert health.average_latency_ms == 150
     assert health.last_error is None
+    assert health.last_checked_at and health.last_checked_at.endswith("Z")
+    assert health.last_success_at == health.last_checked_at
 
 
 def test_mixed_provider_is_degraded_and_keeps_last_error() -> None:
@@ -31,6 +33,27 @@ def test_mixed_provider_is_degraded_and_keeps_last_error() -> None:
     assert health.status is HealthStatus.DEGRADED
     assert health.success_rate == 0.5
     assert health.last_error == "HTTP 503"
+    assert health.last_error_at == health.last_checked_at
+    assert health.last_checked_at is not None
+    assert health.last_success_at is not None
+
+    registry.record("soundcloud", success=True, latency_ms=90)
+    assert registry.get("soundcloud").last_error == "HTTP 503"
+
+
+def test_diagnostics_redact_provider_credentials() -> None:
+    registry = SourceHealthRegistry(["soundcloud"])
+    registry.record(
+        "soundcloud",
+        success=False,
+        latency_ms=120,
+        error="GET https://api.soundcloud.com/tracks?client_id=secret-token failed; Bearer abc.def",
+    )
+
+    error = registry.get("soundcloud").last_error or ""
+    assert "secret-token" not in error
+    assert "abc.def" not in error
+    assert error == "GET https://api.soundcloud.com/tracks?<redacted> failed; Bearer <redacted>"
 
 
 def test_window_discards_old_failures() -> None:

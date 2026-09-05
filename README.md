@@ -5,6 +5,7 @@
 [English](README.md) · [Русский](README.ru.md) · [Open AWUN](https://awun-1.onrender.com) · [Windows builds](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml) · [Support the project](SUPPORT.md) · [Freeware license](LICENSE.md)
 
 [![Tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&label=Windows%20build&style=flat-square)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
+[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&label=browser%20tests&style=flat-square)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Loro66/AWUN)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-live-009688?style=flat-square&logo=fastapi&logoColor=white)
@@ -26,14 +27,27 @@ other full tracks use short-lived signed AWUN media routes. SoundCloud HLS
 playlists are rewritten through those routes and played with the bundled HLS.js
 client, so the browser does not contact the SoundCloud CDN directly.
 
-The 1.8.0 interface includes AUTO/CIS/EUROPE/USA/LATAM/ASIA/GLOBAL search,
-source-aware discovery, partial-failure handling,
+The current interface includes AUTO/CIS/EUROPE/USA/LATAM/ASIA/GLOBAL search,
+progressive source-by-source results, partial-failure handling and a diagnostics
+screen with provider latency, recent errors and a copyable technical report,
 a 30/60/100 result selector, Yandex library import, a local library, shareable search URLs and a unified responsive player with
-custom waveform seeking, volume, previous/next controls and browser Media
-Session integration. A new geometric SVG mark stays sharp in the web, desktop
+provider-native waveform peaks with a deterministic fallback, volume, previous/next controls and browser Media
+Session integration. Its persistent queue supports **Play next**, append,
+remove and reorder and survives an app restart. When the active provider fails,
+AWUN finds a high-confidence match on another connected source and resumes at
+the same position instead of retrying the broken stream. A new geometric SVG mark stays sharp in the web, desktop
 and mobile shells. Its visual system includes Acid, Ultraviolet, Cobalt and
 Ember themes, Editorial and music-first Minimal layouts, plus motion controls. Visual settings
-are saved locally and work across desktop and mobile layouts.
+are saved locally and work across desktop and mobile layouts. One versioned
+design-system entrypoint and explicit cascade layers keep theme tokens and
+components deterministic, including the light-theme waveform. Provider waveform
+profiles are extracted lazily and cached on the device instead of downloading
+full audio files for every search result. For same-origin audio without provider
+metadata, listened sections are progressively replaced with captured real peaks.
+Critical local settings can be exported, restored from an automatic on-device
+snapshot, or imported on another installation. The diagnostics screen can also
+download a redacted rolling runtime log and manually check GitHub Releases for
+an update.
 
 ## Try and install
 
@@ -133,21 +147,20 @@ Region mode changes discovery relevance; it does not bypass provider licensing
 or geographic restrictions. In AUTO mode the browser locale selects a country
 and language. GLOBAL removes the YouTube country/language preference.
 
-The Windows desktop shell uses the project's public AWUN backend
-(`https://awun-1.onrender.com`) by default. This is a free Render web service,
-so no new server, account or configuration is required. Render may pause a free
-service after inactivity; the first request after a pause can take about a
-minute. If the endpoint is unavailable, the desktop app automatically retries
-the request against its local backend.
+The Windows desktop shell uses its embedded local backend first. If an
+individual provider fails locally, AWUN retries only that provider through the
+project's public backend (`https://awun-1.onrender.com`). This is a free Render
+service, so no new server, account or configuration is required. A sleeping
+Render instance never delays results from healthy local providers.
 
 To use another endpoint, set
 `AWUN_REMOTE_API_URL=https://your-controlled-domain` before launching the EXE,
 or put that HTTPS origin on one line in `%APPDATA%\\AWUN\\remote-api.txt`.
-Set the value to `local` to force direct requests from the computer. Search,
-lyrics, playlist import and AWUN media use the remote endpoint when available;
-YouTube playback still uses the official embedded player and remains subject
-to its availability. Use only an endpoint you control or trust: AWUN does not
-embed unknown proxy IPs.
+Set the value to `local` to disable the fallback. Search, lyrics and playlist
+import stay local unless their request fails; provider-level search errors can
+use the configured fallback. YouTube playback still uses the official embedded
+player and remains subject to its availability. Use only an endpoint you
+control or trust: AWUN does not embed unknown proxy IPs.
 
 ## Public playlist and library transfer
 
@@ -211,9 +224,16 @@ the background instead of waiting for every provider.
 LRCLIB is enabled by default. Add `AWUN_GENIUS_ACCESS_TOKEN` for Genius
 referents; never expose this value to the frontend or commit it to the repository.
 
-Direct media URLs are provider-issued and normally expire. Clients should search again instead of storing them. Some providers may require their usual request headers, authentication, or region access. Use AWUN only for media you are authorized to access and in accordance with each provider's terms.
+Direct media URLs are provider-issued and normally expire. AWUN refreshes a
+failed track by searching the other connected sources and accepts only a close
+title, artist and duration match; if no safe match exists it stops and reports
+the failure. Some providers may require their usual request headers,
+authentication, or region access. Use AWUN only for media you are authorized to
+access and in accordance with each provider's terms.
 
-The web library refreshes expired non-YouTube playback URLs when possible.
+The library and persistent queue refresh expired non-YouTube playback URLs on
+the same provider before playback. Only after that refresh fails does AWUN look
+for a close match on another provider and preserve the current position.
 AWUN exposes a download button only when the provider supplies a real,
 progressive download resource. HLS/DASH playlists and DRM media are playback
 resources, not files, and are never presented as downloads.
@@ -225,26 +245,28 @@ five results per query for reliability; configure OAuth for the full range.
 Run `build-windows.bat` on Windows 10 or 11 to create `dist\\AWUN.exe` and its
 SHA256 checksum. The AWUN icon is embedded in the executable and is used by
 Explorer, shortcuts and the taskbar. The executable bundles the FastAPI backend
-and web interface, starts them on a random `127.0.0.1` port, and by default
-uses the public AWUN Render backend for provider requests. It keeps the local
-backend as a fallback, so music search and playback still require internet
-access but do not require a new server.
+and web interface and starts them on a random `127.0.0.1` port. The local
+backend is always queried first. The public AWUN Render deployment is contacted
+only for a provider that failed locally, so healthy local sources are never
+delayed by a remote cold start. Music search and playback still require internet
+access, but the user does not need a server.
 The desktop interface opens in Russian by default and retains the English
 language switch.
 
 For a reproducible cloud build, open **Actions → Windows desktop build → Run
 workflow**. Every pull request also creates an `AWUN-Windows-x64` test artifact.
-Download it from the completed run. Pushing a tag such as `v1.8.0` creates a
-GitHub Release containing the executable and
-checksum. The executable is currently unsigned, so Windows SmartScreen may
-show a warning until a code-signing certificate is added.
+Download it from the completed run. It contains both the portable executable
+and a per-user `AWUN-Setup-x64.exe` installer, with SHA-256 checksums. Pushing a
+tag matching `VERSION` publishes the same files in GitHub Releases. The binaries
+are currently unsigned, so Windows SmartScreen may show a warning until a
+code-signing certificate is added.
 
 The Windows artifact and tagged releases include `LICENSE.md` and `EULA.md`.
 Installing or using an official build means accepting those terms.
 
 ## Android Google Play and iOS beta
 
-Android 1.8 is prepared for Google Play with the permanent application ID
+Android is prepared for Google Play with the permanent application ID
 `com.loro66.awun`, API 36, a signed-AAB workflow, localized store metadata,
 privacy/support pages and a Play-specific client mode that removes every music
 download control. Run **Actions → Mobile test builds** for an internal APK or

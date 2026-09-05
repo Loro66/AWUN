@@ -5,10 +5,18 @@ from backend.core.models import SearchRequest
 from backend.sources.audius import AudiusAdapter
 from backend.sources.factory import build_adapters
 from backend.sources.jamendo import JamendoAdapter
+from backend.sources.soundcloud import SoundCloudAdapter
 from backend.sources.youtube import YouTubeAdapter, _looks_like_track
 
 
 class ProviderAdapterTests(unittest.TestCase):
+    def test_soundcloud_accepts_only_http_waveform_assets(self) -> None:
+        self.assertEqual(
+            SoundCloudAdapter._safe_waveform_url("https://wave.sndcdn.com/real.png"),
+            "https://wave.sndcdn.com/real.png",
+        )
+        self.assertIsNone(SoundCloudAdapter._safe_waveform_url("file:///tmp/fake.png"))
+
     def test_youtube_filters_long_form_mixes_but_keeps_normal_tracks(self) -> None:
         self.assertTrue(_looks_like_track("Artist — Track (Official Audio)", 248))
         self.assertTrue(_looks_like_track("Long classical movement", 1199))

@@ -1,5 +1,6 @@
-const CACHE='awun-shell-1.8.11';
-const SHELL=['/','/static/styles.css?v=20260830.3','/static/forest.css?v=20260830.3','/static/desktop-bridge.js?v=20260830.3','/static/i18n.js?v=20260830.3','/static/hls.light.min.js?v=20260830.3','/static/app.js?v=20260830.3','/static/flow.js?v=20260830.3','/static/brand/black-forest-michiel-annaert.webp','/static/brand/burg-eltz-jan-kohl.webp','/static/brand/awun-icon-black.png','/static/brand/awun-icon-white.png'];
+const AWUN_VERSION='__AWUN_VERSION__';
+const CACHE=`awun-shell-${AWUN_VERSION}`;
+const SHELL=['/','/design-system.css?v=__AWUN_VERSION__','/static/styles.css?v=__AWUN_VERSION__','/static/forest.css?v=__AWUN_VERSION__','/static/redesign.css?v=__AWUN_VERSION__','/static/desktop-bridge.js?v=__AWUN_VERSION__','/static/storage.js?v=__AWUN_VERSION__','/static/runtime-log.js?v=__AWUN_VERSION__','/static/update-checker.js?v=__AWUN_VERSION__','/static/i18n.js?v=__AWUN_VERSION__','/static/hls.light.min.js?v=__AWUN_VERSION__','/static/player-core.js?v=__AWUN_VERSION__','/static/app.js?v=__AWUN_VERSION__','/static/flow.js?v=__AWUN_VERSION__','/static/brand/black-forest-michiel-annaert.webp','/static/brand/burg-eltz-jan-kohl.webp','/static/brand/awun-icon-black.png','/static/brand/awun-icon-white.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',event=>{

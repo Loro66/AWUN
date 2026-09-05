@@ -13,6 +13,7 @@ hidden_imports = (
 )
 data_files = [
     (str(ROOT / "frontend"), "frontend"),
+    (str(ROOT / "VERSION"), "."),
     (str(ROOT / "LICENSE.md"), "."),
     (str(ROOT / "EULA.md"), "."),
     *collect_data_files("certifi"),

@@ -1,0 +1,6 @@
+AWUN 1.9.5 update.
+
+• Local search is now the primary path in the Windows app.
+• Expired library and queue links refresh before playback.
+• AWUN refreshes the current source before trying an alternative.
+• Queue, My Wave, and music waveforms are improved.

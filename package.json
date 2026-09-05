@@ -1,0 +1,12 @@
+{
+  "name": "awun-frontend-tests",
+  "private": true,
+  "version": "1.10.2",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:e2e:update": "playwright test --update-snapshots"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1"
+  }
+}

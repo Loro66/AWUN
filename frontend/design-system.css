@@ -1,0 +1,9 @@
+/*
+ * AWUN production design entrypoint.
+ * Cascade layers make the release component system authoritative regardless
+ * of selector specificity in the preserved foundation styles.
+ */
+@layer foundation, forest, release;
+@import url('/static/styles.css?v=__AWUN_VERSION__') layer(foundation);
+@import url('/static/forest.css?v=__AWUN_VERSION__') layer(forest);
+@import url('/static/redesign.css?v=__AWUN_VERSION__') layer(release);

@@ -21,6 +21,7 @@ class Track(BaseModel):
     download_url: str | None = None
     score: float = Field(ge=0, le=100)
     thumbnail: str | None = None
+    waveform_url: str | None = None
     catalog_links: dict[str, str] = Field(default_factory=dict)
     rights_status: str = "stream_only"
     rights_terms_url: str | None = None

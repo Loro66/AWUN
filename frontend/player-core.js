@@ -1,0 +1,222 @@
+(function attachPlayerCore(root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.awunPlayerCore = api;
+})(typeof globalThis === 'object' ? globalThis : this, function createPlayerCore() {
+  const MAX_QUEUE_LENGTH = 250;
+  const NOISE_WORDS = new Set([
+    'audio', 'clip', 'explicit', 'hd', 'hq', 'lyrics', 'lyric', 'music',
+    'official', 'records', 'remaster', 'remastered', 'topic', 'video',
+    'visualizer'
+  ]);
+
+  function normalizeText(value) {
+    return String(value || '')
+      .normalize('NFKD')
+      .toLocaleLowerCase()
+      .replace(/[^\p{L}\p{N}]+/gu, ' ')
+      .trim();
+  }
+
+  function meaningfulTokens(value) {
+    return normalizeText(value)
+      .split(/\s+/)
+      .filter(token => token && !NOISE_WORDS.has(token));
+  }
+
+  function tokenSimilarity(left, right) {
+    const leftTokens = new Set(meaningfulTokens(left));
+    const rightTokens = new Set(meaningfulTokens(right));
+    if (!leftTokens.size || !rightTokens.size) return 0;
+    let shared = 0;
+    leftTokens.forEach(token => {
+      if (rightTokens.has(token)) shared += 1;
+    });
+    return (2 * shared) / (leftTokens.size + rightTokens.size);
+  }
+
+  function tokenCoverage(needle, haystack) {
+    const wanted = new Set(meaningfulTokens(needle));
+    const available = new Set(meaningfulTokens(haystack));
+    if (!wanted.size || !available.size) return 0;
+    let shared = 0;
+    wanted.forEach(token => {
+      if (available.has(token)) shared += 1;
+    });
+    return shared / wanted.size;
+  }
+
+  function durationSimilarity(left, right) {
+    const first = Math.max(0, Number(left) || 0);
+    const second = Math.max(0, Number(right) || 0);
+    if (!first || !second) return 0.65;
+    const difference = Math.abs(first - second);
+    const tolerance = Math.max(12, Math.round(Math.max(first, second) * 0.08));
+    if (difference <= tolerance) return 1;
+    if (difference >= Math.max(50, tolerance * 3)) return 0;
+    return Math.max(0, 1 - difference / Math.max(50, tolerance * 3));
+  }
+
+  function alternativeScore(origin, candidate) {
+    if (!origin || !candidate || !candidate.stream_url) return 0;
+    const combinedOrigin = `${origin.artist || ''} ${origin.title || ''}`;
+    const combinedCandidate = `${candidate.artist || ''} ${candidate.title || ''}`;
+    const title = Math.max(
+      tokenSimilarity(origin.title, candidate.title),
+      tokenCoverage(origin.title, candidate.title)
+    );
+    const artist = Math.max(
+      tokenSimilarity(origin.artist, candidate.artist),
+      tokenCoverage(origin.artist, candidate.artist),
+      tokenCoverage(origin.artist, combinedCandidate)
+    );
+    const combined = tokenSimilarity(combinedOrigin, combinedCandidate);
+    const duration = durationSimilarity(origin.duration, candidate.duration);
+    if (title < 0.78 || (artist < 0.55 && combined < 0.78) || duration < 0.45) return 0;
+    return Math.round((title * 50 + artist * 25 + combined * 15 + duration * 10) * 1000) / 1000;
+  }
+
+  function rankAlternatives(origin, candidates, triedSources) {
+    const blocked = triedSources instanceof Set ? triedSources : new Set(triedSources || []);
+    return (Array.isArray(candidates) ? candidates : [])
+      .filter(candidate => candidate && candidate.id && !blocked.has(candidate.source))
+      .map(candidate => ({ candidate, score: alternativeScore(origin, candidate) }))
+      .filter(entry => entry.score >= 74)
+      .sort((left, right) => right.score - left.score || Number(right.candidate.score || 0) - Number(left.candidate.score || 0))
+      .map(entry => entry.candidate);
+  }
+
+  function uniqueTracks(items) {
+    const seen = new Set();
+    const output = [];
+    for (const track of Array.isArray(items) ? items : []) {
+      if (!track || !track.id || seen.has(track.id)) continue;
+      seen.add(track.id);
+      output.push(track);
+      if (output.length >= MAX_QUEUE_LENGTH) break;
+    }
+    return output;
+  }
+
+  function enqueue(queue, track, position) {
+    if (!track || !track.id) return uniqueTracks(queue);
+    const items = uniqueTracks(queue).filter(item => item.id !== track.id);
+    if (position === 'next') items.unshift(track);
+    else items.push(track);
+    return items.slice(0, MAX_QUEUE_LENGTH);
+  }
+
+  function remove(queue, trackId) {
+    return uniqueTracks(queue).filter(track => track.id !== trackId);
+  }
+
+  function move(queue, fromIndex, toIndex) {
+    const items = uniqueTracks(queue);
+    const from = Number(fromIndex);
+    const to = Number(toIndex);
+    if (!Number.isInteger(from) || !Number.isInteger(to) || from < 0 || to < 0 || from >= items.length || to >= items.length || from === to) return items;
+    const [track] = items.splice(from, 1);
+    items.splice(to, 0, track);
+    return items;
+  }
+
+  function interleaveTracks(tracksBySource, sourceOrder, limit = MAX_QUEUE_LENGTH) {
+    const maximum = Math.max(0, Math.min(MAX_QUEUE_LENGTH, Math.round(Number(limit) || 0)));
+    const queues = (Array.isArray(sourceOrder) ? sourceOrder : [])
+      .map(source => uniqueTracks(tracksBySource?.[source] || []));
+    const positions = queues.map(() => 0);
+    const tracks = [];
+    const seen = new Set();
+    while (tracks.length < maximum) {
+      let consumed = false;
+      for (let index = 0; index < queues.length && tracks.length < maximum; index += 1) {
+        const candidate = queues[index][positions[index]];
+        positions[index] += 1;
+        if (!candidate) continue;
+        consumed = true;
+        if (seen.has(candidate.id)) continue;
+        seen.add(candidate.id);
+        tracks.push(candidate);
+      }
+      if (!consumed) break;
+    }
+    return tracks;
+  }
+
+  function waveformBars(seed, count = 96) {
+    const length = Math.max(16, Math.min(180, Math.round(Number(count) || 96)));
+    const text = String(seed || 'awun');
+    let hash = 2166136261;
+    for (const character of text) {
+      hash ^= character.charCodeAt(0);
+      hash = Math.imul(hash, 16777619);
+    }
+
+    const bars = [];
+    let previous = 0.45;
+    for (let index = 0; index < length; index += 1) {
+      hash ^= hash << 13;
+      hash ^= hash >>> 17;
+      hash ^= hash << 5;
+      const noise = (hash >>> 0) / 4294967295;
+      const phrase = (Math.sin(index * 0.31 + (hash & 31)) + 1) / 2;
+      const pulse = (Math.sin(index * 0.083 + text.length) + 1) / 2;
+      const sample = noise * 0.56 + phrase * 0.27 + pulse * 0.17;
+      previous = previous * 0.34 + sample * 0.66;
+      bars.push(Math.round(20 + previous * 76));
+    }
+    return bars;
+  }
+
+  function waveformPeaks(peaks, count = 96) {
+    const length = Math.max(16, Math.min(180, Math.round(Number(count) || 96)));
+    const values = Array.isArray(peaks)
+      ? peaks.map(value => Math.max(0, Math.min(100, Number(value) || 0)))
+      : [];
+    if (!values.length) return [];
+    const bars = [];
+    for (let index = 0; index < length; index += 1) {
+      const start = Math.floor((index * values.length) / length);
+      const end = Math.max(start + 1, Math.ceil(((index + 1) * values.length) / length));
+      let peak = 0;
+      for (let cursor = start; cursor < Math.min(end, values.length); cursor += 1) {
+        peak = Math.max(peak, values[cursor]);
+      }
+      bars.push(Math.round(Math.max(8, peak)));
+    }
+    return bars;
+  }
+
+  function waveformMaskFromPeaks(peaks, count = 96) {
+    const bars = waveformPeaks(peaks, count);
+    if (!bars.length) return '';
+    const step = 3;
+    const width = bars.length * step - 1;
+    const rectangles = bars.map((height, index) => {
+      const y = Math.round((100 - height) * 50) / 100;
+      return `<rect x="${index * step}" y="${y}" width="2" height="${height}" rx="1"/>`;
+    }).join('');
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} 100" preserveAspectRatio="none"><g fill="black">${rectangles}</g></svg>`;
+    return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+  }
+
+  function waveformMask(seed, count = 96) {
+    return waveformMaskFromPeaks(waveformBars(seed, count), count);
+  }
+
+  return {
+    MAX_QUEUE_LENGTH,
+    alternativeScore,
+    enqueue,
+    interleaveTracks,
+    move,
+    normalizeText,
+    rankAlternatives,
+    remove,
+    uniqueTracks,
+    waveformBars,
+    waveformMask,
+    waveformMaskFromPeaks,
+    waveformPeaks
+  };
+});

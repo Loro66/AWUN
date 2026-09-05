@@ -224,6 +224,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     frontend_dir = Path(__file__).resolve().parents[2] / "frontend"
     project_dir = frontend_dir.parent
     if frontend_dir.is_dir():
+        @app.get("/design-system.css", include_in_schema=False)
+        async def design_system() -> Response:
+            stylesheet = (frontend_dir / "design-system.css").read_text(encoding="utf-8")
+            stylesheet = stylesheet.replace("__AWUN_VERSION__", settings.app_version)
+            return Response(content=stylesheet, media_type="text/css; charset=utf-8")
+
         app.mount(
             "/static",
             CacheControlledStaticFiles(directory=frontend_dir),
@@ -231,13 +237,21 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         )
 
         @app.get("/", include_in_schema=False)
-        async def frontend() -> FileResponse:
-            return FileResponse(frontend_dir / "index.html", headers={"Cache-Control": "no-cache"})
+        async def frontend() -> Response:
+            document = (frontend_dir / "index.html").read_text(encoding="utf-8")
+            document = document.replace("__AWUN_VERSION__", settings.app_version)
+            return Response(
+                content=document,
+                media_type="text/html; charset=utf-8",
+                headers={"Cache-Control": "no-cache"},
+            )
 
         @app.get("/service-worker.js", include_in_schema=False)
-        async def service_worker() -> FileResponse:
-            return FileResponse(
-                frontend_dir / "service-worker.js",
+        async def service_worker() -> Response:
+            worker = (frontend_dir / "service-worker.js").read_text(encoding="utf-8")
+            worker = worker.replace("__AWUN_VERSION__", settings.app_version)
+            return Response(
+                content=worker,
                 media_type="application/javascript",
                 headers={"Cache-Control": "no-cache", "Service-Worker-Allowed": "/"},
             )
@@ -278,6 +292,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "status": "ok",
             "version": settings.app_version,
             "sources": search_engine.available_sources,
+            "source_health": search_engine.source_health,
             "regions": list(REGION_NAMES),
             "providers": {
                 "youtube": {
@@ -338,6 +353,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         response = _apply_client_policy(response, request.headers.get("x-awun-client"))
         base_url = str(request.base_url).rstrip("/")
         for track in response.tracks:
+            if track.waveform_url and settings.media_proxy_enabled:
+                waveform_token = media_signer.sign(track.waveform_url)
+                track.waveform_url = f"{base_url}{settings.api_prefix}/media/{waveform_token}"
             if not settings.media_proxy_enabled:
                 continue
             if track.source == "youtube":

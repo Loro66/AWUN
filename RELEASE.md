@@ -53,10 +53,29 @@ Open `https://YOUR-AWUN-API/` after deployment.
 - Starting a track returns HTTP 200 or 206.
 - Seeking sends a Range request and playback resumes from the selected point.
 - Saved tracks reappear after a page reload.
-- FLOW starts from a search, active track or local library and keeps refilling the queue.
+- A queued track can be placed next or last, removed and reordered; queue order survives a reload.
+- Breaking the active SoundCloud stream switches to a close YouTube/Audius match and resumes near the captured position.
+- A weak title/artist/duration match is rejected instead of playing an unrelated result.
+- The page loads one versioned `design-system.css` entrypoint; every theme keeps controls and waveform contrast usable.
+- FLOW opens its result surface immediately, starts from a search, active track or local library,
+  and keeps the persistent queue refilled while a remote API is waking up.
 - FLOW likes, dislikes and listening signals survive reload only on the same device.
 - Familiar/Balanced/New, mood and activity controls change recommendation ranking.
-- The player progress line supports click/drag seeking on desktop and mobile.
+- SoundCloud tracks use provider-native waveform data, lazily converted into cached peaks; sources
+  without waveform metadata initially use the deterministic fallback, then replace listened sections
+  with captured real peaks for same-origin audio. The player waveform remains a native click/drag
+  seek control on desktop and mobile.
+- Search results appear source by source instead of waiting for the slowest provider.
+- Settings opens source diagnostics with average latency, the latest provider error and a safe
+  copyable report.
+- Diagnostics can export/import local data, restore the latest on-device snapshot, download a
+  redacted rolling runtime log and manually check GitHub Releases for a newer version.
+- Source diagnostics stays online after results render and separates API failures from interface
+  update errors. Unavailable YouTube embeds are recorded locally and trigger cross-source recovery
+  after first trying another close YouTube upload instead of retrying the same permanent video URL.
+- Chromium interaction and screenshot tests cover 1920, 1280, 1000 and 390 pixel layouts.
+- At tablet and compact desktop widths, player volume and queue controls stay on one row without
+  clipping; result queue menus stack above adjacent cards and open upward near the scroll edge.
 - Disabled providers are visibly marked `NOT CONNECTED` and are not sent in a
   search request.
 - Opening `/?q=artist%20track` runs a shareable search.
@@ -68,18 +87,21 @@ Open `https://YOUR-AWUN-API/` after deployment.
 - With `AWUN_GENIUS_ACCESS_TOKEN`, `/health` reports Genius annotations as connected.
 - Added lyric notes survive reload on the same device and can be deleted.
 
-Provider media links are short-lived. AWUN signs them for immediate playback;
-users should run a fresh search when an older saved link expires.
+Provider media links are short-lived. Before playing a saved or queued track,
+AWUN refreshes its link on the same provider; cross-provider recovery begins
+only when that refresh fails.
 
 ## 4. Build the Windows application
 
 Open **GitHub → Actions → Windows desktop build → Run workflow**. The completed
-run contains an `AWUN-Windows-x64` artifact with `AWUN.exe` and
-`AWUN.exe.sha256`. A `v*` tag publishes both files in GitHub Releases.
+run contains an `AWUN-Windows-x64` artifact with portable `AWUN.exe`, the
+per-user `AWUN-Setup-x64.exe` installer and SHA-256 checksums. A `v*` tag
+publishes the same files in GitHub Releases.
 
-Version 1.8 is self-contained: the executable bundles the FastAPI backend and
-frontend, starts a random loopback port, and does not open or depend on Render.
-The interface defaults to Russian in the desktop build.
+The current desktop build bundles the FastAPI backend and frontend and starts a random
+loopback port. It queries the bundled local backend first and uses the configured
+public AWUN endpoint only as a provider-level fallback. The interface defaults
+to Russian in the desktop build.
 
 The binary is not code-signed yet. Treat code signing as a release requirement
 before broad public distribution.
@@ -94,7 +116,7 @@ latest commit** in Render if auto-deploy does not start.
 
 ## 6. Build the Google Play Android release
 
-The Android release is `com.loro66.awun`, version `1.8.0` / code `18000`, and
+The Android release is `com.loro66.awun`, version `1.10.2` / code `1100200`, and
 targets Android 16 API 36. Before building, the verified Play Console account
 owner must configure the four upload-key repository secrets documented in
 `mobile/android/play-store/RELEASE_CHECKLIST.md`.

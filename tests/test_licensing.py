@@ -45,4 +45,4 @@ def test_hosted_application_exposes_license_and_eula() -> None:
     assert '@app.get("/eula"' in api
     assert 'href="/license"' in html
     assert 'href="/eula"' in html
-    assert "COPY LICENSE.md EULA.md ./" in dockerfile
+    assert "COPY LICENSE.md EULA.md VERSION ./" in dockerfile

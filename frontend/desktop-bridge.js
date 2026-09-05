@@ -5,6 +5,7 @@
   let bridgeReady = false;
   let restoring = false;
   let syncTimer = null;
+  const transientKeys = new Set(['awun-waveforms-v1']);
   const originalSetItem = Storage.prototype.setItem;
   const originalRemoveItem = Storage.prototype.removeItem;
   const originalClear = Storage.prototype.clear;
@@ -13,7 +14,7 @@
     const state = {};
     for (let index = 0; index < localStorage.length; index += 1) {
       const key = localStorage.key(index);
-      if (key?.startsWith('awun-')) state[key] = localStorage.getItem(key);
+      if (key?.startsWith('awun-') && !transientKeys.has(key)) state[key] = localStorage.getItem(key);
     }
     return state;
   }
@@ -22,7 +23,10 @@
     if (!bridgeReady || restoring) return;
     clearTimeout(syncTimer);
     syncTimer = setTimeout(() => {
-      window.pywebview?.api?.save_state(JSON.stringify(snapshot())).catch(() => {});
+      window.pywebview?.api?.save_state(JSON.stringify(snapshot())).then(saved => {
+        if (saved) return;
+        window.dispatchEvent(new CustomEvent('awun:storage-error', { detail: { operation: 'desktop-sync', key: 'desktop-state.json', message: 'Desktop state was not saved', at: new Date().toISOString() } }));
+      }).catch(error => window.dispatchEvent(new CustomEvent('awun:storage-error', { detail: { operation: 'desktop-sync', key: 'desktop-state.json', message: String(error?.message || error), at: new Date().toISOString() } })));
     }, 180);
   }
 

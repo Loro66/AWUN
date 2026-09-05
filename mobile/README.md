@@ -11,7 +11,8 @@ screen if every configured AWUN endpoint is unavailable.
 Google Play identity:
 
 - application ID: `com.loro66.awun`;
-- version: `1.8.0` (`versionCode 18000`);
+- version: read from the repository `VERSION` file (`1.10.2` currently);
+- version code: derived from `VERSION` by Gradle (`1100200` currently);
 - minimum Android: 7.0 / API 24;
 - compile and target SDK: Android 16 / API 36;
 - release format: signed Android App Bundle (`.aab`);
