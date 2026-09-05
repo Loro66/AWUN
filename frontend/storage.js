@@ -38,7 +38,7 @@
   function readText(key, fallback = null) {
     try {
       const value = storage()?.getItem(String(key));
-      return value === null ? fallback : value;
+      return value == null ? fallback : value;
     } catch (error) {
       reportError('read', key, error);
       return fallback;
@@ -149,14 +149,41 @@
   }
 
   function validateImport(value) {
+    if (typeof value === 'string' && new TextEncoder().encode(value).length > MAX_IMPORT_BYTES) {
+      throw new Error('AWUN backup is too large');
+    }
     const envelope = typeof value === 'string' ? JSON.parse(value) : value;
     if (!envelope || envelope.app !== 'AWUN' || !envelope.data || typeof envelope.data !== 'object' || Array.isArray(envelope.data)) {
       throw new Error('Invalid AWUN backup');
     }
-    const entries = Object.entries(envelope.data).filter(([key]) => key.startsWith(PREFIX));
-    const bytes = entries.reduce((total, [key, value]) => total + new TextEncoder().encode(`${key}${String(value)}`).length, 0);
+    const schema = envelope.schema ?? 1;
+    if (!Number.isInteger(schema) || schema < 1 || schema > SCHEMA_VERSION) throw new Error('Unsupported AWUN backup version');
+    const entries = Object.entries(envelope.data);
+    const objectKeys = new Set(['awun-visual', 'awun-line-comments-v1', 'awun-wave-profile-v2', 'awun-flow-profile-v1', 'awun-youtube-failures-v1', META_KEY]);
+    for (const [key, raw] of entries) {
+      if (!key.startsWith(PREFIX) || EXCLUDED_BACKUP_KEYS.has(key) || typeof raw !== 'string') throw new Error('Invalid AWUN backup entry');
+      if (['awun-library', 'awun-recent', 'awun-queue-v1'].includes(key)) {
+        const parsed = JSON.parse(raw);
+        const tracks = key === 'awun-queue-v1' && !Array.isArray(parsed) ? parsed?.items : parsed;
+        if (!Array.isArray(tracks) || tracks.some(track => !track || typeof track !== 'object' || Array.isArray(track) || !['string', 'number'].includes(typeof track.id))) {
+          throw new Error('Invalid track data in AWUN backup');
+        }
+      } else if (objectKeys.has(key)) {
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('Invalid settings in AWUN backup');
+        if (key === META_KEY && Number(parsed.schema) > SCHEMA_VERSION) throw new Error('Unsupported AWUN storage version');
+      }
+    }
+    const bytes = entries.reduce((total, [key, raw]) => total + new TextEncoder().encode(`${key}${raw}`).length, 0);
     if (bytes > MAX_IMPORT_BYTES) throw new Error('AWUN backup is too large');
-    return entries.map(([key, value]) => [key, String(value)]);
+    return entries;
+  }
+
+  function previewImport(value) {
+    const entries = new Map(validateImport(value));
+    const library = JSON.parse(entries.get('awun-library') || '[]');
+    const queue = JSON.parse(entries.get('awun-queue-v1') || '[]');
+    return { library_tracks: library.length, queue_tracks: (Array.isArray(queue) ? queue : queue.items).length };
   }
 
   async function importState(value) {
@@ -170,14 +197,14 @@
       if (!target) throw new Error('Local storage unavailable');
       Object.keys(previous).forEach(key => target.removeItem(key));
       entries.forEach(([key, raw]) => target.setItem(key, raw));
-      migrate();
+      if (migrate() === false) throw new Error('Imported data could not be migrated');
       scheduleBackup();
       try { root?.dispatchEvent?.(new CustomEvent('awun:storage-restored')); } catch {}
       return true;
     } catch (error) {
       try {
         const target = storage();
-        entries.forEach(([key]) => target?.removeItem(key));
+        Object.keys(snapshot()).forEach(key => target?.removeItem(key));
         Object.entries(previous).forEach(([key, raw]) => target?.setItem(key, raw));
       } catch {}
       reportError('import', '', error);
@@ -216,13 +243,14 @@
     const meta = readJSON(META_KEY, { schema: 0 });
     if ((Number(meta?.schema) || 0) >= SCHEMA_VERSION) { scheduleBackup(); return; }
     const queue = readJSON('awun-queue-v1', null);
-    if (Array.isArray(queue)) writeJSON('awun-queue-v1', { version: 1, mode: 'manual', items: queue }, { backup: false });
+    if (Array.isArray(queue) && !writeJSON('awun-queue-v1', { version: 1, mode: 'manual', items: queue }, { backup: false })) return false;
     if (readText('awun-wave-profile-v2', null) === null) {
       const legacyProfile = readText('awun-flow-profile-v1', null);
-      if (legacyProfile !== null) writeText('awun-wave-profile-v2', legacyProfile, { backup: false });
+      if (legacyProfile !== null && !writeText('awun-wave-profile-v2', legacyProfile, { backup: false })) return false;
     }
-    writeJSON(META_KEY, { schema: SCHEMA_VERSION, migrated_at: new Date().toISOString() }, { backup: false });
+    if (!writeJSON(META_KEY, { schema: SCHEMA_VERSION, migrated_at: new Date().toISOString() }, { backup: false })) return false;
     scheduleBackup();
+    return true;
   }
 
   function info() {
@@ -240,6 +268,7 @@
     info,
     latestBackup,
     migrate,
+    previewImport,
     readJSON,
     readText,
     remove,

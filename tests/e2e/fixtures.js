@@ -1,4 +1,7 @@
 const { expect } = require('@playwright/test');
+const { readFileSync } = require('node:fs');
+const { join } = require('node:path');
+const APP_VERSION = readFileSync(join(__dirname, '../../VERSION'), 'utf8').trim();
 
 const SOURCES = ['youtube', 'soundcloud', 'audius', 'jamendo', 'internet_archive'];
 
@@ -69,7 +72,7 @@ function healthPayload() {
   }]));
   return {
     status: 'ok',
-    version: '1.10.2-test',
+    version: `${APP_VERSION}-test`,
     sources: SOURCES,
     source_health,
     regions: ['AUTO', 'CIS', 'EUROPE', 'USA', 'LATAM', 'ASIA', 'GLOBAL'],

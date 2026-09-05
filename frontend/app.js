@@ -461,12 +461,16 @@ async function importLocalData(){
   const file=ui.storageImportFile.files?.[0];if(!file)return;
   try{
     if(file.size>4*1024*1024)throw new Error('backup too large');
-    await storage.importState(await file.text());ui.diagnosticsToolsStatus.textContent=t('dataRestored');runtimeLog?.log?.('storage.restored');setTimeout(()=>location.reload(),350);
+    const raw=await file.text(),preview=storage.previewImport(raw);
+    if(!window.confirm(t('confirmRestoreData',{library:preview.library_tracks,queue:preview.queue_tracks})))return;
+    ui.storageImport.disabled=true;
+    await storage.importState(raw);ui.diagnosticsToolsStatus.textContent=t('dataRestored');runtimeLog?.log?.('storage.restored');setTimeout(()=>location.reload(),350);
   }catch(error){ui.diagnosticsToolsStatus.textContent=t('dataRestoreFailed');runtimeLog?.log?.('storage.restore-failed',{error:error?.message||error},'error')}
-  finally{ui.storageImportFile.value=''}
+  finally{ui.storageImportFile.value='';ui.storageImport.disabled=false}
 }
 async function checkForUpdates(){
-  if(!updateChecker?.check)return;
+  if(!updateChecker?.check||ui.updateCheck.disabled)return;
+  ui.updateCheck.disabled=true;
   ui.updateCheck.setAttribute('aria-busy','true');ui.updateLink.hidden=true;ui.diagnosticsToolsStatus.textContent=t('updateChecking');
   try{
     if(!state.diagnostics?.data?.version)await refreshStatus();
@@ -475,7 +479,7 @@ async function checkForUpdates(){
     else ui.diagnosticsToolsStatus.textContent=t(result.status==='no-release'?'updateNoRelease':'updateCurrent');
     runtimeLog?.log?.('update.checked',{current,status:result.status,latest:result.latest||null});
   }catch(error){ui.diagnosticsToolsStatus.textContent=t('updateFailed');runtimeLog?.log?.('update.failed',{error:error?.message||error},'warning')}
-  finally{ui.updateCheck.removeAttribute('aria-busy')}
+  finally{ui.updateCheck.removeAttribute('aria-busy');ui.updateCheck.disabled=false}
 }
 
 async function refreshStatus(){

@@ -8,13 +8,18 @@
   const SECRET_KEY = /(authorization|cookie|credential|key|password|secret|signature|token)/i;
 
   function safeString(value) {
-    const text = String(value ?? '');
-    try {
-      const url = new URL(text);
-      url.search = '';
-      url.hash = '';
-      return url.toString().slice(0, 300);
-    } catch { return text.slice(0, 300); }
+    return String(value ?? '')
+      .replace(/https?:\/\/[^\s<>"']+/gi, text => {
+        try {
+          const url = new URL(text);
+          url.username = ''; url.password = ''; url.search = ''; url.hash = '';
+          return url.toString();
+        } catch { return '[redacted URL]'; }
+      })
+      .replace(/\b(Bearer|Basic)\s+[A-Za-z0-9._~+/=-]+/gi, '$1 [redacted]')
+      .replace(/\b(Cookie|Set-Cookie|Authorization)\s*:\s*[^\r\n]+/gi, '$1: [redacted]')
+      .replace(/(["']?(?:authorization|cookie|credentials?|password|secret|signature|token|api[_-]?key|access[_-]?token|client[_-]?secret|x-amz-signature)["']?\s*[:=]\s*)("[^"]*"|'[^']*'|[^\s,;]+)/gi, '$1[redacted]')
+      .slice(0, 300);
   }
 
   function sanitize(value, depth = 0) {
@@ -32,7 +37,7 @@
 
   function entries() {
     const value = storage?.readJSON?.(LOG_KEY, []);
-    return Array.isArray(value) ? value.slice(-MAX_ENTRIES) : [];
+    return Array.isArray(value) ? value.slice(-MAX_ENTRIES).map(item => sanitize(item)) : [];
   }
 
   function log(event, details = {}, level = 'info') {

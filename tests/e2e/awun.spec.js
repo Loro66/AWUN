@@ -1,5 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { openAwun, searchFor } = require('./fixtures');
+const { openAwun, searchFor, TRACKS } = require('./fixtures');
 const pageErrors = new WeakMap();
 
 test.beforeEach(async ({ page }) => {
@@ -74,6 +74,30 @@ test('manual queue survives a page reload and remains reorderable', async ({ pag
   const secondTitle = await page.locator('#queueList .queue-item').nth(1).locator('strong').textContent();
   await page.locator('#queueList .queue-item').nth(1).locator('.queue-controls button').first().click();
   await expect(page.locator('#queueList .queue-item').first().locator('strong')).toHaveText(secondTitle);
+});
+
+test('backup import rejects invalid data, respects cancellation and restores after confirmation', async ({ page }) => {
+  await openAwun(page);
+  await searchFor(page, 'midnight signal');
+  await page.locator('#trackList .track').first().locator('.save').click();
+  const original = await page.evaluate(() => localStorage.getItem('awun-library'));
+  await page.locator('#themeButton').click();
+  await page.locator('#diagnosticsButton').click();
+  const fileInput = page.locator('#storageImportFile');
+  await fileInput.setInputFiles({ name: 'broken.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify({ app: 'AWUN', schema: 2, data: { 'awun-library': '[null]' } })) });
+  await expect(page.locator('#diagnosticsToolsStatus')).toContainText('Не удалось восстановить');
+  expect(await page.evaluate(() => localStorage.getItem('awun-library'))).toBe(original);
+
+  const validFile = { name: 'AWUN-backup.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify({ app: 'AWUN', schema: 2, data: { 'awun-library': JSON.stringify([TRACKS.audius[0]]) } })) };
+  page.once('dialog', dialog => dialog.dismiss());
+  await fileInput.setInputFiles(validFile);
+  await expect(fileInput).toHaveValue('');
+  expect(await page.evaluate(() => localStorage.getItem('awun-library'))).toBe(original);
+
+  page.once('dialog', dialog => dialog.accept());
+  await Promise.all([page.waitForEvent('load'), fileInput.setInputFiles(validFile)]);
+  await expect(page.locator('#searchInput')).toBeVisible();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('awun-library')).map(track => track.id))).toEqual([TRACKS.audius[0].id]);
 });
 
 for (const viewport of [

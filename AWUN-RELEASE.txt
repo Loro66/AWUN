@@ -1,6 +1,14 @@
 AWUN release package. The canonical release number is stored in VERSION.
 Build date: 2026-09-05
 
+1.10.3 maintenance changes:
+- Validate backup schema, serialized values and track lists before importing.
+- Preview library/queue counts and require confirmation before replacing data.
+- Roll back imported data when a write or migration fails.
+- Redact credentials inside error messages and previously stored log entries.
+- Bound update checks to 12 seconds, validate release versions and links, and
+  prevent repeated clicks from starting overlapping requests.
+
 The Windows application now bundles FastAPI and the complete frontend, starts
 on an ephemeral loopback port. Searches use the local API first; the configured
 remote endpoint is only a fallback for an unavailable provider. The desktop
