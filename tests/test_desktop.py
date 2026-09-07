@@ -53,8 +53,9 @@ def test_frontend_can_use_an_explicit_remote_api_without_rewriting_local_assets(
     assert "const fallbackApiBase=" in script
     assert "remoteRetryStatuses" in script
     assert "function apiUrl(input)" in script
-    assert "const target=apiUrl(input)" in script
-    assert "fetch(input,options)" in script
+    assert "target=apiUrl(input)" in script
+    assert "fetch(target,options)" in script
+    assert "fetch(backup,options)" in script
     assert "apiBase,fallbackApiBase,apiUrl" in script
 
 

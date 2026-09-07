@@ -120,6 +120,14 @@ async function installMediaMocks(page) {
     }
     window.YT = { Player: MockPlayer, PlayerState: states };
     Object.defineProperty(HTMLMediaElement.prototype, 'duration', { configurable: true, get() { return 214; } });
+    // The player is simulated as a 214-second track. Keep its clock simulated
+    // too; the 2-second transport fixture otherwise clamps/reset native seeks.
+    const mediaPositions = new WeakMap();
+    Object.defineProperty(HTMLMediaElement.prototype, 'currentTime', {
+      configurable: true,
+      get() { return mediaPositions.get(this) || 0; },
+      set(value) { mediaPositions.set(this, Number(value) || 0); this.dispatchEvent(new Event('timeupdate')); },
+    });
     HTMLMediaElement.prototype.load = function load() {};
     HTMLMediaElement.prototype.play = function play() {
       Object.defineProperty(this, 'paused', { configurable: true, value: false, writable: true });
@@ -134,7 +142,7 @@ async function installMediaMocks(page) {
 }
 
 async function installApiMocks(page, options = {}) {
-  const delays = options.delays || {};
+  const delays = { ...Object.fromEntries(SOURCES.map((source, index) => [source, index * 80])), ...options.delays };
   await page.route('**/health', route => route.fulfill({ json: healthPayload() }));
   await page.route('**/api/v1/track-details**', route => route.fulfill({
     json: { lyrics_source: null, synced: false, lines: [], genius_status: 'disabled', annotations: [] },

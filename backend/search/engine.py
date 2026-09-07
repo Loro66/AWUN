@@ -47,6 +47,9 @@ class SearchEngine:
         self._enrichment_wait = max(0.01, enrichment_wait_seconds)
         self._inflight: dict[tuple[object, ...], asyncio.Task[SearchResponse]] = {}
         self._background_tasks: set[asyncio.Task[list[str]]] = set()
+        self._enrichment_inflight: dict[
+            tuple[str, RegionProfile], asyncio.Task[list[str]]
+        ] = {}
 
     @property
     def available_sources(self) -> list[SourceName]:
@@ -212,25 +215,35 @@ class SearchEngine:
         the active search starts after a short budget with local variants.
         """
 
-        if len(self._background_tasks) >= self._MAX_BACKGROUND_ENRICHMENTS:
-            return basic_query_variants(query)
-
-        task = asyncio.create_task(self._enricher.expand(query, region))
+        # Progressive search sends one request per source. Share its metadata
+        # lookup so those requests do not queue duplicate MusicBrainz calls.
+        key = (query.strip(), region)
+        task = self._enrichment_inflight.get(key)
+        if task is None:
+            if len(self._background_tasks) >= self._MAX_BACKGROUND_ENRICHMENTS:
+                return basic_query_variants(query)
+            task = asyncio.create_task(self._enricher.expand(query, region))
+            self._enrichment_inflight[key] = task
+            self._background_tasks.add(task)
+            task.add_done_callback(
+                lambda finished, lookup=key: self._clear_enrichment(lookup, finished)
+            )
         try:
             return await asyncio.wait_for(
                 asyncio.shield(task),
                 timeout=min(self._enrichment_wait, self._timeout / 4),
             )
         except TimeoutError:
-            if len(self._background_tasks) >= self._MAX_BACKGROUND_ENRICHMENTS:
-                task.cancel()
-                await asyncio.gather(task, return_exceptions=True)
-                return basic_query_variants(query)
-            self._background_tasks.add(task)
-            task.add_done_callback(self._consume_background_task)
             return basic_query_variants(query)
         except Exception:
             return basic_query_variants(query)
+
+    def _clear_enrichment(
+        self, key: tuple[str, RegionProfile], task: asyncio.Task[list[str]]
+    ) -> None:
+        if self._enrichment_inflight.get(key) is task:
+            self._enrichment_inflight.pop(key, None)
+        self._consume_background_task(task)
 
     def _consume_background_task(self, task: asyncio.Task[list[str]]) -> None:
         self._background_tasks.discard(task)

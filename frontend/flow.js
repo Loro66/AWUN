@@ -18,7 +18,7 @@
     return{version:2,discovery:['familiar','balanced','new'].includes(value.discovery)?value.discovery:'balanced',mood:moodTerms[value.mood]!==undefined?value.mood:'any',activity:activityTerms[value.activity]!==undefined?value.activity:'any',language:languageTerms[value.language]!==undefined?value.language:'any',era:eraTerms[value.era]!==undefined?value.era:'any',blockedArtists:Array.isArray(value.blockedArtists)?value.blockedArtists.slice(-200):[],signals:value.signals.slice(-800)};
   }
   const profile=loadProfile();
-  state.flow={active:false,fetching:false,baseQuery:'',queryCursor:0,controller:null,seen:new Set(),progress:new Map(),profile};
+  state.flow={generation:0,active:false,fetching:false,baseQuery:'',queryCursor:0,controller:null,seen:new Set(),progress:new Map(),profile};
 
   function saveProfile(){storage?.writeJSON?.(PROFILE_KEY,profile);updateFlowUi()}
   function trackSnapshot(track){return{id:String(track?.id||''),title:decodeText(track?.title||''),artist:decodeText(track?.artist||''),source:String(track?.source||''),at:Date.now()}}
@@ -94,28 +94,30 @@
     setMessage(t('flowLive',{count:state.queue.length}),'notice');if(!state.active)void playTrack(state.tracks[0],{preserveQueue:true});return true;
   }
   async function fillFlow(initial=false){
-    if(state.flow.fetching)return;state.flow.fetching=true;revealFlowResults();setMessage(t('building'),'loading');updateFlowUi();render();
-    let timeoutId=null;
+    if(state.flow.fetching||!state.flow.active)return;const generation=state.flow.generation;state.flow.fetching=true;if(initial)revealFlowResults();setMessage(t('building'),'loading');updateFlowUi();render();
+    let timeoutId=null,controller=null;
     try{
       if(!state.sources.size)await refreshStatus();if(!state.sources.size)throw new Error(t('flowSearchFailed'));
+      if(generation!==state.flow.generation||!state.flow.active)return;
       const queries=buildQueries();if(!queries.length)throw new Error(t('flowNeedsSeed'));
-      const query=queries[state.flow.queryCursor%queries.length];state.flow.queryCursor+=1;state.flow.controller=new AbortController();timeoutId=setTimeout(()=>state.flow.controller?.abort(),65000);
-      const remote=await requestCandidates(query,state.flow.controller.signal);const current=initial?state.tracks:[];
+      const query=queries[state.flow.queryCursor%queries.length];state.flow.queryCursor+=1;controller=new AbortController();state.flow.controller=controller;timeoutId=setTimeout(()=>controller.abort(),10000);
+      const remote=await requestCandidates(query,controller.signal);if(controller.signal.aborted||generation!==state.flow.generation||!state.flow.active)return;const current=initial?state.tracks:[];
       const ranked=rankCandidates([...current,...remote]);if(!ranked.length)throw new Error(t('flowNoRecommendations'));
       if(initial){state.tracks=ranked.slice(0,80)}else{const existing=new Set(state.tracks.map(track=>track.id));state.tracks.push(...ranked.filter(track=>!existing.has(track.id)).slice(0,40))}
-      revealFlowResults();if(initial)replaceQueue(state.tracks,'context');else appendQueue(ranked,'context');render();
+      if(initial)revealFlowResults();if(initial)replaceQueue(state.tracks,'context');else appendQueue(ranked,'context');render();
       if(initial&&!state.active)await playTrack(state.tracks[0],{preserveQueue:true});setMessage(t('flowLive',{count:state.queue.length}),'notice');
-    }catch(error){if(error.name==='AbortError'&&(!state.flow.active||state.tracks.length))return;setMessage(error.message||t('flowUnavailable'),'error');if(initial)stopFlow(true)}
-    finally{if(timeoutId)clearTimeout(timeoutId);state.flow.controller?.abort();state.flow.controller=null;state.flow.fetching=false;updateFlowUi()}
+    }catch(error){if(generation!==state.flow.generation)return;if(error.name==='AbortError'&&(!state.flow.active||state.tracks.length))return;setMessage(error.message||t('flowUnavailable'),'error');if(initial)stopFlow(true)}
+    finally{if(timeoutId)clearTimeout(timeoutId);controller?.abort();if(generation===state.flow.generation){state.flow.controller=null;state.flow.fetching=false;updateFlowUi()}}
   }
   async function startFlow(){
     if(state.flow.active){stopFlow();return}
+    app.cancelSearch();state.flow.generation+=1;
     state.flow.baseQuery=ui.searchInput.value.trim()||[state.active?.artist,state.active?.title].filter(Boolean).join(' ')||positiveSeeds()[0]?.artist||(document.documentElement.lang==='ru'?'новая музыка':'new music');
     state.flow.active=true;state.flow.queryCursor=0;state.flow.seen.clear();document.body.classList.add('flow-active');closePanel();updateFlowUi();if(await primeLocalFlow()){void fillFlow(false);return}await fillFlow(true);
   }
-  function stopFlow(silent=false){state.flow.controller?.abort();state.flow.active=false;document.body.classList.remove('flow-active');updateFlowUi();if(!silent)setMessage(t('flowStopped'),'notice')}
-  function openPanel(){flow.flowPanel.hidden=false;flow.flowButton.setAttribute('aria-expanded','true');document.body.classList.add('flow-screen-open');requestAnimationFrame(()=>flow.flowPanel.classList.add('open'));updateFlowUi()}
-  function closePanel(){flow.flowPanel.classList.remove('open');flow.flowButton.setAttribute('aria-expanded','false');document.body.classList.remove('flow-screen-open');setTimeout(()=>{flow.flowPanel.hidden=true},180)}
+  function stopFlow(silent=false){state.flow.generation+=1;state.flow.controller?.abort();state.flow.fetching=false;state.flow.active=false;document.body.classList.remove('flow-active');updateFlowUi();if(!silent)setMessage(t('flowStopped'),'notice')}
+  function openPanel(){flow.flowPanel.hidden=false;flow.flowButton.setAttribute('aria-expanded','true');document.body.classList.add('flow-screen-open');flow.flowPanel.classList.add('open');updateFlowUi()}
+  function closePanel(){flow.flowPanel.classList.remove('open');flow.flowButton.setAttribute('aria-expanded','false');document.body.classList.remove('flow-screen-open');flow.flowPanel.hidden=true}
   function updateFlowUi(){
     flow.flowBadge.textContent=t(state.flow.fetching?'building':state.flow.active?'live':'ready');flow.flowButton.classList.toggle('active',state.flow.active);flow.flowStart.textContent=t(state.flow.active?'stopWave':'startWave');flow.flowStart.classList.toggle('stop',state.flow.active);flow.flowStats.textContent=t('flowStats',{signals:profile.signals.length,blocked:profile.blockedArtists.length});
     flow.flowMood.value=profile.mood;flow.flowActivity.value=profile.activity;flow.flowLanguage.value=profile.language;flow.flowEra.value=profile.era;flow.flowDiscovery.querySelectorAll('[data-flow-discovery]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.flowDiscovery===profile.discovery)));
@@ -143,5 +145,6 @@
   document.addEventListener('awun:play',event=>{const track=event.detail.track;state.flow.seen.add(track.id);state.flow.progress.set(track.id,0);record('play',track);updateFlowUi();if(state.flow.active){const index=state.tracks.findIndex(item=>item.id===track.id);if(index<0||index>=state.tracks.length-7)fillFlow(false)}});
   document.addEventListener('awun:skip',event=>{const track=event.detail.track;if(!track)return;record('skip',track,{progress:Math.round((state.flow.progress.get(track.id)||0)*100)/100})});document.addEventListener('awun:complete',event=>record('complete',event.detail.track,{progress:1}));document.addEventListener('awun:library',updateFlowUi);
   document.addEventListener('awun:language',updateFlowUi);
+  document.addEventListener('awun:search',()=>{if(state.flow.active)stopFlow(true)});
   setInterval(trackProgress,2000);updateFlowUi();
 })();

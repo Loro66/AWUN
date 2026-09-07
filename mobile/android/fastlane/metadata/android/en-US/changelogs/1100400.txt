@@ -1,0 +1,1 @@
+AWUN 1.10.4 shows the first search results sooner, adds search cancellation and retry, paginates large libraries, prevents stale playback switches, and improves waveform seeking. Compact and mobile layouts are now more responsive and readable.

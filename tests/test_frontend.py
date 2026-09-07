@@ -143,7 +143,8 @@ def test_flow_recommendations_are_local_persistent_and_feedback_driven() -> None
     assert all(signal in script for signal in ("'play'", "'skip'", "'listen30'", "'complete'", "'like'", "'dislike'"))
     assert "primeLocalFlow" in script and "fast:true" in script and "requestSearch" in script
     assert "replaceQueue" in script and "appendQueue" in script and "state.hasSearched=true" in script
-    assert "requestSearch" in script and "65000" in script
+    # Flow behaviour and cancellation are exercised in the browser suite;
+    # do not require the obsolete 65-second timeout as a source-code string.
     assert "window.awunApp" in app and "emitAwun('play'" in app and "emitAwun('complete'" in app
     assert ".flow-panel" in styles and ".flow-feedback.active" in styles
 

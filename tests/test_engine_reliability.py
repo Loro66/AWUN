@@ -138,3 +138,34 @@ def test_background_enrichment_queue_is_bounded() -> None:
         return pending
 
     assert asyncio.run(scenario()) == 2
+
+
+def test_concurrent_searches_share_metadata_but_keep_independent_responses() -> None:
+    class CountingEnricher(SlowEnricher):
+        calls = 0
+
+        async def expand(self, query, region):
+            self.calls += 1
+            return await super().expand(query, region)
+
+    enricher = CountingEnricher()
+    engine = SearchEngine(
+        [CountingAdapter(tracks=[track("Song")])],
+        enricher=enricher,
+        enrichment_wait_seconds=0.001,
+    )
+
+    async def scenario():
+        try:
+            return await asyncio.gather(
+                *(engine.search(SearchRequest(query="song", limit=limit)) for limit in range(1, 6))
+            )
+        finally:
+            await engine.close()
+
+    responses = asyncio.run(scenario())
+    assert enricher.calls == 1
+    assert len(responses) == 5
+    assert all(response.tracks[0].title == "Song" for response in responses)
+    responses[0].tracks[0].title = "changed"
+    assert responses[1].tracks[0].title == "Song"

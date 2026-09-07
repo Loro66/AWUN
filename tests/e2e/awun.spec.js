@@ -113,7 +113,7 @@ for (const viewport of [
     await page.locator('#trackList .track[data-source="audius"]').first().locator('.play').click();
     await page.evaluate(() => {
       document.activeElement?.blur();
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: 'instant' });
     });
     await expect(page.locator('#nowSource')).toHaveText('Audius');
     const layout = await page.evaluate(() => {

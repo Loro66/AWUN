@@ -19,13 +19,14 @@ module.exports = defineConfig({
   use: {
     baseURL: 'http://127.0.0.1:4173',
     browserName: 'chromium',
+    launchOptions: process.env.AWUN_TEST_CHROMIUM_PATH ? { executablePath: process.env.AWUN_TEST_CHROMIUM_PATH } : {},
     colorScheme: 'dark',
     locale: 'ru-RU',
     reducedMotion: 'reduce',
     serviceWorkers: 'block',
     timezoneId: 'Europe/Moscow',
     trace: 'retain-on-failure',
-    video: 'retain-on-failure',
+    video: process.env.AWUN_TEST_CHROMIUM_PATH ? 'off' : 'retain-on-failure',
     screenshot: 'only-on-failure',
   },
   webServer: {

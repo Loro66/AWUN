@@ -118,13 +118,18 @@
         </div>
       </div>
 
-      <p id="message" class="message" data-i18n="initialMessage">Введи исполнителя или название трека и нажми Enter.</p>
+      <div class="search-feedback">
+        <p id="message" class="message" role="status" data-i18n="initialMessage">Введи исполнителя или название трека и нажми Enter.</p>
+        <button id="cancelSearch" type="button" hidden data-i18n="cancelSearch">Остановить поиск</button>
+        <button id="retrySearch" type="button" hidden data-i18n="retrySearch">Повторить поиск</button>
+      </div>
       <div id="emptyGuide" class="empty-guide">
         <button id="guideSearch" type="button"><b>1</b><strong data-i18n="guideSearchTitle">SEARCH ANY TRACK</strong><span data-i18n="guideSearchBody">Type an artist and title. AWUN checks every connected catalog.</span></button>
         <button id="guideWave" type="button"><b>2</b><strong data-i18n="guideWaveTitle">START MY WAVE</strong><span data-i18n="guideWaveBody">Get an endless station and improve it with likes and skips.</span></button>
         <button id="guideImport" type="button"><b>3</b><strong data-i18n="guideImportTitle">MOVE YOUR PLAYLIST</strong><span data-i18n="guideImportBody">Paste a public link. AWUN finds playable matches automatically.</span></button>
       </div>
       <ol id="trackList" class="track-list"></ol>
+      <button id="loadMoreTracks" class="load-more-tracks" type="button" hidden></button>
     </section>
 
     <section id="idleStage" class="idle-stage" aria-labelledby="idleStageTitle">

@@ -1,6 +1,15 @@
 (() => {
   const dictionaries = {
     en: {
+      requestTimedOut: 'The source took too long to respond. Try again.',
+      loadMoreTracks: 'Show {count} more tracks',
+      cancelSearch: 'Stop search',
+      retrySearch: 'Try search again',
+      searchCancelled: 'Search stopped. Results already found are available.',
+      loadingTrack: 'Loading track…',
+      removeLibraryAria: 'Remove from your library',
+      seekTrackAria: 'Seek in {title}',
+      seekTrackHint: 'Click to play from this point. Arrow keys seek by 5 seconds.',
       pageTitle: 'AWUN — one search, every sound',
       pageDescription: 'AWUN searches real music across connected sources and plays it instantly.',
       skipSearch: 'Skip to search',
@@ -366,6 +375,15 @@
       fileReadFailed: 'The selected file could not be read.'
     },
     ru: {
+      requestTimedOut: 'Источник слишком долго отвечает. Попробуй ещё раз.',
+      loadMoreTracks: 'Показать ещё {count} треков',
+      cancelSearch: 'Остановить поиск',
+      retrySearch: 'Повторить поиск',
+      searchCancelled: 'Поиск остановлен. Найденные треки доступны.',
+      loadingTrack: 'Загрузка трека…',
+      removeLibraryAria: 'Убрать из медиатеки',
+      seekTrackAria: 'Перемотать {title}',
+      seekTrackHint: 'Нажми, чтобы слушать с этого места. Стрелки перематывают на 5 секунд.',
       pageTitle: 'AWUN — один поиск, вся музыка',
       pageDescription: 'AWUN ищет настоящую музыку во всех подключённых источниках и сразу запускает воспроизведение.',
       skipSearch: 'Перейти к поиску',
