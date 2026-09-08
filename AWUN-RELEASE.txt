@@ -1,7 +1,9 @@
-AWUN release package. The canonical release number is stored in VERSION.
-Build date: 2026-09-05
+AWUN 1.10.4
+Release date: 2026-09-08
 
-1.10.3 maintenance changes:
+Release highlights:
+- Refresh the reviewed Linux browser baselines for the current Chromium runner.
+- Keep all 26 browser scenarios reproducible across desktop, tablet and phone layouts.
 - Validate backup schema, serialized values and track lists before importing.
 - Preview library/queue counts and require confirmation before replacing data.
 - Roll back imported data when a write or migration fails.
