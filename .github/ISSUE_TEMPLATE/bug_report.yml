@@ -1,0 +1,87 @@
+name: Bug report
+description: Report a reproducible problem in AWUN
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve AWUN. Do not paste passwords, API keys, cookies, account tokens or unredacted request headers.
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Windows installer
+        - Windows portable
+        - Web or PWA
+        - Android beta
+        - iOS beta
+        - Local development server
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: AWUN version
+      description: Find this in Settings or the release name.
+      placeholder: "1.10.4"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Operating system and browser
+      placeholder: "Windows 11 24H2, AWUN-Setup-x64.exe"
+    validations:
+      required: true
+  - type: dropdown
+    id: source
+    attributes:
+      label: Affected source
+      options:
+        - Not source-specific
+        - YouTube
+        - SoundCloud
+        - Audius
+        - Jamendo
+        - Internet Archive
+        - MusicBrainz
+        - Lyrics or Track Stories
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Give the shortest sequence that consistently causes the problem.
+      placeholder: |
+        1. Open...
+        2. Search for...
+        3. Select...
+        4. Observe...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Redacted diagnostics
+      description: Attach the safe report from Settings, a screenshot or relevant redacted log lines. Remove personal search terms if needed.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Safety check
+      options:
+        - label: I removed credentials, cookies, tokens and other secrets from this report.
+          required: true
+        - label: I checked that the problem is not already reported in open Issues.
+          required: true

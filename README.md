@@ -2,290 +2,156 @@
 
 <div align="center">
 
-[English](README.md) · [Русский](README.ru.md) · [Open AWUN](https://awun-1.onrender.com) · [Windows builds](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml) · [Support the project](SUPPORT.md) · [Freeware license](LICENSE.md)
+[English](README.md) · [Русский](README.ru.md)
 
-[![Tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&label=Windows%20build&style=flat-square)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
-[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&label=browser%20tests&style=flat-square)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Loro66/AWUN)
-![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-live-009688?style=flat-square&logo=fastapi&logoColor=white)
-![Public beta](https://img.shields.io/badge/status-public%20beta-b7ff19?style=flat-square&labelColor=10110e)
+[![Open web app](https://img.shields.io/badge/OPEN_WEB_APP-FF6516?style=for-the-badge&logo=googlechrome&logoColor=11120F)](https://awun-1.onrender.com)
+[![Download for Windows](https://img.shields.io/badge/DOWNLOAD_WINDOWS-F3F2E9?style=for-the-badge&logo=windows&logoColor=11120F)](https://github.com/Loro66/AWUN/releases/latest/download/AWUN-Setup-x64.exe)
+[![Latest release](https://img.shields.io/github/v/release/Loro66/AWUN?style=for-the-badge&label=RELEASE&labelColor=11120F&color=6E875F)](https://github.com/Loro66/AWUN/releases/latest)
+
+[![Windows build](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&style=flat-square&label=Windows%20build)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
+[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=26%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
+[![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![License](https://img.shields.io/badge/license-source--visible%20freeware-5F665B?style=flat-square)](LICENSE.md)
+
+**A local-first music discovery workspace for fragmented catalogs.**<br>
+Search across connected sources, keep your library on your device and continue listening when one provider fails.
 
 </div>
 
-# AWUN
+<p align="center">
+  <img src="docs/media/awun-desktop.webp" width="100%" alt="AWUN search results and responsive desktop player" />
+</p>
 
-> A music discovery workspace that searches connected catalogs, keeps your library local and turns your taste into an endless personal station.
+## Why AWUN exists
 
-AWUN is a FastAPI music-search aggregator with a responsive web interface. It
-searches YouTube, SoundCloud, Audius, Jamendo and Internet Archive in parallel,
-then fairly interleaves the connected catalogs. MusicBrainz expands human
-queries into canonical artist/track, local alias, release, transliteration and
-ISRC variants. Yandex Music libraries can be transferred as metadata and
-matched to connected playable sources on demand. YouTube playback stays inside the official embedded player;
-other full tracks use short-lived signed AWUN media routes. SoundCloud HLS
-playlists are rewritten through those routes and played with the bundled HLS.js
-client, so the browser does not contact the SoundCloud CDN directly.
+Music discovery is split across services, regions, languages and scripts. A track may be easy to find on one platform and unavailable on another; saved stream URLs expire; one slow provider can hold up an otherwise useful search.
 
-The current interface includes AUTO/CIS/EUROPE/USA/LATAM/ASIA/GLOBAL search,
-progressive source-by-source results, partial-failure handling and a diagnostics
-screen with provider latency, recent errors and a copyable technical report,
-a 30/60/100 result selector, Yandex library import, a local library, shareable search URLs and a unified responsive player with
-provider-native waveform peaks with a deterministic fallback, volume, previous/next controls and browser Media
-Session integration. Its persistent queue supports **Play next**, append,
-remove and reorder and survives an app restart. When the active provider fails,
-AWUN finds a high-confidence match on another connected source and resumes at
-the same position instead of retrying the broken stream. A new geometric SVG mark stays sharp in the web, desktop
-and mobile shells. Its visual system includes Acid, Ultraviolet, Cobalt and
-Ember themes, Editorial and music-first Minimal layouts, plus motion controls. Visual settings
-are saved locally and work across desktop and mobile layouts. One versioned
-design-system entrypoint and explicit cascade layers keep theme tokens and
-components deterministic, including the light-theme waveform. Provider waveform
-profiles are extracted lazily and cached on the device instead of downloading
-full audio files for every search result. For same-origin audio without provider
-metadata, listened sections are progressively replaced with captured real peaks.
-Critical local settings can be exported, restored from an automatic on-device
-snapshot, or imported on another installation. The diagnostics screen can also
-download a redacted rolling runtime log and manually check GitHub Releases for
-an update.
+AWUN treats those failures as normal system conditions rather than exceptional cases.
 
-## Try and install
+| Product problem | AWUN response |
+| --- | --- |
+| Results are scattered across catalogs | Parallel search with progressive, source-by-source results |
+| One provider is slow or unavailable | Partial results, deadlines, retry and per-source diagnostics |
+| A saved stream URL has expired | Refresh on the same provider before playback |
+| The active source stops working | High-confidence cross-source match with position recovery |
+| Libraries are locked into accounts | Local CSV, JSON, M3U and TXT import with playable matching |
+| Names differ across languages and scripts | MusicBrainz aliases, transliteration, release names and ISRC expansion |
 
-- **Web / PWA:** open [awun-1.onrender.com](https://awun-1.onrender.com). In Chrome or Edge choose **INSTALL APP** to add AWUN to the Start menu, desktop or phone home screen.
-- **Windows:** download the latest `AWUN-Windows-x64` artifact from [Windows desktop builds](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml). The executable is unsigned during beta, so SmartScreen may ask for confirmation.
-- **Android / iOS beta:** reproducible shells live in [`mobile/`](mobile/README.md). A physical iOS release requires Apple signing.
+## The product
 
-AWUN is free to use. Donations support development and infrastructure; they do not purchase music, provider access or copyrighted downloads. See [SUPPORT.md](SUPPORT.md).
+| Discover | Listen | Keep | Understand |
+| --- | --- | --- | --- |
+| YouTube, SoundCloud, Audius, Jamendo and Internet Archive integrations | Official YouTube player, HLS playback, real or provider-derived waveforms | On-device library, persistent queue, backup and restore | Source health, latency, safe runtime report and explicit rights state |
+| AUTO and regional discovery modes | Play next, append, reorder, repeat and Media Session | No mandatory account and no advertising profile | Track Stories with LRCLIB lyrics and optional Genius annotations |
 
-AWUN is **proprietary, source-visible freeware**, not open-source software. You
-may use official unmodified builds free of charge and redistribute an exact
-official package under the stated conditions. Selling, repackaging, publishing
-modified builds, operating hosted clones and reusing the source in another
-product require prior written permission. See [LICENSE.md](LICENSE.md) and
-[EULA.md](EULA.md).
+### My Wave
 
-**AWUN FLOW** builds an endless personal queue from the current search, active
-track and local library. It learns from plays, 30% listens, completions, skips,
-likes and dislikes, then re-ranks fresh results from every connected source.
-Familiar/Balanced/New discovery, mood and activity controls change each refill
-without uploading the taste profile: the beta stores at most 800 compact
-signals in browser `localStorage`. Likes also save the track to the local
-library; dislikes remove it from future Flow queues on that device.
+My Wave turns the current track, local library and on-device taste signals into a continuous queue. Familiarity, mood, activity, language and era controls change each refill without uploading the taste profile.
 
-Click any result (or its **STORY** button) to open a Track Story. AWUN requests
-plain or time-synced lyrics from LRCLIB on demand and, when
-`AWUN_GENIUS_ACCESS_TOKEN` is configured, attaches official Genius annotations
-to the closest lyric line. Each line also accepts private AWUN notes stored only
-in that browser. AWUN does not scrape Genius pages and does not cache lyrics.
+<p align="center">
+  <img src="docs/media/awun-mobile.webp" width="310" alt="AWUN responsive mobile search interface" />
+</p>
 
-In production, provider URLs are wrapped in short-lived signed AWUN media URLs.
-The media endpoint supports HTTP Range requests for full-track playback and
-seeking without exposing the provider URL to the client.
+## How it works
 
-## Run
+```mermaid
+flowchart LR
+    C["Web, PWA or Windows"] --> A["FastAPI gateway"]
+    A --> S["Search and matching engine"]
+    S --> P["Connected music providers"]
+    A --> R["Rights and media policy"]
+    C --> L["On-device library and taste profile"]
+```
 
-Python 3.11 or newer is required.
+The Windows application packages the frontend and FastAPI backend into one executable. It starts on an ephemeral loopback port and searches locally first. The public AWUN backend is only a provider-level fallback, so a remote cold start does not block healthy local sources.
+
+Search results are normalized into a shared track model, deduplicated and ranked before the interface receives them. Playback recovery accepts an alternative only when title, artist and duration produce a sufficiently close match.
+
+[Read the architecture](docs/ARCHITECTURE.md) · [Open the API reference](https://awun-1.onrender.com/docs)
+
+## Install or run
+
+### Windows
+
+Download the [per-user installer](https://github.com/Loro66/AWUN/releases/latest/download/AWUN-Setup-x64.exe) or the [portable executable](https://github.com/Loro66/AWUN/releases/latest/download/AWUN.exe). SHA-256 files are published beside both binaries in every release.
+
+The beta binaries are not Authenticode-signed yet, so Windows SmartScreen may show a warning. Verify the checksum before running the downloaded file.
+
+### Web and PWA
+
+Open [awun-1.onrender.com](https://awun-1.onrender.com). Chrome and Edge can install the site as a PWA from the browser menu.
+
+### Development
 
 ```bash
-cd awun
+git clone https://github.com/Loro66/AWUN.git
+cd AWUN
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
+
+# Linux / macOS
+source .venv/bin/activate
+
+# Windows PowerShell
+# .venv\Scripts\Activate.ps1
+
 pip install -r requirements.txt
-cp .env.example .env
 uvicorn backend.api.main:app --reload
 ```
 
-Open `http://127.0.0.1:8000/` for AWUN or `/docs` for API documentation.
+Open `http://127.0.0.1:8000`. Optional provider credentials and deployment settings are documented in the [technical reference](docs/TECHNICAL_REFERENCE.md).
 
-For a hosted beta, deploy the included `Dockerfile` to any container host. A
-`render.yaml` Blueprint is included for Render. Configure
-`AWUN_YOUTUBE_API_KEY` (recommended), the two SoundCloud credentials, and optionally
-`AWUN_JAMENDO_CLIENT_ID` and `AWUN_GENIUS_ACCESS_TOKEN` in the host dashboard. Audius
-read-only search works without a secret; `AWUN_AUDIUS_API_KEY` is optional.
-MusicBrainz and Internet Archive work without secrets.
-LRCLIB lyrics also work without a secret; the Genius token only adds annotations.
+## Verified release quality
 
-See `RELEASE.md` for the production deployment and verification checklist.
+Release `v1.10.4` is built from `main` by GitHub Actions.
 
-## Search API
+- **233 Python tests** cover search, ranking, matching, policy, reliability, security and desktop packaging.
+- **26 Playwright scenarios** exercise progressive search, cancellation, provider deadlines, playback recovery, queue persistence, large libraries and responsive layouts.
+- Visual and control-bound checks run at **1920, 1280, 1000 and 390 pixels**.
+- The release workflow builds both Windows executables, generates SHA-256 checksums and publishes the versioned GitHub Release only after tests pass.
 
-POST `/api/v1/search`:
+[Testing strategy and limitations](docs/TESTING.md) · [CI runs](https://github.com/Loro66/AWUN/actions) · [Latest release](https://github.com/Loro66/AWUN/releases/latest)
 
-```json
-{
-  "query": "Daft Punk Around the World",
-  "limit": 60,
-  "sources": ["youtube", "soundcloud", "audius", "jamendo", "internet_archive"],
-  "region": "GLOBAL",
-  "locale": "en-US"
-}
-```
+## Current status
 
-Or use GET:
+| Surface | Status | Distribution |
+| --- | --- | --- |
+| Web / PWA | Public beta | [Open application](https://awun-1.onrender.com) |
+| Windows | Released, unsigned beta | [Download v1.10.4](https://github.com/Loro66/AWUN/releases/tag/v1.10.4) |
+| Android | Reproducible Play bundle and store package | Release requires Play Console signing and testing |
+| iOS | Reproducible unsigned beta | Physical distribution requires Apple signing |
 
-```text
-/api/v1/search?q=Daft%20Punk&limit=10&sources=youtube&sources=internet_archive&region=EUROPE&locale=de-DE
-```
+Public availability does not imply measured adoption. AWUN currently makes no claims about user count, retention or revenue. The [project case study](docs/PROJECT_CASE_STUDY.ru.md) separates implemented work from planned user validation.
 
-The response contains combined results, the applied region and `query_variants`
-used for discovery. An unavailable source appears in `errors`; successful
-sources still return results. Every playable result also includes official
-Apple Music, Spotify and Yandex Music catalog-search links; those services are navigation
-targets and are never proxied as AWUN audio.
+## Documentation
 
-## Discovery coverage
+| Document | Purpose |
+| --- | --- |
+| [Architecture](docs/ARCHITECTURE.md) | Components, data flow, trust boundaries and engineering decisions |
+| [Testing](docs/TESTING.md) | Test layers, CI evidence, commands and known limitations |
+| [Technical reference](docs/TECHNICAL_REFERENCE.md) | API, configuration, provider behavior and deployment |
+| [Changelog](CHANGELOG.md) | User-visible release history |
+| [Project case study](docs/PROJECT_CASE_STUDY.ru.md) | Verifiable development episodes and project ownership |
+| [Security](SECURITY.md) | Private vulnerability reporting and supported version |
+| [Contributing](CONTRIBUTING.md) | Development and pull-request requirements |
 
-| Capability | What it adds | Full playback | Download |
-| --- | --- | --- | --- |
-| Internet Archive | Archival, independent and rare public audio | Yes | When a public media file exists |
-| MusicBrainz | Aliases, scripts, ISRCs and release names | Metadata only | No |
-| Apple Music / Spotify | Large region-aware catalogs via official links | On the official service | No |
-| Yandex Music | Local import of library metadata and official catalog links | Imported tracks are matched to connected AWUN sources; Yandex playback stays official | No |
-| Regional YouTube | Results relevant to CIS, Europe, USA, LATAM and Asia | Official YouTube player | No |
+## Boundaries by design
 
-Region mode changes discovery relevance; it does not bypass provider licensing
-or geographic restrictions. In AUTO mode the browser locale selects a country
-and language. GLOBAL removes the YouTube country/language preference.
+AWUN is not a VPN, does not remove DRM and does not open private libraries without official authorization. YouTube stays in the official embedded player. Download controls appear only when a provider supplies an authorized public file. Provider availability and geographic licensing still apply.
 
-The Windows desktop shell uses its embedded local backend first. If an
-individual provider fails locally, AWUN retries only that provider through the
-project's public backend (`https://awun-1.onrender.com`). This is a free Render
-service, so no new server, account or configuration is required. A sleeping
-Render instance never delays results from healthy local providers.
+The project has no mandatory account, ads or analytics SDK. The library, queue, preferences and My Wave profile remain on the device. See the [privacy notice](frontend/privacy.html) for the exact data flow.
 
-To use another endpoint, set
-`AWUN_REMOTE_API_URL=https://your-controlled-domain` before launching the EXE,
-or put that HTTPS origin on one line in `%APPDATA%\\AWUN\\remote-api.txt`.
-Set the value to `local` to disable the fallback. Search, lyrics and playlist
-import stay local unless their request fails; provider-level search errors can
-use the configured fallback. YouTube playback still uses the official embedded
-player and remains subject to its availability. Use only an endpoint you
-control or trust: AWUN does not embed unknown proxy IPs.
+## Contributing and license
 
-## Public playlist and library transfer
+Bug reports and focused pull requests are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), use the issue templates and include tests for behavior changes.
 
-`POST /api/v1/library/import-url` accepts a public HTTPS playlist URL and returns track metadata for automatic matching in AWUN. YouTube playlists use the official YouTube Data API when `AWUN_YOUTUBE_API_KEY` is configured. Other sites are supported only when they publish standard JSON-LD `MusicPlaylist`/`MusicRecording` metadata.
+AWUN is **proprietary, source-visible freeware**, not open-source software. Official unmodified builds are free to use under the [AWUN Proprietary Freeware License 1.0](LICENSE.md) and [EULA](EULA.md). Reuse of the source or publication of modified builds requires prior written permission.
 
-Private libraries, login-protected pages, account tokens and undocumented private APIs are deliberately unsupported. Yandex Music exports can still be imported as CSV, JSON, M3U or TXT. The browser matches up to 100 entries per run against the enabled playable sources, adds only playable matches, and reports the rest.
+---
 
-### Yandex Music export
+<div align="center">
 
-Click **IMPORT → YM** and upload a CSV, JSON, M3U/M3U8 or TXT file, or paste one
-`Artist — Track` per line. AWUN stores only normalized track metadata in the
-browser library. The first time an imported item is played, AWUN searches the
-currently connected sources, selects the closest playable match and replaces
-the placeholder with that live result. Every item retains an official Yandex
-Music catalog link.
+Built and maintained as an independent product project by [Loro66](https://github.com/Loro66).<br>
+[Release](https://github.com/Loro66/AWUN/releases/latest) · [Report a bug](https://github.com/Loro66/AWUN/issues/new?template=bug_report.yml) · [Support](SUPPORT.md)
 
-AWUN does not ask for a Yandex password or account token and does not call
-undocumented private endpoints or extract protected Yandex media URLs. Yandex
-documents its own supported inbound collection transfer at
-<https://yandex.ru/support/music/ru/collection/transfer>; exporting a library
-for AWUN currently requires a user-provided metadata file or pasted track list.
-
-## Track Stories, lyrics and comments
-
-`GET /api/v1/track-details?artist=...&title=...&duration=...` returns an ordered
-list of lyric lines. When LRCLIB provides LRC timestamps, selecting a timestamp
-seeks the active track to that line. Selecting the lyric itself opens its
-thread: official Genius annotations appear first and the listener can add or
-delete local notes beneath them.
-
-The beta intentionally separates provider content from AWUN user data:
-
-- lyrics are requested from <https://lrclib.net/docs> and not persisted by the API;
-- Genius referents use <https://docs.genius.com/> only when a server-side token exists;
-- personal line notes live in browser `localStorage` and are not public or synced.
-
-A public multi-user comment network will require authenticated accounts,
-moderation and persistent storage; it is not silently simulated in this release.
-
-## Configuration
-
-Copy `.env.example` to `.env`. YouTube uses the Data API when
-`AWUN_YOUTUBE_API_KEY` is set and otherwise falls back to metadata-only
-`yt-dlp` search; playback always stays in the official embedded player. With
-an API key AWUN follows up to `AWUN_YOUTUBE_MAX_PAGES=2`, allowing as many as
-100 YouTube candidates while keeping quota use bounded. SoundCloud uses OAuth when
-`AWUN_SOUNDCLOUD_CLIENT_ID` and `AWUN_SOUNDCLOUD_CLIENT_SECRET` are set, with a
-limited legacy fallback otherwise. Audius is enabled by default and uses its
-read-only REST API. Jamendo is added only when `AWUN_JAMENDO_CLIENT_ID` is set.
-Internet Archive is enabled by default and exposes only public audio files.
-MusicBrainz is enabled by default; set `AWUN_MUSICBRAINZ_CONTACT` to a project
-URL or contact address and adjust `AWUN_QUERY_EXPANSION_LIMIT` if needed.
-Search responses are cached for 90 seconds by default and identical concurrent
-requests share one provider run. Tune this with `AWUN_SEARCH_CACHE_TTL_SECONDS`
-and `AWUN_SEARCH_CACHE_MAX_SIZE`. Cold MusicBrainz enrichment gets a short
-`AWUN_QUERY_ENRICHMENT_WAIT_SECONDS` budget and then warms in the background,
-so metadata discovery does not hold up the first provider results. My Wave uses
-fast search mode: it returns the first productive catalog within
-`AWUN_FAST_SEARCH_TIMEOUT_SECONDS` (6 seconds by default) and fills the queue in
-the background instead of waiting for every provider.
-LRCLIB is enabled by default. Add `AWUN_GENIUS_ACCESS_TOKEN` for Genius
-referents; never expose this value to the frontend or commit it to the repository.
-
-Direct media URLs are provider-issued and normally expire. AWUN refreshes a
-failed track by searching the other connected sources and accepts only a close
-title, artist and duration match; if no safe match exists it stops and reports
-the failure. Some providers may require their usual request headers,
-authentication, or region access. Use AWUN only for media you are authorized to
-access and in accordance with each provider's terms.
-
-The library and persistent queue refresh expired non-YouTube playback URLs on
-the same provider before playback. Only after that refresh fails does AWUN look
-for a close match on another provider and preserve the current position.
-AWUN exposes a download button only when the provider supplies a real,
-progressive download resource. HLS/DASH playlists and DRM media are playback
-resources, not files, and are never presented as downloads.
-Without SoundCloud OAuth credentials, AWUN deliberately limits the fallback to
-five results per query for reliability; configure OAuth for the full range.
-
-## Windows desktop app
-
-Run `build-windows.bat` on Windows 10 or 11 to create `dist\\AWUN.exe` and its
-SHA256 checksum. The AWUN icon is embedded in the executable and is used by
-Explorer, shortcuts and the taskbar. The executable bundles the FastAPI backend
-and web interface and starts them on a random `127.0.0.1` port. The local
-backend is always queried first. The public AWUN Render deployment is contacted
-only for a provider that failed locally, so healthy local sources are never
-delayed by a remote cold start. Music search and playback still require internet
-access, but the user does not need a server.
-The desktop interface opens in Russian by default and retains the English
-language switch.
-
-For a reproducible cloud build, open **Actions → Windows desktop build → Run
-workflow**. Every pull request also creates an `AWUN-Windows-x64` test artifact.
-Download it from the completed run. It contains both the portable executable
-and a per-user `AWUN-Setup-x64.exe` installer, with SHA-256 checksums. Pushing a
-tag matching `VERSION` publishes the same files in GitHub Releases. The binaries
-are currently unsigned, so Windows SmartScreen may show a warning until a
-code-signing certificate is added.
-
-The Windows artifact and tagged releases include `LICENSE.md` and `EULA.md`.
-Installing or using an official build means accepting those terms.
-
-## Android Google Play and iOS beta
-
-Android is prepared for Google Play with the permanent application ID
-`com.loro66.awun`, API 36, a signed-AAB workflow, localized store metadata,
-privacy/support pages and a Play-specific client mode that removes every music
-download control. Run **Actions → Mobile test builds** for an internal APK or
-**Actions → Android Google Play release** for a signed AAB after the account
-owner configures the upload-key secrets. The workflow never publishes
-automatically.
-
-The iOS project remains an unsigned beta. See `mobile/README.md` and
-`mobile/android/play-store/RELEASE_CHECKLIST.md` for signing, testing and store
-submission details. No signing credentials are stored in the repository.
-
-## License
-
-Copyright © 2026 Loro66. All rights reserved.
-
-AWUN uses the bilingual [AWUN Proprietary Freeware License 1.0](LICENSE.md).
-The repository is public for transparency and contribution, but its source is
-not open source. Contributors must accept the
-[AWUN Contributor License Agreement](CONTRIBUTOR_LICENSE_AGREEMENT.md).
-
-The desktop and web shells bundle HLS.js 1.7.0 under the Apache License 2.0;
-see [`frontend/hls.js.LICENSE.md`](frontend/hls.js.LICENSE.md).
+</div>
