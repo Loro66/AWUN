@@ -1,6 +1,6 @@
 # AWUN architecture
 
-[Project overview](../README.md) · [Testing](TESTING.md) · [Technical reference](TECHNICAL_REFERENCE.md)
+[Project overview](../README.md) · [Case study](PROJECT_CASE_STUDY.md) · [Testing](TESTING.md) · [Technical reference](TECHNICAL_REFERENCE.md) · [Roadmap](../ROADMAP.md)
 
 AWUN is a local-first music discovery application. The same frontend runs as a web/PWA client, inside the Windows desktop shell and inside the mobile shells. The Python backend presents one normalized API over several independent provider adapters.
 

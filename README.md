@@ -17,6 +17,8 @@
 **A local-first music discovery workspace for fragmented catalogs.**<br>
 Search across connected sources, keep your library on your device and continue listening when one provider fails.
 
+[Product](#the-product) · [Architecture](docs/ARCHITECTURE.md) · [Testing](docs/TESTING.md) · [Case study](docs/PROJECT_CASE_STUDY.md) · [Roadmap](ROADMAP.md)
+
 </div>
 
 <p align="center">
@@ -121,7 +123,7 @@ Release `v1.10.4` is built from `main` by GitHub Actions.
 | Android | Reproducible Play bundle and store package | Release requires Play Console signing and testing |
 | iOS | Reproducible unsigned beta | Physical distribution requires Apple signing |
 
-Public availability does not imply measured adoption. AWUN currently makes no claims about user count, retention or revenue. The [project case study](docs/PROJECT_CASE_STUDY.ru.md) separates implemented work from planned user validation.
+Public availability does not imply measured adoption. AWUN currently makes no claims about user count, retention or revenue. The [project case study](docs/PROJECT_CASE_STUDY.md) separates implemented work from planned user validation.
 
 ## Documentation
 
@@ -131,7 +133,8 @@ Public availability does not imply measured adoption. AWUN currently makes no cl
 | [Testing](docs/TESTING.md) | Test layers, CI evidence, commands and known limitations |
 | [Technical reference](docs/TECHNICAL_REFERENCE.md) | API, configuration, provider behavior and deployment |
 | [Changelog](CHANGELOG.md) | User-visible release history |
-| [Project case study](docs/PROJECT_CASE_STUDY.ru.md) | Verifiable development episodes and project ownership |
+| [Project case study](docs/PROJECT_CASE_STUDY.md) | Verifiable development episodes, evidence and project ownership |
+| [Product roadmap](ROADMAP.md) | Evidence-driven next steps and explicit exit criteria |
 | [Security](SECURITY.md) | Private vulnerability reporting and supported version |
 | [Contributing](CONTRIBUTING.md) | Development and pull-request requirements |
 
