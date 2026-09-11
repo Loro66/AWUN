@@ -17,18 +17,18 @@ class AudiusAdapter(BaseAdapter):
 
     def __init__(
         self,
-        app_name: str = "AWUN",
+        app_name: str = "SONGVALE",
         api_key: str | None = None,
         timeout: float = 12.0,
     ) -> None:
-        self.app_name = app_name.strip() or "AWUN"
+        self.app_name = app_name.strip() or "SONGVALE"
         self.api_key = api_key
         self.timeout = timeout
         self._session: aiohttp.ClientSession | None = None
 
     async def _get_session(self) -> aiohttp.ClientSession:
         if self._session is None or self._session.closed:
-            headers = {"Accept": "application/json", "User-Agent": "AWUN/1.7"}
+            headers = {"Accept": "application/json", "User-Agent": "SONGVALE/2.0"}
             if self.api_key:
                 headers["x-api-key"] = self.api_key
             self._session = aiohttp.ClientSession(

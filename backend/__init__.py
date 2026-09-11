@@ -1,2 +1,1 @@
-"""AWUN backend package."""
-
+"""SONGVALE backend package."""

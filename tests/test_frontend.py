@@ -104,17 +104,20 @@ def test_identity_minimal_mode_and_track_stories_are_wired() -> None:
     html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
     script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
     styles = (ROOT / "frontend" / "styles.css").read_text(encoding="utf-8")
-    mark = (ROOT / "frontend" / "awun-mark.svg").read_text(encoding="utf-8")
+    mark = (ROOT / "frontend" / "brand" / "songvale-mark.svg").read_text(encoding="utf-8")
+    release = (ROOT / "frontend" / "redesign.css").read_text(encoding="utf-8")
 
-    assert '/static/brand/awun-logo-white.png' in html
+    assert '/static/brand/songvale-mark.svg' in html and '<strong>SONGVALE</strong>' in html
     assert 'data-i18n="interface"' in html and "state.decor==='minimal'" in script
-    assert 'viewBox="0 0 64 64"' in mark
+    assert 'viewBox="0 0 128 128"' in mark
+    assert mark.count("<rect") == 6 and '#ff6b1a' in mark
+    assert '"Segoe UI Variable Display","Avenir Next","Helvetica Neue"' in release
     assert "/api/v1/track-details" in script
     assert "awun-line-comments-v1" in script
     assert "t('trackStory')" in script
     assert 'html[data-decor="minimal"] .source-row' in styles
     assert ".lyric-line" in styles and ".line-comment-form" in styles
-    assert "awun-logo-black.png" in styles
+    assert "awun-logo-black.png" not in styles
     assert 'data-density="compact"' in styles and 'data-density="airy"' in styles
 
 
@@ -172,7 +175,8 @@ def test_installable_pwa_is_wired() -> None:
     assert 'rel="manifest"' in html and 'id="installButton"' in html
     assert "beforeinstallprompt" in script and "serviceWorker.register('/service-worker.js')" in script
     assert '"display": "standalone"' in manifest and '"start_url": "/"' in manifest
-    assert "__AWUN_VERSION__" in worker and "awun-shell-${AWUN_VERSION}" in worker
+    assert "songvale-icon.png" in manifest and "songvale-maskable.png" in manifest
+    assert "__AWUN_VERSION__" in worker and "songvale-shell-${SONGVALE_VERSION}" in worker
     assert "startsWith('/api/')" in worker
     assert "hls.light.min.js" not in worker
     assert all(asset not in worker for asset in ("styles.css", "forest.css", "redesign.css"))
@@ -183,6 +187,7 @@ def test_installable_pwa_is_wired() -> None:
     assert "update-checker.js?v=__AWUN_VERSION__" in worker
     assert "startsWith('/static/')" in worker and "cached||fetch" in worker
     assert "/static/desktop-bridge.js" in html and "desktop-bridge.js" in worker
+    assert "songvale-maskable.png" in worker
     assert "pywebviewready" in bridge and "save_state" in bridge and "load_state" in bridge
 
 
@@ -386,7 +391,7 @@ def test_russian_translation_covers_static_and_dynamic_ui() -> None:
 
     assert '<html lang="ru">' in html
     assert "/static/i18n.js" in html
-    assert "AWUN — один поиск, вся музыка" in html
+    assert "SONGVALE — вся музыка сходится здесь" in html
     assert "const t=(key,values={})" in script
     assert "window.awunI18n.t" in flow
     assert "ИЩЕМ ВО ВСЕХ ИСТОЧНИКАХ" in i18n

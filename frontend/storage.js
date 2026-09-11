@@ -152,32 +152,32 @@
 
   function validateImport(value) {
     if (typeof value === 'string' && new TextEncoder().encode(value).length > MAX_IMPORT_BYTES) {
-      throw new Error('AWUN backup is too large');
+      throw new Error('SONGVALE backup is too large');
     }
     const envelope = typeof value === 'string' ? JSON.parse(value) : value;
-    if (!envelope || envelope.app !== 'AWUN' || !envelope.data || typeof envelope.data !== 'object' || Array.isArray(envelope.data)) {
-      throw new Error('Invalid AWUN backup');
+    if (!envelope || !['SONGVALE', 'AWUN'].includes(envelope.app) || !envelope.data || typeof envelope.data !== 'object' || Array.isArray(envelope.data)) {
+      throw new Error('Invalid SONGVALE backup');
     }
     const schema = envelope.schema ?? 1;
-    if (!Number.isInteger(schema) || schema < 1 || schema > SCHEMA_VERSION) throw new Error('Unsupported AWUN backup version');
+    if (!Number.isInteger(schema) || schema < 1 || schema > SCHEMA_VERSION) throw new Error('Unsupported SONGVALE backup version');
     const entries = Object.entries(envelope.data);
     const objectKeys = new Set(['awun-visual', 'awun-line-comments-v1', 'awun-wave-profile-v2', 'awun-flow-profile-v1', 'awun-youtube-failures-v1', META_KEY]);
     for (const [key, raw] of entries) {
-      if (!key.startsWith(PREFIX) || EXCLUDED_BACKUP_KEYS.has(key) || typeof raw !== 'string') throw new Error('Invalid AWUN backup entry');
+      if (!key.startsWith(PREFIX) || EXCLUDED_BACKUP_KEYS.has(key) || typeof raw !== 'string') throw new Error('Invalid SONGVALE backup entry');
       if (['awun-library', 'awun-recent', 'awun-queue-v1'].includes(key)) {
         const parsed = JSON.parse(raw);
         const tracks = key === 'awun-queue-v1' && !Array.isArray(parsed) ? parsed?.items : parsed;
         if (!Array.isArray(tracks) || tracks.some(track => !track || typeof track !== 'object' || Array.isArray(track) || !['string', 'number'].includes(typeof track.id))) {
-          throw new Error('Invalid track data in AWUN backup');
+          throw new Error('Invalid track data in SONGVALE backup');
         }
       } else if (objectKeys.has(key)) {
         const parsed = JSON.parse(raw);
-        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('Invalid settings in AWUN backup');
-        if (key === META_KEY && Number(parsed.schema) > SCHEMA_VERSION) throw new Error('Unsupported AWUN storage version');
+        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('Invalid settings in SONGVALE backup');
+        if (key === META_KEY && Number(parsed.schema) > SCHEMA_VERSION) throw new Error('Unsupported SONGVALE storage version');
       }
     }
     const bytes = entries.reduce((total, [key, raw]) => total + new TextEncoder().encode(`${key}${raw}`).length, 0);
-    if (bytes > MAX_IMPORT_BYTES) throw new Error('AWUN backup is too large');
+    if (bytes > MAX_IMPORT_BYTES) throw new Error('SONGVALE backup is too large');
     return entries;
   }
 
@@ -217,19 +217,19 @@
   async function restoreLatestBackup() {
     const backup = await latestBackup();
     if (!backup?.data) return false;
-    return importState({ app: 'AWUN', schema: backup.schema || SCHEMA_VERSION, data: backup.data });
+    return importState({ app: 'SONGVALE', schema: backup.schema || SCHEMA_VERSION, data: backup.data });
   }
 
   function exportState() {
     return JSON.stringify({
-      app: 'AWUN',
+      app: 'SONGVALE',
       schema: SCHEMA_VERSION,
       exported_at: new Date().toISOString(),
       data: snapshot(),
     }, null, 2);
   }
 
-  function download(filename = 'AWUN-backup.json') {
+  function download(filename = 'SONGVALE-backup.json') {
     const blob = new Blob([exportState()], { type: 'application/json;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');

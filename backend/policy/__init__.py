@@ -1,1 +1,1 @@
-"""Product and distribution policies for AWUN clients."""
+"""Product and distribution policies for SONGVALE clients."""

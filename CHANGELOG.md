@@ -1,6 +1,25 @@
 # Changelog
 
-All notable user-visible changes are documented here. AWUN follows semantic versioning through the root `VERSION` file.
+All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
+
+## [2.0.0] - 2026-09-11
+
+### Rebranded
+
+- Renamed the product from AWUN to SONGVALE across the web interface, PWA, Windows launcher and installer, Android client, iOS shell, diagnostics and legal pages.
+- Introduced an original five-pillar sound-valley mark, a deep forest and signal-orange palette, and a quieter geometric wordmark.
+- Replaced the Windows, Android, iOS and browser icons with the new identity.
+
+### Compatibility
+
+- Preserved existing local-storage keys, application IDs, server URL and environment-variable prefix so upgrades retain user data and deployment configuration.
+- Added desktop migration from the legacy AWUN state directory and kept legacy AWUN backup imports valid.
+- Added the `SONGVALE_REMOTE_API_URL` desktop setting while retaining `AWUN_REMOTE_API_URL` as a fallback.
+
+### Distribution
+
+- Renamed the Windows deliverables to `SONGVALE.exe` and `SONGVALE-Setup-x64.exe`.
+- Updated product metadata, store listings and release automation for SONGVALE 2.0.0.
 
 ## [1.10.6] - 2026-09-11
 
@@ -71,3 +90,4 @@ Versions before 1.10.4 were iterative beta builds. Their exact changes remain av
 [1.10.4]: https://github.com/Loro66/AWUN/releases/tag/v1.10.4
 [1.10.5]: https://github.com/Loro66/AWUN/releases/tag/v1.10.5
 [1.10.6]: https://github.com/Loro66/AWUN/releases/tag/v1.10.6
+[2.0.0]: https://github.com/Loro66/AWUN/releases/tag/v2.0.0

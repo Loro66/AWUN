@@ -1,1 +1,1 @@
-"""Local recommendation models powering AWUN Flow."""
+"""Local recommendation models powering SONGVALE My Wave."""

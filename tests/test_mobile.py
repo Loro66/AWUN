@@ -76,11 +76,11 @@ def test_android_shell_is_localized_secure_and_has_owned_fallback() -> None:
     swift = (ROOT / "mobile" / "ios" / "AWUN" / "AWUNApp.swift").read_text(encoding="utf-8")
     workflow = (ROOT / ".github" / "workflows" / "build-mobile.yml").read_text(encoding="utf-8")
 
-    assert "AWUN пока недоступен" in strings_ru
-    assert "AWUN is unavailable" in strings_en
+    assert "SONGVALE пока недоступен" in strings_ru
+    assert "SONGVALE is unavailable" in strings_en
     assert 'cleartextTrafficPermitted="false"' in network
     assert "AWUN_MIRROR_URL" in gradle
-    assert "AWUNBrand" in swift and "didFailProvisionalNavigation" in swift
+    assert "AWUNBrand" in swift and "SONGVALE-iOS/2.0" in swift and "didFailProvisionalNavigation" in swift
     assert "platforms;android-36" in workflow and 'gradle-version: "8.13"' in workflow
     assert png_size(
         ANDROID / "app" / "src" / "main" / "res" / "mipmap-xxxhdpi" / "ic_launcher.png"
@@ -108,7 +108,7 @@ def test_unsigned_play_workflow_builds_without_repository_secrets() -> None:
     ).read_text(encoding="utf-8")
 
     assert "bundleRelease" in workflow and "lintRelease" in workflow
-    assert "AWUN-unsigned-${AWUN_VERSION_NAME}-${AWUN_VERSION_CODE}.aab" in workflow
+    assert "SONGVALE-unsigned-${AWUN_VERSION_NAME}-${AWUN_VERSION_CODE}.aab" in workflow
     assert "PLAY_UPLOAD_KEYSTORE_BASE64" not in workflow
     assert "actions/upload-artifact@v4" in workflow
     assert "pull_request:" in workflow

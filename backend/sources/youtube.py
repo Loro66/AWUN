@@ -125,7 +125,7 @@ class YouTubeAdapter(BaseAdapter):
         if self._session is None or self._session.closed:
             self._session = aiohttp.ClientSession(
                 timeout=self._timeout,
-                headers={"Accept": "application/json", "User-Agent": "AWUN/1.8"},
+                headers={"Accept": "application/json", "User-Agent": "SONGVALE/2.0"},
             )
         return self._session
 

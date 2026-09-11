@@ -1,4 +1,4 @@
-"""Match imported playlist metadata to playable AWUN results."""
+"""Match imported playlist metadata to playable SONGVALE results."""
 
 from dataclasses import dataclass
 from difflib import SequenceMatcher

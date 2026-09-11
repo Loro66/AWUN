@@ -1,11 +1,11 @@
-![AWUN — one search, every sound](docs/awun-github-banner.svg)
+![SONGVALE — one search, every sound](docs/awun-github-banner.svg)
 
 <div align="center">
 
 [English](README.md) · [Русский](README.ru.md)
 
 [![Open web app](https://img.shields.io/badge/OPEN_WEB_APP-FF6516?style=for-the-badge&logo=googlechrome&logoColor=11120F)](https://awun-1.onrender.com)
-[![Download for Windows](https://img.shields.io/badge/DOWNLOAD_WINDOWS-F3F2E9?style=for-the-badge&logo=windows&logoColor=11120F)](https://github.com/Loro66/AWUN/releases/latest/download/AWUN-Setup-x64.exe)
+[![Download for Windows](https://img.shields.io/badge/DOWNLOAD_WINDOWS-F3F2E9?style=for-the-badge&logo=windows&logoColor=11120F)](https://github.com/Loro66/AWUN/releases/latest/download/SONGVALE-Setup-x64.exe)
 [![Latest release](https://img.shields.io/github/v/release/Loro66/AWUN?style=for-the-badge&label=RELEASE&labelColor=11120F&color=6E875F)](https://github.com/Loro66/AWUN/releases/latest)
 
 [![Windows build](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&style=flat-square&label=Windows%20build)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
@@ -22,16 +22,16 @@ Search across connected sources, keep your library on your device and continue l
 </div>
 
 <p align="center">
-  <img src="docs/media/awun-desktop.webp" width="100%" alt="AWUN search results and responsive desktop player" />
+  <img src="docs/media/awun-desktop.webp" width="100%" alt="SONGVALE search results and responsive desktop player" />
 </p>
 
-## Why AWUN exists
+## Why SONGVALE exists
 
 Music discovery is split across services, regions, languages and scripts. A track may be easy to find on one platform and unavailable on another; saved stream URLs expire; one slow provider can hold up an otherwise useful search.
 
-AWUN treats those failures as normal system conditions rather than exceptional cases.
+SONGVALE treats those failures as normal system conditions rather than exceptional cases.
 
-| Product problem | AWUN response |
+| Product problem | SONGVALE response |
 | --- | --- |
 | Results are scattered across catalogs | Parallel search with progressive, source-by-source results |
 | One provider is slow or unavailable | Partial results, deadlines, retry and per-source diagnostics |
@@ -52,7 +52,7 @@ AWUN treats those failures as normal system conditions rather than exceptional c
 My Wave turns the current track, local library and on-device taste signals into a continuous queue. Familiarity, mood, activity, language and era controls change each refill without uploading the taste profile.
 
 <p align="center">
-  <img src="docs/media/awun-mobile.webp" width="310" alt="AWUN responsive mobile search interface" />
+  <img src="docs/media/awun-mobile.webp" width="310" alt="SONGVALE responsive mobile search interface" />
 </p>
 
 ## How it works
@@ -66,7 +66,7 @@ flowchart LR
     C --> L["On-device library and taste profile"]
 ```
 
-The Windows application packages the frontend and FastAPI backend into one executable. It starts on an ephemeral loopback port and searches locally first. The public AWUN backend is only a provider-level fallback, so a remote cold start does not block healthy local sources.
+The Windows application packages the frontend and FastAPI backend into one executable. It starts on an ephemeral loopback port and searches locally first. The public SONGVALE backend is only a provider-level fallback, so a remote cold start does not block healthy local sources.
 
 Search results are normalized into a shared track model, deduplicated and ranked before the interface receives them. Playback recovery accepts an alternative only when title, artist and duration produce a sufficiently close match.
 
@@ -76,7 +76,7 @@ Search results are normalized into a shared track model, deduplicated and ranked
 
 ### Windows
 
-Download the [per-user installer](https://github.com/Loro66/AWUN/releases/latest/download/AWUN-Setup-x64.exe) or the [portable executable](https://github.com/Loro66/AWUN/releases/latest/download/AWUN.exe). SHA-256 files are published beside both binaries in every release.
+Download the [per-user installer](https://github.com/Loro66/AWUN/releases/latest/download/SONGVALE-Setup-x64.exe) or the [portable executable](https://github.com/Loro66/AWUN/releases/latest/download/SONGVALE.exe). SHA-256 files are published beside both binaries in every release.
 
 The beta binaries are not Authenticode-signed yet, so Windows SmartScreen may show a warning. Verify the checksum before running the downloaded file.
 
@@ -105,7 +105,7 @@ Open `http://127.0.0.1:8000`. Optional provider credentials and deployment setti
 
 ## Verified release quality
 
-Release `v1.10.6` is built from `main` by GitHub Actions.
+Release `v2.0.0` is built from `main` by GitHub Actions.
 
 - **237 Python tests** cover search, ranking, matching, policy, reliability, security and desktop packaging.
 - **26 Playwright scenarios** exercise progressive search, cancellation, provider deadlines, playback recovery, queue persistence, large libraries and responsive layouts.
@@ -119,11 +119,11 @@ Release `v1.10.6` is built from `main` by GitHub Actions.
 | Surface | Status | Distribution |
 | --- | --- | --- |
 | Web / PWA | Public beta | [Open application](https://awun-1.onrender.com) |
-| Windows | Released, unsigned beta | [Download v1.10.6](https://github.com/Loro66/AWUN/releases/tag/v1.10.6) |
+| Windows | Released, unsigned beta | [Download v2.0.0](https://github.com/Loro66/AWUN/releases/tag/v2.0.0) |
 | Android | Reproducible Play bundle and store package | Release requires Play Console signing and testing |
 | iOS | Reproducible unsigned beta | Physical distribution requires Apple signing |
 
-Public availability does not imply measured adoption. AWUN currently makes no claims about user count, retention or revenue. The [project case study](docs/PROJECT_CASE_STUDY.md) separates implemented work from planned user validation.
+Public availability does not imply measured adoption. SONGVALE currently makes no claims about user count, retention or revenue. The [project case study](docs/PROJECT_CASE_STUDY.md) separates implemented work from planned user validation.
 
 ## Documentation
 
@@ -140,7 +140,7 @@ Public availability does not imply measured adoption. AWUN currently makes no cl
 
 ## Boundaries by design
 
-AWUN is not a VPN, does not remove DRM and does not open private libraries without official authorization. YouTube stays in the official embedded player. Download controls appear only when a provider supplies an authorized public file. Provider availability and geographic licensing still apply.
+SONGVALE is not a VPN, does not remove DRM and does not open private libraries without official authorization. YouTube stays in the official embedded player. Download controls appear only when a provider supplies an authorized public file. Provider availability and geographic licensing still apply.
 
 The project has no mandatory account, ads or analytics SDK. The library, queue, preferences and My Wave profile remain on the device. See the [privacy notice](frontend/privacy.html) for the exact data flow.
 
@@ -148,7 +148,7 @@ The project has no mandatory account, ads or analytics SDK. The library, queue, 
 
 Bug reports and focused pull requests are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), use the issue templates and include tests for behavior changes.
 
-AWUN is **proprietary, source-visible freeware**, not open-source software. Official unmodified builds are free to use under the [AWUN Proprietary Freeware License 1.0](LICENSE.md) and [EULA](EULA.md). Reuse of the source or publication of modified builds requires prior written permission.
+SONGVALE is **proprietary, source-visible freeware**, not open-source software. Official unmodified builds are free to use under the [SONGVALE Proprietary Freeware License 1.0](LICENSE.md) and [EULA](EULA.md). Reuse of the source or publication of modified builds requires prior written permission.
 
 ---
 

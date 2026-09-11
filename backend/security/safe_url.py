@@ -6,7 +6,7 @@ from urllib.parse import SplitResult, urlsplit, urlunsplit
 
 
 class UnsafeUrl(ValueError):
-    """Raised when an outbound URL crosses AWUN's network boundary."""
+    """Raised when an outbound URL crosses SONGVALE's network boundary."""
 
 
 @dataclass(frozen=True, slots=True)

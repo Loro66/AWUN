@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">SONGVALE</title>
+  <desc id="desc">Five sound pillars crossed by an orange valley-shaped wave.</desc>
+  <rect x="4" y="4" width="120" height="120" rx="30" fill="#09120c" stroke="#314338" stroke-width="4"/>
+  <g fill="#f1f0e8">
+    <rect x="20" y="42" width="13" height="48" rx="6.5"/>
+    <rect x="39" y="29" width="13" height="72" rx="6.5"/>
+    <rect x="58" y="18" width="13" height="92" rx="6.5"/>
+    <rect x="77" y="29" width="13" height="72" rx="6.5"/>
+    <rect x="96" y="42" width="13" height="48" rx="6.5"/>
+  </g>
+  <path d="M18 52c15 7 23 18 39 23 20 7 31-13 53-23" fill="none" stroke="#ff6b1a" stroke-width="10" stroke-linecap="round"/>
+</svg>

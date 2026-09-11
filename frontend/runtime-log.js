@@ -55,8 +55,8 @@
     return entries().slice(-Math.max(1, Math.min(MAX_ENTRIES, Number(limit) || 50)));
   }
 
-  function download(filename = 'AWUN-runtime-log.json') {
-    const blob = new Blob([JSON.stringify({ app: 'AWUN', created_at: new Date().toISOString(), entries: report() }, null, 2)], { type: 'application/json;charset=utf-8' });
+  function download(filename = 'SONGVALE-runtime-log.json') {
+    const blob = new Blob([JSON.stringify({ app: 'SONGVALE', created_at: new Date().toISOString(), entries: report() }, null, 2)], { type: 'application/json;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;

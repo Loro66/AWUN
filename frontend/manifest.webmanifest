@@ -1,15 +1,15 @@
 {
-  "name": "AWUN — один поиск, вся музыка",
-  "short_name": "AWUN",
+  "name": "SONGVALE — вся музыка сходится здесь",
+  "short_name": "SONGVALE",
   "description": "Ищи музыку во всех подключённых каталогах, собирай локальную медиатеку и запускай Мою волну.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#0b0907",
-  "theme_color": "#0b0907",
+  "background_color": "#09120c",
+  "theme_color": "#09120c",
   "categories": ["music", "entertainment"],
   "icons": [
-    {"src": "/static/brand/awun-icon-black.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"},
-    {"src": "/static/brand/awun-icon-white.png", "sizes": "512x512", "type": "image/png", "purpose": "monochrome"}
+    {"src": "/static/brand/songvale-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "/static/brand/songvale-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
   ]
 }

@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta id="themeColor" name="theme-color" content="#0b0907">
-  <meta name="description" content="AWUN ищет настоящую музыку во всех подключённых источниках и сразу запускает воспроизведение.">
-  <title>AWUN — один поиск, вся музыка</title>
-  <link rel="icon" href="/static/brand/awun-icon-black.png" type="image/png">
-  <link rel="apple-touch-icon" href="/static/brand/awun-icon-black.png">
+  <meta id="themeColor" name="theme-color" content="#09120c">
+  <meta name="description" content="SONGVALE ищет настоящую музыку во всех подключённых источниках и сразу запускает воспроизведение.">
+  <title>SONGVALE — вся музыка сходится здесь</title>
+  <link rel="icon" href="/static/brand/songvale-mark.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/static/brand/songvale-icon.png">
   <link rel="manifest" href="/static/manifest.webmanifest">
   <script>
     try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');const p=new URLSearchParams(location.search);document.documentElement.dataset.theme=v.theme||'black';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full';document.documentElement.dataset.density=v.density||'standard';document.documentElement.lang=p.get('lang')||localStorage.getItem('awun-language')||(navigator.language.toLowerCase().startsWith('ru')?'ru':'en')}catch{}
@@ -20,7 +20,7 @@
 
   <main class="app-shell">
     <header class="site-header">
-      <a class="logo" href="/" aria-label="Главная AWUN" data-i18n-aria-label="homeAria"><img src="/static/brand/awun-logo-white.png" alt=""><strong>AWUN</strong><i>.</i></a>
+      <a class="logo" href="/" aria-label="Главная SONGVALE" data-i18n-aria-label="homeAria"><img src="/static/brand/songvale-mark.svg" alt=""><span class="logo-copy"><strong>SONGVALE</strong><small data-i18n="brandLine">EVERY SOUND FINDS A WAY</small></span></a>
       <div class="top-actions">
         <button id="searchNavButton" class="library search-nav active" type="button" aria-controls="searchInput" aria-pressed="true">
           <i aria-hidden="true">⌕</i><span data-i18n="search">ПОИСК</span><b aria-hidden="true">01</b>
@@ -34,14 +34,14 @@
         <button id="themeButton" class="theme-button" type="button" aria-expanded="false" aria-controls="themePanel">
           <i aria-hidden="true">⚙</i><span data-i18n="settings">НАСТРОЙКИ</span><b id="themeLabel">ЧЁРНАЯ</b>
         </button>
-        <button id="installButton" class="library install-button" type="button" hidden><i aria-hidden="true">↓</i><span data-i18n="install">УСТАНОВИТЬ</span><b data-i18n="app">AWUN</b></button>
+        <button id="installButton" class="library install-button" type="button" hidden><i aria-hidden="true">↓</i><span data-i18n="install">УСТАНОВИТЬ</span><b data-i18n="app">SONGVALE</b></button>
       </div>
     </header>
 
     <section class="hero" aria-labelledby="heroLabel">
       <div class="hero-content">
         <div class="eyebrow-row">
-          <p id="heroLabel"><span data-i18n="tagline">МУЗЫКА ВНЕ ВРЕМЕНИ</span></p>
+          <p id="heroLabel"><span data-i18n="tagline">ВСЯ МУЗЫКА СХОДИТСЯ ЗДЕСЬ</span></p>
           <span id="searchMeta" class="sr-only" data-i18n="searchMetaInitial">НАСТОЯЩИЕ РЕЗУЛЬТАТЫ / ОФИЦИАЛЬНОЕ ВОСПРОИЗВЕДЕНИЕ</span>
         </div>
 
@@ -94,7 +94,7 @@
       </div>
     </section>
 
-    <section id="homeSections" class="home-sections" aria-label="Главная AWUN">
+    <section id="homeSections" class="home-sections" aria-label="Главная SONGVALE">
       <section class="dashboard-section continue-section" aria-labelledby="continueTitle">
         <div class="section-heading"><div><span class="section-kicker" data-i18n="continueKicker">ПРОДОЛЖИМ СЛУШАТЬ</span><h1 id="continueTitle" data-i18n="continueListening">Продолжить слушать</h1></div><button class="section-link" type="button" data-home-action="all-recent" data-i18n="viewAll">СМОТРЕТЬ ВСЁ</button></div>
         <ol id="recentList" class="home-track-grid" aria-live="polite"></ol>
@@ -122,9 +122,9 @@
         <button id="retrySearch" type="button" hidden data-i18n="retrySearch">Повторить поиск</button>
       </div>
       <div id="emptyGuide" class="empty-guide">
-        <button id="guideSearch" type="button"><b>1</b><strong data-i18n="guideSearchTitle">SEARCH ANY TRACK</strong><span data-i18n="guideSearchBody">Type an artist and title. AWUN checks every connected catalog.</span></button>
+        <button id="guideSearch" type="button"><b>1</b><strong data-i18n="guideSearchTitle">SEARCH ANY TRACK</strong><span data-i18n="guideSearchBody">Type an artist and title. SONGVALE checks every connected catalog.</span></button>
         <button id="guideWave" type="button"><b>2</b><strong data-i18n="guideWaveTitle">START MY WAVE</strong><span data-i18n="guideWaveBody">Get an endless station and improve it with likes and skips.</span></button>
-        <button id="guideImport" type="button"><b>3</b><strong data-i18n="guideImportTitle">MOVE YOUR PLAYLIST</strong><span data-i18n="guideImportBody">Paste a public link. AWUN finds playable matches automatically.</span></button>
+        <button id="guideImport" type="button"><b>3</b><strong data-i18n="guideImportTitle">MOVE YOUR PLAYLIST</strong><span data-i18n="guideImportBody">Paste a public link. SONGVALE finds playable matches automatically.</span></button>
       </div>
       <ol id="trackList" class="track-list"></ol>
       <button id="loadMoreTracks" class="load-more-tracks" type="button" hidden></button>
@@ -133,7 +133,7 @@
     <section id="idleStage" class="idle-stage" aria-labelledby="idleStageTitle">
       <div class="idle-empty-card">
         <span class="idle-kicker" data-i18n="nowPlaying">СЕЙЧАС ИГРАЕТ</span>
-        <div class="idle-art" aria-hidden="true">AW</div>
+        <div class="idle-art" aria-hidden="true">SV</div>
         <span class="idle-state" data-i18n="nothingPlaying">НИЧЕГО НЕ ИГРАЕТ</span>
         <h2 id="idleStageTitle" data-i18n="selectTrack">Выбери трек, чтобы сразу его включить.</h2>
         <div class="idle-actions">
@@ -184,14 +184,14 @@
 
     <div class="turntable" aria-hidden="true">
       <div id="playerArtwork" class="player-artwork">
-        <span class="vinyl-monogram">AW</span>
+        <span class="vinyl-monogram">SV</span>
       </div>
     </div>
     <section class="player-console">
       <div class="now">
         <small class="now-kicker" data-i18n="nowPlayingKicker">СЕЙЧАС</small>
         <strong id="nowTitle" data-i18n="nothingPlaying">НИЧЕГО НЕ ИГРАЕТ</strong>
-        <span id="nowArtist">AWUN</span>
+        <span id="nowArtist">SONGVALE</span>
         <div class="mini-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
       </div>
 
@@ -290,15 +290,15 @@
       <div><strong data-i18n="libraryTransfer">ПЕРЕНОС МЕДИАТЕКИ</strong></div>
       <button id="importClose" type="button" aria-label="Закрыть перенос медиатеки" data-i18n-aria-label="closeImportAria">×</button>
     </div>
-    <p data-i18n="importDescription">Вставь публичную ссылку на плейлист: AWUN прочитает открытые данные, найдёт доступные версии треков и добавит совпадения в медиатеку. Доступ к личному аккаунту не требуется.</p>
+    <p data-i18n="importDescription">Вставь публичную ссылку на плейлист: SONGVALE прочитает открытые данные, найдёт доступные версии треков и добавит совпадения в медиатеку. Доступ к личному аккаунту не требуется.</p>
     <label class="import-copy import-link" for="importUrl"><span data-i18n="publicPlaylistLink">ПУБЛИЧНАЯ ССЫЛКА НА ПЛЕЙЛИСТ</span><div><input id="importUrl" type="url" inputmode="url" placeholder="https://www.youtube.com/playlist?list=…"><button id="importUrlSubmit" type="button" data-i18n="findAndAdd">НАЙТИ И ДОБАВИТЬ ↗</button></div></label>
     <div class="import-divider"><span data-i18n="orImportFile">ИЛИ ЗАГРУЗИ ФАЙЛ ЭКСПОРТА</span></div>
     <input id="libraryFile" type="file" accept=".csv,.json,.m3u,.m3u8,.txt,text/csv,application/json,audio/x-mpegurl,text/plain" hidden>
     <button id="importFileButton" class="import-file" type="button"><span data-i18n="chooseLibraryFile">ВЫБРАТЬ ФАЙЛ МЕДИАТЕКИ</span><b id="importFileName">CSV / JSON / M3U / TXT</b></button>
     <label class="import-copy" for="importText"><span data-i18n="orPasteTracks">ИЛИ ВСТАВЬ СПИСОК ТРЕКОВ</span><textarea id="importText" rows="9" placeholder="Исполнитель — Трек&#10;Другой исполнитель — Другой трек" data-i18n-placeholder="importTextPlaceholder"></textarea></label>
     <div class="import-actions">
-      <span id="importStatus" data-i18n="importPrivacy">Данные остаются на этом устройстве, пока AWUN не начнёт искать совпадения.</span>
-      <button id="importSubmit" type="button" data-i18n="importToAwun">ПЕРЕНЕСТИ В AWUN ↗</button>
+      <span id="importStatus" data-i18n="importPrivacy">Данные остаются на этом устройстве, пока SONGVALE не начнёт искать совпадения.</span>
+      <button id="importSubmit" type="button" data-i18n="importToAwun">ПЕРЕНЕСТИ В SONGVALE ↗</button>
     </div>
     <progress id="importProgress" class="import-progress" value="0" max="100" hidden></progress>
   </aside>

@@ -40,7 +40,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name="AWUN",
+    name="SONGVALE",
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -51,5 +51,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=str(ROOT / "desktop" / "assets" / "awun.ico"),
+    icon=str(ROOT / "desktop" / "assets" / "songvale.ico"),
 )
