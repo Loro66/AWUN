@@ -28,7 +28,6 @@ def test_visual_controls_have_unique_ids() -> None:
         "themePanel",
         "motionToggle",
         "decorToggle",
-        "telemetryClock",
         "regionSelect",
         "limitSelect",
         "importButton",
@@ -89,11 +88,15 @@ def test_design_system_has_one_entrypoint_and_explicit_layers() -> None:
     html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
     design = (ROOT / "frontend" / "design-system.css").read_text(encoding="utf-8")
     release = (ROOT / "frontend" / "redesign.css").read_text(encoding="utf-8")
+    api = (ROOT / "backend" / "api" / "main.py").read_text(encoding="utf-8")
 
     stylesheets = re.findall(r'<link rel="stylesheet" href="([^"]+)"', html)
     assert stylesheets == ["/design-system.css?v=__AWUN_VERSION__"]
     assert "@layer foundation, forest, release" in design
-    assert "layer(foundation)" in design and "layer(forest)" in design and "layer(release)" in design
+    assert "@import" not in design
+    assert all(f'("{layer}", "{name}.css")' in api for layer, name in (("foundation", "styles"), ("forest", "forest"), ("release", "redesign")))
+    assert 'f"@layer {layer}' in api and "stylesheet_gzip = gzip.compress" in api
+    assert '"Vary": "Accept-Encoding"' in api and 'headers["Content-Encoding"] = "gzip"' in api
     assert "--color-accent:" in release and "--color-text:" in release
 
 
@@ -171,7 +174,8 @@ def test_installable_pwa_is_wired() -> None:
     assert '"display": "standalone"' in manifest and '"start_url": "/"' in manifest
     assert "__AWUN_VERSION__" in worker and "awun-shell-${AWUN_VERSION}" in worker
     assert "startsWith('/api/')" in worker
-    assert "hls.light.min.js" in worker
+    assert "hls.light.min.js" not in worker
+    assert all(asset not in worker for asset in ("styles.css", "forest.css", "redesign.css"))
     assert "design-system.css?v=__AWUN_VERSION__" in worker
     assert "player-core.js?v=__AWUN_VERSION__" in worker
     assert "storage.js?v=__AWUN_VERSION__" in worker
@@ -186,11 +190,7 @@ def test_nocturne_redesign_and_vinyl_player_are_wired() -> None:
     html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
     script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
     forest = (ROOT / "frontend" / "forest.css").read_text(encoding="utf-8")
-    background = ROOT / "frontend" / "brand" / "burg-eltz-jan-kohl.webp"
-    source = ROOT / "frontend" / "brand" / "burg-eltz-jan-kohl.source.txt"
 
-    assert background.is_file() and background.stat().st_size > 200_000
-    assert source.is_file() and "unsplash.com/photos/m8RNISlL2HQ" in source.read_text(encoding="utf-8")
     assert '/design-system.css?v=__AWUN_VERSION__' in html
     assert 'class="turntable"' in html and 'class="vinyl-monogram"' in html and 'class="player-console"' in html
     assert 'id="player" class="player" hidden' in html
@@ -198,7 +198,7 @@ def test_nocturne_redesign_and_vinyl_player_are_wired() -> None:
     assert "tonearm" not in html
     assert "--vinyl-cover" in script and "has-artwork" in script and "track-enter" in script
     assert "const activateTrack=" in script
-    assert "/static/brand/burg-eltz-jan-kohl.webp" in forest
+    assert "/static/brand/burg-eltz-jan-kohl.webp" not in forest
     assert ".player.is-playing .player-artwork" in forest and "nocturneVinylReveal" in forest and "nocturneControlsReveal" in forest
     assert "@media(min-width:1100px)" in forest and "--awun-nav" in forest and "--awun-queue" in forest
     assert "grid-template-columns:var(--awun-nav) var(--awun-queue) minmax(0,1fr)" in forest
@@ -215,8 +215,9 @@ def test_soundcloud_hls_playback_is_wired() -> None:
     hls = ROOT / "frontend" / "hls.light.min.js"
     license_file = ROOT / "frontend" / "hls.js.LICENSE.md"
 
-    assert 'src="/static/hls.light.min.js?v=__AWUN_VERSION__"' in html
+    assert 'src="/static/hls.light.min.js?v=__AWUN_VERSION__"' not in html
     assert "track.source==='soundcloud'" in script
+    assert "ensureHlsApi" in script and "staticAssetUrl('hls.light.min.js')" in script
     assert "window.Hls" in script and "MANIFEST_PARSED" in script
     assert hls.is_file() and hls.stat().st_size > 300_000
     assert license_file.is_file() and "Apache License" in license_file.read_text(encoding="utf-8")
@@ -229,8 +230,8 @@ def test_dark_forest_ritual_visual_system_is_wired() -> None:
     assert '/static/brand/black-forest-michiel-annaert.webp' in forest
     assert '--forest-green:#9ebb78' in forest and '--forest-silver:#a7ada3' in forest
     assert '--forest-moon:#e8e4d8' in forest and '--forest-burgundy:#4a2028' in forest
-    assert '.ambient:before' in forest and '@keyframes awunMist' in forest
-    assert 'body:before' in forest and '@keyframes awunDust' in forest
+    assert '.ambient:before' in forest and '@keyframes awunMist' not in forest
+    assert 'body:before{display:none}' in forest and '@keyframes awunDust' not in forest
     assert '.hero .search-form:after' in forest and '✦' in forest
     assert '.track.active:before' in forest and '.player .player-console:before' in forest
     assert 'Iowan Old Style' in forest and 'border-radius:40px 40px 18px 18px' in forest
@@ -283,10 +284,20 @@ def test_desktop_shell_has_no_legacy_chrome_and_wave_is_integrated() -> None:
 
     assert 'class="window-chrome"' not in html
     assert 'class="player-menu"' not in html
-    assert 'id="status" class="status sr-only"' in html
+    assert 'id="status"' not in html
     assert "flow-screen-open" in flow
     # Actual visibility and player bounds are covered by the four Playwright
     # viewport tests; matching legacy CSS text cannot verify cascade behavior.
+
+
+def test_idle_polling_and_eager_hls_are_removed() -> None:
+    app = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    flow = (ROOT / "frontend" / "flow.js").read_text(encoding="utf-8")
+
+    assert "updateClock" not in app and "telemetryClock" not in app
+    assert "setInterval(trackProgress" not in flow
+    assert "emitAwun('progress'" in app and "awun:progress" in flow
+    assert "persist();" not in app
 
 
 def test_waveform_queue_menu_and_responsive_player_regressions_are_fixed() -> None:
@@ -320,7 +331,7 @@ def test_provider_waveforms_progressive_search_and_diagnostics_are_wired() -> No
     assert 'id="diagnosticsPanel"' in html and 'id="diagnosticsCopy"' in html
     assert 'aria-controls="diagnosticsPanel"' in html
     assert "diagnosticsReport" in app and "copyDiagnostics" in app
-    assert "querySelectorAll('#sources button[data-source]')" in app
+    assert "sourceButtonElements=[...ui.sources.querySelectorAll('button[data-source]')]" in app
     assert "state.diagnostics={...snapshot,ui_error:" in app
     assert '"source_health": search_engine.source_health' in api
 

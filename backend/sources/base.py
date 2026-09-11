@@ -1,3 +1,4 @@
+import asyncio
 from abc import ABC, abstractmethod
 
 from backend.core.models import SourceName, Track
@@ -32,27 +33,44 @@ class BaseAdapter(ABC):
         *,
         region: RegionProfile | None = None,
     ) -> list[Track]:
-        """Search the primary query first and use aliases only to fill gaps.
+        """Search the primary query first and use aliases concurrently to fill gaps.
 
         The previous implementation split the requested limit across three
         sequential provider calls. Most providers can satisfy the result
         window with the canonical query, so that strategy paid two additional
-        network round trips in the common case.
+        network round trips in the common case. Alias calls run together so a
+        sparse primary result pays one fallback round trip instead of two.
         """
         selected = queries[:3] or [""]
         tracks: list[Track] = []
         failures: list[Exception] = []
         seen: set[str] = set()
-        for query in selected:
-            try:
-                found = await self.search(
-                    query,
-                    max(2, limit - len(tracks)),
-                    region=region,
-                )
-            except Exception as exc:
-                failures.append(exc)
+
+        try:
+            primary = await self.search(selected[0], max(2, limit), region=region)
+        except Exception as exc:
+            failures.append(exc)
+            primary = []
+        for track in primary:
+            if track.id not in seen:
+                seen.add(track.id)
+                tracks.append(track)
+        if len(tracks) >= limit or len(selected) == 1:
+            if not tracks and failures:
+                raise failures[0]
+            return tracks[:limit]
+
+        remaining = max(2, limit - len(tracks))
+        fallback_results = await asyncio.gather(
+            *(self.search(query, remaining, region=region) for query in selected[1:]),
+            return_exceptions=True,
+        )
+        for result in fallback_results:
+            if isinstance(result, BaseException):
+                if isinstance(result, Exception):
+                    failures.append(result)
                 continue
+            found = result
             for track in found:
                 if track.id not in seen:
                     seen.add(track.id)

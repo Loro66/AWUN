@@ -49,8 +49,10 @@
     try {
       const target = storage();
       if (!target) throw new Error('Local storage unavailable');
-      target.setItem(String(key), String(value));
-      if (backup && !EXCLUDED_BACKUP_KEYS.has(String(key))) scheduleBackup();
+      const normalizedKey = String(key), normalizedValue = String(value);
+      if (target.getItem(normalizedKey) === normalizedValue) return true;
+      target.setItem(normalizedKey, normalizedValue);
+      if (backup && !EXCLUDED_BACKUP_KEYS.has(normalizedKey)) scheduleBackup();
       return true;
     } catch (error) {
       return reportError('write', key, error);

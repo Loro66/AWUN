@@ -4,6 +4,7 @@
   else root.awunPlayerCore = api;
 })(typeof globalThis === 'object' ? globalThis : this, function createPlayerCore() {
   const MAX_QUEUE_LENGTH = 250;
+  const STREAM_FRESHNESS_MS = 20 * 60 * 1000;
   const NOISE_WORDS = new Set([
     'audio', 'clip', 'explicit', 'hd', 'hq', 'lyrics', 'lyric', 'music',
     'official', 'records', 'remaster', 'remastered', 'topic', 'video',
@@ -96,6 +97,14 @@
       if (output.length >= MAX_QUEUE_LENGTH) break;
     }
     return output;
+  }
+
+  function shouldRefreshStream(track, now = Date.now(), freshnessMs = STREAM_FRESHNESS_MS) {
+    if (!track || track.source === 'youtube' || track.source === 'yandex_music') return false;
+    const resolvedAt = Number(track.stream_resolved_at);
+    if (!Number.isFinite(resolvedAt) || resolvedAt <= 0) return true;
+    const age = Number(now) - resolvedAt;
+    return age < -60000 || age >= Math.max(0, Number(freshnessMs) || 0);
   }
 
   function enqueue(queue, track, position) {
@@ -206,6 +215,7 @@
 
   return {
     MAX_QUEUE_LENGTH,
+    STREAM_FRESHNESS_MS,
     alternativeScore,
     enqueue,
     interleaveTracks,
@@ -213,6 +223,7 @@
     normalizeText,
     rankAlternatives,
     remove,
+    shouldRefreshStream,
     uniqueTracks,
     waveformBars,
     waveformMask,

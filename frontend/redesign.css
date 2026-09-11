@@ -95,7 +95,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   html[data-decor="minimal"] .app-shell{
     width:100%;height:100svh;min-height:0;margin:0;padding:0;
     display:grid;grid-template-columns:var(--awun-nav) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:0;overflow:hidden;
-    background:var(--shell-overlay),url('/static/brand/black-forest-michiel-annaert.webp') center 45% / cover no-repeat;
+    background:var(--shell-overlay);
   }
   body.has-player .app-shell{height:calc(100svh - var(--awun-player-height))}
   .app-shell:before,.app-shell:after{display:none!important}
@@ -106,7 +106,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     display:flex;flex-direction:column;align-items:stretch;overflow:hidden;border:0;border-right:1px solid rgba(var(--paper-rgb),.1);border-radius:0;
     background:var(--sidebar-bg);box-shadow:none;backdrop-filter:none;
   }
-  .window-chrome,.site-header .status{display:none!important}
   .site-header .logo{width:100%;height:104px;padding:4px 0 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border-bottom:1px solid rgba(var(--paper-rgb),.1)}
   .site-header .logo img{width:42px;height:42px;filter:grayscale(1) sepia(.08) brightness(1.34)}
   .site-header .logo strong{display:block;color:var(--paper);font-family:Iowan Old Style,"Palatino Linotype",Georgia,serif;font-size:21px;font-weight:400;letter-spacing:4px}
@@ -694,6 +693,7 @@ html[data-theme="white"] .diagnostics-entry,html[data-theme="white"] .diagnostic
 .search-feedback button:hover,.load-more-tracks:hover{border-color:var(--signal)}
 .load-more-tracks{display:block;margin:20px auto}
 .track{animation:none!important;transition:background-color .12s,border-color .12s}
+.track,.queue-item{content-visibility:auto;contain-intrinsic-size:auto 76px}
 .player:not(.queue-open) .up-next{visibility:hidden}
 .player.queue-open .up-next{visibility:visible}
 .player .timeline,.player.expanded-player .timeline{font-size:10px}
@@ -727,7 +727,7 @@ html[data-theme="white"] .diagnostics-entry,html[data-theme="white"] .diagnostic
   .site-header .library,.site-header .theme-button,html[data-decor="minimal"] .site-header .library,html[data-decor="minimal"] .site-header .theme-button{display:flex;align-items:center;justify-content:center;gap:6px;width:auto;height:40px;min-height:40px;margin:0;padding:0 10px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--paper);box-shadow:none;transform:none}
   .site-header .library>span,.site-header .theme-button>span{display:block;color:var(--paper);font-size:11px;letter-spacing:0}
   .site-header .library>i,.site-header .theme-button>i{position:static;display:block;color:var(--paper-muted);font-size:18px;font-style:normal}
-  .site-header .library>b,.site-header .theme-button>b,.site-header .status{display:none}
+  .site-header .library>b,.site-header .theme-button>b{display:none}
   .site-header .library.active,.site-header .library[aria-expanded="true"],.site-header .theme-button[aria-expanded="true"]{border-color:var(--signal);background:var(--signal-soft)}
   .hero,html[data-decor="minimal"] .hero{display:block;width:100%;min-height:0;margin:0;padding:24px 0 12px}
   .hero-content{display:block}

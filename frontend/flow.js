@@ -132,8 +132,8 @@
     if(!state.active?.artist)return;const artist=decodeText(state.active.artist),key=matchText(artist);if(!key||profile.blockedArtists.some(value=>matchText(value)===key))return;
     profile.blockedArtists.push(artist);saveProfile();const rejected=state.active;state.tracks=state.tracks.filter(track=>matchText(track.artist)!==key);render();const next=state.tracks.find(track=>track.id!==rejected.id);if(next)playTrack(next);if(state.flow.active)fillFlow(false);setMessage(t('artistBlocked',{artist}),'notice');
   }
-  function trackProgress(){
-    const track=state.active;if(!track)return;const current=track.source==='youtube'?state.youtube?.getCurrentTime?.():ui.audio.currentTime;const duration=track.source==='youtube'?state.youtube?.getDuration?.():ui.audio.duration;if(!duration||!Number.isFinite(current))return;
+  function trackProgress({track=state.active,current,duration}={}){
+    if(!track||!duration||!Number.isFinite(current))return;
     const ratio=current/duration,previous=state.flow.progress.get(track.id)||0;state.flow.progress.set(track.id,Math.max(previous,ratio));if(ratio>=.3&&previous<.3)record('listen30',track,{progress:.3});if(ratio>=.8&&previous<.8)record('complete',track,{progress:.8});
   }
 
@@ -146,5 +146,5 @@
   document.addEventListener('awun:skip',event=>{const track=event.detail.track;if(!track)return;record('skip',track,{progress:Math.round((state.flow.progress.get(track.id)||0)*100)/100})});document.addEventListener('awun:complete',event=>record('complete',event.detail.track,{progress:1}));document.addEventListener('awun:library',updateFlowUi);
   document.addEventListener('awun:language',updateFlowUi);
   document.addEventListener('awun:search',()=>{if(state.flow.active)stopFlow(true)});
-  setInterval(trackProgress,2000);updateFlowUi();
+  document.addEventListener('awun:progress',event=>trackProgress(event.detail));updateFlowUi();
 })();

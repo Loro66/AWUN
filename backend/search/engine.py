@@ -11,7 +11,7 @@ from backend.reliability.circuit_breaker import CircuitBreaker
 from backend.reliability.source_health import SourceHealthRegistry
 from backend.reliability.ttl_cache import TTLCache
 from backend.search.enrichment import BasicQueryEnricher, QueryEnricher, basic_query_variants
-from backend.search.track_identity import same_recording
+from backend.search.track_identity import TrackFingerprint, same_fingerprint
 from backend.sources.base import BaseAdapter
 
 
@@ -313,12 +313,15 @@ class SearchEngine:
     @staticmethod
     def _deduplicate(tracks: list[Track]) -> list[Track]:
         unique: list[Track] = []
+        fingerprints: list[TrackFingerprint] = []
         for track in tracks:
+            fingerprint = TrackFingerprint.from_track(track)
             if not any(
-                same_recording(track, existing, threshold=0.97)
-                for existing in unique
+                same_fingerprint(fingerprint, existing, threshold=0.97)
+                for existing in fingerprints
             ):
                 unique.append(track)
+                fingerprints.append(fingerprint)
         return unique
 
     @classmethod

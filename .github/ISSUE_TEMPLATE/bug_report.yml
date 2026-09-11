@@ -24,7 +24,7 @@ body:
     attributes:
       label: AWUN version
       description: Find this in Settings or the release name.
-      placeholder: "1.10.4"
+      placeholder: "1.10.5"
     validations:
       required: true
   - type: input

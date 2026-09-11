@@ -63,6 +63,23 @@ class CancelAwareAdapter(FakeAdapter):
         return self.tracks[:limit]
 
 
+class ParallelAliasAdapter(FakeAdapter):
+    def __init__(self) -> None:
+        super().__init__("audius", [])
+        self.aliases_started: set[str] = set()
+        self.aliases_ready = asyncio.Event()
+
+    async def search(self, query: str, limit: int, *, region=None) -> list[Track]:
+        self.queries.append(query)
+        if query == "main query":
+            return [make_track("audius", title="Primary", score=90)]
+        self.aliases_started.add(query)
+        if len(self.aliases_started) == 2:
+            self.aliases_ready.set()
+        await asyncio.wait_for(self.aliases_ready.wait(), timeout=0.1)
+        return [make_track("audius", title=query, score=70)]
+
+
 class SearchEngineTests(unittest.IsolatedAsyncioTestCase):
     def test_parses_youtube_iso_duration(self) -> None:
         self.assertEqual(_iso_duration("PT3M42S"), 222)
@@ -178,6 +195,14 @@ class SearchEngineTests(unittest.IsolatedAsyncioTestCase):
 
         self.assertEqual(len(tracks), 5)
         self.assertEqual(adapter.queries, ["main query"])
+
+    async def test_sparse_primary_runs_alias_queries_concurrently(self) -> None:
+        adapter = ParallelAliasAdapter()
+
+        tracks = await adapter.search_many(["main query", "alias one", "alias two"], 5)
+
+        self.assertEqual(adapter.aliases_started, {"alias one", "alias two"})
+        self.assertEqual([track.title for track in tracks], ["Primary", "alias one", "alias two"])
 
     async def test_identical_searches_use_response_cache(self) -> None:
         adapter = FakeAdapter("youtube", [make_track("youtube", title="Song", score=80)])

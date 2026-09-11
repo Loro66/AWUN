@@ -71,6 +71,20 @@ def test_storage_reports_quota_failure_without_throwing() -> None:
     assert result["error"]["key"] == "awun-library"
 
 
+def test_storage_skips_identical_synchronous_writes() -> None:
+    result = run_node(
+        """
+        const storage=require('./frontend/storage.js');
+        const original=localStorage.setItem.bind(localStorage);let writes=0;
+        localStorage.setItem=(key,value)=>{writes+=1;original(key,value)};
+        storage.writeJSON('awun-library',[{id:'same'}]);
+        storage.writeJSON('awun-library',[{id:'same'}]);
+        process.stdout.write(JSON.stringify({writes,value:storage.readJSON('awun-library',[])}));
+        """
+    )
+    assert result == {"writes": 1, "value": [{"id": "same"}]}
+
+
 def test_runtime_log_redacts_secrets_and_url_queries() -> None:
     result = run_node(
         """

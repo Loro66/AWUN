@@ -1,0 +1,1 @@
+AWUN 1.10.5 starts and responds faster: styles load in one compressed response, the HLS player loads only when needed, queue updates avoid full rerenders, and search deduplicates results more efficiently.

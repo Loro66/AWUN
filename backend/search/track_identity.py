@@ -57,18 +57,25 @@ def recording_similarity(left: TrackFingerprint, right: TrackFingerprint) -> flo
     return round(artist_score * 0.35 + title_score * 0.5 + duration_score * 0.15, 4)
 
 
+def same_fingerprint(
+    left: TrackFingerprint,
+    right: TrackFingerprint,
+    *,
+    threshold: float = 0.86,
+) -> bool:
+    if not left.artist or not left.title:
+        return False
+    if tuple(re.findall(r"\d+", left.title)) != tuple(re.findall(r"\d+", right.title)):
+        return False
+    return recording_similarity(left, right) >= threshold
+
+
 def same_recording(left: Track, right: Track, *, threshold: float = 0.86) -> bool:
     """Decide whether two provider results represent the same recording."""
 
     left_fingerprint = TrackFingerprint.from_track(left)
     right_fingerprint = TrackFingerprint.from_track(right)
-    if not left_fingerprint.artist or not left_fingerprint.title:
-        return False
-    left_numbers = tuple(re.findall(r"\d+", left_fingerprint.title))
-    right_numbers = tuple(re.findall(r"\d+", right_fingerprint.title))
-    if left_numbers != right_numbers:
-        return False
-    return recording_similarity(left_fingerprint, right_fingerprint) >= threshold
+    return same_fingerprint(left_fingerprint, right_fingerprint, threshold=threshold)
 
 
 def identity_key(track: Track) -> tuple[str, str, int]:

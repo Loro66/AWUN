@@ -117,8 +117,6 @@ html[data-theme]{
   .site-header .theme-button{margin-top:auto}
   .site-header .library:hover,.site-header .library.active,.site-header .library[aria-expanded="true"],.site-header .theme-button:hover,.site-header .theme-button[aria-expanded="true"]{border-color:rgba(167,198,112,.38);background:rgba(167,198,112,.1);transform:none}
   .site-header .search-nav.active{border-left:2px solid #b7ce83}
-  .window-chrome,.player-menu,.site-header .status{display:none!important}
-
   .hero,
   html[data-decor="minimal"] .hero{
     position:relative;
@@ -373,8 +371,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   inset:0;
   content:"";
   background:
-    linear-gradient(90deg,transparent 0 37%,rgba(5,4,3,.14) 54%,rgba(5,4,3,.34) 100%),
-    url('/static/brand/burg-eltz-jan-kohl.webp') 69% 48% / cover no-repeat;
+    radial-gradient(ellipse at 76% 42%,rgba(183,204,177,.12),transparent 24%),
+    linear-gradient(90deg,transparent 0 37%,rgba(5,4,3,.14) 54%,rgba(5,4,3,.34) 100%);
   opacity:.18;
   filter:grayscale(1) contrast(1.1) brightness(.55);
   mix-blend-mode:luminosity;
@@ -389,8 +387,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   background:radial-gradient(ellipse at center,transparent 36%,rgba(3,2,1,.16) 70%,rgba(3,2,1,.54) 100%);
   box-shadow:inset 0 0 170px rgba(0,0,0,.45);
 }
-
-.ambient-orb,.ambient-grid,.ambient-noise,.ambient-scan,.ambient-ring,.coordinate,.hero-index,.edition,.network-strip,.hero-telemetry{display:none!important}
 
 .app-shell,
 html[data-decor="minimal"] .app-shell{
@@ -470,13 +466,6 @@ html[data-decor="minimal"] .theme-button{
 .flow-button.active>i{text-shadow:0 0 18px rgba(var(--accent-rgb),.72)}
 .theme-button{display:flex}
 .install-button{border-color:var(--line-strong)!important}
-
-.status,
-html[data-decor="minimal"] .status{display:flex;align-items:center;gap:8px;color:var(--faint)}
-.status i{width:7px;height:7px;border:1px solid var(--faint);border-radius:50%;background:#5d574d}
-.status.live i{border-color:var(--acid);background:var(--acid);box-shadow:0 0 16px rgba(var(--accent-rgb),.34)}
-.status.offline i{background:#72524a;border-color:#9a6b60}
-.status b{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:6px;font-weight:700;letter-spacing:.65px}
 
 .hero,
 html[data-decor="minimal"] .hero{
@@ -730,10 +719,6 @@ html[data-decor="minimal"] .track-story{grid-column:1/-1;width:100%;margin:5px 0
   .site-header .library>span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:5.3px;letter-spacing:.45px}
   .site-header .library>b{position:absolute;top:6px;right:6px;min-width:17px;width:auto;height:17px;padding:0 4px;border:0;background:rgba(200,171,115,.12);color:var(--acid);font-size:4.5px}
   .site-header .language-button>b{position:static;width:auto;min-width:23px;height:15px;margin-top:-2px;background:transparent!important;border:0!important;color:var(--muted)!important}
-  .site-header .status,
-  html[data-decor="minimal"] .site-header .status{width:48px;height:42px;display:grid;place-items:center;border-top:1px solid var(--line)}
-  .site-header .status b{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-
   .hero,
   html[data-decor="minimal"] .hero{z-index:12;grid-column:2;grid-row:1;width:auto;min-height:0;margin:0;padding:27px 18px 12px 20px;display:block}
   .eyebrow-row,
@@ -773,7 +758,6 @@ html[data-decor="minimal"] .track-story{grid-column:1/-1;width:100%;margin:5px 0
 @media(max-width:1099px){
   .top-actions .library>span,.top-actions .theme-button>span{display:none}
   .top-actions .library{padding:0 7px}.top-actions .library>i{display:block}.top-actions .library>b{min-width:24px}
-  .status b{display:none}
   .hero{margin-top:clamp(58px,8vh,90px)}
 }
 
@@ -781,7 +765,7 @@ html[data-decor="minimal"] .track-story{grid-column:1/-1;width:100%;margin:5px 0
   .app-shell,html[data-decor="minimal"] .app-shell{padding:0 11px 64px}
   .site-header,html[data-decor="minimal"] .site-header{top:8px;min-height:60px;margin-top:8px;padding:0 11px;border-radius:19px;gap:8px}
   .logo img{width:27px;height:27px}.logo strong{font-size:21px}.logo i{font-size:20px}
-  .top-actions,html[data-decor="minimal"] .top-actions{gap:1px}.top-actions .library{min-height:36px;padding:0 4px}.top-actions .library>i{font-size:14px}.top-actions .library>b{min-width:21px;height:21px;padding:0 4px;font-size:5px}.status{display:none!important}
+  .top-actions,html[data-decor="minimal"] .top-actions{gap:1px}.top-actions .library{min-height:36px;padding:0 4px}.top-actions .library>i{font-size:14px}.top-actions .library>b{min-width:21px;height:21px;padding:0 4px;font-size:5px}
   .hero,html[data-decor="minimal"] .hero{margin:54px auto 38px}.eyebrow-row,html[data-decor="minimal"] .eyebrow-row{margin-bottom:12px}.eyebrow-row p{font-size:6px;letter-spacing:2px}
   .search-form{min-height:72px;padding:8px 8px 8px 17px;grid-template-columns:minmax(0,1fr) 48px;border-radius:21px}.search-form input,html[data-decor="minimal"] .search-form input{padding-right:8px;font-size:clamp(28px,9vw,42px)}.search-form button{width:46px;height:46px;font-size:18px}
   .suggestions{overflow-x:auto;flex-wrap:nowrap;padding-bottom:3px;scrollbar-width:none}.suggestions::-webkit-scrollbar{display:none}.suggestions button{flex:0 0 auto}
@@ -816,9 +800,6 @@ html[data-decor="minimal"] .track-story{grid-column:1/-1;width:100%;margin:5px 0
   .site-header .library>b{top:8px;right:8px}.site-header .search-nav>b,.site-header .import-button>b{display:none!important}
   .site-header .theme-button{margin-top:auto;color:var(--muted)}
   .site-header .theme-button>b{display:none}
-  .site-header .status,
-  html[data-decor="minimal"] .site-header .status{width:62px;height:36px;margin-top:8px;border-top:1px solid var(--line)}
-
   .hero,
   html[data-decor="minimal"] .hero{padding:32px 24px 13px 28px}
   .eyebrow-row,
@@ -894,7 +875,6 @@ html[data-decor="minimal"] .track-story{grid-column:1/-1;width:100%;margin:5px 0
   .site-header .top-actions,html[data-decor="minimal"] .site-header .top-actions{margin-top:8px;gap:2px}
   .site-header .library,.site-header .theme-button,html[data-decor="minimal"] .site-header .library,html[data-decor="minimal"] .site-header .theme-button{height:54px;min-height:54px;padding:6px 3px;gap:4px}
   .site-header .library>i,.site-header .theme-button>i{height:18px;font-size:17px;line-height:18px}
-  .site-header .status,html[data-decor="minimal"] .site-header .status{height:30px;margin-top:4px}
   .hero,html[data-decor="minimal"] .hero{padding-top:20px}
   .hero .search-form{min-height:64px}.hero .search-form input,html[data-decor="minimal"] .hero .search-form input{font-size:30px}
 }
@@ -955,21 +935,7 @@ body{
   color:var(--forest-moon);
 }
 
-body:before{
-  content:"";
-  position:fixed;
-  z-index:1;
-  inset:0;
-  pointer-events:none;
-  opacity:.12;
-  background-image:
-    radial-gradient(circle at 13% 27%,rgba(232,228,216,.85) 0 1px,transparent 1.5px),
-    radial-gradient(circle at 73% 64%,rgba(158,187,120,.8) 0 1px,transparent 1.5px),
-    radial-gradient(circle at 46% 82%,rgba(167,173,163,.6) 0 1px,transparent 1.5px);
-  background-size:173px 211px,239px 281px,317px 349px;
-  mix-blend-mode:screen;
-  animation:awunDust 28s linear infinite;
-}
+body:before{display:none}
 
 .ambient{
   background:
@@ -984,11 +950,9 @@ body:before{
   background:
     radial-gradient(ellipse at 52% 66%,rgba(183,204,177,.16),transparent 12%),
     radial-gradient(ellipse at 79% 48%,rgba(151,184,143,.13),transparent 20%),
-    linear-gradient(90deg,transparent 0 31%,rgba(7,13,8,.2) 53%,rgba(3,6,4,.66) 100%),
-    url('/static/brand/burg-eltz-jan-kohl.webp') 69% 48% / cover no-repeat;
+    linear-gradient(90deg,transparent 0 31%,rgba(7,13,8,.2) 53%,rgba(3,6,4,.66) 100%);
   opacity:.24;
   filter:grayscale(.9) sepia(.08) hue-rotate(55deg) contrast(1.16) brightness(.48);
-  animation:awunMist 22s ease-in-out infinite alternate;
 }
 
 .ambient:after{
@@ -1153,9 +1117,6 @@ body:before{
 .theme-panel-head,.flow-panel>header{border-color:rgba(167,173,163,.3)}
 .theme-panel-head strong,.flow-panel h2{font-family:Iowan Old Style,"Palatino Linotype",Georgia,serif;font-weight:400}
 
-@keyframes awunMist{0%{transform:translate3d(-1.2%,0,0) scale(1.02);opacity:.16}100%{transform:translate3d(1.8%,-1%,0) scale(1.05);opacity:.29}}
-@keyframes awunDust{0%{transform:translate3d(0,0,0)}50%{transform:translate3d(-9px,-13px,0)}100%{transform:translate3d(7px,-25px,0)}}
-
 @media(prefers-reduced-motion:reduce){
   body:before,.ambient:before{animation:none!important}
 }
@@ -1288,10 +1249,6 @@ body:before{
   .site-header .search-nav.active{border-left:2px solid var(--forest-green)}
   .site-header .theme-button{margin-top:auto}
   .site-header .theme-button>b{display:none}
-  .site-header .status,
-  html[data-decor="minimal"] .site-header .status{width:100%;height:auto;min-height:36px;margin-top:12px;padding:12px 5px 0;display:flex;align-items:center;justify-content:flex-start;border-top:1px solid rgba(167,173,163,.2)}
-  .site-header .status b{position:static;width:auto;height:auto;max-width:100%;overflow:hidden;clip:auto;color:rgba(232,228,216,.44);font-size:6px;letter-spacing:.7px;white-space:nowrap}
-
   .hero,
   html[data-decor="minimal"] .hero{
     z-index:12;
@@ -1448,9 +1405,7 @@ body:before{
   .home-sections{padding:18px 20px 30px}.home-track-grid,.recommendation-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.section-heading h1,.section-heading h2{font-size:22px}.recommendation-card{min-height:145px}.player.player-empty{display:none}.player:not(.player-empty){display:flex}
 }
 
-/* AWUN 1.8.14: remove decorative desktop chrome and turn My Wave into a
-   dedicated product screen instead of a legacy floating settings modal. */
-.window-chrome,.player-menu,.site-header .status{display:none}
+/* AWUN 1.8.14: turn My Wave into a dedicated product screen. */
 
 @media (min-width:1100px){
   .flow-panel{
@@ -1544,7 +1499,6 @@ body:before{
   body{overflow:hidden;background:#050806}
   .app-shell{grid-template-columns:var(--awun-nav) minmax(0,1fr) var(--awun-player);grid-template-rows:auto minmax(0,1fr);gap:0;height:100svh;min-height:0;padding:0;background:linear-gradient(90deg,#060a07 0 var(--awun-nav),#080d09 var(--awun-nav) calc(100% - var(--awun-player)),#060a07 calc(100% - var(--awun-player)) 100%)}
   .site-header{grid-column:1;grid-row:1/3;margin:0;padding:54px 20px 22px;border:0;border-right:1px solid rgba(232,228,216,.12);border-radius:0;background:linear-gradient(180deg,rgba(12,20,13,.96),rgba(5,9,6,.98));box-shadow:none;backdrop-filter:none}
-  .window-chrome{position:absolute;top:20px;left:20px;display:flex;gap:10px}.window-chrome i{width:14px;height:14px;border-radius:50%;background:#ee6258;box-shadow:0 0 0 1px rgba(0,0,0,.28)}.window-chrome i:nth-child(2){background:#e6c14f}.window-chrome i:nth-child(3){background:#59b65b}
   .site-header .logo{height:142px;padding:12px 0 24px;gap:10px;border-bottom:1px solid rgba(232,228,216,.14)}
   .site-header .logo img{width:56px;height:56px;filter:grayscale(1) sepia(.14) brightness(1.25)}
   .site-header .logo strong{font-family:Iowan Old Style,"Palatino Linotype",Georgia,serif;font-size:27px;font-weight:400;letter-spacing:5px;color:#e9e4d7}.site-header .logo>i{display:none}
@@ -1554,8 +1508,6 @@ body:before{
   .site-header .library>i,.site-header .theme-button>i{width:24px;height:24px;line-height:24px;color:#c2d88b;font-size:21px;font-style:normal;text-align:center}.site-header .library>span,.site-header .theme-button>span{font-family:Inter,ui-sans-serif,sans-serif;font-size:12px;font-weight:500;letter-spacing:.15px;color:rgba(232,228,216,.78)}
   .site-header .library>b{display:none}.site-header .import-button,.site-header .language-button,.site-header .install-button{display:none}.site-header .theme-button{margin-top:auto}.site-header .theme-button>b{display:none}
   .site-header .library:hover,.site-header .library.active,.site-header .library[aria-expanded="true"],.site-header .theme-button:hover,.site-header .theme-button[aria-expanded="true"]{border-color:rgba(167,198,112,.52);background:rgba(167,198,112,.11);transform:none}.site-header .library:hover>span,.site-header .library.active>span,.site-header .theme-button:hover>span{color:#e9e4d7}.site-header .search-nav.active{border-left:2px solid #b9d783}
-  .site-header .status{margin-top:18px;padding:15px 4px 0;border-top:1px solid rgba(232,228,216,.14)}.site-header .status b{font-size:7px;letter-spacing:.8px;color:rgba(232,228,216,.4)}
-
   .hero{grid-column:2;grid-row:1;margin:0;padding:44px 34px 18px;z-index:4}.eyebrow-row{display:none}
   .hero .search-form{min-height:66px;padding:7px 8px 7px 20px;border-radius:19px;border-color:rgba(167,198,112,.55);background:rgba(4,9,6,.66);box-shadow:0 16px 34px rgba(0,0,0,.2)}.hero .search-form input{font-family:Inter,ui-sans-serif,sans-serif;font-size:19px;letter-spacing:.1px;color:#e9e4d7}.hero .search-form input::placeholder{color:rgba(232,228,216,.58)}.hero .search-form button{width:49px;height:49px;border-radius:15px;background:#b4ca87;color:#10170f;font-size:24px}.hero .search-form button:hover{background:#d5e1b6}
   .hero .suggestions{display:flex;gap:8px;margin-top:15px;padding:0;overflow:visible}.hero .suggestions>span{display:none}.hero .suggestions button{min-height:31px;padding:0 13px;border-radius:8px;border-color:rgba(167,198,112,.35);background:rgba(10,18,11,.66);color:rgba(232,228,216,.7);font-size:8px;letter-spacing:.8px}.hero .suggestions button:hover{border-color:#b4ca87;background:rgba(167,198,112,.13);color:#e9e4d7}

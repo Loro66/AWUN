@@ -105,9 +105,9 @@ Open `http://127.0.0.1:8000`. Optional provider credentials and deployment setti
 
 ## Verified release quality
 
-Release `v1.10.4` is built from `main` by GitHub Actions.
+Release `v1.10.5` is built from `main` by GitHub Actions.
 
-- **233 Python tests** cover search, ranking, matching, policy, reliability, security and desktop packaging.
+- **237 Python tests** cover search, ranking, matching, policy, reliability, security and desktop packaging.
 - **26 Playwright scenarios** exercise progressive search, cancellation, provider deadlines, playback recovery, queue persistence, large libraries and responsive layouts.
 - Visual and control-bound checks run at **1920, 1280, 1000 and 390 pixels**.
 - The release workflow builds both Windows executables, generates SHA-256 checksums and publishes the versioned GitHub Release only after tests pass.
@@ -119,7 +119,7 @@ Release `v1.10.4` is built from `main` by GitHub Actions.
 | Surface | Status | Distribution |
 | --- | --- | --- |
 | Web / PWA | Public beta | [Open application](https://awun-1.onrender.com) |
-| Windows | Released, unsigned beta | [Download v1.10.4](https://github.com/Loro66/AWUN/releases/tag/v1.10.4) |
+| Windows | Released, unsigned beta | [Download v1.10.5](https://github.com/Loro66/AWUN/releases/tag/v1.10.5) |
 | Android | Reproducible Play bundle and store package | Release requires Play Console signing and testing |
 | iOS | Reproducible unsigned beta | Physical distribution requires Apple signing |
 

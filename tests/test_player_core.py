@@ -109,6 +109,18 @@ def test_failover_accepts_common_youtube_channel_metadata() -> None:
     assert result == ["yt"]
 
 
+def test_stream_links_refresh_only_after_freshness_window() -> None:
+    result = run_core(
+        "(()=>{const now=1700000000000;return {"
+        "fresh:core.shouldRefreshStream({source:'soundcloud',stream_resolved_at:now-1000},now),"
+        "stale:core.shouldRefreshStream({source:'audius',stream_resolved_at:now-core.STREAM_FRESHNESS_MS},now),"
+        "legacy:core.shouldRefreshStream({source:'jamendo'},now),"
+        "youtube:core.shouldRefreshStream({source:'youtube'},now)"
+        "}})()"
+    )
+    assert result == {"fresh": False, "stale": True, "legacy": True, "youtube": False}
+
+
 def test_app_wires_persistent_queue_and_cross_source_recovery() -> None:
     app = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
     html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")

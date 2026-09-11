@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+import gzip
 from pathlib import Path
 import re
 from typing import Annotated
@@ -224,11 +225,40 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     frontend_dir = Path(__file__).resolve().parents[2] / "frontend"
     project_dir = frontend_dir.parent
     if frontend_dir.is_dir():
+        stylesheet = "@layer foundation, forest, release;\n" + "\n".join(
+            f"@layer {layer} {{\n{(frontend_dir / filename).read_text(encoding='utf-8')}\n}}"
+            for layer, filename in (
+                ("foundation", "styles.css"),
+                ("forest", "forest.css"),
+                ("release", "redesign.css"),
+            )
+        )
+        stylesheet_gzip = gzip.compress(stylesheet.encode("utf-8"), compresslevel=5)
+        frontend_document = (frontend_dir / "index.html").read_text(encoding="utf-8")
+        frontend_document = frontend_document.replace("__AWUN_VERSION__", settings.app_version)
+        service_worker_document = (frontend_dir / "service-worker.js").read_text(encoding="utf-8")
+        service_worker_document = service_worker_document.replace("__AWUN_VERSION__", settings.app_version)
+
         @app.get("/design-system.css", include_in_schema=False)
-        async def design_system() -> Response:
-            stylesheet = (frontend_dir / "design-system.css").read_text(encoding="utf-8")
-            stylesheet = stylesheet.replace("__AWUN_VERSION__", settings.app_version)
-            return Response(content=stylesheet, media_type="text/css; charset=utf-8")
+        async def design_system(request: Request) -> Response:
+            cache_control = (
+                "public, max-age=31536000, immutable"
+                if "v" in request.query_params
+                else "public, max-age=86400"
+            )
+            accepts_gzip = any(
+                value.strip().split(";", 1)[0] == "gzip"
+                and not re.search(r"(?:^|;)\s*q=0(?:\.0*)?(?:;|$)", value)
+                for value in request.headers.get("accept-encoding", "").lower().split(",")
+            )
+            headers = {"Cache-Control": cache_control, "Vary": "Accept-Encoding"}
+            if accepts_gzip:
+                headers["Content-Encoding"] = "gzip"
+            return Response(
+                content=stylesheet_gzip if accepts_gzip else stylesheet,
+                media_type="text/css; charset=utf-8",
+                headers=headers,
+            )
 
         app.mount(
             "/static",
@@ -238,20 +268,16 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
         @app.get("/", include_in_schema=False)
         async def frontend() -> Response:
-            document = (frontend_dir / "index.html").read_text(encoding="utf-8")
-            document = document.replace("__AWUN_VERSION__", settings.app_version)
             return Response(
-                content=document,
+                content=frontend_document,
                 media_type="text/html; charset=utf-8",
                 headers={"Cache-Control": "no-cache"},
             )
 
         @app.get("/service-worker.js", include_in_schema=False)
         async def service_worker() -> Response:
-            worker = (frontend_dir / "service-worker.js").read_text(encoding="utf-8")
-            worker = worker.replace("__AWUN_VERSION__", settings.app_version)
             return Response(
-                content=worker,
+                content=service_worker_document,
                 media_type="application/javascript",
                 headers={"Cache-Control": "no-cache", "Service-Worker-Allowed": "/"},
             )

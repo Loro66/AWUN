@@ -1,7 +1,7 @@
 {
   "name": "awun-frontend-tests",
   "private": true,
-  "version": "1.10.4",
+  "version": "1.10.5",
   "scripts": {
     "test:e2e": "playwright test",
     "test:e2e:update": "playwright test --update-snapshots"

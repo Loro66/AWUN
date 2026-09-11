@@ -4,11 +4,11 @@
 
 AWUN combines deterministic unit and integration tests with browser-level behavior, geometry and screenshot checks. The objective is to test failure handling and user-visible state, not only the presence of implementation strings.
 
-## Verified scope for v1.10.4
+## Verified scope for v1.10.5
 
 | Layer | Current verified count | Examples |
 | --- | ---: | --- |
-| Python tests | 233 | Search, source adapters, matching, ranking, policy, media security, reliability and desktop packaging |
+| Python tests | 237 | Search, source adapters, matching, ranking, policy, media security, reliability and desktop packaging |
 | Playwright scenarios | 26 | Progressive results, cancellation, timeouts, playback recovery, queue persistence, backup restore and large libraries |
 | Reviewed viewport baselines | 4 | 1920 by 1080, 1280 by 900, 1000 by 800 and 390 by 844 |
 | Responsive readability combinations | 8 | Four widths in dark and light themes |

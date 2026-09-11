@@ -1,42 +1,26 @@
-AWUN 1.10.4
-Release date: 2026-09-08
+AWUN 1.10.5
+Release date: 2026-09-11
 
 Release highlights:
-- Refresh the reviewed Linux browser baselines for the current Chromium runner.
-- Keep all 26 browser scenarios reproducible across desktop, tablet and phone layouts.
-- Validate backup schema, serialized values and track lists before importing.
-- Preview library/queue counts and require confirmation before replacing data.
-- Roll back imported data when a write or migration fails.
-- Redact credentials inside error messages and previously stored log entries.
-- Bound update checks to 12 seconds, validate release versions and links, and
-  prevent repeated clicks from starting overlapping requests.
+- Deliver the frontend CSS as one cached, precompressed response instead of an
+  import waterfall.
+- Load the HLS player only when a SoundCloud stream needs it.
+- Stop idle playback polling, forced layout reads and full-viewport decorative
+  animation.
+- Update queue rows in place and handle queue actions through one event listener.
+- Reuse fresh stream URLs for 20 minutes while preserving stale-link recovery.
+- Search sparse aliases concurrently and reuse track fingerprints during deduplication.
+- Remove an unused 349 KB image from the packaged frontend.
 
-The Windows application now bundles FastAPI and the complete frontend, starts
-on an ephemeral loopback port. Searches use the local API first; the configured
-remote endpoint is only a fallback for an unavailable provider. The desktop
-launcher, static interface, search states, errors, player, library import,
-track stories, settings and My Wave now have complete Russian localization.
-English remains available from the language switch.
+The Windows application bundles FastAPI and the complete frontend and starts on
+an ephemeral loopback port. Search still uses the local API first, and playback
+still retries stale provider links. This release reduces startup requests,
+unnecessary DOM work and background timers without removing user-facing
+features.
 
-This pre-release adds recoverable on-device library and queue storage, JSON
-backup export/import, a redacted runtime log and a manual update check.
-Unavailable YouTube uploads are remembered temporarily; playback tries a close
-alternative upload and then another connected source. Source diagnostics reports
-interface errors separately from API and playback failures.
-
-The responsive listening dock now uses one control layout at each breakpoint.
-Legacy CSS priorities no longer force hidden buttons or volume onto extra rows.
-Waveform bars remain visible at desktop, tablet and phone widths. Browser tests
-exercise search, My Wave, playback recovery and queue persistence, with viewport
-screenshots and control-bound checks at 1920, 1280, 1000 and 390 pixels.
+The automated release gate contains 237 Python tests. The repository also keeps
+26 Playwright scenarios for desktop, tablet and phone layouts.
 
 The Windows archive includes AWUN.exe (portable), AWUN-Setup-x64.exe (per-user
 installer), their SHA-256 checksums, LICENSE.md and EULA.md. Extract the archive
 fully before running either application.
-
-The Android app is now prepared for Google Play as com.loro66.awun. It targets
-API 36, builds a signed Android App Bundle from a manual workflow, has Russian
-and English store metadata, original store artwork, privacy/support pages and
-prepared Data safety/App content answers. The Play client has no storage
-permission or download listener, strips all download URLs and pauses media when
-the app leaves the foreground.
