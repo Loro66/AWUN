@@ -4,7 +4,7 @@
 
 AWUN combines deterministic unit and integration tests with browser-level behavior, geometry and screenshot checks. The objective is to test failure handling and user-visible state, not only the presence of implementation strings.
 
-## Verified scope for v1.10.5
+## Verified scope for v1.10.6
 
 | Layer | Current verified count | Examples |
 | --- | ---: | --- |

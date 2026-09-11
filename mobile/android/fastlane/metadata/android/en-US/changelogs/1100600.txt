@@ -1,0 +1,1 @@
+AWUN 1.10.6 fixes track action menus so their buttons remain clickable when the menu opens over an adjacent result row.

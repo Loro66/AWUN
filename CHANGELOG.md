@@ -2,6 +2,16 @@
 
 All notable user-visible changes are documented here. AWUN follows semantic versioning through the root `VERSION` file.
 
+## [1.10.6] - 2026-09-11
+
+### Fixed
+
+- Kept track action menus outside paint containment so their buttons remain clickable over adjacent rows.
+
+### Distribution
+
+- Rebuilt the Windows installer after the browser workflow reproduced and verified the menu fix.
+
 ## [1.10.5] - 2026-09-11
 
 ### Changed
@@ -60,3 +70,4 @@ Versions before 1.10.4 were iterative beta builds. Their exact changes remain av
 
 [1.10.4]: https://github.com/Loro66/AWUN/releases/tag/v1.10.4
 [1.10.5]: https://github.com/Loro66/AWUN/releases/tag/v1.10.5
+[1.10.6]: https://github.com/Loro66/AWUN/releases/tag/v1.10.6

@@ -693,7 +693,7 @@ html[data-theme="white"] .diagnostics-entry,html[data-theme="white"] .diagnostic
 .search-feedback button:hover,.load-more-tracks:hover{border-color:var(--signal)}
 .load-more-tracks{display:block;margin:20px auto}
 .track{animation:none!important;transition:background-color .12s,border-color .12s}
-.track,.queue-item{content-visibility:auto;contain-intrinsic-size:auto 76px}
+.queue-item{content-visibility:auto;contain-intrinsic-size:auto 76px}
 .player:not(.queue-open) .up-next{visibility:hidden}
 .player.queue-open .up-next{visibility:visible}
 .player .timeline,.player.expanded-player .timeline{font-size:10px}

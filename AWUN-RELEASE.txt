@@ -1,7 +1,8 @@
-AWUN 1.10.5
+AWUN 1.10.6
 Release date: 2026-09-11
 
 Release highlights:
+- Keep track action menus clickable when they overlap adjacent result rows.
 - Deliver the frontend CSS as one cached, precompressed response instead of an
   import waterfall.
 - Load the HLS player only when a SoundCloud stream needs it.

@@ -311,6 +311,8 @@ def test_waveform_queue_menu_and_responsive_player_regressions_are_fixed() -> No
     assert "clip-path:inset(0 calc(100% - var(--value)) 0 0)" in redesign
     assert ".track.queue-menu-open{z-index:60}" in redesign
     assert ".track-queue-menu.opens-up>div" in redesign
+    assert ".queue-item{content-visibility:auto" in redesign
+    assert ".track,.queue-item{content-visibility:auto" not in redesign
     assert "row.classList.toggle('queue-menu-open',queueMenu.open)" in app
     assert "@media (min-width:761px) and (max-width:1099px)" in redesign
     assert ".player .player-tools #expandPlayer{display:none!important}" in redesign
