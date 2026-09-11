@@ -473,7 +473,7 @@ function renderDiagnostics(){
 function diagnosticsReport(){
   const snapshot=state.diagnostics,data=snapshot?.data||{},health=data.source_health||{};
   return JSON.stringify({
-    app:'AWUN',version:data.version||'unknown',created_at:new Date().toISOString(),platform:runtimePlatform,
+    app:'SONGVALE',version:data.version||'unknown',created_at:new Date().toISOString(),platform:runtimePlatform,
     api:{mode:snapshot?.origin||'unavailable',latency_ms:snapshot?.endpoint_latency_ms??null,error:snapshot?.error||null},
     ui_error:snapshot?.ui_error||null,
     storage:storage?.info?.()||null,
@@ -491,7 +491,7 @@ async function copyDiagnostics(){
 }
 
 function exportLocalData(){
-  storage?.download?.(`AWUN-backup-${new Date().toISOString().slice(0,10)}.json`);ui.diagnosticsToolsStatus.textContent=t('dataExported');runtimeLog?.log?.('storage.exported');
+  storage?.download?.(`SONGVALE-backup-${new Date().toISOString().slice(0,10)}.json`);ui.diagnosticsToolsStatus.textContent=t('dataExported');runtimeLog?.log?.('storage.exported');
 }
 async function importLocalData(){
   const file=ui.storageImportFile.files?.[0];if(!file)return;
@@ -1016,7 +1016,7 @@ async function playAudio(track,startAt=0){
 
 function updateMediaSession(track){
   if(!('mediaSession'in navigator)||!('MediaMetadata'in window))return;
-  const artwork=safeImage(track.thumbnail);navigator.mediaSession.metadata=new MediaMetadata({title:decodeText(track.title),artist:decodeText(track.artist),album:`AWUN · ${sourceLabels[track.source]||track.source}`,artwork:artwork?[{src:artwork}]:[]});
+  const artwork=safeImage(track.thumbnail);navigator.mediaSession.metadata=new MediaMetadata({title:decodeText(track.title),artist:decodeText(track.artist),album:`SONGVALE · ${sourceLabels[track.source]||track.source}`,artwork:artwork?[{src:artwork}]:[]});
   const actions={play:()=>resumePlayback(),pause:()=>pausePlayback(),previoustrack:()=>previousTrack(),nexttrack:()=>nextTrack(),seekbackward:details=>seekRelative(-(details.seekOffset||10)),seekforward:details=>seekRelative(details.seekOffset||10)};
   Object.entries(actions).forEach(([action,handler])=>{try{navigator.mediaSession.setActionHandler(action,handler)}catch{}});
 }
@@ -1217,7 +1217,7 @@ ui.allSourcesButton?.addEventListener('click',()=>{state.sources=new Set(state.a
 ui.regionSelect.addEventListener('change',()=>{state.region=regions.includes(ui.regionSelect.value)?ui.regionSelect.value:'AUTO';writeStoredText('awun-region',state.region)});
 ui.limitSelect.addEventListener('change',()=>{const value=Number(ui.limitSelect.value);state.resultLimit=resultLimits.includes(value)?value:60;writeStoredText('awun-result-limit',String(state.resultLimit))});
 ui.themeButton.addEventListener('click',()=>ui.themePanel.hidden?openThemePanel():closeThemePanel());ui.themeClose.addEventListener('click',closeThemePanel);ui.themeBackdrop.addEventListener('click',closeThemePanel);ui.diagnosticsButton.addEventListener('click',openDiagnosticsPanel);ui.diagnosticsClose.addEventListener('click',closeThemePanel);ui.diagnosticsRefresh.addEventListener('click',refreshStatus);ui.diagnosticsCopy.addEventListener('click',copyDiagnostics);document.getElementById('flowButton')?.addEventListener('click',()=>{setQueueOpen(false);setPlayerExpanded(false);if(!ui.themePanel.hidden||!ui.diagnosticsPanel.hidden)closeThemePanel()});
-ui.diagnosticsLog.addEventListener('click',()=>runtimeLog?.download?.(`AWUN-log-${new Date().toISOString().slice(0,10)}.json`));ui.storageExport.addEventListener('click',exportLocalData);ui.storageImport.addEventListener('click',()=>ui.storageImportFile.click());ui.storageImportFile.addEventListener('change',importLocalData);ui.updateCheck.addEventListener('click',checkForUpdates);
+ui.diagnosticsLog.addEventListener('click',()=>runtimeLog?.download?.(`SONGVALE-log-${new Date().toISOString().slice(0,10)}.json`));ui.storageExport.addEventListener('click',exportLocalData);ui.storageImport.addEventListener('click',()=>ui.storageImportFile.click());ui.storageImportFile.addEventListener('change',importLocalData);ui.updateCheck.addEventListener('click',checkForUpdates);
 ui.importButton.addEventListener('click',()=>ui.importPanel.hidden?openImportPanel():closeImportPanel());ui.importClose.addEventListener('click',closeImportPanel);ui.importBackdrop.addEventListener('click',closeImportPanel);ui.importFileButton.addEventListener('click',()=>ui.libraryFile.click());ui.importSubmit.addEventListener('click',importLibrary);ui.importUrlSubmit.addEventListener('click',importLibraryUrl);
 ui.libraryFile.addEventListener('change',async()=>{const file=ui.libraryFile.files?.[0];if(!file)return;if(file.size>2*1024*1024){ui.importStatus.textContent=t('fileTooLarge');return}try{ui.importText.value=await file.text();ui.importFileName.textContent=file.name;const count=parseImportedLibrary(ui.importText.value,file.name).length;ui.importStatus.textContent=t('uniqueTracksReady',{count})}catch(error){ui.importStatus.textContent=error.message||t('fileReadFailed')}});
 themeChoiceButtons.forEach(button=>button.addEventListener('click',()=>{state.theme=button.dataset.themeChoice;applyVisual()}));
@@ -1242,7 +1242,7 @@ ui.queueList?.addEventListener('dragstart',event=>{const item=event.target.close
 ui.queueList?.addEventListener('dragend',event=>event.target.closest('.queue-item')?.classList.remove('dragging'));
 ui.queueList?.addEventListener('dragover',event=>{if(!event.target.closest('.queue-item'))return;event.preventDefault();event.dataTransfer.dropEffect='move'});
 ui.queueList?.addEventListener('drop',event=>{const item=event.target.closest('.queue-item');if(!item)return;event.preventDefault();const from=Number(event.dataTransfer.getData('text/plain')),to=Number(item.dataset.queueIndex);if(Number.isInteger(from)&&Number.isInteger(to))moveQueuedTrack(from,to)});
-ui.closePlayer.addEventListener('click',()=>{setQueueOpen(false);setPlayerExpanded(false);state.playbackGeneration+=1;state.playbackController?.abort();state.pendingTrackId=null;state.audioTrackId=null;pausePlayback();stopYouTube();stopHls();ui.audio.removeAttribute('src');ui.idleStage.setAttribute('aria-hidden','false');ui.player.classList.remove('track-enter','track-swap');ui.player.classList.add('player-empty');document.body.classList.remove('has-player');state.active=null;ui.nowTitle.textContent=t('nothingPlaying');ui.nowArtist.textContent='AWUN';ui.nowSource.textContent='—';render()});
+ui.closePlayer.addEventListener('click',()=>{setQueueOpen(false);setPlayerExpanded(false);state.playbackGeneration+=1;state.playbackController?.abort();state.pendingTrackId=null;state.audioTrackId=null;pausePlayback();stopYouTube();stopHls();ui.audio.removeAttribute('src');ui.idleStage.setAttribute('aria-hidden','false');ui.player.classList.remove('track-enter','track-swap');ui.player.classList.add('player-empty');document.body.classList.remove('has-player');state.active=null;ui.nowTitle.textContent=t('nothingPlaying');ui.nowArtist.textContent='SONGVALE';ui.nowSource.textContent='—';render()});
 ui.searchNavButton.addEventListener('click',()=>{setLibraryView(false);state.hasSearched=false;render();ui.searchInput.focus({preventScroll:true});ui.searchInput.scrollIntoView({behavior:document.documentElement.dataset.motion==='off'?'auto':'smooth',block:'center'})});
 ui.clearQueue?.addEventListener('click',()=>{state.queue=[];state.queueMode='manual';persistQueue();renderQueue()});
 ui.minimizeVideo.addEventListener('click',()=>{ui.youtubeDock.classList.toggle('minimized');ui.minimizeVideo.textContent=ui.youtubeDock.classList.contains('minimized')?'□':'—'});
@@ -1261,5 +1261,6 @@ async function bootstrap(){
   const query=url.get('q');if(query){ui.searchInput.value=query;search(query)}runtimeLog?.log?.('app.ready',{sources:[...state.available]});
 }
 window.awunApp={state,ui,playTrack,render,search,toggleSave,currentList,setMessage,sourceLabels,decodeText,matchText,loadingRows,awunFetch,requestSearch,pausePlayback,playStoreMode,apiBase,fallbackApiBase,apiUrl,refreshStatus,replaceQueue,appendQueue,cancelSearch};
+window.songvaleApp=window.awunApp;
 document.addEventListener('awun:language',event=>{language=event.detail.language;applyVisual(false);applyRepeatMode(false);render();renderDiagnostics();refreshStatus()});
 bootstrap();

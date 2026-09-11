@@ -79,7 +79,7 @@ Open `https://YOUR-AWUN-API/` after deployment.
 - Disabled providers are visibly marked `NOT CONNECTED` and are not sent in a
   search request.
 - Opening `/?q=artist%20track` runs a shareable search.
-- The header renders `/static/awun-mark.svg` and remains crisp at mobile and desktop sizes.
+- The header renders `/static/brand/songvale-mark.svg` and remains crisp at mobile and desktop sizes.
 - Switching **INTERFACE → MINIMAL** removes telemetry and source chrome while keeping search, results and playback usable.
 - Clicking a result opens a Track Story without starting or interrupting playback.
 - A known LRCLIB song displays plain or synced lyrics from `/api/v1/track-details`.

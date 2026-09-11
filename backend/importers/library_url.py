@@ -170,7 +170,7 @@ class LibraryUrlImporter:
         return LibraryImportResponse(provider="youtube", title=title, source_url=source_url, tracks=tracks[:limit])
 
     async def _structured_page(self, url: str, limit: int) -> LibraryImportResponse:
-        headers = {"User-Agent": "AWUN/1.7 public-playlist-importer (+https://github.com/Loro66/AWUN)", "Accept": "text/html,application/xhtml+xml,application/json;q=0.8"}
+        headers = {"User-Agent": "SONGVALE/2.0 public-playlist-importer (+https://github.com/Loro66/AWUN)", "Accept": "text/html,application/xhtml+xml,application/json;q=0.8"}
         async with aiohttp.ClientSession(timeout=self.timeout) as session:
             async with session.get(url, headers=headers, allow_redirects=True, max_redirects=4) as response:
                 final = urlparse(str(response.url))

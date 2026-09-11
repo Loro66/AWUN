@@ -1,4 +1,4 @@
-# AWUN — Play Console app-content answers
+# SONGVALE — Play Console app-content answers
 
 ## Store setup
 
@@ -6,7 +6,7 @@
 - Category: **Music & Audio**
 - Free or paid: **Free**
 - Default language: **Russian — ru-RU**
-- App name: **AWUN — поиск музыки**
+- App name: **SONGVALE — поиск музыки**
 - Package name: **com.loro66.awun**
 
 The package name becomes permanent after the first uploaded bundle. If a Play
@@ -31,7 +31,7 @@ Console draft already exists with another package, resolve that before upload.
 
 ## Content-rating notes
 
-AWUN searches external music catalogs and can display provider-supplied titles,
+SONGVALE searches external music catalogs and can display provider-supplied titles,
 artwork, lyrics and playable media. It does not provide chat, public posting,
 gambling, purchases, location sharing or user-to-user communication. External
 music may contain mature themes or explicit language, so answer the IARC
@@ -41,7 +41,7 @@ questions conservatively instead of selecting an all-ages rating by assumption.
 
 No credentials are required.
 
-1. Open AWUN with internet access.
+1. Open SONGVALE with internet access.
 2. Search for an artist and track.
 3. Open a non-YouTube result to test source-permitted audio.
 4. Open a YouTube result to verify the visible official YouTube player.
@@ -54,8 +54,8 @@ in the user's default browser.
 
 ## Intellectual-property review notes
 
-- AWUN does not claim ownership of third-party music.
-- Store artwork uses only the AWUN brand and fictional track examples.
+- SONGVALE does not claim ownership of third-party music.
+- Store artwork uses only the SONGVALE brand and fictional track examples.
 - YouTube playback stays in the visible official player.
 - The Play client identifies itself with `X-AWUN-Client: android-play`; the API
   removes every `download_url` from its search response.

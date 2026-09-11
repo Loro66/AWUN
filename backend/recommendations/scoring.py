@@ -1,4 +1,4 @@
-"""Transparent candidate scoring and diversity selection for AWUN Flow."""
+"""Transparent candidate scoring and diversity selection for SONGVALE My Wave."""
 
 from dataclasses import dataclass
 

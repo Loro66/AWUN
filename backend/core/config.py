@@ -16,7 +16,7 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    app_name: str = "AWUN"
+    app_name: str = "SONGVALE"
     app_version: str = APP_VERSION
     debug: bool = False
     api_prefix: str = "/api/v1"
@@ -43,7 +43,7 @@ class Settings(BaseSettings):
     soundcloud_client_secret: str | None = None
     audius_enabled: bool = True
     audius_api_key: str | None = None
-    audius_app_name: str = "AWUN"
+    audius_app_name: str = "SONGVALE"
     jamendo_enabled: bool = True
     jamendo_client_id: str | None = None
     internet_archive_enabled: bool = True

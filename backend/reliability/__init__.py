@@ -1,1 +1,1 @@
-"""Reliability primitives used by AWUN provider integrations."""
+"""Reliability primitives used by SONGVALE provider integrations."""

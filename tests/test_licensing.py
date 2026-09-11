@@ -7,8 +7,8 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_freeware_license_is_bilingual_proprietary_and_not_open_source() -> None:
     license_text = (ROOT / "LICENSE.md").read_text(encoding="utf-8")
 
-    assert "AWUN Proprietary Freeware License 1.0" in license_text
-    assert "Закрытая freeware-лицензия AWUN 1.0" in license_text
+    assert "SONGVALE Proprietary Freeware License 1.0" in license_text
+    assert "Закрытая freeware-лицензия SONGVALE 1.0" in license_text
     assert "It is not open-source" in license_text
     assert "Это не open-source" in license_text
     assert "exact, unmodified copy" in license_text
@@ -26,8 +26,8 @@ def test_eula_and_contributor_terms_are_shipped_and_linked() -> None:
     workflow = (ROOT / ".github" / "workflows" / "build-windows-exe.yml").read_text(encoding="utf-8")
     mobile_workflow = (ROOT / ".github" / "workflows" / "build-mobile.yml").read_text(encoding="utf-8")
 
-    assert "AWUN End-User License Agreement" in eula
-    assert "Пользовательское соглашение AWUN" in eula
+    assert "SONGVALE End-User License Agreement" in eula
+    assert "Пользовательское соглашение SONGVALE" in eula
     assert "AWUN Individual Contributor License Agreement" in cla
     assert "LICENSE.md" in readme and "EULA.md" in readme
     assert "CONTRIBUTOR_LICENSE_AGREEMENT.md" in contributing

@@ -1,27 +1,23 @@
-AWUN 1.10.6
+SONGVALE 2.0.0
 Release date: 2026-09-11
 
 Release highlights:
-- Keep track action menus clickable when they overlap adjacent result rows.
-- Deliver the frontend CSS as one cached, precompressed response instead of an
-  import waterfall.
-- Load the HLS player only when a SoundCloud stream needs it.
-- Stop idle playback polling, forced layout reads and full-viewport decorative
-  animation.
-- Update queue rows in place and handle queue actions through one event listener.
-- Reuse fresh stream URLs for 20 minutes while preserving stale-link recovery.
-- Search sparse aliases concurrently and reuse track fingerprints during deduplication.
-- Remove an unused 349 KB image from the packaged frontend.
+- Rename the product from AWUN to SONGVALE throughout the application.
+- Add an original five-pillar sound-valley logo and a forest/orange visual identity.
+- Replace the old display type with a cleaner geometric system wordmark.
+- Embed the new icon in the web app, PWA, Windows executable and installer,
+  Android launcher and iOS shell.
+- Preserve existing libraries and settings through legacy storage and backup
+  compatibility.
+- Add SONGVALE desktop state and remote-API configuration with migration from
+  the previous AWUN locations.
 
-The Windows application bundles FastAPI and the complete frontend and starts on
-an ephemeral loopback port. Search still uses the local API first, and playback
-still retries stale provider links. This release reduces startup requests,
-unnecessary DOM work and background timers without removing user-facing
-features.
+The Windows application still bundles FastAPI and the complete frontend and
+starts on an ephemeral loopback port. Search remains local-first and provider
+fallback behavior is unchanged by the rebrand.
 
-The automated release gate contains 237 Python tests. The repository also keeps
-26 Playwright scenarios for desktop, tablet and phone layouts.
+The automated release gate contains the Python suite and the repository keeps
+Playwright scenarios for desktop, tablet and phone layouts.
 
-The Windows archive includes AWUN.exe (portable), AWUN-Setup-x64.exe (per-user
-installer), their SHA-256 checksums, LICENSE.md and EULA.md. Extract the archive
-fully before running either application.
+The Windows archive includes SONGVALE.exe (portable), SONGVALE-Setup-x64.exe
+(per-user installer), their SHA-256 checksums, LICENSE.md and EULA.md.

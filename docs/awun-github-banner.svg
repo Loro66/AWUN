@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="520" viewBox="0 0 1280 520" role="img" aria-labelledby="title desc">
-  <title id="title">AWUN — one search, every sound</title>
-  <desc id="desc">AWUN product banner showing a local-first music search interface and resilient multi-source playback.</desc>
+  <title id="title">SONGVALE — every sound finds a way</title>
+  <desc id="desc">SONGVALE product banner showing an original sound-valley mark and resilient multi-source playback.</desc>
   <defs>
     <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#050806"/>
@@ -22,17 +22,21 @@
   <path d="M64 58H1216M64 462H1216" stroke="#dfe9d5" stroke-opacity="0.12"/>
   <path d="M64 58V462" stroke="#ff6516" stroke-width="3"/>
 
-  <g transform="translate(92 91) scale(.58)" fill="none" stroke="#f3f2e9" stroke-width="8" stroke-linejoin="miter">
-    <path d="M8 47 27 8h25l19 39M8 52l13 25h19l12-24 12 24h19l13-25"/>
+  <g transform="translate(92 82)">
+    <rect width="74" height="74" rx="19" fill="#09120c" stroke="#314338" stroke-width="2.5"/>
+    <g fill="#f1f0e8">
+      <rect x="12" y="25" width="8" height="30" rx="4"/><rect x="24" y="17" width="8" height="46" rx="4"/><rect x="36" y="10" width="8" height="58" rx="4"/><rect x="48" y="17" width="8" height="46" rx="4"/><rect x="60" y="25" width="8" height="30" rx="4"/>
+    </g>
+    <path d="M10 31c9 4 14 11 24 14 12 4 19-8 32-14" fill="none" stroke="#ff6b1a" stroke-width="6" stroke-linecap="round"/>
   </g>
-  <text x="88" y="252" fill="#f3f2e9" font-family="Arial,Helvetica,sans-serif" font-size="94" font-weight="900" letter-spacing="-5">AWUN<tspan fill="#ff6516">.</tspan></text>
-  <text x="92" y="295" fill="#f3f2e9" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="700" letter-spacing="4.6">ONE SEARCH · EVERY SOUND</text>
+  <text x="88" y="252" fill="#f3f2e9" font-family="Segoe UI,Avenir Next,Helvetica Neue,Arial,sans-serif" font-size="70" font-weight="650" letter-spacing="9">SONGVALE</text>
+  <text x="92" y="295" fill="#ff6b1a" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="3.8">EVERY SOUND FINDS A WAY</text>
   <text x="92" y="343" fill="#a8aea3" font-family="Arial,Helvetica,sans-serif" font-size="17">Local-first discovery across fragmented music catalogs.</text>
   <text x="92" y="370" fill="#a8aea3" font-family="Arial,Helvetica,sans-serif" font-size="17">Your library stays on your device. Playback keeps moving.</text>
 
   <g font-family="Arial,Helvetica,sans-serif" font-size="11" font-weight="700" letter-spacing="1.2">
     <rect x="92" y="408" width="86" height="30" rx="15" fill="#ff6516"/>
-    <text x="113" y="428" fill="#11120f">v1.10.6</text>
+    <text x="113" y="428" fill="#11120f">v2.0.0</text>
     <rect x="188" y="408" width="122" height="30" rx="15" fill="#f3f2e9" fill-opacity="0.07" stroke="#f3f2e9" stroke-opacity="0.16"/>
     <text x="208" y="428" fill="#d8dbd1">WEB · WIN</text>
     <rect x="320" y="408" width="132" height="30" rx="15" fill="#f3f2e9" fill-opacity="0.07" stroke="#f3f2e9" stroke-opacity="0.16"/>

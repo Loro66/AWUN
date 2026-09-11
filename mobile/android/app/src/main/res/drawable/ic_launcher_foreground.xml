@@ -5,19 +5,12 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
     <path
-        android:fillColor="@android:color/transparent"
-        android:pathData="M28,72 L43,35 L54,62 L65,35 L80,72"
-        android:strokeColor="@color/awun_text"
-        android:strokeLineCap="square"
-        android:strokeLineJoin="miter"
-        android:strokeWidth="8" />
+        android:fillColor="@color/awun_text"
+        android:pathData="M25,43 Q25,37 31,37 Q37,37 37,43 L37,77 Q37,83 31,83 Q25,83 25,77 Z M41,32 Q41,26 47,26 Q53,26 53,32 L53,88 Q53,94 47,94 Q41,94 41,88 Z M57,24 Q57,18 63,18 Q69,18 69,24 L69,96 Q69,102 63,102 Q57,102 57,96 Z M73,32 Q73,26 79,26 Q85,26 85,32 L85,88 Q85,94 79,94 Q73,94 73,88 Z M89,43 Q89,37 95,37 Q101,37 101,43 L101,77 Q101,83 95,83 Q89,83 89,77 Z" />
     <path
         android:fillColor="@android:color/transparent"
-        android:pathData="M35,72 L73,72"
+        android:pathData="M22,48 C35,54 42,64 56,68 C73,73 82,56 102,48"
         android:strokeColor="@color/awun_acid"
-        android:strokeLineCap="square"
-        android:strokeWidth="5" />
-    <path
-        android:fillColor="@color/awun_acid"
-        android:pathData="M76,28a4,4 0,1 0,0 8a4,4 0,1 0,0 -8" />
+        android:strokeLineCap="round"
+        android:strokeWidth="9" />
 </vector>

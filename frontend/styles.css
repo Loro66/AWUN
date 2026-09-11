@@ -60,13 +60,13 @@ button:disabled{cursor:not-allowed}
 .skip-link:focus{transform:none}
 
 .ambient{position:fixed;z-index:0;inset:0;pointer-events:none;overflow:hidden}
-.ambient:after{content:"AWUN / SEARCH NETWORK / 1.8";position:absolute;right:-71px;top:46%;padding:8px 15px;border:1px solid rgba(var(--accent-rgb),.11);color:rgba(var(--accent-rgb),.24);font-size:7px;font-weight:900;letter-spacing:2.3px;transform:rotate(90deg)}
+.ambient:after{content:"SONGVALE / SEARCH NETWORK";position:absolute;right:-83px;top:46%;padding:8px 15px;border:1px solid rgba(var(--accent-rgb),.11);color:rgba(var(--accent-rgb),.24);font-size:7px;font-weight:900;letter-spacing:2.3px;transform:rotate(90deg)}
 
 .app-shell{position:relative;z-index:1;width:min(100%,1840px);min-height:100svh;margin:auto;display:flex;flex-direction:column;padding:0 clamp(20px,4.3vw,82px) 156px}
 .site-header{height:86px;display:grid;grid-template-columns:auto auto 1fr;align-items:center;gap:20px;border-bottom:1px solid var(--line)}
 .logo{display:flex;align-items:center;gap:9px;color:var(--ink);text-decoration:none}
 .logo img{width:31px;height:31px;filter:drop-shadow(0 0 13px rgba(var(--accent-rgb),.16));transition:transform .28s ease}
-html[data-theme="white"] .logo img{content:url('/static/brand/awun-logo-black.png')}
+html[data-theme="white"] .logo img{content:normal}
 .logo strong{font-size:27px;font-weight:950;font-style:italic;letter-spacing:-2.2px}
 .logo i{margin-left:-9px;color:var(--acid);font-size:29px;font-weight:950;font-style:normal}
 .logo:hover img{transform:rotate(-5deg) scale(1.04)}

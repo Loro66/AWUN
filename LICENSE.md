@@ -1,13 +1,13 @@
-# AWUN Proprietary Freeware License 1.0
+# SONGVALE Proprietary Freeware License 1.0
 
 Copyright © 2026 Loro66. All rights reserved.
 
-This license applies to the AWUN source code, official binary applications,
+This license applies to the SONGVALE source code, official binary applications,
 web application, artwork, documentation and other original material in this
 repository (collectively, the **Software**). Third-party software, services,
 catalog metadata and media remain subject to their own terms and rights.
 
-**AWUN is proprietary, source-visible freeware. It is not open-source or
+**SONGVALE is proprietary, source-visible freeware. It is not open-source or
 free/libre software.** Access to this repository does not transfer ownership or
 grant rights except those stated below.
 
@@ -16,19 +16,19 @@ grant rights except those stated below.
 Subject to this license, the copyright holder grants you a limited,
 non-exclusive, non-transferable, royalty-free license to:
 
-1. install and use an official, unmodified AWUN build for personal or internal
+1. install and use an official, unmodified SONGVALE build for personal or internal
    business use; and
-2. access an official AWUN web service made available by the copyright holder.
+2. access an official SONGVALE web service made available by the copyright holder.
 
 This license does not include provider subscriptions, catalog access, media
 rights, API credentials, hosting, support or future updates.
 
 ## 2. Redistribution of official builds
 
-You may redistribute an exact, unmodified copy of an official AWUN binary
+You may redistribute an exact, unmodified copy of an official SONGVALE binary
 package only if all of these conditions are met:
 
-- you obtained it from an official AWUN release channel;
+- you obtained it from an official SONGVALE release channel;
 - you distribute it free of charge, without advertising, bundling, paywalls,
   paid access or other direct or indirect monetization;
 - you preserve the package, branding, copyright notices, this license and the
@@ -43,12 +43,12 @@ their end-user rights unless they separately breach this license.
 ## 3. Source-code access and contributions
 
 The source code is published for transparency, security review, evaluation and
-the preparation of contributions to the official AWUN repository. You may view
+the preparation of contributions to the official SONGVALE repository. You may view
 it and make the copies technically required for those purposes.
 
 GitHub's own Terms may separately allow repository viewing and forking inside
 GitHub. Those platform permissions do not grant a right to deploy, compile,
-redistribute or reuse AWUN outside the limited purposes stated here.
+redistribute or reuse SONGVALE outside the limited purposes stated here.
 
 Unless you have separate written permission from the copyright holder, you may
 not use the source code or any substantial part of it to:
@@ -68,7 +68,7 @@ Contributions are accepted only under
 
 Except where applicable law expressly permits it despite this restriction, you
 may not reverse engineer, decompile or disassemble official binaries, bypass
-technical restrictions, remove notices or branding, impersonate AWUN, or use
+technical restrictions, remove notices or branding, impersonate SONGVALE, or use
 the Software to infringe copyright, privacy, contract or other rights.
 
 Nothing in this license limits non-waivable rights or statutory exceptions,
@@ -77,7 +77,7 @@ research rights where applicable.
 
 ## 5. Downloads and third-party services
 
-AWUN does not grant a license to any song, recording, lyrics, annotation,
+SONGVALE does not grant a license to any song, recording, lyrics, annotation,
 artwork, catalog data or provider service. You are responsible for complying
 with provider terms and for downloading or sharing media only when authorized
 by the rights holder and applicable law. Provider availability may vary by
@@ -92,7 +92,7 @@ Section 1.
 
 ## 7. Trademarks and identity
 
-The AWUN name, logo and visual identity are reserved to the copyright holder.
+The SONGVALE name, logo and visual identity are reserved to the copyright holder.
 No trademark license is granted except the limited display required to use or
 redistribute an unmodified official build under this license.
 
@@ -132,16 +132,16 @@ controls to the extent permitted by applicable law.
 
 ---
 
-# Закрытая freeware-лицензия AWUN 1.0
+# Закрытая freeware-лицензия SONGVALE 1.0
 
 Copyright © 2026 Loro66. Все права защищены.
 
-Эта лицензия распространяется на исходный код AWUN, официальные приложения,
+Эта лицензия распространяется на исходный код SONGVALE, официальные приложения,
 веб-приложение, графику, документацию и другие оригинальные материалы этого
 репозитория (далее — **Программа**). Сторонние компоненты, сервисы, метаданные
 каталогов и медиаматериалы регулируются собственными условиями и правами.
 
-**AWUN — проприетарная бесплатная программа с открытым для просмотра исходным
+**SONGVALE — проприетарная бесплатная программа с открытым для просмотра исходным
 кодом (source-visible freeware). Это не open-source и не свободное ПО.** Доступ
 к репозиторию не передаёт право собственности и не даёт иных прав, кроме прямо
 указанных ниже.
@@ -151,9 +151,9 @@ Copyright © 2026 Loro66. Все права защищены.
 При соблюдении лицензии правообладатель даёт ограниченное, неисключительное,
 непередаваемое и бесплатное право:
 
-1. устанавливать и использовать официальную неизменённую сборку AWUN в личных
+1. устанавливать и использовать официальную неизменённую сборку SONGVALE в личных
    целях или внутри своей организации; и
-2. пользоваться официальным веб-сервисом AWUN, предоставленным
+2. пользоваться официальным веб-сервисом SONGVALE, предоставленным
    правообладателем.
 
 Лицензия не включает подписки провайдеров, права на музыку, API-ключи, хостинг,
@@ -161,10 +161,10 @@ Copyright © 2026 Loro66. Все права защищены.
 
 ## 2. Распространение официальных сборок
 
-Точную неизменённую копию официальной бинарной сборки AWUN можно бесплатно
+Точную неизменённую копию официальной бинарной сборки SONGVALE можно бесплатно
 передавать другим только при одновременном выполнении условий:
 
-- сборка получена из официального канала AWUN;
+- сборка получена из официального канала SONGVALE;
 - она распространяется бесплатно, без рекламы, бандлинга, платного доступа и
   другой прямой или косвенной монетизации;
 - пакет, бренд, уведомления об авторских правах, эта лицензия и EULA сохранены
@@ -180,12 +180,12 @@ Copyright © 2026 Loro66. Все права защищены.
 ## 3. Исходный код и вклад в проект
 
 Код опубликован для прозрачности, проверки безопасности, оценки и подготовки
-вклада в официальный репозиторий AWUN. Разрешено просматривать его и делать
+вклада в официальный репозиторий SONGVALE. Разрешено просматривать его и делать
 технически необходимые для этих целей копии.
 
 Условия самого GitHub могут отдельно разрешать просмотр и создание форков
 внутри GitHub. Эти разрешения платформы не дают права разворачивать, собирать,
-распространять или повторно использовать AWUN за пределами указанных здесь
+распространять или повторно использовать SONGVALE за пределами указанных здесь
 ограниченных целей.
 
 Без отдельного письменного разрешения правообладателя запрещено использовать
@@ -207,7 +207,7 @@ Copyright © 2026 Loro66. Все права защищены.
 Кроме случаев, прямо разрешённых применимым законом независимо от этого
 запрета, нельзя проводить reverse engineering, декомпиляцию или дизассемблинг
 официальных сборок, обходить технические ограничения, удалять уведомления или
-брендинг, выдавать себя за AWUN либо использовать Программу для нарушения
+брендинг, выдавать себя за SONGVALE либо использовать Программу для нарушения
 авторских, договорных, личных или иных прав.
 
 Лицензия не ограничивает неотчуждаемые права и обязательные исключения закона,
@@ -216,7 +216,7 @@ Copyright © 2026 Loro66. Все права защищены.
 
 ## 5. Загрузки и сторонние сервисы
 
-AWUN не выдаёт лицензию на песни, записи, тексты, аннотации, обложки, данные
+SONGVALE не выдаёт лицензию на песни, записи, тексты, аннотации, обложки, данные
 каталогов или сервисы провайдеров. Пользователь обязан соблюдать их правила и
 скачивать или распространять медиа только с разрешения правообладателя и закона.
 Доступность источников зависит от страны и может меняться без уведомления.
@@ -230,7 +230,7 @@ AWUN не выдаёт лицензию на песни, записи, текс�
 
 ## 7. Бренд
 
-Название AWUN, логотип и визуальный стиль принадлежат правообладателю. Лицензия
+Название SONGVALE, логотип и визуальный стиль принадлежат правообладателю. Лицензия
 на товарные знаки не предоставляется, кроме отображения, необходимого для
 использования или передачи неизменённой официальной сборки по этой лицензии.
 

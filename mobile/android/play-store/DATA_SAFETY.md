@@ -1,6 +1,6 @@
-# AWUN — Google Play Data safety draft
+# SONGVALE — Google Play Data safety draft
 
-This file is a prepared answer sheet for the AWUN Android build with application
+This file is a prepared answer sheet for the SONGVALE Android build with application
 ID `com.loro66.awun`. Re-check the deployed app and all enabled provider SDKs
 before submitting the form; the Play Console account owner is responsible for
 the final declaration.
@@ -11,7 +11,7 @@ the final declaration.
 |---|---|
 | Does the app collect or share any required user data types? | Yes |
 | Is all collected data encrypted in transit? | Yes — application traffic is HTTPS-only |
-| Can users request data deletion? | No remote account exists. Explain that local data is deleted through AWUN controls, Android **Clear storage**, or uninstall |
+| Can users request data deletion? | No remote account exists. Explain that local data is deleted through SONGVALE controls, Android **Clear storage**, or uninstall |
 | Does the app support account creation? | No |
 | Does the app contain ads? | No |
 
@@ -27,7 +27,7 @@ the final declaration.
 - Required or optional: **Required for search**, but the user chooses whether to
   make a search.
 - Purpose: **App functionality**
-- Retained in an AWUN user database: **No**
+- Retained in a SONGVALE user database: **No**
 
 ### Other user-generated content
 
@@ -38,7 +38,7 @@ This covers a public playlist URL explicitly pasted by the user.
 - Processed ephemerally: **Yes**
 - Required or optional: **Optional**
 - Purpose: **App functionality**
-- Retained in an AWUN user database: **No**
+- Retained in a SONGVALE user database: **No**
 
 ## Not collected by the Android app
 

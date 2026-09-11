@@ -1,4 +1,4 @@
-# AWUN — Google Play release checklist
+# SONGVALE — Google Play release checklist
 
 ## 1. Account owner
 
@@ -10,14 +10,14 @@
 - [ ] Two-step verification is enabled.
 
 Google does not allow a person under 18 to register a Play Console account.
-If the AWUN founder is still under 18, a parent, guardian or another trusted
+If the SONGVALE founder is still under 18, a parent, guardian or another trusted
 adult must legally own and verify the account. Do not submit false age or
 identity information.
 
 ## 2. Permanent app identity
 
 - [ ] Create an **App**, default language **Russian**, name
-  **AWUN — поиск музыки**, distribution **Free**.
+  **SONGVALE — поиск музыки**, distribution **Free**.
 - [ ] Confirm the permanent package ID is `com.loro66.awun` before the first
   bundle upload.
 - [ ] Enroll in Play App Signing and let Google create the app-signing key.
@@ -36,7 +36,7 @@ Required repository secrets:
 
 Optional repository variable:
 
-- `AWUN_MIRROR_URL` — an owned HTTPS AWUN deployment only.
+- `AWUN_MIRROR_URL` — an owned HTTPS SONGVALE deployment only.
 
 Update the repository `VERSION` file, then run **Android Google Play release**
 manually. Gradle and GitHub Actions derive both the public version and the

@@ -6,7 +6,7 @@ struct AWUNApp: App {
     var body: some Scene {
         WindowGroup {
             AWUNRootView()
-                .background(Color(red: 16 / 255, green: 17 / 255, blue: 14 / 255))
+                .background(Color(red: 9 / 255, green: 18 / 255, blue: 12 / 255))
                 .ignoresSafeArea(edges: .bottom)
         }
     }
@@ -47,16 +47,16 @@ struct AWUNWebView: UIViewRepresentable {
         configuration.mediaTypesRequiringUserActionForPlayback = []
 
         let view = WKWebView(frame: .zero, configuration: configuration)
-        view.backgroundColor = UIColor(red: 16 / 255, green: 17 / 255, blue: 14 / 255, alpha: 1)
+        view.backgroundColor = UIColor(red: 9 / 255, green: 18 / 255, blue: 12 / 255, alpha: 1)
         view.isOpaque = false
         view.allowsBackForwardNavigationGestures = true
-        view.customUserAgent = "AWUN-iOS/1.7"
+        view.customUserAgent = "SONGVALE-iOS/2.0"
         view.navigationDelegate = context.coordinator
         context.coordinator.loaded = $loaded
         context.coordinator.endpoints = endpoints
 
         let refresh = UIRefreshControl()
-        refresh.tintColor = UIColor(red: 183 / 255, green: 255 / 255, blue: 25 / 255, alpha: 1)
+        refresh.tintColor = UIColor(red: 255 / 255, green: 107 / 255, blue: 26 / 255, alpha: 1)
         refresh.addTarget(context.coordinator, action: #selector(Coordinator.reload(_:)), for: .valueChanged)
         view.scrollView.refreshControl = refresh
         context.coordinator.webView = view

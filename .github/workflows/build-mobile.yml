@@ -30,12 +30,12 @@ jobs:
       - name: Prepare Android artifact
         run: |
           mkdir -p dist/android
-          cp mobile/android/app/build/outputs/apk/debug/app-debug.apk dist/android/AWUN-Android-internal-test.apk
-          sha256sum dist/android/AWUN-Android-internal-test.apk > dist/android/AWUN-Android-internal-test.apk.sha256
+          cp mobile/android/app/build/outputs/apk/debug/app-debug.apk dist/android/SONGVALE-Android-internal-test.apk
+          sha256sum dist/android/SONGVALE-Android-internal-test.apk > dist/android/SONGVALE-Android-internal-test.apk.sha256
           cp LICENSE.md EULA.md dist/android/
       - uses: actions/upload-artifact@v4
         with:
-          name: AWUN-Android-internal-test
+          name: SONGVALE-Android-internal-test
           path: dist/android
           if-no-files-found: error
 
@@ -65,13 +65,13 @@ jobs:
         run: |
           mkdir -p dist/ios/Payload
           cp -R build/ios/Build/Products/Release-iphoneos/AWUN.app dist/ios/Payload/AWUN.app
-          ditto -c -k --sequesterRsrc --keepParent dist/ios/Payload dist/ios/AWUN-iOS-unsigned.ipa
-          ditto -c -k --sequesterRsrc --keepParent build/ios/Build/Products/Release-iphonesimulator/AWUN.app dist/ios/AWUN-iOS-Simulator.zip
-          shasum -a 256 dist/ios/AWUN-iOS-unsigned.ipa dist/ios/AWUN-iOS-Simulator.zip > dist/ios/SHA256SUMS.txt
+          ditto -c -k --sequesterRsrc --keepParent dist/ios/Payload dist/ios/SONGVALE-iOS-unsigned.ipa
+          ditto -c -k --sequesterRsrc --keepParent build/ios/Build/Products/Release-iphonesimulator/AWUN.app dist/ios/SONGVALE-iOS-Simulator.zip
+          shasum -a 256 dist/ios/SONGVALE-iOS-unsigned.ipa dist/ios/SONGVALE-iOS-Simulator.zip > dist/ios/SHA256SUMS.txt
           cp LICENSE.md EULA.md dist/ios/
           rm -rf dist/ios/Payload
       - uses: actions/upload-artifact@v4
         with:
-          name: AWUN-iOS-beta
+          name: SONGVALE-iOS-beta
           path: dist/ios
           if-no-files-found: error

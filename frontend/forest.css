@@ -1,4 +1,4 @@
-/* AWUN Dark Forest Ritual — a readable listening room inside a moonlit forest. */
+/* SONGVALE Dark Forest Ritual — a readable listening room inside a moonlit forest. */
 
 html[data-theme]{
   --bg:#090806;
@@ -23,7 +23,7 @@ html[data-theme]{
   background:#090806;
 }
 
-/* AWUN 1.9.0: listener-first shell based on production music-app patterns.
+/* SONGVALE 1.9.0: listener-first shell based on production music-app patterns.
    The content owns the window, playback stays in one persistent bottom bar,
    and secondary surfaces appear only when the listener asks for them. */
 @media (min-width:1100px){
@@ -778,7 +778,7 @@ html[data-decor="minimal"] .track-story{grid-column:1/-1;width:100%;margin:5px 0
   .theme-panel,.flow-panel{inset:0;width:100vw;max-width:none;max-height:100svh;padding:20px;border-radius:0}.flow-controls{grid-template-columns:1fr}.flow-start-row{align-items:stretch;flex-direction:column}.flow-start-row>span{white-space:normal}.flow-start-row button{width:100%}.flow-panel>footer{align-items:flex-start;flex-direction:column;gap:11px}.import-panel{width:100vw}.import-link div{grid-template-columns:1fr}.import-link button{height:44px}.import-actions{grid-template-columns:1fr}.import-actions button{width:100%}
 }
 
-/* AWUN 1.8.7: responsive listening-room composition. */
+/* SONGVALE 1.8.7: responsive listening-room composition. */
 .idle-stage{display:none}
 
 @media(min-width:1100px){
@@ -896,7 +896,7 @@ html[data-decor="minimal"] .track-story{grid-column:1/-1;width:100%;margin:5px 0
   .player.track-enter .turntable,.player.track-enter .player-console,.player.track-swap .player-artwork:before,.track{animation:none}
 }
 
-/* AWUN 1.8.10: Dark Forest Ritual finish. The layer below is visual-only so
+/* SONGVALE 1.8.10: Dark Forest Ritual finish. The layer below is visual-only so
    the existing search, library, and HLS playback controls keep their hooks. */
 html[data-theme]{
   --forest-night:#080908;
@@ -1149,7 +1149,7 @@ body:before{display:none}
 .theme-grid button>i{box-shadow:inset 0 0 0 9px rgba(0,0,0,.25),0 0 18px rgba(158,187,120,.1)}
 .visual-toggles b{color:var(--forest-green)}
 
-/* AWUN 1.8.12: pre-release product layout. The desktop shell uses every
+/* SONGVALE 1.8.12: pre-release product layout. The desktop shell uses every
    visible zone for navigation, discovery, or playback. */
 @media (min-width:1100px){
   html{
@@ -1405,7 +1405,7 @@ body:before{display:none}
   .home-sections{padding:18px 20px 30px}.home-track-grid,.recommendation-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.section-heading h1,.section-heading h2{font-size:22px}.recommendation-card{min-height:145px}.player.player-empty{display:none}.player:not(.player-empty){display:flex}
 }
 
-/* AWUN 1.8.14: turn My Wave into a dedicated product screen. */
+/* SONGVALE 1.8.14: turn My Wave into a dedicated product screen. */
 
 @media (min-width:1100px){
   .flow-panel{
@@ -1491,7 +1491,7 @@ body:before{display:none}
   .idle-stage h2{font-size:20px}
 }
 
-/* AWUN 1.8.13: reference dashboard shell. This layer is intentionally
+/* SONGVALE 1.8.13: reference dashboard shell. This layer is intentionally
    structural: the home screen, library cards and player occupy the same
    three-column geometry as the pre-release product mockup. */
 @media (min-width:1100px){

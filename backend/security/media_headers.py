@@ -13,7 +13,7 @@ _ALLOWED = {
     "user-agent": "User-Agent",
 }
 _RANGE = re.compile(r"^bytes=\d*-\d*(?:,\d*-\d*)*$")
-_DEFAULT_USER_AGENT = "AWUN/1.8 (+https://github.com/Loro66/AWUN)"
+_DEFAULT_USER_AGENT = "SONGVALE/2.0 (+https://github.com/Loro66/AWUN)"
 
 
 def _clean_value(value: object) -> str:

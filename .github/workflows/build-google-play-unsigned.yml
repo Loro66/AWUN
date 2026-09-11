@@ -53,7 +53,7 @@ jobs:
           mapfile -t bundles < <(find mobile/android/app/build/outputs/bundle/release -maxdepth 1 -type f -name '*.aab')
           test "${#bundles[@]}" -eq 1
           mkdir -p dist/google-play-unsigned
-          cp "${bundles[0]}" "dist/google-play-unsigned/AWUN-unsigned-${AWUN_VERSION_NAME}-${AWUN_VERSION_CODE}.aab"
+          cp "${bundles[0]}" "dist/google-play-unsigned/SONGVALE-unsigned-${AWUN_VERSION_NAME}-${AWUN_VERSION_CODE}.aab"
           if test -f mobile/android/app/build/outputs/mapping/release/mapping.txt; then
             cp mobile/android/app/build/outputs/mapping/release/mapping.txt dist/google-play-unsigned/mapping.txt
           fi
@@ -62,7 +62,7 @@ jobs:
           sha256sum dist/google-play-unsigned/*.aab > dist/google-play-unsigned/SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         with:
-          name: AWUN-unsigned-Google-Play-${{ env.AWUN_VERSION_NAME }}-${{ env.AWUN_VERSION_CODE }}
+          name: SONGVALE-unsigned-Google-Play-${{ env.AWUN_VERSION_NAME }}-${{ env.AWUN_VERSION_CODE }}
           path: dist/google-play-unsigned
           if-no-files-found: error
           retention-days: 7

@@ -1,4 +1,4 @@
-"""Автономная Windows-оболочка AWUN со встроенным локальным сервером."""
+"""Автономная Windows-оболочка SONGVALE со встроенным локальным сервером."""
 
 from __future__ import annotations
 
@@ -25,9 +25,10 @@ HOST = "127.0.0.1"
 STARTUP_TIMEOUT_SECONDS = 25
 MAX_DESKTOP_STATE_BYTES = 4 * 1024 * 1024
 TRANSIENT_DESKTOP_STATE_KEYS = {"awun-waveforms-v1"}
-REMOTE_API_ENV = "AWUN_REMOTE_API_URL"
+REMOTE_API_ENV = "SONGVALE_REMOTE_API_URL"
+LEGACY_REMOTE_API_ENV = "AWUN_REMOTE_API_URL"
 REMOTE_API_FILE = "remote-api.txt"
-# AWUN's public Render deployment is a provider fallback. The embedded local
+# SONGVALE's public Render deployment is a provider fallback. The embedded local
 # backend always receives requests first so a healthy source never wakes or
 # waits for the remote service.
 DEFAULT_REMOTE_API_URL = "https://awun-1.onrender.com"
@@ -35,17 +36,15 @@ LOCAL_REMOTE_VALUES = {"local", "off", "disabled", "none"}
 
 SPLASH = """
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><style>
-*{box-sizing:border-box}body{margin:0;overflow:hidden;background:#10110e;color:#f1f1e9;font-family:Arial,sans-serif}
-main{position:relative;height:100vh;display:grid;place-items:center;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:54px 54px}
-main:before,main:after{content:"";position:absolute;border:1px solid rgba(183,255,25,.14);border-radius:50%;animation:orbit 8s ease-in-out infinite}
-main:before{width:420px;height:420px;right:-130px;top:-110px}main:after{width:240px;height:240px;left:-80px;bottom:-60px;animation-direction:reverse}
-section{position:relative;width:min(700px,82vw);padding:34px 0 0;border-top:1px solid #55584f}
-section:before{content:"01 / ПРИЛОЖЕНИЕ";position:absolute;top:-24px;color:#55574f;font-size:7px;font-weight:900;letter-spacing:2px}
-h1{margin:0;font-size:84px;font-style:italic;letter-spacing:-7px}h1 i{color:#b7ff19}
-p{color:#8b8d82;font-size:9px;font-weight:800;letter-spacing:3px}.meta{display:flex;justify-content:space-between;margin-top:34px;color:#55574f;font-size:7px;font-weight:900;letter-spacing:1.5px}
-.line{height:2px;margin-top:14px;background:#30322c;overflow:hidden}.line:after{content:"";display:block;width:34%;height:100%;background:#b7ff19;box-shadow:0 0 20px rgba(183,255,25,.4);animation:scan 1.2s ease-in-out infinite alternate}
-@keyframes scan{to{transform:translateX(195%)}}@keyframes orbit{50%{transform:translate(-18px,14px) rotate(12deg)}}
-</style></head><body><main><section><h1>AWUN<i>.</i></h1><p>ЗАПУСКАЕМ ЛОКАЛЬНЫЙ ПОИСК</p><div class="meta"><span>ЛОКАЛЬНАЯ ВЕРСИЯ / __AWUN_VERSION__</span><span>ОДИН ПОИСК · ВСЯ МУЗЫКА</span></div><div class="line"></div></section></main></body></html>
+*{box-sizing:border-box}body{margin:0;overflow:hidden;background:#09120c;color:#f1f0e8;font-family:"Segoe UI Variable Display","Segoe UI",Arial,sans-serif}
+main{position:relative;height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 78% 18%,rgba(255,107,26,.13),transparent 34%),linear-gradient(145deg,#0d1a12,#071009)}
+main:before{content:"";position:absolute;inset:22px;border:1px solid rgba(241,240,232,.08);border-radius:28px}
+section{position:relative;width:min(720px,82vw);padding:36px;border:1px solid rgba(241,240,232,.12);border-radius:28px;background:rgba(5,13,8,.66);box-shadow:0 28px 90px rgba(0,0,0,.38)}
+.brand{display:flex;align-items:center;gap:24px}.mark{width:92px;height:92px;flex:0 0 auto}h1{margin:0;font-size:54px;font-weight:680;line-height:1;letter-spacing:.15em}
+p{margin:14px 0 0;color:#ff6b1a;font-size:9px;font-weight:750;letter-spacing:2.4px}.meta{display:flex;justify-content:space-between;margin-top:38px;color:#8c9a90;font-size:8px;font-weight:700;letter-spacing:1.3px}
+.line{height:3px;margin-top:14px;border-radius:9px;background:#233128;overflow:hidden}.line:after{content:"";display:block;width:32%;height:100%;border-radius:9px;background:#ff6b1a;box-shadow:0 0 20px rgba(255,107,26,.42);animation:scan 1.2s ease-in-out infinite alternate}
+@keyframes scan{to{transform:translateX(212%)}}
+</style></head><body><main><section><div class="brand"><svg class="mark" viewBox="0 0 128 128" aria-hidden="true"><rect x="4" y="4" width="120" height="120" rx="30" fill="#09120c" stroke="#314338" stroke-width="4"/><g fill="#f1f0e8"><rect x="20" y="42" width="13" height="48" rx="6.5"/><rect x="39" y="29" width="13" height="72" rx="6.5"/><rect x="58" y="18" width="13" height="92" rx="6.5"/><rect x="77" y="29" width="13" height="72" rx="6.5"/><rect x="96" y="42" width="13" height="48" rx="6.5"/></g><path d="M18 52c15 7 23 18 39 23 20 7 31-13 53-23" fill="none" stroke="#ff6b1a" stroke-width="10" stroke-linecap="round"/></svg><div><h1>SONGVALE</h1><p>ВСЯ МУЗЫКА СХОДИТСЯ ЗДЕСЬ</p></div></div><div class="meta"><span>ЛОКАЛЬНАЯ ВЕРСИЯ / __AWUN_VERSION__</span><span>ЗАПУСКАЕМ ПОИСК</span></div><div class="line"></div></section></main></body></html>
 """.replace("__AWUN_VERSION__", APP_VERSION)
 
 
@@ -54,32 +53,41 @@ def startup_error_page(message: str) -> str:
     safe_message = html.escape(message)
     return f"""
     <!doctype html><html lang="ru"><head><meta charset="utf-8"><style>
-    body{{margin:0;background:#10110e;color:#f1f1e9;font-family:Arial,sans-serif}}
+    body{{margin:0;background:#09120c;color:#f1f0e8;font-family:"Segoe UI",Arial,sans-serif}}
     main{{min-height:100vh;display:grid;place-items:center;padding:48px}}
     section{{max-width:720px;border-top:2px solid #ff5f57;padding-top:28px}}
     h1{{font-size:42px;margin:0 0 18px}}p{{color:#b8b9b0;line-height:1.6}}
     small{{display:block;margin-top:24px;color:#77796f}}
-    </style></head><body><main><section><h1>Не удалось запустить AWUN</h1>
-    <p>{safe_message}</p><small>Закрой приложение и запусти его ещё раз. Если ошибка повторяется, переустанови последнюю версию AWUN.</small>
+    </style></head><body><main><section><h1>Не удалось запустить SONGVALE</h1>
+    <p>{safe_message}</p><small>Закрой приложение и запусти его ещё раз. Если ошибка повторяется, переустанови последнюю версию SONGVALE.</small>
     </section></main></body></html>
     """
 
 
 class DesktopStateBridge:
-    """Persist AWUN localStorage across launches that use different local ports."""
+    """Persist localStorage across launches and retain legacy AWUN data."""
 
     def __init__(self, state_path: Path | None = None) -> None:
+        self.legacy_state_path: Path | None = None
         if state_path is None:
             app_data = os.getenv("APPDATA")
-            state_dir = Path(app_data) / "AWUN" if app_data else Path.home() / ".awun"
+            state_dir = Path(app_data) / "SONGVALE" if app_data else Path.home() / ".songvale"
             state_path = state_dir / "desktop-state.json"
+            self.legacy_state_path = (
+                Path(app_data) / "AWUN" / "desktop-state.json"
+                if app_data
+                else Path.home() / ".awun" / "desktop-state.json"
+            )
         self.state_path = state_path
         self._lock = threading.Lock()
 
     def load_state(self) -> str:
         with self._lock:
             try:
-                raw = self.state_path.read_text(encoding="utf-8")
+                source = self.state_path
+                if not source.exists() and self.legacy_state_path and self.legacy_state_path.exists():
+                    source = self.legacy_state_path
+                raw = source.read_text(encoding="utf-8")
                 data = json.loads(raw)
                 if not isinstance(data, dict):
                     return "{}"
@@ -144,20 +152,23 @@ def _normalize_remote_api_url(value: str | None) -> str | None:
 
 
 def remote_api_url() -> str | None:
-    """Return the configured endpoint, or AWUN's free endpoint by default.
+    """Return the configured endpoint, or the public fallback by default.
 
-    Setting ``AWUN_REMOTE_API_URL=local`` (or putting ``local`` in the
+    Setting ``SONGVALE_REMOTE_API_URL=local`` (or the legacy AWUN variable)
+    (or putting ``local`` in the
     settings file) opts out and keeps all provider requests on the computer.
     Any other invalid value falls back to the built-in endpoint so a typo does
     not silently disable the network workaround.
     """
 
-    value = os.getenv(REMOTE_API_ENV, "")
+    value = os.getenv(REMOTE_API_ENV, "") or os.getenv(LEGACY_REMOTE_API_ENV, "")
     if not value:
         app_data = os.getenv("APPDATA")
         if app_data:
             try:
-                value = (Path(app_data) / "AWUN" / REMOTE_API_FILE).read_text(encoding="utf-8")
+                current_file = Path(app_data) / "SONGVALE" / REMOTE_API_FILE
+                legacy_file = Path(app_data) / "AWUN" / REMOTE_API_FILE
+                value = (current_file if current_file.exists() else legacy_file).read_text(encoding="utf-8")
             except OSError:
                 value = ""
     value = str(value or "").strip()
@@ -250,12 +261,12 @@ def main() -> None:
     runtime = LocalAwunServer()
     state_bridge = DesktopStateBridge()
     window = webview.create_window(
-        "AWUN — вся музыка в одном поиске",
+        "SONGVALE — вся музыка сходится здесь",
         html=SPLASH,
         width=1440,
         height=900,
         min_size=(960, 640),
-        background_color="#10110e",
+        background_color="#09120c",
         confirm_close=False,
         js_api=state_bridge,
     )

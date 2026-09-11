@@ -71,7 +71,7 @@ class CacheControlledStaticFiles(StaticFiles):
 def _safe_filename_stem(value: str) -> str:
     value = re.sub(r"[\\/:*?\"<>|\x00-\x1f]", " ", value)
     value = re.sub(r"\s+", " ", value).strip(" .")
-    return (value or "трек AWUN")[:120].rstrip(" .")
+    return (value or "трек SONGVALE")[:120].rstrip(" .")
 
 
 def _is_playlist(url: str, content_type: str) -> bool:
@@ -522,9 +522,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "X-Content-Type-Options": "nosniff",
         }
         if download:
-            resolved_name = _download_filename(filename or "трек AWUN", content_type, str(upstream.url))
+            resolved_name = _download_filename(filename or "трек SONGVALE", content_type, str(upstream.url))
             response_headers["Content-Disposition"] = (
-                f"attachment; filename=\"awun-audio.{resolved_name.rsplit('.', 1)[-1]}\"; "
+                f"attachment; filename=\"songvale-audio.{resolved_name.rsplit('.', 1)[-1]}\"; "
                 f"filename*=UTF-8''{quote(resolved_name)}"
             )
         for header in ("content-length", "content-range", "etag", "last-modified"):

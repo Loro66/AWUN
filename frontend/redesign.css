@@ -1,4 +1,4 @@
-/* AWUN — responsive controls, radio queue and bar waveforms. */
+/* SONGVALE — responsive controls, radio queue and bar waveforms. */
 
 html[data-theme]{
   /* Semantic design tokens. Components below consume the compatibility
@@ -781,3 +781,27 @@ html[data-theme="white"] .diagnostics-entry,html[data-theme="white"] .diagnostic
   .track .story-button,.track .save,.track-queue-menu,.track-queue-menu>summary{width:34px;height:34px}
 }
 @media (prefers-reduced-motion:reduce){.track,.search-feedback button{transition:none}}
+
+/* SONGVALE identity: a compact sound-valley mark and a calm grotesk wordmark. */
+.site-header .logo img,
+html[data-theme="white"] .site-header .logo img{
+  display:block;content:normal;width:46px;height:46px;filter:none;transform:none;
+}
+.site-header .logo:hover img{transform:translateY(-1px)}
+.site-header .logo-copy{display:grid;justify-items:center;gap:4px;min-width:0}
+.site-header .logo strong{
+  color:var(--paper);font-family:"Segoe UI Variable Display","Avenir Next","Helvetica Neue",Arial,sans-serif;
+  font-size:17px;font-weight:680;font-style:normal;line-height:1;letter-spacing:.16em;
+}
+.site-header .logo small{color:var(--signal);font-size:6px;font-weight:750;line-height:1;letter-spacing:.16em;white-space:nowrap}
+@media (max-width:1099px){
+  .site-header .logo img,html[data-theme="white"] .site-header .logo img{width:34px;height:34px}
+  .site-header .logo-copy{justify-items:start;gap:3px}
+  .site-header .logo strong{font-size:15px;letter-spacing:.13em}
+  .site-header .logo small{font-size:5px;letter-spacing:.12em}
+}
+@media (max-width:760px){
+  .site-header .logo img,html[data-theme="white"] .site-header .logo img{display:block;width:30px;height:30px}
+  .site-header .logo strong{font-size:13px;letter-spacing:.1em}
+  .site-header .logo small{display:none}
+}

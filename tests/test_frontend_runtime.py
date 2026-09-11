@@ -45,6 +45,7 @@ def test_storage_migrates_queue_and_round_trips_export() -> None:
           storage.writeJSON('awun-library',[]);
           await storage.importState(backup);
           process.stdout.write(JSON.stringify({
+            app:JSON.parse(backup).app,
             queue:storage.readJSON('awun-queue-v1',{}),
             library:storage.readJSON('awun-library',[]),
             schema:storage.info().schema
@@ -52,6 +53,7 @@ def test_storage_migrates_queue_and_round_trips_export() -> None:
         })().catch(error=>{console.error(error);process.exit(1)});
         """
     )
+    assert result["app"] == "SONGVALE"
     assert result["queue"] == {"version": 1, "mode": "manual", "items": [{"id": "one"}]}
     assert result["library"] == [{"id": "saved"}]
     assert result["schema"] == 2
@@ -183,6 +185,21 @@ def test_backup_preview_counts_tracks_without_changing_state() -> None:
         """
     )
     assert result == {"preview": {"library_tracks": 2, "queue_tracks": 1}, "fallback": "ru"}
+
+
+def test_legacy_awun_backup_remains_importable_after_rebrand() -> None:
+    result = run_node(
+        """
+        (async()=>{
+          const storage=require('./frontend/storage.js');
+          await storage.importState({app:'AWUN',schema:2,data:{
+            'awun-library':'[{"id":"legacy"}]'
+          }});
+          process.stdout.write(JSON.stringify(storage.readJSON('awun-library',[])));
+        })().catch(error=>{console.error(error);process.exit(1)});
+        """
+    )
+    assert result == [{"id": "legacy"}]
 
 
 def test_import_rollback_removes_keys_created_by_failed_migration() -> None:
