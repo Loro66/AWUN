@@ -4,7 +4,7 @@
   "version": "2.1.0",
   "scripts": {
     "test:e2e": "playwright test",
-    "test:e2e:update": "playwright test --update-snapshots"
+    "test:e2e:update": "playwright test --update-snapshots=all"
   },
   "devDependencies": {
     "@playwright/test": "1.62.1"
