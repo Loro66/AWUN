@@ -6,7 +6,6 @@ on:
   push:
     branches:
       - main
-      - codex/songvale-2-1-0-release
 
 permissions:
   contents: read
@@ -32,22 +31,7 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Run browser and screenshot tests
-        shell: bash
-        run: |
-          if [[ "$GITHUB_REF" == "refs/heads/codex/songvale-2-1-0-release" ]]; then
-            npm run test:e2e:update
-          else
-            npm run test:e2e
-          fi
-      - name: Upload refreshed release visuals
-        if: github.ref == 'refs/heads/codex/songvale-2-1-0-release'
-        uses: actions/upload-artifact@v4
-        with:
-          name: songvale-release-visuals
-          path: |
-            tests/e2e/awun.spec.js-snapshots
-            release-captures
-          if-no-files-found: error
+        run: npm run test:e2e
       - name: Upload browser report on failure
         if: failure()
         uses: actions/upload-artifact@v4

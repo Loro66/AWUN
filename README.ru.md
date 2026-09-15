@@ -9,7 +9,7 @@
 [![Последний релиз](https://img.shields.io/github/v/release/Loro66/AWUN?style=for-the-badge&label=RELEASE&labelColor=11120F&color=6E875F)](https://github.com/Loro66/AWUN/releases/latest)
 
 [![Windows build](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&style=flat-square&label=Windows%20build)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
-[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=26%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
+[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=27%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![License](https://img.shields.io/badge/license-source--visible%20freeware-5F665B?style=flat-square)](LICENSE.md)
@@ -22,7 +22,7 @@
 </div>
 
 <p align="center">
-  <img src="docs/media/awun-desktop.webp" width="100%" alt="Результаты поиска и адаптивный Windows-плеер SONGVALE" />
+  <img src="docs/media/songvale-home.webp" width="100%" alt="Главный экран и локальная медиатека SONGVALE" />
 </p>
 
 ## Зачем существует SONGVALE
@@ -51,8 +51,16 @@ SONGVALE рассматривает такие сбои как штатное с
 
 «Моя волна» создаёт непрерывную очередь из активного трека, локальной медиатеки и сигналов вкуса на устройстве. Знакомое или новое, настроение, занятие, язык и эпоха меняют подбор без загрузки профиля на сервер.
 
+### Перенос медиатеки
+
+Перенеси коллекцию по публичной ссылке на плейлист, из экспортированного CSV, JSON, M3U или TXT либо вставь список в формате `Исполнитель — Трек`. SONGVALE сопоставит позиции с подключёнными источниками, сохранит уверенные совпадения на устройстве и подготовит скачиваемый отчёт о том, что найти не удалось.
+
 <p align="center">
-  <img src="docs/media/awun-mobile.webp" width="310" alt="Адаптивный мобильный интерфейс SONGVALE" />
+  <img src="docs/media/songvale-transfer.webp" width="100%" alt="Перенос медиатеки SONGVALE с прогрессом и отчётом о совпадениях" />
+</p>
+
+<p align="center">
+  <img src="docs/media/songvale-mobile.webp" width="310" alt="Главный экран SONGVALE на мобильном устройстве" />
 </p>
 
 ## Как это устроено
