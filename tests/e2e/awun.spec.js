@@ -100,6 +100,24 @@ test('backup import rejects invalid data, respects cancellation and restores aft
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('awun-library')).map(track => track.id))).toEqual([TRACKS.audius[0].id]);
 });
 
+test('library transfer keeps only confident matches and exposes a final report', async ({ page }) => {
+  await openAwun(page);
+  await expect(page.locator('#welcomePanel')).toBeVisible();
+  await page.locator('#welcomeImport').click();
+  await expect(page.locator('#importPanel')).toBeVisible();
+  await page.locator('#importText').fill('AWUN Artist — Midnight Signal\nUnknown Artist — Missing Recording');
+  await page.locator('#importSubmit').click();
+
+  await expect(page.locator('#importReportTitle')).toHaveText('Перенос завершён');
+  await expect(page.locator('#importTotal')).toHaveText('2');
+  await expect(page.locator('#importProcessed')).toHaveText('2');
+  await expect(page.locator('#importAdded')).toHaveText('1');
+  await expect(page.locator('#importMissed')).toHaveText('1');
+  await expect(page.locator('#importDownloadReport')).toBeVisible();
+  await expect(page.locator('#importOpenLibrary')).toBeVisible();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('awun-library') || '[]').map(track => track.title))).toEqual(['Midnight Signal']);
+});
+
 for (const viewport of [
   { name: 'desktop-1920', width: 1920, height: 1080 },
   { name: 'desktop-1280', width: 1280, height: 900 },

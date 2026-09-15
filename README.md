@@ -9,7 +9,7 @@
 [![Latest release](https://img.shields.io/github/v/release/Loro66/AWUN?style=for-the-badge&label=RELEASE&labelColor=11120F&color=6E875F)](https://github.com/Loro66/AWUN/releases/latest)
 
 [![Windows build](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&style=flat-square&label=Windows%20build)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
-[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=26%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
+[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=27%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![License](https://img.shields.io/badge/license-source--visible%20freeware-5F665B?style=flat-square)](LICENSE.md)
@@ -22,7 +22,7 @@ Search across connected sources, keep your library on your device and continue l
 </div>
 
 <p align="center">
-  <img src="docs/media/awun-desktop.webp" width="100%" alt="SONGVALE search results and responsive desktop player" />
+  <img src="docs/media/songvale-home.webp" width="100%" alt="SONGVALE home screen and local library workspace" />
 </p>
 
 ## Why SONGVALE exists
@@ -51,8 +51,16 @@ SONGVALE treats those failures as normal system conditions rather than exception
 
 My Wave turns the current track, local library and on-device taste signals into a continuous queue. Familiarity, mood, activity, language and era controls change each refill without uploading the taste profile.
 
+### Library transfer
+
+Bring an existing collection through a public playlist link, an exported CSV, JSON, M3U or TXT file, or a pasted `Artist — Track` list. SONGVALE resolves each item against connected sources, saves confident matches on the device and produces a downloadable report for anything it could not match.
+
 <p align="center">
-  <img src="docs/media/awun-mobile.webp" width="310" alt="SONGVALE responsive mobile search interface" />
+  <img src="docs/media/songvale-transfer.webp" width="100%" alt="SONGVALE library transfer workspace with live progress and match report" />
+</p>
+
+<p align="center">
+  <img src="docs/media/songvale-mobile.webp" width="310" alt="SONGVALE responsive mobile home screen" />
 </p>
 
 ## How it works
@@ -105,10 +113,10 @@ Open `http://127.0.0.1:8000`. Optional provider credentials and deployment setti
 
 ## Verified release quality
 
-Release `v2.0.0` is built from `main` by GitHub Actions.
+Release `v2.1.0` is built from `main` by GitHub Actions.
 
-- **237 Python tests** cover search, ranking, matching, policy, reliability, security and desktop packaging.
-- **26 Playwright scenarios** exercise progressive search, cancellation, provider deadlines, playback recovery, queue persistence, large libraries and responsive layouts.
+- **240 Python tests** cover search, ranking, matching, policy, reliability, security and desktop packaging.
+- **27 Playwright scenarios** exercise progressive search, cancellation, provider deadlines, playback recovery, library transfer, queue persistence, large libraries and responsive layouts.
 - Visual and control-bound checks run at **1920, 1280, 1000 and 390 pixels**.
 - The release workflow builds both Windows executables, generates SHA-256 checksums and publishes the versioned GitHub Release only after tests pass.
 
@@ -119,7 +127,7 @@ Release `v2.0.0` is built from `main` by GitHub Actions.
 | Surface | Status | Distribution |
 | --- | --- | --- |
 | Web / PWA | Public beta | [Open application](https://awun-1.onrender.com) |
-| Windows | Released, unsigned beta | [Download v2.0.0](https://github.com/Loro66/AWUN/releases/tag/v2.0.0) |
+| Windows | Released, unsigned beta | [Download v2.1.0](https://github.com/Loro66/AWUN/releases/tag/v2.1.0) |
 | Android | Reproducible Play bundle and store package | Release requires Play Console signing and testing |
 | iOS | Reproducible unsigned beta | Physical distribution requires Apple signing |
 

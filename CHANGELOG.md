@@ -2,6 +2,29 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.1.0] - 2026-09-15
+
+### Redesigned
+
+- Rebuilt the first-run screen around library transfer, local storage and the SONGVALE forest/orange identity.
+- Promoted Library Transfer to the main desktop navigation and organized its inputs into public link, export file and pasted-list paths.
+- Added a persistent transfer report with live totals, progress, cancellation, library access and downloadable unmatched-track details.
+
+### Changed
+
+- Process up to 1,000 unique tracks from local exports or pasted lists instead of silently stopping after the first 100.
+- Read up to 500 entries from supported public playlist pages.
+- Save confirmed matches throughout long transfers so stopping the operation keeps completed work.
+
+### Fixed
+
+- Reject weak imported-track matches instead of accepting the first unrelated provider result.
+- Keep imported libraries and previous AWUN desktop data compatible with the SONGVALE Windows package.
+
+### Distribution
+
+- Publish the per-user installer, portable EXE, separate SHA-256 files, license and EULA after the release test gates pass.
+
 ## [2.0.0] - 2026-09-11
 
 ### Rebranded
@@ -91,3 +114,4 @@ Versions before 1.10.4 were iterative beta builds. Their exact changes remain av
 [1.10.5]: https://github.com/Loro66/AWUN/releases/tag/v1.10.5
 [1.10.6]: https://github.com/Loro66/AWUN/releases/tag/v1.10.6
 [2.0.0]: https://github.com/Loro66/AWUN/releases/tag/v2.0.0
+[2.1.0]: https://github.com/Loro66/AWUN/releases/tag/v2.1.0

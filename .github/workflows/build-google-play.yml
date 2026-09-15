@@ -33,12 +33,18 @@ jobs:
         with:
           distribution: temurin
           java-version: "17"
-      - uses: android-actions/setup-android@v3
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.13"
       - name: Install Android 16 SDK
-        run: sdkmanager "platform-tools" "platforms;android-36" "build-tools;35.0.0"
+        shell: bash
+        run: |
+          set -euo pipefail
+          sdk_root="${ANDROID_SDK_ROOT:-$ANDROID_HOME}"
+          sdkmanager="$(find "$sdk_root/cmdline-tools" -type f -path '*/bin/sdkmanager' | sort -V | tail -n 1)"
+          test -x "$sdkmanager"
+          yes | "$sdkmanager" --licenses >/dev/null || true
+          "$sdkmanager" "platform-tools" "platforms;android-36" "build-tools;35.0.0"
       - name: Validate release signing secrets
         shell: bash
         run: |

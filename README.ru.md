@@ -9,7 +9,7 @@
 [![Последний релиз](https://img.shields.io/github/v/release/Loro66/AWUN?style=for-the-badge&label=RELEASE&labelColor=11120F&color=6E875F)](https://github.com/Loro66/AWUN/releases/latest)
 
 [![Windows build](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&style=flat-square&label=Windows%20build)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
-[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=26%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
+[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=27%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![License](https://img.shields.io/badge/license-source--visible%20freeware-5F665B?style=flat-square)](LICENSE.md)
@@ -22,7 +22,7 @@
 </div>
 
 <p align="center">
-  <img src="docs/media/awun-desktop.webp" width="100%" alt="Результаты поиска и адаптивный Windows-плеер SONGVALE" />
+  <img src="docs/media/songvale-home.webp" width="100%" alt="Главный экран и локальная медиатека SONGVALE" />
 </p>
 
 ## Зачем существует SONGVALE
@@ -51,8 +51,16 @@ SONGVALE рассматривает такие сбои как штатное с
 
 «Моя волна» создаёт непрерывную очередь из активного трека, локальной медиатеки и сигналов вкуса на устройстве. Знакомое или новое, настроение, занятие, язык и эпоха меняют подбор без загрузки профиля на сервер.
 
+### Перенос медиатеки
+
+Перенеси коллекцию по публичной ссылке на плейлист, из экспортированного CSV, JSON, M3U или TXT либо вставь список в формате `Исполнитель — Трек`. SONGVALE сопоставит позиции с подключёнными источниками, сохранит уверенные совпадения на устройстве и подготовит скачиваемый отчёт о том, что найти не удалось.
+
 <p align="center">
-  <img src="docs/media/awun-mobile.webp" width="310" alt="Адаптивный мобильный интерфейс SONGVALE" />
+  <img src="docs/media/songvale-transfer.webp" width="100%" alt="Перенос медиатеки SONGVALE с прогрессом и отчётом о совпадениях" />
+</p>
+
+<p align="center">
+  <img src="docs/media/songvale-mobile.webp" width="310" alt="Главный экран SONGVALE на мобильном устройстве" />
 </p>
 
 ## Как это устроено
@@ -105,10 +113,10 @@ uvicorn backend.api.main:app --reload
 
 ## Проверенное качество релиза
 
-Релиз `v2.0.0` автоматически собирается из `main` через GitHub Actions.
+Релиз `v2.1.0` автоматически собирается из `main` через GitHub Actions.
 
-- **237 Python-тестов** проверяют поиск, ranking, matching, policy, надёжность, безопасность и desktop-упаковку.
-- **26 Playwright-сценариев** проверяют постепенный поиск, отмену, тайм-аут источника, восстановление воспроизведения, очередь, большие медиатеки и адаптивность.
+- **240 Python-тестов** проверяют поиск, ranking, matching, policy, надёжность, безопасность и desktop-упаковку.
+- **27 Playwright-сценариев** проверяют постепенный поиск, отмену, тайм-аут источника, восстановление воспроизведения, перенос медиатеки, очередь, большие библиотеки и адаптивность.
 - Интерфейс и границы контролов проверяются на ширинах **1920, 1280, 1000 и 390 пикселей**.
 - Windows workflow создаёт два EXE, рассчитывает SHA-256 и публикует GitHub Release только после успешных тестов.
 
@@ -119,7 +127,7 @@ uvicorn backend.api.main:app --reload
 | Платформа | Статус | Где получить |
 | --- | --- | --- |
 | Web / PWA | Публичная бета | [Открыть приложение](https://awun-1.onrender.com) |
-| Windows | Выпущенная неподписанная бета | [Скачать v2.0.0](https://github.com/Loro66/AWUN/releases/tag/v2.0.0) |
+| Windows | Выпущенная неподписанная бета | [Скачать v2.1.0](https://github.com/Loro66/AWUN/releases/tag/v2.1.0) |
 | Android | Воспроизводимая Play-сборка и пакет страницы магазина | Публикация требует подписи и тестирования в Play Console |
 | iOS | Воспроизводимая неподписанная бета | Установка на устройства требует подписи Apple |
 

@@ -165,6 +165,22 @@ def test_public_url_import_is_automatic_and_account_safe() -> None:
     assert 'f"{settings.api_prefix}/library/import-url"' in api
 
 
+def test_library_transfer_is_visible_resumable_and_rejects_weak_matches() -> None:
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    styles = (ROOT / "frontend" / "redesign.css").read_text(encoding="utf-8")
+
+    assert all(f'id="{element}"' in html for element in (
+        "welcomePanel", "welcomeImport", "importReport", "importProcessed",
+        "importCancel", "importDownloadReport", "importOpenLibrary",
+    ))
+    assert "tracks.slice(0,1000)" in script
+    assert "commitImportedMatches" in script and "importController?.abort()" in script
+    assert "importedMatchConfidence" in script and ">=.72" in script
+    assert "SONGVALE-import-" in script and "not_found" in script
+    assert ".welcome-panel" in styles and ".import-workspace" in styles
+
+
 def test_installable_pwa_is_wired() -> None:
     html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
     script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")

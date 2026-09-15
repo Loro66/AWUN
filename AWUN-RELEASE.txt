@@ -1,23 +1,32 @@
-SONGVALE 2.0.0
-Release date: 2026-09-11
+SONGVALE 2.1.0
+Release date: 2026-09-15
 
-Release highlights:
-- Rename the product from AWUN to SONGVALE throughout the application.
-- Add an original five-pillar sound-valley logo and a forest/orange visual identity.
-- Replace the old display type with a cleaner geometric system wordmark.
-- Embed the new icon in the web app, PWA, Windows executable and installer,
-  Android launcher and iOS shell.
-- Preserve existing libraries and settings through legacy storage and backup
-  compatibility.
-- Add SONGVALE desktop state and remote-API configuration with migration from
-  the previous AWUN locations.
+This release turns library transfer into the main first-run experience and
+ships a complete Windows package for everyday use.
 
-The Windows application still bundles FastAPI and the complete frontend and
-starts on an ephemeral loopback port. Search remains local-first and provider
-fallback behavior is unchanged by the rebrand.
+What changed:
+- Redesigned the home screen around the SONGVALE forest/orange identity with a
+  clear first action: move an existing music library or start a search.
+- Made Library Transfer a permanent navigation destination on Windows.
+- Rebuilt the transfer workspace around three inputs: public playlist URL,
+  CSV/JSON/M3U/M3U8/TXT export file, or a pasted “Artist — Title” list.
+- Increased local file and pasted-list processing from 100 to as many as 1,000
+  unique tracks per transfer. Public playlist pages can return up to 500.
+- Added live totals for checked, added and unmatched tracks, safe cancellation,
+  progressive on-device saving, and a downloadable JSON report.
+- Added a confidence gate so unrelated search results are no longer accepted
+  merely because a provider returned them first.
+- Preserved SONGVALE 2.0 and legacy AWUN libraries, queues and settings.
 
-The automated release gate contains the Python suite and the repository keeps
-Playwright scenarios for desktop, tablet and phone layouts.
+Windows package:
+- SONGVALE-Setup-x64.exe — per-user installer.
+- SONGVALE.exe — portable executable.
+- Separate SHA-256 checksum files, LICENSE.md and EULA.md.
 
-The Windows archive includes SONGVALE.exe (portable), SONGVALE-Setup-x64.exe
-(per-user installer), their SHA-256 checksums, LICENSE.md and EULA.md.
+The desktop application bundles the FastAPI backend and complete frontend. It
+runs on an ephemeral loopback port, keeps personal state under the current
+Windows user, queries the local backend first and uses the public endpoint only
+as a provider fallback.
+
+The release is published only after the complete Python suite and the browser
+behavior/responsive workflow pass on GitHub Actions.
