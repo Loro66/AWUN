@@ -1,4 +1,4 @@
-# AWUN release deployment
+# SONGVALE release deployment
 
 ## 1. Deploy the Python API
 
@@ -88,15 +88,15 @@ Open `https://YOUR-AWUN-API/` after deployment.
 - Added lyric notes survive reload on the same device and can be deleted.
 
 Provider media links are short-lived. Before playing a saved or queued track,
-AWUN refreshes its link on the same provider; cross-provider recovery begins
+SONGVALE refreshes its link on the same provider; cross-provider recovery begins
 only when that refresh fails.
 
 ## 4. Build the Windows application
 
 Open **GitHub → Actions → Windows desktop build → Run workflow**. The completed
-run contains an `AWUN-Windows-x64` artifact with portable `AWUN.exe`, the
-per-user `AWUN-Setup-x64.exe` installer and SHA-256 checksums. A `v*` tag
-publishes the same files in GitHub Releases.
+run contains a `SONGVALE-Windows-x64` artifact with portable `SONGVALE.exe`,
+the per-user `SONGVALE-Setup-x64.exe` installer and SHA-256 checksums. A
+version change on `main` publishes the same files in GitHub Releases.
 
 The current desktop build bundles the FastAPI backend and frontend and starts a random
 loopback port. It queries the bundled local backend first and uses the configured
@@ -116,7 +116,7 @@ latest commit** in Render if auto-deploy does not start.
 
 ## 6. Build the Google Play Android release
 
-The Android release is `com.loro66.awun`, version `1.10.3` / code `1100300`, and
+The Android release is `com.loro66.awun`, version `2.1.0` / code `2010000`, and
 targets Android 16 API 36. Before building, the verified Play Console account
 owner must configure the four upload-key repository secrets documented in
 `mobile/android/play-store/RELEASE_CHECKLIST.md`.

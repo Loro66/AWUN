@@ -1,19 +1,19 @@
-# AWUN testing strategy
+# SONGVALE testing strategy
 
 [Project overview](../README.md) · [Case study](PROJECT_CASE_STUDY.md) · [Architecture](ARCHITECTURE.md) · [Roadmap](../ROADMAP.md) · [GitHub Actions](https://github.com/Loro66/AWUN/actions)
 
-AWUN combines deterministic unit and integration tests with browser-level behavior, geometry and screenshot checks. The objective is to test failure handling and user-visible state, not only the presence of implementation strings.
+SONGVALE combines deterministic unit and integration tests with browser-level behavior, geometry and screenshot checks. The objective is to test failure handling and user-visible state, not only the presence of implementation strings.
 
-## Verified scope for v1.10.6
+## Verified scope for v2.1.0
 
 | Layer | Current verified count | Examples |
 | --- | ---: | --- |
-| Python tests | 237 | Search, source adapters, matching, ranking, policy, media security, reliability and desktop packaging |
-| Playwright scenarios | 26 | Progressive results, cancellation, timeouts, playback recovery, queue persistence, backup restore and large libraries |
+| Python tests | 240 | Search, source adapters, matching, ranking, policy, media security, reliability and desktop packaging |
+| Playwright scenarios | 27 | Progressive results, cancellation, timeouts, playback recovery, library transfer, queue persistence, backup restore and large libraries |
 | Reviewed viewport baselines | 4 | 1920 by 1080, 1280 by 900, 1000 by 800 and 390 by 844 |
 | Responsive readability combinations | 8 | Four widths in dark and light themes |
 
-The release build runs the Python suite before creating `AWUN.exe` and `AWUN-Setup-x64.exe`. The browser workflow installs its pinned Playwright version and Chromium before executing the full browser suite.
+The release build runs the Python suite before creating `SONGVALE.exe` and `SONGVALE-Setup-x64.exe`. The browser workflow installs its pinned Playwright version and Chromium before executing the full browser suite.
 
 ## Test layers
 
@@ -36,6 +36,7 @@ The release build runs the Python suite before creating `AWUN.exe` and `AWUN-Set
 ### Local data
 
 - Library import and matching.
+- Long transfers save confirmed matches continuously, can be stopped, and expose an unmatched-track report.
 - Queue persistence and reordering.
 - Backup schema validation and confirmation.
 - Rollback after a partial storage failure.
@@ -81,6 +82,6 @@ The versioned Windows Release is published only after its build job succeeds. An
 
 ## What these tests do not prove
 
-Browser tests use controlled provider responses. They verify AWUN behavior under success, delay and failure, but they do not prove that every real track is available in every country. They also do not measure a user's network speed, long-term provider API stability, Windows audio-driver compatibility or product retention.
+Browser tests use controlled provider responses. They verify SONGVALE behavior under success, delay and failure, but they do not prove that every real track is available in every country. They also do not measure a user's network speed, long-term provider API stability, Windows audio-driver compatibility or product retention.
 
 Those questions require monitored live operation and real user testing. The project does not convert automated test counts into unsupported adoption claims.

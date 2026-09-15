@@ -1,0 +1,1 @@
+Redesigned first run and library transfer with progress, cancellation, reports, and safer matching.
