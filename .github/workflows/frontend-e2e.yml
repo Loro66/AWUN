@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - main
+      - codex/songvale-quiet-forest-2-1-1
 
 permissions:
   contents: read
@@ -31,7 +32,20 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Run browser and screenshot tests
-        run: npm run test:e2e
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF" == "refs/heads/codex/songvale-quiet-forest-2-1-1" ]]; then
+            npx playwright test tests/e2e/capture-release.spec.js
+          else
+            npm run test:e2e
+          fi
+      - name: Upload quiet forest previews
+        if: github.ref == 'refs/heads/codex/songvale-quiet-forest-2-1-1'
+        uses: actions/upload-artifact@v4
+        with:
+          name: songvale-quiet-forest-previews
+          path: release-captures
+          if-no-files-found: error
       - name: Upload browser report on failure
         if: failure()
         uses: actions/upload-artifact@v4
