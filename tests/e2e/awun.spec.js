@@ -171,7 +171,7 @@ for (const viewport of [
           width: rect.width, height: rect.height, visible: style.display !== 'none' && rect.width > 0 && rect.height > 0 };
       };
       return { width: innerWidth, height: innerHeight, scrollWidth: document.documentElement.scrollWidth,
-        player: bounds('#player'), controls: ['#nowTitle', '#playPause', '#waveProgress', '#queueToggle', '#muteButton', '#volume'].map(bounds) };
+        player: bounds('#player'), controls: ['#nowTitle', '#playPause', '#waveProgress', '#playerSave', '#queueToggle', '#muteButton', '#volume'].map(bounds) };
     });
     await testInfo.attach('player-layout', { body: JSON.stringify(layout, null, 2), contentType: 'application/json' });
     await expect(page.locator('.window-chrome, .player-menu')).toHaveCount(0);

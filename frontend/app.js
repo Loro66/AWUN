@@ -726,7 +726,7 @@ function renderQueue(){
 function render(){
   const list=currentList(),saved=selectedIds();
   const playerSaved=Boolean(state.active&&saved.has(state.active.id));
-  ui.playerSave.disabled=!state.active;ui.playerSave.classList.toggle('saved',playerSaved);ui.playerSave.textContent=playerSaved?'♥':'♡';ui.playerSave.setAttribute('aria-pressed',String(playerSaved));ui.playerSave.setAttribute('aria-label',t(playerSaved?'removeLibraryAria':'addLibrary'));
+  ui.playerSave.disabled=!state.active;ui.playerSave.classList.toggle('saved',playerSaved);ui.playerSave.textContent=playerSaved?'♥':'♡';ui.playerSave.setAttribute('aria-pressed',String(playerSaved));ui.playerSave.setAttribute('aria-label',t(playerSaved?'removeLibraryAria':'addLibrary'));ui.playerSave.title=t(playerSaved?'removeLibraryAria':'addLibrary');
   const showHome=!state.library&&!state.hasSearched;
   ui.homeSections.hidden=!showHome;
   ui.results.hidden=showHome;
