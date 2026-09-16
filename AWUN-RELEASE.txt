@@ -10,6 +10,7 @@ What changed:
 - Duration values such as 02:40 are ignored as metadata instead of being sent
   to search as fake track titles.
 - Multiple artist lines remain attached to the same track.
+- The persistent player now includes a direct save/remove-from-library button.
 - The importer no longer turns a small copied library into dozens of invalid
   searches and misleading "not found" results.
 - Added a browser regression test for the exact multiline format that exposed

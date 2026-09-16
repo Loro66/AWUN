@@ -53,6 +53,11 @@ test('an available YouTube track keeps the official player visible and minimizab
 
   await expect(page.locator('#nowSource')).toHaveText('YouTube');
   await expect(page.locator('#youtubeDock')).toBeVisible();
+  await page.locator('#playerSave').click();
+  await expect(page.locator('#playerSave')).toHaveAttribute('aria-pressed', 'true');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('awun-library') || '[]').some(track => track.source === 'youtube'))).toBe(true);
+  await page.locator('#playerSave').click();
+  await expect(page.locator('#playerSave')).toHaveAttribute('aria-pressed', 'false');
   await page.locator('#minimizeVideo').click();
   await expect(page.locator('#youtubeDock')).toHaveClass(/minimized/);
 });

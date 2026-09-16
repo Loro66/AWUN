@@ -9,6 +9,7 @@ All notable user-visible changes are documented here. SONGVALE follows semantic 
 - Group copied playlist rows into complete title-and-artist records instead of treating durations and each artist line as separate tracks.
 - Ignore standalone duration metadata such as `02:40` during text import.
 - Preserve multiple artist lines as one combined artist field before matching.
+- Add a save or remove-from-library control directly to the persistent player panel.
 
 ### Testing
 
