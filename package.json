@@ -1,7 +1,7 @@
 {
   "name": "songvale-frontend-tests",
   "private": true,
-  "version": "2.1.1",
+  "version": "2.1.2",
   "scripts": {
     "test:e2e": "playwright test",
     "test:e2e:update": "playwright test --update-snapshots=all"

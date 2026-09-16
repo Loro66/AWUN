@@ -118,6 +118,29 @@ test('library transfer keeps only confident matches and exposes a final report',
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('awun-library') || '[]').map(track => track.title))).toEqual(['Midnight Signal']);
 });
 
+test('library transfer groups copied playlist rows instead of matching metadata lines', async ({ page }) => {
+  await openAwun(page);
+  await page.locator('#welcomeImport').click();
+  await page.locator('#importText').fill([
+    'Midnight Signal',
+    'AWUN Artist',
+    '02:40',
+    '',
+    'Missing Recording',
+    'Unknown Artist',
+    'Admony',
+    '01:43',
+  ].join('\n'));
+  await page.locator('#importSubmit').click();
+
+  await expect(page.locator('#importReportTitle')).toHaveText('Перенос завершён');
+  await expect(page.locator('#importTotal')).toHaveText('2');
+  await expect(page.locator('#importProcessed')).toHaveText('2');
+  await expect(page.locator('#importAdded')).toHaveText('1');
+  await expect(page.locator('#importMissed')).toHaveText('1');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('awun-library') || '[]').map(track => track.title))).toEqual(['Midnight Signal']);
+});
+
 for (const viewport of [
   { name: 'desktop-1920', width: 1920, height: 1080 },
   { name: 'desktop-1280', width: 1280, height: 900 },

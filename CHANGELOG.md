@@ -2,6 +2,18 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.1.2] - 2026-09-16
+
+### Fixed
+
+- Group copied playlist rows into complete title-and-artist records instead of treating durations and each artist line as separate tracks.
+- Ignore standalone duration metadata such as `02:40` during text import.
+- Preserve multiple artist lines as one combined artist field before matching.
+
+### Testing
+
+- Added a browser regression scenario for the multiline playlist format that previously turned a small library into dozens of invalid searches.
+
 ## [2.1.1] - 2026-09-16
 
 ### Redesigned
@@ -134,3 +146,4 @@ Versions before 1.10.4 were iterative beta builds. Their exact changes remain av
 [2.0.0]: https://github.com/Loro66/AWUN/releases/tag/v2.0.0
 [2.1.0]: https://github.com/Loro66/AWUN/releases/tag/v2.1.0
 [2.1.1]: https://github.com/Loro66/AWUN/releases/tag/v2.1.1
+[2.1.2]: https://github.com/Loro66/AWUN/releases/tag/v2.1.2

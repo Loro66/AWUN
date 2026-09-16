@@ -1,0 +1,1 @@
+Fixed library transfer for playlists copied as multiline text. SONGVALE now groups title, artist lines and duration into one track instead of searching duration values and artist names as separate recordings.
