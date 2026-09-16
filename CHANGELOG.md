@@ -2,6 +2,24 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.1.1] - 2026-09-16
+
+### Redesigned
+
+- Restored the quiet dark-forest identity with real forest photography, calmer typography and a muted natural-gold accent.
+- Replaced the dashboard-like first screen with a focused invitation to transfer a library or begin searching.
+- Simplified Library Transfer into a restrained editorial workspace that keeps the forest atmosphere visible.
+
+### Removed
+
+- Removed the waveform logo, decorative status dots, numbered badges, abstract signal diagrams and arrow-heavy call-to-action styling.
+- Removed interface ornaments that looked like generated dashboard placeholders without communicating useful state.
+
+### Distribution
+
+- Refreshed the Windows, Android, iOS and browser icons around the quieter SONGVALE monogram.
+- Updated reviewed desktop and mobile screenshots and added regression coverage for the new visual identity.
+
 ## [2.1.0] - 2026-09-15
 
 ### Redesigned
@@ -115,3 +133,4 @@ Versions before 1.10.4 were iterative beta builds. Their exact changes remain av
 [1.10.6]: https://github.com/Loro66/AWUN/releases/tag/v1.10.6
 [2.0.0]: https://github.com/Loro66/AWUN/releases/tag/v2.0.0
 [2.1.0]: https://github.com/Loro66/AWUN/releases/tag/v2.1.0
+[2.1.1]: https://github.com/Loro66/AWUN/releases/tag/v2.1.1

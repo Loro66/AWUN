@@ -20,7 +20,7 @@
 
   <main class="app-shell">
     <header class="site-header">
-      <a class="logo" href="/" aria-label="Главная SONGVALE" data-i18n-aria-label="homeAria"><img src="/static/brand/songvale-mark.svg" alt=""><span class="logo-copy"><strong>SONGVALE</strong><small data-i18n="brandLine">EVERY SOUND FINDS A WAY</small></span></a>
+      <a class="logo" href="/" aria-label="Главная SONGVALE" data-i18n-aria-label="homeAria"><span class="logo-copy"><strong>SONGVALE</strong><small data-i18n="brandLine">EVERY SOUND FINDS A WAY</small></span></a>
       <div class="top-actions">
         <button id="searchNavButton" class="library search-nav active" type="button" aria-controls="searchInput" aria-pressed="true">
           <i aria-hidden="true">⌕</i><span data-i18n="search">ПОИСК</span><b aria-hidden="true">01</b>
@@ -49,7 +49,7 @@
           <label class="sr-only" for="searchInput" data-i18n="searchMusic">Поиск музыки</label>
           <input id="searchInput" name="q" autocomplete="off" spellcheck="false" maxlength="200" placeholder="Исполнитель или трек" data-i18n-placeholder="searchPlaceholder" autofocus>
           <button id="searchButton" type="submit" aria-label="Найти" data-i18n-aria-label="searchAria">
-            <span>↗</span><i aria-hidden="true"></i>
+            <span>⌕</span><i aria-hidden="true"></i>
           </button>
         </form>
 
@@ -97,25 +97,14 @@
     <section id="homeSections" class="home-sections" aria-label="Главная SONGVALE">
       <section id="welcomePanel" class="welcome-panel" aria-labelledby="welcomeTitle">
         <div class="welcome-copy">
-          <span class="welcome-kicker" data-i18n="welcomeKicker">ЛОКАЛЬНАЯ МЕДИАТЕКА / БЕЗ АККАУНТА</span>
-          <h1 id="welcomeTitle" data-i18n="welcomeTitle">Перенеси медиатеку.<br>Слушай свободнее.</h1>
-          <p data-i18n="welcomeBody">Загрузи экспорт или вставь публичную ссылку. SONGVALE найдёт доступные версии треков в подключённых каталогах и сохранит результат на этом компьютере.</p>
+          <span class="welcome-kicker" data-i18n="welcomeKicker">ТИХОЕ МЕСТО ДЛЯ ТВОЕЙ МУЗЫКИ</span>
+          <h1 id="welcomeTitle" data-i18n="welcomeTitle">Собери музыку<br>в одном месте.</h1>
+          <p data-i18n="welcomeBody">Перенеси знакомые треки, находи новые записи и слушай без суеты. Медиатека останется на этом компьютере.</p>
           <div class="welcome-actions">
-            <button id="welcomeImport" class="welcome-primary" type="button"><span data-i18n="startTransfer">НАЧАТЬ ПЕРЕНОС</span><b aria-hidden="true">↗</b></button>
-            <button id="welcomeSearch" class="welcome-secondary" type="button" data-i18n="findTrack">НАЙТИ ТРЕК</button>
+            <button id="welcomeImport" class="welcome-primary" type="button"><span data-i18n="startTransfer">ПЕРЕНЕСТИ МЕДИАТЕКУ</span></button>
+            <button id="welcomeSearch" class="welcome-secondary" type="button" data-i18n="findTrack">НАЧАТЬ ПОИСК</button>
           </div>
-          <ul class="welcome-trust" aria-label="Преимущества SONGVALE" data-i18n-aria-label="welcomeBenefitsAria">
-            <li data-i18n="localOnly">НА ЭТОМ УСТРОЙСТВЕ</li>
-            <li data-i18n="noAccount">БЕЗ ВХОДА В АККАУНТ</li>
-            <li data-i18n="fiveCatalogs">5 КАТАЛОГОВ</li>
-          </ul>
-        </div>
-        <div class="welcome-signal" aria-hidden="true">
-          <div class="signal-head"><span><i></i><b data-i18n="librarySignal">СИГНАЛ МЕДИАТЕКИ</b></span><em>↗</em></div>
-          <div class="signal-label"><span data-i18n="connectedResults">СОВПАДЕНИЯ ИЗ ИСТОЧНИКОВ</span><b>LOCAL-FIRST</b></div>
-          <div class="signal-track active"><i>▶</i><span><strong data-i18n="yourFirstTrack">Твой первый трек</strong><small data-i18n="readyToMatch">готов к поиску совпадения</small></span><b class="signal-wave"></b></div>
-          <div class="signal-track"><i>＋</i><span><strong id="welcomeLibraryCount">0 ТРЕКОВ</strong><small data-i18n="savedOnDevice">сохранено на устройстве</small></span><b class="signal-wave quiet"></b></div>
-          <div class="signal-foot"><i></i><span data-i18n="resilientLibrary">ЛОКАЛЬНАЯ МЕДИАТЕКА · УСТОЙЧИВОЕ ВОСПРОИЗВЕДЕНИЕ</span></div>
+          <p id="welcomeLibraryCount" class="welcome-library-state">0 сохранено на этом устройстве</p>
         </div>
       </section>
       <section class="dashboard-section continue-section" aria-labelledby="continueTitle">
@@ -262,7 +251,7 @@
     </div>
     <p data-i18n="visualDescription">Выбери цветовую тему. Переключи интерфейс в минимальный режим, если хочешь оставить на экране только музыку. Настройки сохраняются на этом устройстве.</p>
     <div class="theme-grid" role="group" aria-label="Цветовая тема" data-i18n-aria-label="colorThemeAria">
-      <button type="button" data-theme-choice="black" aria-pressed="true"><i></i><span data-i18n="themeBlack">ЧЁРНАЯ</span><small data-i18n="themeBlackHint">00 / ЧИСТАЯ</small></button>
+      <button type="button" data-theme-choice="black" aria-pressed="true"><i></i><span data-i18n="themeBlack">ТЁМНЫЙ ЛЕС</span><small data-i18n="themeBlackHint">00 / ТИХАЯ</small></button>
       <button type="button" data-theme-choice="white" aria-pressed="false"><i></i><span data-i18n="themeWhite">БЕЛАЯ</span><small data-i18n="themeWhiteHint">01 / БУМАГА</small></button>
       <button type="button" data-theme-choice="acid" aria-pressed="false"><i></i><span data-i18n="themeAcid">КИСЛОТНАЯ</span><small data-i18n="themeAcidHint">02 / СИГНАЛ</small></button>
       <button type="button" data-theme-choice="ultraviolet" aria-pressed="false"><i></i><span data-i18n="themeUltraviolet">УЛЬТРАФИОЛЕТ</span><small data-i18n="themeUltravioletHint">03 / НОЧЬ</small></button>
@@ -310,32 +299,32 @@
   <div id="importBackdrop" class="theme-backdrop" hidden></div>
   <aside id="importPanel" class="theme-panel import-panel" hidden aria-label="Перенос музыкальной библиотеки" data-i18n-aria-label="importLibraryAria">
     <div class="theme-panel-head">
-      <div><span data-i18n="transferWorkspace">РАБОЧЕЕ ПРОСТРАНСТВО ИМПОРТА</span><strong data-i18n="libraryTransfer">ПЕРЕНОС МЕДИАТЕКИ</strong></div>
+      <div><span data-i18n="transferWorkspace">ИЗ ТВОЕЙ КОЛЛЕКЦИИ</span><strong data-i18n="libraryTransfer">ПЕРЕНОС МЕДИАТЕКИ</strong></div>
       <button id="importClose" type="button" aria-label="Закрыть перенос медиатеки" data-i18n-aria-label="closeImportAria">×</button>
     </div>
     <div class="import-intro">
       <p data-i18n="importDescription">Выбери удобный способ. SONGVALE прочитает список, найдёт доступные версии треков и будет сохранять совпадения на этом компьютере по мере обработки.</p>
-      <div class="import-guard"><i></i><span><b data-i18n="privateByDesign">ПРИВАТНО ПО УМОЛЧАНИЮ</b><small data-i18n="importGuardBody">Пароль и доступ к личному аккаунту не требуются.</small></span></div>
+      <div class="import-guard"><span><b data-i18n="privateByDesign">ОСТАЁТСЯ НА ЭТОМ УСТРОЙСТВЕ</b><small data-i18n="importGuardBody">Пароль и доступ к личному аккаунту не требуются.</small></span></div>
     </div>
     <div class="import-workspace">
       <div class="import-methods">
         <section class="import-method import-method-link">
-          <header><b>01</b><span><strong data-i18n="publicPlaylistLink">ПУБЛИЧНАЯ ССЫЛКА</strong><small data-i18n="publicLinkHint">YouTube и открытые страницы плейлистов</small></span></header>
-          <label class="import-copy import-link" for="importUrl"><span class="sr-only" data-i18n="publicPlaylistLink">ПУБЛИЧНАЯ ССЫЛКА НА ПЛЕЙЛИСТ</span><div><input id="importUrl" type="url" inputmode="url" placeholder="https://www.youtube.com/playlist?list=…"><button id="importUrlSubmit" type="button" data-i18n="readPlaylist">ПРОЧИТАТЬ ↗</button></div></label>
+          <header><span><strong data-i18n="publicPlaylistLink">ПУБЛИЧНАЯ ССЫЛКА</strong><small data-i18n="publicLinkHint">YouTube и открытые страницы плейлистов</small></span></header>
+          <label class="import-copy import-link" for="importUrl"><span class="sr-only" data-i18n="publicPlaylistLink">ПУБЛИЧНАЯ ССЫЛКА НА ПЛЕЙЛИСТ</span><div><input id="importUrl" type="url" inputmode="url" placeholder="https://www.youtube.com/playlist?list=…"><button id="importUrlSubmit" type="button" data-i18n="readPlaylist">ПРОЧИТАТЬ</button></div></label>
         </section>
         <section class="import-method import-method-file">
-          <header><b>02</b><span><strong data-i18n="exportFile">ФАЙЛ ЭКСПОРТА</strong><small>CSV · JSON · M3U · M3U8 · TXT</small></span></header>
+          <header><span><strong data-i18n="exportFile">ФАЙЛ ЭКСПОРТА</strong><small>CSV · JSON · M3U · M3U8 · TXT</small></span></header>
           <input id="libraryFile" type="file" accept=".csv,.json,.m3u,.m3u8,.txt,text/csv,application/json,audio/x-mpegurl,text/plain" hidden>
           <button id="importFileButton" class="import-file" type="button"><span data-i18n="chooseLibraryFile">ВЫБРАТЬ ФАЙЛ</span><b id="importFileName">CSV / JSON / M3U / TXT</b></button>
         </section>
         <section class="import-method import-method-text">
-          <header><b>03</b><span><strong data-i18n="pasteList">СПИСОК ТРЕКОВ</strong><small data-i18n="oneTrackPerLine">Один трек на строку: Исполнитель — Название</small></span></header>
+          <header><span><strong data-i18n="pasteList">СПИСОК ТРЕКОВ</strong><small data-i18n="oneTrackPerLine">Один трек на строку: Исполнитель — Название</small></span></header>
           <label class="import-copy" for="importText"><span class="sr-only" data-i18n="orPasteTracks">ВСТАВЬ СПИСОК ТРЕКОВ</span><textarea id="importText" rows="8" placeholder="Исполнитель — Трек&#10;Другой исполнитель — Другой трек" data-i18n-placeholder="importTextPlaceholder"></textarea></label>
-          <button id="importSubmit" class="import-start" type="button" data-i18n="importToAwun">НАЧАТЬ ПЕРЕНОС ↗</button>
+          <button id="importSubmit" class="import-start" type="button" data-i18n="importToAwun">НАЧАТЬ ПЕРЕНОС</button>
         </section>
       </div>
       <section id="importReport" class="import-report" aria-labelledby="importReportTitle">
-        <header><span><small data-i18n="transferStatus">СТАТУС ПЕРЕНОСА</small><strong id="importReportTitle" data-i18n="readyForLibrary">Готов к медиатеке</strong></span><b>SONGVALE / LOCAL</b></header>
+        <header><span><small data-i18n="transferStatus">СТАТУС ПЕРЕНОСА</small><strong id="importReportTitle" data-i18n="readyForLibrary">Готов к медиатеке</strong></span></header>
         <div class="import-stats">
           <div><strong id="importTotal">0</strong><span data-i18n="importTotal">ВСЕГО</span></div>
           <div><strong id="importProcessed">0</strong><span data-i18n="importProcessed">ПРОВЕРЕНО</span></div>
@@ -347,7 +336,7 @@
         <div class="import-report-actions">
           <button id="importCancel" type="button" hidden data-i18n="stopTransfer">ОСТАНОВИТЬ</button>
           <button id="importDownloadReport" type="button" hidden data-i18n="downloadReport">СКАЧАТЬ ОТЧЁТ</button>
-          <button id="importOpenLibrary" type="button" hidden data-i18n="openLibrary">ОТКРЫТЬ МЕДИАТЕКУ ↗</button>
+          <button id="importOpenLibrary" type="button" hidden data-i18n="openLibrary">ОТКРЫТЬ МЕДИАТЕКУ</button>
         </div>
         <footer><span data-i18n="importCapacity">ДО 1000 УНИКАЛЬНЫХ ТРЕКОВ ЗА ОДИН ПЕРЕНОС</span><b data-i18n="savedContinuously">СОХРАНЕНИЕ ПО ХОДУ</b></footer>
       </section>

@@ -857,3 +857,154 @@ html[data-theme="white"] .import-method,html[data-theme="white"] .import-report{
   .import-panel .theme-panel-head{align-items:flex-start}.import-panel .theme-panel-head strong{font-size:28px}.import-intro{gap:12px;margin-bottom:16px}.import-intro>p{font-size:12px}.import-methods{grid-template-columns:1fr}.import-method-text{grid-column:auto}.import-method{padding:14px}.import-method .import-link div{grid-template-columns:1fr}.import-method .import-link input{border-right:1px solid rgba(var(--paper-rgb),.14);border-radius:8px}.import-method .import-link button{min-height:42px;margin-top:7px;border-radius:8px}.import-stats{grid-template-columns:1fr 1fr}.import-report>footer{display:grid}.import-report-actions{display:grid;grid-template-columns:1fr}.import-report-actions button{width:100%}
   .section-heading{align-items:flex-start}.section-heading h1,.section-heading h2{font-size:25px}.section-link{margin-top:20px}.home-track-grid,.recommendation-grid{grid-template-columns:1fr}.recommendation-card{min-height:118px}.home-empty{min-height:78px;padding:13px}.home-empty>span{max-width:190px}.continue-section{margin-top:4px}
 }
+
+/* SONGVALE 2.1.1 — Quiet Forest.
+   The photograph, restrained type and real content carry the atmosphere.
+   Decorative status dots, diagrams and pseudo-technical badges stay out of
+   the listening experience. */
+html[data-theme="black"]{
+  --color-accent:#b2a27d;
+  --color-accent-hover:#c9bb98;
+  --color-accent-soft:rgba(178,162,125,.12);
+  --color-accent-ink:#10140f;
+  --color-secondary:#9cab91;
+  --accent-rgb:178,162,125;
+  --forest-0:#030604;
+  --forest-1:#07100a;
+  --forest-2:#0c1710;
+  --sidebar-bg:rgba(3,8,5,.78);
+  --control-bg:rgba(5,11,7,.72);
+  --track-bg:rgba(5,12,8,.7);
+  --player-surface:rgba(3,8,5,.96);
+  --drawer-bg:#07100a;
+  --screen-bg:linear-gradient(180deg,rgba(7,15,10,.97),rgba(3,8,5,.99));
+  --shell-overlay:linear-gradient(90deg,rgba(3,8,5,.96) 0%,rgba(4,10,6,.78) 43%,rgba(3,8,5,.46) 100%);
+}
+
+.theme-button:before{display:none!important}
+.site-header .logo img{display:none!important}
+.site-header .logo-copy{justify-items:center;gap:7px}
+.site-header .logo strong{
+  font-family:Iowan Old Style,"Palatino Linotype",Georgia,serif;
+  font-size:19px;font-weight:400;letter-spacing:.24em;
+}
+.site-header .logo small{color:rgba(var(--paper-rgb),.48);font-size:5px;font-weight:600;letter-spacing:.2em}
+.site-header .search-nav.active,.site-header .flow-button[aria-expanded="true"],.site-header #libraryButton.active{
+  border-left-color:rgba(178,162,125,.72);
+  background:linear-gradient(90deg,rgba(156,171,145,.1),transparent);
+}
+.site-header .search-nav.active>i,.site-header .flow-button[aria-expanded="true"]>i,.site-header #libraryButton.active>i{color:var(--moss)}
+
+.welcome-panel{
+  grid-template-columns:minmax(0,1fr);min-height:390px;margin-bottom:42px;padding:clamp(36px,5vw,68px);
+  border-color:rgba(var(--paper-rgb),.15);border-radius:6px;
+  background:
+    linear-gradient(90deg,rgba(3,8,5,.96) 0%,rgba(4,10,6,.88) 43%,rgba(3,8,5,.32) 78%,rgba(3,8,5,.18) 100%),
+    linear-gradient(180deg,rgba(3,7,5,.12),rgba(2,6,4,.48)),
+    url('/static/brand/black-forest-michiel-annaert.webp') 68% 54% / cover no-repeat;
+  box-shadow:0 24px 64px rgba(0,0,0,.3);
+}
+.welcome-panel:before{display:none}
+.welcome-copy{max-width:620px}
+.welcome-kicker{color:var(--moss);font-size:8px;font-weight:650;letter-spacing:2px}
+.welcome-copy h1{
+  max-width:600px;margin:18px 0 18px;
+  font-family:Iowan Old Style,"Palatino Linotype",Georgia,serif;
+  font-size:clamp(42px,4.6vw,68px);font-weight:400;line-height:1.02;letter-spacing:-2px;
+}
+.welcome-copy>p{max-width:540px;color:rgba(var(--paper-rgb),.72);font-size:14px;line-height:1.75}
+.welcome-actions{gap:12px;margin-top:30px}
+.welcome-actions button{min-height:44px;padding:0 18px;border-radius:4px;font-size:9px;font-weight:650;letter-spacing:.8px;transition:border-color .2s ease,background .2s ease,color .2s ease}
+.welcome-primary{border-color:rgba(178,162,125,.78);background:rgba(178,162,125,.92);color:#11150f}
+.welcome-primary:hover{background:#c9bb98;border-color:#c9bb98}
+.welcome-secondary{border-color:rgba(var(--paper-rgb),.23);background:rgba(3,8,5,.34)}
+.welcome-secondary:hover{border-color:rgba(var(--paper-rgb),.42);background:rgba(3,8,5,.58)}
+.welcome-library-state{margin:22px 0 0;color:rgba(var(--paper-rgb),.48);font-family:Iowan Old Style,"Palatino Linotype",Georgia,serif;font-size:12px;font-style:italic}
+
+.section-kicker{color:rgba(var(--paper-rgb),.48)}
+.section-link{color:var(--moss)}
+.home-empty{border:0;border-top:1px solid rgba(var(--paper-rgb),.12);border-bottom:1px solid rgba(var(--paper-rgb),.12);border-radius:0;background:rgba(3,8,5,.34)}
+.home-empty button{border-color:rgba(178,162,125,.62);border-radius:3px;background:transparent;color:var(--paper)}
+.recommendation-card{
+  border-color:rgba(var(--paper-rgb),.16);border-radius:5px;
+  background:url('/static/brand/black-forest-michiel-annaert.webp') center / cover no-repeat;
+  box-shadow:0 16px 34px rgba(0,0,0,.2);
+}
+.recommendation-card:before{background:linear-gradient(180deg,rgba(4,9,6,.18),rgba(3,8,5,.92))}
+.recommendation-card:after{display:none}
+.recommendation-piano{background-position:42% 58%}.recommendation-ambient{background-position:65% 38%}.recommendation-lofi{background-position:82% 66%}
+.recommendation-card b{display:none}
+
+.import-panel{
+  background:
+    linear-gradient(90deg,rgba(4,10,6,.985),rgba(4,10,6,.91) 58%,rgba(4,9,6,.78)),
+    url('/static/brand/black-forest-michiel-annaert.webp') center / cover no-repeat;
+}
+.import-panel .theme-panel-head>div>span{color:var(--moss);font-weight:650;letter-spacing:1.7px}
+.import-panel .theme-panel-head strong{
+  font-family:Iowan Old Style,"Palatino Linotype",Georgia,serif;
+  font-size:clamp(30px,3.4vw,48px);font-weight:400;letter-spacing:-.6px;
+}
+.import-intro>p{color:rgba(var(--paper-rgb),.68);line-height:1.72}
+.import-guard{min-width:0;padding:0;border:0;border-radius:0;background:transparent}
+.import-guard>i{display:none}
+.import-guard b{color:var(--moss);font-weight:650;letter-spacing:1px}
+.import-method{border-color:rgba(var(--paper-rgb),.14);border-radius:5px;background:rgba(4,10,6,.7);box-shadow:none}
+.import-method>header{margin-bottom:15px}
+.import-method>header>b{display:none}
+.import-method>header strong{font-family:Iowan Old Style,"Palatino Linotype",Georgia,serif;font-size:13px;font-weight:400;letter-spacing:.5px}
+.import-method>header small{margin-top:2px;color:rgba(var(--paper-rgb),.48)}
+.import-method .import-link input,.import-method textarea,.import-file{border-color:rgba(var(--paper-rgb),.16);border-radius:3px;background:rgba(2,7,4,.56)}
+.import-method .import-link input{border-radius:3px 0 0 3px}
+.import-method .import-link button{border-radius:0 3px 3px 0;background:rgba(178,162,125,.9);color:#11150f}
+.import-file{border-style:solid}
+.import-start{border-color:rgba(178,162,125,.72);border-radius:3px;background:rgba(178,162,125,.9);color:#11150f}
+.import-start:hover{background:#c9bb98}
+.import-report{border-color:rgba(var(--paper-rgb),.14);border-radius:5px;background:rgba(4,10,6,.78);box-shadow:none}
+.import-report>header small{color:var(--moss);font-weight:650;letter-spacing:1.2px}
+.import-report>header strong{font-family:Iowan Old Style,"Palatino Linotype",Georgia,serif;font-size:22px;font-weight:400}
+.import-stats{gap:0}
+.import-stats>div{padding:11px 10px;border:0;border-right:1px solid rgba(var(--paper-rgb),.1);border-radius:0;background:transparent}
+.import-stats>div:last-child{border-right:0}
+.import-stats>div:nth-child(3) strong{color:#afc49c}.import-stats>div:nth-child(4) strong{color:#bfae88}
+.import-progress,.import-progress::-webkit-progress-bar{background:rgba(var(--paper-rgb),.1)}
+.import-progress::-webkit-progress-value{background:var(--moss)}
+.import-progress::-moz-progress-bar{background:var(--moss)}
+.import-meter span{color:var(--moss)}
+.import-report-actions button{border-radius:3px;background:rgba(3,8,5,.48)}
+.import-report-actions #importOpenLibrary{border-color:rgba(178,162,125,.68);background:rgba(178,162,125,.9);color:#11150f}
+
+@media (min-width:1100px){
+  html[data-theme="black"] .ambient{opacity:.72;filter:saturate(.52) contrast(1.14) brightness(.52)}
+  html[data-theme="black"] .app-shell{background:var(--shell-overlay)}
+  html[data-theme="black"] .site-header{background:rgba(3,8,5,.74);backdrop-filter:blur(18px)}
+  html[data-theme="black"] .hero .search-form,html[data-theme="black"] .hero .advanced-search>summary{background:rgba(4,10,6,.66);backdrop-filter:blur(14px)}
+  .site-header .logo{justify-content:center}
+}
+
+@media (max-width:1099px){
+  html[data-theme="black"] .ambient{opacity:.48;filter:saturate(.48) contrast(1.12) brightness(.46)}
+  html[data-theme="black"] .app-shell{background:linear-gradient(180deg,rgba(3,8,5,.82),rgba(3,8,5,.62))}
+  html[data-theme="black"] .site-header{background:rgba(3,8,5,.83);backdrop-filter:blur(16px)}
+  .site-header .logo-copy{justify-items:start}
+  .welcome-panel{min-height:360px;padding:40px;background-position:64% 52%}
+  .welcome-copy{max-width:560px}
+  .recommendation-card:before{background:linear-gradient(180deg,rgba(4,9,6,.3),rgba(3,8,5,.9))}
+}
+
+@media (max-width:760px){
+  html[data-theme="black"] .ambient{display:block;opacity:.38}
+  .site-header .logo strong{font-size:15px;letter-spacing:.18em}
+  .welcome-panel{min-height:500px;padding:30px 22px;align-items:flex-end;border-radius:5px;background:linear-gradient(180deg,rgba(3,8,5,.24) 0%,rgba(3,8,5,.48) 36%,rgba(3,8,5,.96) 76%),url('/static/brand/black-forest-michiel-annaert.webp') 63% center / cover no-repeat}
+  .welcome-copy{justify-content:flex-end}
+  .welcome-copy h1{margin:14px 0 14px;font-size:43px;line-height:1.02;letter-spacing:-1.3px}
+  .welcome-copy>p{font-size:12px;line-height:1.7}
+  .welcome-actions{display:grid;grid-template-columns:1fr;margin-top:22px;width:100%}
+  .welcome-actions button{width:100%}
+  .welcome-library-state{margin-top:16px}
+  .import-panel{background:linear-gradient(180deg,rgba(4,10,6,.96),rgba(3,8,5,.985)),url('/static/brand/black-forest-michiel-annaert.webp') center / cover no-repeat}
+  .import-method .import-link input{border-radius:3px}
+  .import-method .import-link button{border-radius:3px}
+  .import-stats{grid-template-columns:1fr 1fr}
+  .import-stats>div:nth-child(2){border-right:0}.import-stats>div:nth-child(-n+2){border-bottom:1px solid rgba(var(--paper-rgb),.1)}
+}

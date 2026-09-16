@@ -182,7 +182,7 @@ function loadQueueState(){
 }
 function loadVisual(){const value=readStoredJson('awun-visual',{});return{theme:['black','white','acid','ultraviolet','cobalt','ember'].includes(value?.theme)?value.theme:'black',motion:value?.motion==='off'?'off':'on',decor:value?.decor==='minimal'?'minimal':'full',density:['compact','standard','airy'].includes(value?.density)?value.density:'standard'}}
 function loadLineComments(){const value=readStoredJson('awun-line-comments-v1',{});return value&&typeof value==='object'&&!Array.isArray(value)?value:{}}
-const visualThemes={black:{labelKey:'themeBlackShort',color:'#050505'},white:{labelKey:'themeWhiteShort',color:'#e7e8df'},acid:{labelKey:'themeAcidShort',color:'#050a05'},ultraviolet:{labelKey:'themeUltravioletShort',color:'#07050c'},cobalt:{labelKey:'themeCobaltShort',color:'#040a0e'},ember:{labelKey:'themeEmberShort',color:'#080704'}};
+const visualThemes={black:{labelKey:'themeBlackShort',color:'#030604'},white:{labelKey:'themeWhiteShort',color:'#e7e8df'},acid:{labelKey:'themeAcidShort',color:'#050a05'},ultraviolet:{labelKey:'themeUltravioletShort',color:'#07050c'},cobalt:{labelKey:'themeCobaltShort',color:'#040a0e'},ember:{labelKey:'themeEmberShort',color:'#080704'}};
 const restoredQueue=loadQueueState();
 const state={
   tracks:[],saved:loadLibrary(),recents:loadRecents(),queue:restoredQueue.items,queueMode:restoredQueue.mode,available:new Set(),sources:new Set(),region:loadRegion(),resultLimit:loadResultLimit(),repeatMode:loadRepeatMode(),library:false,hasSearched:false,active:null,controller:null,
