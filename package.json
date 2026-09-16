@@ -3,6 +3,7 @@
   "private": true,
   "version": "2.2.0",
   "scripts": {
+    "test:audio": "node --test tests/audio-engine.test.js",
     "test:e2e": "playwright test",
     "test:e2e:update": "playwright test --update-snapshots=all"
   },

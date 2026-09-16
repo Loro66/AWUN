@@ -241,7 +241,7 @@
       <ol id="queueList" class="queue-list"></ol>
       <p id="queueEmpty" class="queue-empty" data-i18n="queueEmpty">Очередь появится после выбора трека.</p>
     </section>
-    <audio id="audio" preload="metadata"></audio>
+    <audio id="audio" preload="metadata" crossorigin="anonymous"></audio>
   </aside>
 
   <div id="themeBackdrop" class="theme-backdrop" hidden></div>
@@ -264,6 +264,17 @@
       <button id="decorToggle" type="button"><span data-i18n="interface">ИНТЕРФЕЙС</span><b id="decorValue">ПОЛНЫЙ</b></button>
       <button id="densityToggle" type="button"><span data-i18n="density">ПЛОТНОСТЬ</span><b id="densityValue">ОБЫЧНАЯ</b></button>
     </div>
+    <section class="sound-settings" aria-labelledby="soundEngineTitle">
+      <div><small data-i18n="soundEngineKicker">ЗВУКОВОЙ ДВИЖОК</small><strong id="soundEngineTitle" data-i18n="soundEngineTitle">SONGVALE SOUND</strong></div>
+      <p data-i18n="soundEngineDescription">Мягкое выравнивание громкости, тональная коррекция и защита от перегрузки для прямых аудиопотоков.</p>
+      <div class="sound-profile-grid" role="group" aria-label="Профиль звука" data-i18n-aria-label="soundProfileAria">
+        <button type="button" data-audio-profile="neutral" aria-pressed="true"><span data-i18n="soundNeutral">НЕЙТРАЛЬНЫЙ</span><small data-i18n="soundNeutralHint">ПОЧТИ БЕЗ ОКРАСКИ</small></button>
+        <button type="button" data-audio-profile="warm" aria-pressed="false"><span data-i18n="soundWarm">FOREST WARM</span><small data-i18n="soundWarmHint">ТЕПЛЕЕ И МЯГЧЕ</small></button>
+        <button type="button" data-audio-profile="clarity" aria-pressed="false"><span data-i18n="soundClarity">ЯСНОСТЬ</span><small data-i18n="soundClarityHint">ЧИЩЕ ВОКАЛ И ДЕТАЛИ</small></button>
+      </div>
+      <button id="soundEngineToggle" class="sound-engine-toggle" type="button" aria-pressed="true"><span data-i18n="soundProcessing">ОБРАБОТКА</span><b id="soundEngineValue" data-i18n="on">ВКЛ</b></button>
+      <small id="soundEngineStatus" class="sound-engine-status" data-i18n="soundEngineDirectOnly">Работает для SoundCloud, Audius и других прямых потоков. YouTube ограничен возможностями официального плеера.</small>
+    </section>
     <button id="diagnosticsButton" class="diagnostics-entry" type="button" aria-controls="diagnosticsPanel" aria-expanded="false">
       <span><small data-i18n="diagnosticsKicker">СОСТОЯНИЕ СЕТИ</small><strong data-i18n="sourceDiagnostics">ДИАГНОСТИКА ИСТОЧНИКОВ</strong></span>
       <b data-i18n="openDiagnostics">ОТКРЫТЬ</b>
@@ -350,6 +361,7 @@
   <script src="/static/update-checker.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/i18n.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/player-core.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/audio-engine.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/app.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/flow.js?v=__AWUN_VERSION__" defer></script>
 </body>

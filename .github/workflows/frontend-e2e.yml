@@ -30,6 +30,8 @@ jobs:
         run: npm ci
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
+      - name: Test audio engine
+        run: npm run test:audio
       - name: Run browser and screenshot tests
         run: npm run test:e2e
       - name: Upload browser report on failure
