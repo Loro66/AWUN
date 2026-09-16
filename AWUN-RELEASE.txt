@@ -1,22 +1,21 @@
-SONGVALE 2.1.0
-Release date: 2026-09-15
+SONGVALE 2.1.1
+Release date: 2026-09-16
 
-This release turns library transfer into the main first-run experience and
-ships a complete Windows package for everyday use.
+This corrective release returns SONGVALE to its quiet dark-forest direction.
+It keeps the library-transfer improvements from 2.1.0 while replacing the
+dashboard-like presentation with a calmer, more distinctive interface.
 
 What changed:
-- Redesigned the home screen around the SONGVALE forest/orange identity with a
-  clear first action: move an existing music library or start a search.
-- Made Library Transfer a permanent navigation destination on Windows.
-- Rebuilt the transfer workspace around three inputs: public playlist URL,
-  CSV/JSON/M3U/M3U8/TXT export file, or a pasted “Artist — Title” list.
-- Increased local file and pasted-list processing from 100 to as many as 1,000
-  unique tracks per transfer. Public playlist pages can return up to 500.
-- Added live totals for checked, added and unmatched tracks, safe cancellation,
-  progressive on-device saving, and a downloadable JSON report.
-- Added a confidence gate so unrelated search results are no longer accepted
-  merely because a provider returned them first.
-- Preserved SONGVALE 2.0 and legacy AWUN libraries, queues and settings.
+- Restored a visible real-forest atmosphere across the home and transfer views.
+- Reworked typography, spacing and surfaces around a restrained editorial feel.
+- Replaced bright signal orange with a muted natural-gold accent.
+- Removed the waveform logo, decorative status dots, numbered badges, abstract
+  signal graphics and unnecessary arrow markers.
+- Simplified the first screen to two honest actions: transfer an existing music
+  library or begin a search.
+- Rebuilt the application icons around a quiet SONGVALE monogram.
+- Added regression coverage that prevents decorative status markers from
+  returning unnoticed.
 
 Windows package:
 - SONGVALE-Setup-x64.exe — per-user installer.
