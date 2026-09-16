@@ -1,31 +1,25 @@
-SONGVALE 2.1.1
+SONGVALE 2.1.2
 Release date: 2026-09-16
 
-This corrective release returns SONGVALE to its quiet dark-forest direction.
-It keeps the library-transfer improvements from 2.1.0 while replacing the
-dashboard-like presentation with a calmer, more distinctive interface.
+This release repairs text-based library transfer for lists copied directly
+from music catalog pages.
 
 What changed:
-- Restored a visible real-forest atmosphere across the home and transfer views.
-- Reworked typography, spacing and surfaces around a restrained editorial feel.
-- Replaced bright signal orange with a muted natural-gold accent.
-- Removed the waveform logo, decorative status dots, numbered badges, abstract
-  signal graphics and unnecessary arrow markers.
-- Simplified the first screen to two honest actions: transfer an existing music
-  library or begin a search.
-- Rebuilt the application icons around a quiet SONGVALE monogram.
-- Added regression coverage that prevents decorative status markers from
-  returning unnoticed.
+- A copied playlist row is now parsed as one track: title, one or more artist
+  lines, and duration.
+- Duration values such as 02:40 are ignored as metadata instead of being sent
+  to search as fake track titles.
+- Multiple artist lines remain attached to the same track.
+- The persistent player now includes a direct save/remove-from-library button.
+- The importer no longer turns a small copied library into dozens of invalid
+  searches and misleading "not found" results.
+- Added a browser regression test for the exact multiline format that exposed
+  the problem.
 
 Windows package:
 - SONGVALE-Setup-x64.exe — per-user installer.
 - SONGVALE.exe — portable executable.
 - Separate SHA-256 checksum files, LICENSE.md and EULA.md.
 
-The desktop application bundles the FastAPI backend and complete frontend. It
-runs on an ephemeral loopback port, keeps personal state under the current
-Windows user, queries the local backend first and uses the public endpoint only
-as a provider fallback.
-
-The release is published only after the complete Python suite and the browser
-behavior/responsive workflow pass on GitHub Actions.
+The release is published only after the complete Python suite and all 28
+browser behavior/responsive scenarios pass on GitHub Actions.

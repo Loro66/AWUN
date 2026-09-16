@@ -178,6 +178,8 @@ def test_library_transfer_is_visible_resumable_and_rejects_weak_matches() -> Non
     assert "tracks.slice(0,1000)" in script
     assert "commitImportedMatches" in script and "importController?.abort()" in script
     assert "importedMatchConfidence" in script and ">=.72" in script
+    assert "isImportDuration" in script and "importedTrackFromBlock" in script
+    assert 'id="playerSave"' in html and "ui.playerSave" in script
     assert "SONGVALE-import-" in script and "not_found" in script
     assert ".welcome-panel" in styles and ".import-workspace" in styles
 

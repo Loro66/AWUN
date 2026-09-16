@@ -53,6 +53,11 @@ test('an available YouTube track keeps the official player visible and minimizab
 
   await expect(page.locator('#nowSource')).toHaveText('YouTube');
   await expect(page.locator('#youtubeDock')).toBeVisible();
+  await page.locator('#playerSave').click();
+  await expect(page.locator('#playerSave')).toHaveAttribute('aria-pressed', 'true');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('awun-library') || '[]').some(track => track.source === 'youtube'))).toBe(true);
+  await page.locator('#playerSave').click();
+  await expect(page.locator('#playerSave')).toHaveAttribute('aria-pressed', 'false');
   await page.locator('#minimizeVideo').click();
   await expect(page.locator('#youtubeDock')).toHaveClass(/minimized/);
 });
@@ -115,6 +120,29 @@ test('library transfer keeps only confident matches and exposes a final report',
   await expect(page.locator('#importMissed')).toHaveText('1');
   await expect(page.locator('#importDownloadReport')).toBeVisible();
   await expect(page.locator('#importOpenLibrary')).toBeVisible();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('awun-library') || '[]').map(track => track.title))).toEqual(['Midnight Signal']);
+});
+
+test('library transfer groups copied playlist rows instead of matching metadata lines', async ({ page }) => {
+  await openAwun(page);
+  await page.locator('#welcomeImport').click();
+  await page.locator('#importText').fill([
+    'Midnight Signal',
+    'AWUN Artist',
+    '02:40',
+    '',
+    'Missing Recording',
+    'Unknown Artist',
+    'Admony',
+    '01:43',
+  ].join('\n'));
+  await page.locator('#importSubmit').click();
+
+  await expect(page.locator('#importReportTitle')).toHaveText('Перенос завершён');
+  await expect(page.locator('#importTotal')).toHaveText('2');
+  await expect(page.locator('#importProcessed')).toHaveText('2');
+  await expect(page.locator('#importAdded')).toHaveText('1');
+  await expect(page.locator('#importMissed')).toHaveText('1');
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('awun-library') || '[]').map(track => track.title))).toEqual(['Midnight Signal']);
 });
 

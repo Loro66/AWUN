@@ -484,6 +484,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   .player .player-tools #queueToggle{display:grid!important;width:30px;height:30px}
 }
 
+.player .player-tools,.player.expanded-player .player-tools{grid-template-columns:30px 30px 28px minmax(62px,90px) 30px}
+.player .player-tools #playerSave{display:grid;width:30px;height:30px;font:18px/1 Georgia,serif}
+.player .player-tools #playerSave.saved{color:var(--signal-hot)}
+.player .player-tools #playerSave:disabled{opacity:.3;pointer-events:none}
+.player.expanded-player .player-tools{max-width:304px!important}
+
 /* Source diagnostics lives behind Settings and uses measured backend data,
    so it fills the screen only when the listener explicitly opens it. */
 .diagnostics-entry{

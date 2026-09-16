@@ -9,7 +9,7 @@
 [![Последний релиз](https://img.shields.io/github/v/release/Loro66/AWUN?style=for-the-badge&label=RELEASE&labelColor=11120F&color=6E875F)](https://github.com/Loro66/AWUN/releases/latest)
 
 [![Windows build](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&style=flat-square&label=Windows%20build)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
-[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=27%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
+[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=28%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![License](https://img.shields.io/badge/license-source--visible%20freeware-5F665B?style=flat-square)](LICENSE.md)
@@ -113,10 +113,10 @@ uvicorn backend.api.main:app --reload
 
 ## Проверенное качество релиза
 
-Релиз `v2.1.1` автоматически собирается из `main` через GitHub Actions.
+Релиз `v2.1.2` автоматически собирается из `main` через GitHub Actions.
 
 - **241 Python-тест** проверяет поиск, ranking, matching, policy, надёжность, безопасность, визуальную идентичность и desktop-упаковку.
-- **27 Playwright-сценариев** проверяют постепенный поиск, отмену, тайм-аут источника, восстановление воспроизведения, перенос медиатеки, очередь, большие библиотеки и адаптивность.
+- **28 Playwright-сценариев** проверяют постепенный поиск, отмену, тайм-аут источника, восстановление воспроизведения, многострочный перенос медиатеки, очередь, большие библиотеки и адаптивность.
 - Интерфейс и границы контролов проверяются на ширинах **1920, 1280, 1000 и 390 пикселей**.
 - Windows workflow создаёт два EXE, рассчитывает SHA-256 и публикует GitHub Release только после успешных тестов.
 
@@ -127,7 +127,7 @@ uvicorn backend.api.main:app --reload
 | Платформа | Статус | Где получить |
 | --- | --- | --- |
 | Web / PWA | Публичная бета | [Открыть приложение](https://awun-1.onrender.com) |
-| Windows | Выпущенная неподписанная бета | [Скачать v2.1.1](https://github.com/Loro66/AWUN/releases/tag/v2.1.1) |
+| Windows | Выпущенная неподписанная бета | [Скачать v2.1.2](https://github.com/Loro66/AWUN/releases/tag/v2.1.2) |
 | Android | Воспроизводимая Play-сборка и пакет страницы магазина | Публикация требует подписи и тестирования в Play Console |
 | iOS | Воспроизводимая неподписанная бета | Установка на устройства требует подписи Apple |
 
