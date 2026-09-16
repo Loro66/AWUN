@@ -116,7 +116,8 @@ Open `http://127.0.0.1:8000`. Optional provider credentials and deployment setti
 Release `v2.2.0` is built from `main` by GitHub Actions.
 
 - **241 Python tests** cover search, ranking, matching, policy, reliability, security, visual identity and desktop packaging.
-- **28 Playwright scenarios** exercise progressive search, cancellation, provider deadlines, playback recovery, multiline library transfer, queue persistence, large libraries and responsive layouts.
+- **29 Playwright scenarios** exercise progressive search, cancellation, provider deadlines, playback recovery, multiline library transfer, sound profiles, queue persistence, large libraries and responsive layouts.
+- **SONGVALE Sound** processes direct audio streams through conservative loudness leveling, tonal profiles, soft dynamics and a peak limiter. The official YouTube iframe remains outside the DSP path because it does not expose raw audio samples.
 - Visual and control-bound checks run at **1920, 1280, 1000 and 390 pixels**.
 - The release workflow builds both Windows executables, generates SHA-256 checksums and publishes the versioned GitHub Release only after tests pass.
 

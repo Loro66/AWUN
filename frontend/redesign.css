@@ -554,6 +554,21 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   border:1px solid rgba(var(--paper-rgb),.15);border-radius:var(--radius-control);background:var(--control-bg);color:var(--paper);text-align:left;cursor:pointer;
 }
 .diagnostics-entry:hover{border-color:rgba(var(--accent-rgb),.48);background:var(--signal-soft)}
+.sound-settings{display:grid;gap:12px;max-width:820px;margin-top:22px;padding:20px;border:1px solid rgba(var(--paper-rgb),.14);border-radius:10px;background:rgba(3,8,5,.34)}
+.sound-settings>div:first-child{display:flex;align-items:baseline;justify-content:space-between;gap:16px}
+.sound-settings>div:first-child small{color:var(--moss);font-size:7px;font-weight:800;letter-spacing:1.3px}
+.sound-settings>div:first-child strong{font-size:12px;letter-spacing:1px}
+.sound-settings>p{max-width:650px;margin:0;color:var(--paper-muted);font-size:11px;line-height:1.6}
+.sound-profile-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.sound-profile-grid button,.sound-engine-toggle{display:grid;gap:5px;min-height:58px;padding:12px 14px;border:1px solid rgba(var(--paper-rgb),.14);border-radius:8px;background:var(--control-bg);color:var(--paper);text-align:left}
+.sound-profile-grid button span,.sound-engine-toggle span{font-size:10px;font-weight:760;letter-spacing:.65px}
+.sound-profile-grid button small{color:var(--paper-muted);font-size:7px;letter-spacing:.65px}
+.sound-profile-grid button[aria-pressed="true"],.sound-engine-toggle[aria-pressed="true"]{border-color:rgba(178,162,125,.68);background:rgba(178,162,125,.11)}
+.sound-engine-toggle{display:flex;align-items:center;justify-content:space-between;min-height:42px}
+.sound-engine-toggle b{color:var(--moss);font-size:9px;letter-spacing:.8px}
+.sound-engine-status{color:var(--paper-muted);font-size:8px;line-height:1.5}
+html[data-theme="white"] .sound-settings{background:rgba(255,255,255,.36)}
+@media (max-width:760px){.sound-settings{padding:14px}.sound-profile-grid{grid-template-columns:1fr}.sound-profile-grid button{min-height:52px}}
 .diagnostics-entry>span{display:grid;gap:5px}.diagnostics-entry small{color:var(--paper-muted);font-size:7px;font-weight:800;letter-spacing:1.1px}.diagnostics-entry strong{font-size:10px;letter-spacing:1px}.diagnostics-entry>b{color:var(--signal-hot);font-size:8px;letter-spacing:1px}
 .diagnostics-panel{--diagnostic-width:920px}
 .diagnostics-panel>p,.diagnostics-summary,.diagnostics-list,.diagnostics-actions,.diagnostics-tools{width:min(var(--diagnostic-width),100%)}

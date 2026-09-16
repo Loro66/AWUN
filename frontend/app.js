@@ -164,11 +164,12 @@ const ui={
   sources:$('sources'),regionSelect:$('regionSelect'),limitSelect:$('limitSelect'),results:$('results'),trackList:$('trackList'),message:$('message'),resultTitle:$('resultTitle'),resultCount:$('resultCount'),resultTime:$('resultTime'),searchMeta:$('searchMeta'),
   player:$('player'),playerArtwork:$('playerArtwork'),nowTitle:$('nowTitle'),nowArtist:$('nowArtist'),nowSource:$('nowSource'),audio:$('audio'),youtubeDock:$('youtubeDock'),youtubePlayer:$('youtubePlayer'),
   previousTrack:$('previousTrack'),playPause:$('playPause'),nextTrack:$('nextTrack'),repeatMode:$('repeatMode'),waveProgress:$('waveProgress'),progress:$('progress'),elapsed:$('elapsed'),totalTime:$('totalTime'),volume:$('volume'),muteButton:$('muteButton'),playerSave:$('playerSave'),closePlayer:$('closePlayer'),minimizeVideo:$('minimizeVideo'),queueToggle:$('queueToggle'),queueClose:$('queueClose'),expandPlayer:$('expandPlayer'),collapsePlayer:$('collapsePlayer'),
-  themeButton:$('themeButton'),themeLabel:$('themeLabel'),themePanel:$('themePanel'),themeClose:$('themeClose'),themeBackdrop:$('themeBackdrop'),themeColor:$('themeColor'),motionToggle:$('motionToggle'),motionValue:$('motionValue'),decorToggle:$('decorToggle'),decorValue:$('decorValue'),densityToggle:$('densityToggle'),densityValue:$('densityValue'),diagnosticsButton:$('diagnosticsButton'),diagnosticsPanel:$('diagnosticsPanel'),diagnosticsClose:$('diagnosticsClose'),diagnosticsRefresh:$('diagnosticsRefresh'),diagnosticsCopy:$('diagnosticsCopy'),diagnosticsList:$('diagnosticsList'),diagnosticsEndpoint:$('diagnosticsEndpoint'),diagnosticsChecked:$('diagnosticsChecked'),diagnosticsCopyStatus:$('diagnosticsCopyStatus'),diagnosticsToolsStatus:$('diagnosticsToolsStatus'),diagnosticsLog:$('diagnosticsLog'),storageExport:$('storageExport'),storageImport:$('storageImport'),storageImportFile:$('storageImportFile'),updateCheck:$('updateCheck'),updateLink:$('updateLink'),
+  themeButton:$('themeButton'),themeLabel:$('themeLabel'),themePanel:$('themePanel'),themeClose:$('themeClose'),themeBackdrop:$('themeBackdrop'),themeColor:$('themeColor'),motionToggle:$('motionToggle'),motionValue:$('motionValue'),decorToggle:$('decorToggle'),decorValue:$('decorValue'),densityToggle:$('densityToggle'),densityValue:$('densityValue'),soundEngineToggle:$('soundEngineToggle'),soundEngineValue:$('soundEngineValue'),soundEngineStatus:$('soundEngineStatus'),diagnosticsButton:$('diagnosticsButton'),diagnosticsPanel:$('diagnosticsPanel'),diagnosticsClose:$('diagnosticsClose'),diagnosticsRefresh:$('diagnosticsRefresh'),diagnosticsCopy:$('diagnosticsCopy'),diagnosticsList:$('diagnosticsList'),diagnosticsEndpoint:$('diagnosticsEndpoint'),diagnosticsChecked:$('diagnosticsChecked'),diagnosticsCopyStatus:$('diagnosticsCopyStatus'),diagnosticsToolsStatus:$('diagnosticsToolsStatus'),diagnosticsLog:$('diagnosticsLog'),storageExport:$('storageExport'),storageImport:$('storageImport'),storageImportFile:$('storageImportFile'),updateCheck:$('updateCheck'),updateLink:$('updateLink'),
   importButton:$('importButton'),importPanel:$('importPanel'),importClose:$('importClose'),importBackdrop:$('importBackdrop'),libraryFile:$('libraryFile'),importFileButton:$('importFileButton'),importFileName:$('importFileName'),importText:$('importText'),importStatus:$('importStatus'),importSubmit:$('importSubmit'),importUrl:$('importUrl'),importUrlSubmit:$('importUrlSubmit'),importProgress:$('importProgress'),importReportTitle:$('importReportTitle'),importTotal:$('importTotal'),importProcessed:$('importProcessed'),importAdded:$('importAdded'),importMissed:$('importMissed'),importPercent:$('importPercent'),importCancel:$('importCancel'),importDownloadReport:$('importDownloadReport'),importOpenLibrary:$('importOpenLibrary')
 };
 const sourceButtonElements=[...ui.sources.querySelectorAll('button[data-source]')];
 const themeChoiceButtons=[...document.querySelectorAll('[data-theme-choice]')];
+const audioProfileButtons=[...document.querySelectorAll('[data-audio-profile]')];
 window.addEventListener('awun:storage-error',()=>{if(ui.diagnosticsToolsStatus)ui.diagnosticsToolsStatus.textContent=t('storageSaveFailed')});
 
 function loadLibrary(){const value=readStoredJson('awun-library',[]);return Array.isArray(value)?value:[]}
@@ -181,18 +182,19 @@ function loadQueueState(){
   return{items:playerCore.uniqueTracks(items),mode:value?.mode==='manual'?'manual':'context'};
 }
 function loadVisual(){const value=readStoredJson('awun-visual',{});return{theme:['black','white','acid','ultraviolet','cobalt','ember'].includes(value?.theme)?value.theme:'black',motion:value?.motion==='off'?'off':'on',decor:value?.decor==='minimal'?'minimal':'full',density:['compact','standard','airy'].includes(value?.density)?value.density:'standard'}}
+function loadAudioPreferences(){const value=readStoredJson('songvale-audio-v1',{});return{audioProfile:['neutral','warm','clarity'].includes(value?.profile)?value.profile:'neutral',audioProcessing:value?.enabled!==false}}
 function loadLineComments(){const value=readStoredJson('awun-line-comments-v1',{});return value&&typeof value==='object'&&!Array.isArray(value)?value:{}}
 const visualThemes={black:{labelKey:'themeBlackShort',color:'#030604'},white:{labelKey:'themeWhiteShort',color:'#e7e8df'},acid:{labelKey:'themeAcidShort',color:'#050a05'},ultraviolet:{labelKey:'themeUltravioletShort',color:'#07050c'},cobalt:{labelKey:'themeCobaltShort',color:'#040a0e'},ember:{labelKey:'themeEmberShort',color:'#080704'}};
 const restoredQueue=loadQueueState();
 const state={
   tracks:[],saved:loadLibrary(),recents:loadRecents(),queue:restoredQueue.items,queueMode:restoredQueue.mode,available:new Set(),sources:new Set(),region:loadRegion(),resultLimit:loadResultLimit(),repeatMode:loadRepeatMode(),library:false,hasSearched:false,active:null,controller:null,
-  youtube:null,youtubeApi:null,youtubeTicker:null,youtubeStartTimer:null,hls:null,hlsApi:null,audioGraph:null,waveformCapture:null,waveformCaptureFrame:null,seeking:false,isPlaying:false,timelineSecond:-1,recoveringGeneration:null,sameSourceRefreshGeneration:null,playbackGeneration:0,audioTrackId:null,failedSources:new Set(),failedTrackIds:new Set(),playbackOrigin:null,playbackPosition:0,lastVolume:.82,expanded:null,details:new Map(),detailsController:null,openLines:new Set(),lineComments:loadLineComments(),geniusEnabled:false,diagnostics:null,playbackHealth:{},...loadVisual()
+  youtube:null,youtubeApi:null,youtubeTicker:null,youtubeStartTimer:null,hls:null,hlsApi:null,audioGraph:null,audioEngine:null,waveformCapture:null,waveformCaptureFrame:null,seeking:false,isPlaying:false,timelineSecond:-1,recoveringGeneration:null,sameSourceRefreshGeneration:null,playbackGeneration:0,audioTrackId:null,failedSources:new Set(),failedTrackIds:new Set(),playbackOrigin:null,playbackPosition:0,lastVolume:.82,expanded:null,details:new Map(),detailsController:null,openLines:new Set(),lineComments:loadLineComments(),geniusEnabled:false,diagnostics:null,playbackHealth:{},...loadVisual(),...loadAudioPreferences()
 };
 let installPrompt=null;
 let language=i18n.language;
 let importController=null,importPreviewTimer=null;
 let latestImportReport=null;
-function applyLanguage(){language=i18n.language;i18n.apply();applyVisual(false);applyRepeatMode(false);ui.playPause.setAttribute('aria-label',t(state.isPlaying?'pauseAria':'playAria'));render();renderDiagnostics();if(latestImportReport)updateImportReport(latestImportReport)}
+function applyLanguage(){language=i18n.language;i18n.apply();applyVisual(false);applyRepeatMode(false);updateAudioEngineUi();ui.playPause.setAttribute('aria-label',t(state.isPlaying?'pauseAria':'playAria'));render();renderDiagnostics();if(latestImportReport)updateImportReport(latestImportReport)}
 
 function emitAwun(type,detail={}){document.dispatchEvent(new CustomEvent(`awun:${type}`,{detail}))}
 
@@ -361,6 +363,21 @@ function applyVisual(save=true){
   ui.densityToggle.dataset.value=state.density;
   themeChoiceButtons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.themeChoice===state.theme)));
   if(save)writeStoredJson('awun-visual',{theme:state.theme,motion:state.motion,decor:state.decor,density:state.density});
+}
+function persistAudioPreferences(){writeStoredJson('songvale-audio-v1',{profile:state.audioProfile,enabled:state.audioProcessing})}
+function updateAudioEngineUi(){
+  audioProfileButtons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.audioProfile===state.audioProfile)));
+  ui.soundEngineToggle.setAttribute('aria-pressed',String(state.audioProcessing));
+  ui.soundEngineValue.textContent=t(state.audioProcessing?'on':'off');
+  const status=!state.audioProcessing?'soundEngineDirectOnly':state.active?.source==='youtube'?'soundEngineYoutube':state.audioEngine?.available?'soundEngineActive':state.active?'soundEngineUnavailable':'soundEngineDirectOnly';
+  ui.soundEngineStatus.textContent=t(status);
+}
+async function ensureAudioEngine(){
+  if(!window.SongvaleAudioEngine?.Engine)return false;
+  if(!state.audioEngine)state.audioEngine=new window.SongvaleAudioEngine.Engine(ui.audio,{profile:state.audioProfile,enabled:state.audioProcessing});
+  const available=await state.audioEngine.connect();
+  state.audioEngine.applyProfile(state.audioProfile);state.audioEngine.setEnabled(state.audioProcessing);
+  updateAudioEngineUi();return available;
 }
 
 function openThemePanel(){setQueueOpen(false);setPlayerExpanded(false);if(document.body.classList.contains('flow-screen-open'))document.getElementById('flowClose')?.click();ui.importPanel.hidden=true;ui.importBackdrop.hidden=true;ui.importButton.setAttribute('aria-expanded','false');ui.diagnosticsPanel.hidden=true;ui.diagnosticsButton.setAttribute('aria-expanded','false');ui.themePanel.hidden=false;ui.themeBackdrop.hidden=false;ui.themeButton.setAttribute('aria-expanded','true');document.body.classList.add('visual-open')}
@@ -1062,7 +1079,11 @@ function applyAudioStart(startAt){
 async function playAudio(track,startAt=0){
   const generation=state.playbackGeneration,signal=state.playbackController?.signal;
   const current=()=>generation===state.playbackGeneration&&state.active?.id===track.id;
-  stopYouTube();stopHls();state.audioTrackId=null;ui.audio.pause();ui.audio.removeAttribute('src');ui.audio.load();ui.audio.volume=Number(ui.volume.value)/100;state.audioTrackId=track.id;
+  stopYouTube();stopHls();state.audioTrackId=null;
+  if(state.audioEngine?.available&&!ui.audio.paused)await state.audioEngine.fadeTo(0,.1);
+  ui.audio.pause();ui.audio.removeAttribute('src');ui.audio.load();
+  const processed=await ensureAudioEngine();ui.audio.volume=processed?1:Number(ui.volume.value)/100;
+  state.audioEngine?.setOutputLevel(0);state.audioTrackId=track.id;
   const nativeHls=Boolean(ui.audio.canPlayType('application/vnd.apple.mpegurl'));
   const Hls=track.source==='soundcloud'&&!nativeHls?await ensureHlsApi():null;
   if(!current()||signal?.aborted)throw new DOMException('Playback superseded','AbortError');
@@ -1078,7 +1099,7 @@ async function playAudio(track,startAt=0){
       hls.on(Hls.Events.ERROR,(_event,data)=>{if(!data.fatal||!current())return;if(settled)recoverPlayback(new Error(t('playbackFailed')),generation);else finish(reject,new Error(t('playbackFailed')))});
       hls.on(Hls.Events.MANIFEST_PARSED,async()=>{
         if(!current()){abort();return}
-        try{applyAudioStart(startAt);await ui.audio.play();if(!current()){abort();return}setPlaying(true);finish(resolve)}catch(error){finish(reject,error)}
+        try{applyAudioStart(startAt);await ui.audio.play();if(!current()){abort();return}state.audioEngine?.fadeTo(Number(ui.volume.value)/100,.16);setPlaying(true);finish(resolve)}catch(error){finish(reject,error)}
       });
       hls.on(Hls.Events.MEDIA_ATTACHED,()=>hls.loadSource(track.stream_url));
       hls.attachMedia(ui.audio);
@@ -1086,7 +1107,7 @@ async function playAudio(track,startAt=0){
     return;
   }
   ui.audio.src=track.stream_url;
-  applyAudioStart(startAt);await ui.audio.play();setPlaying(true);
+  applyAudioStart(startAt);await ui.audio.play();state.audioEngine?.fadeTo(Number(ui.volume.value)/100,.16);setPlaying(true);
 }
 
 function updateMediaSession(track){
@@ -1182,6 +1203,7 @@ async function playTrack(track,options={}){
   if(!preserveQueue)seedContextQueue(track);
   state.queue=playerCore.remove(state.queue,track.id);persistQueue();
   const firstReveal=!state.active,previous=state.active;state.active=track;
+  updateAudioEngineUi();
   if(!recovered){state.playbackOrigin=track;state.failedSources.clear();state.failedTrackIds.clear();state.sameSourceRefreshGeneration=refreshAttempted?playbackGeneration:null}
   else state.playbackOrigin=options.origin||state.playbackOrigin||track;
   rememberRecent(track);ui.player.classList.remove('player-empty');ui.idleStage.setAttribute('aria-hidden','true');document.body.classList.add('has-player');ui.player.classList.remove('track-enter','track-swap');ui.player.classList.add(firstReveal?'track-enter':'track-swap');ui.nowTitle.textContent=decodeText(track.title);ui.nowArtist.textContent=`${decodeText(track.artist)} · ${sourceLabels[track.source]||track.source}`;ui.nowSource.textContent=sourceLabels[track.source]||track.source;
@@ -1315,6 +1337,8 @@ ui.importButton.addEventListener('click',()=>ui.importPanel.hidden?openImportPan
 ui.importText.addEventListener('input',()=>{clearTimeout(importPreviewTimer);importPreviewTimer=setTimeout(()=>{if(importController)return;const count=parseImportedLibrary(ui.importText.value,ui.libraryFile.files?.[0]?.name||'').length;prepareImportReport(count,'uniqueTracksReady')},180)});
 ui.libraryFile.addEventListener('change',async()=>{const file=ui.libraryFile.files?.[0];if(!file)return;if(file.size>2*1024*1024){ui.importStatus.textContent=t('fileTooLarge');return}try{ui.importText.value=await file.text();ui.importFileName.textContent=file.name;const count=parseImportedLibrary(ui.importText.value,file.name).length;prepareImportReport(count,'uniqueTracksReady')}catch(error){ui.importStatus.textContent=error.message||t('fileReadFailed')}});
 themeChoiceButtons.forEach(button=>button.addEventListener('click',()=>{state.theme=button.dataset.themeChoice;applyVisual()}));
+audioProfileButtons.forEach(button=>button.addEventListener('click',()=>{state.audioProfile=button.dataset.audioProfile;state.audioEngine?.applyProfile(state.audioProfile);persistAudioPreferences();updateAudioEngineUi()}));
+ui.soundEngineToggle.addEventListener('click',()=>{state.audioProcessing=!state.audioProcessing;state.audioEngine?.setEnabled(state.audioProcessing);persistAudioPreferences();updateAudioEngineUi()});
 document.querySelectorAll('[data-home-action]').forEach(button=>button.addEventListener('click',()=>{if(button.dataset.homeAction==='all-recent'&&state.recents.length){state.library=false;state.hasSearched=true;state.tracks=[...state.recents];render();return}ui.searchInput.focus({preventScroll:true});ui.searchInput.scrollIntoView({behavior:document.documentElement.dataset.motion==='off'?'auto':'smooth',block:'center'})}));
 ui.motionToggle.addEventListener('click',()=>{state.motion=state.motion==='on'?'off':'on';applyVisual()});ui.decorToggle.addEventListener('click',()=>{state.decor=state.decor==='full'?'minimal':'full';applyVisual()});ui.densityToggle.addEventListener('click',()=>{const modes=['compact','standard','airy'];state.density=modes[(modes.indexOf(state.density)+1)%modes.length];applyVisual()});
 ui.searchForm.addEventListener('submit',event=>{event.preventDefault();search()});
@@ -1343,7 +1367,7 @@ ui.clearQueue?.addEventListener('click',()=>{state.queue=[];state.queueMode='man
 ui.minimizeVideo.addEventListener('click',()=>{ui.youtubeDock.classList.toggle('minimized');ui.minimizeVideo.textContent=ui.youtubeDock.classList.contains('minimized')?'□':'—'});
 ui.progress.addEventListener('change',()=>{state.seeking=false;const duration=state.active?.source==='youtube'?state.youtube?.getDuration?.():ui.audio.duration;seekTo((Number(ui.progress.value)/1000)*(duration||0),true)});ui.progress.addEventListener('pointercancel',()=>{state.seeking=false});
 ui.progress.addEventListener('pointerdown',()=>{state.seeking=true});ui.progress.addEventListener('pointerup',()=>{state.seeking=false;const duration=state.active?.source==='youtube'?state.youtube?.getDuration?.():ui.audio.duration;seekTo((Number(ui.progress.value)/1000)*(duration||0),true)});ui.progress.addEventListener('input',()=>{setRange(ui.progress,ui.progress.value);const duration=state.active?.source==='youtube'?state.youtube?.getDuration?.():ui.audio.duration;ui.elapsed.textContent=formatTime((Number(ui.progress.value)/1000)*(duration||0))});
-ui.volume.addEventListener('input',()=>{setRange(ui.volume,ui.volume.value);const value=Number(ui.volume.value);ui.audio.volume=value/100;try{state.youtube?.setVolume(value)}catch{}ui.muteButton.textContent=t(value?'volume':'mute')});
+ui.volume.addEventListener('input',()=>{setRange(ui.volume,ui.volume.value);const value=Number(ui.volume.value);if(state.audioEngine?.available){ui.audio.volume=1;state.audioEngine.setOutputLevel(value/100)}else ui.audio.volume=value/100;try{state.youtube?.setVolume(value)}catch{}ui.muteButton.textContent=t(value?'volume':'mute')});
 ui.muteButton.addEventListener('click',()=>{const muted=Number(ui.volume.value)===0;if(muted)setRange(ui.volume,Math.round(state.lastVolume*100)||82);else{state.lastVolume=Number(ui.volume.value)/100;setRange(ui.volume,0)}ui.volume.dispatchEvent(new Event('input'))});
 ui.audio.addEventListener('timeupdate',()=>updateTimeline(ui.audio.currentTime,ui.audio.duration));ui.audio.addEventListener('loadedmetadata',()=>updateTimeline(ui.audio.currentTime,ui.audio.duration));ui.audio.addEventListener('play',()=>{setPlaying(true);startWaveformCapture(state.active)});ui.audio.addEventListener('pause',()=>{stopWaveformCapture();setPlaying(false)});ui.audio.addEventListener('ended',()=>{stopWaveformCapture();handleTrackEnded()});ui.audio.addEventListener('error',()=>{stopWaveformCapture();if(state.active?.id===state.audioTrackId)recoverPlayback()});
 window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();installPrompt=event;ui.installButton.hidden=false});window.addEventListener('appinstalled',()=>{installPrompt=null;ui.installButton.hidden=true;setMessage(t('installed'),'notice')});ui.installButton.addEventListener('click',async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;ui.installButton.hidden=true});

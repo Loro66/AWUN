@@ -146,6 +146,22 @@ test('library transfer groups copied playlist rows instead of matching metadata 
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('awun-library') || '[]').map(track => track.title))).toEqual(['Midnight Signal']);
 });
 
+test('sound profile persists and direct playback activates the audio engine', async ({ page }) => {
+  await openAwun(page);
+  await page.locator('#themeButton').click();
+  await page.locator('[data-audio-profile="warm"]').click();
+  await expect(page.locator('[data-audio-profile="warm"]')).toHaveAttribute('aria-pressed', 'true');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('songvale-audio-v1')))).toEqual({ profile: 'warm', enabled: true });
+  await page.locator('#themeClose').click();
+  await searchFor(page, 'midnight signal');
+  await page.locator('#trackList .track[data-source="audius"]').first().locator('.play').click();
+  await page.locator('#themeButton').click();
+  await expect(page.locator('#soundEngineStatus')).toHaveText(/текущему прямому потоку|не предоставляет доступ/);
+  await page.locator('#soundEngineToggle').click();
+  await expect(page.locator('#soundEngineToggle')).toHaveAttribute('aria-pressed', 'false');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('songvale-audio-v1')))).toEqual({ profile: 'warm', enabled: false });
+});
+
 for (const viewport of [
   { name: 'desktop-1920', width: 1920, height: 1080 },
   { name: 'desktop-1280', width: 1280, height: 900 },
