@@ -421,6 +421,9 @@ function importedTrackFromBlock(lines){
 function parseTextLibrary(raw){
   const source=String(raw||'').replace(/\r/g,'');
   const lines=source.split('\n').map(cleanImportLine);
+  const contentLines=lines.filter(line=>line&&!line.startsWith('#')&&!isImportDuration(line));
+  const delimitedTracks=contentLines.map(splitImportedName);
+  if(delimitedTracks.length&&delimitedTracks.every(track=>track.artist&&track.title))return delimitedTracks.map(({artist,title})=>importedTrack(artist,title)).filter(Boolean);
   const durationCount=lines.filter(isImportDuration).length;
   if(durationCount){
     const tracks=[];let block=[];
@@ -434,7 +437,7 @@ function parseTextLibrary(raw){
   }
   const paragraphTracks=source.split(/\n\s*\n+/).map(block=>importedTrackFromBlock(block.split('\n'))).filter(Boolean);
   if(paragraphTracks.some(track=>track.artist!=='Yandex Music'))return paragraphTracks;
-  return lines.filter(line=>line&&!line.startsWith('#')&&!isImportDuration(line)).map(splitImportedName).map(({artist,title})=>importedTrack(artist,title)).filter(Boolean);
+  return contentLines.map(splitImportedName).map(({artist,title})=>importedTrack(artist,title)).filter(Boolean);
 }
 function parseImportedLibrary(raw,fileName=''){
   const extension=fileName.toLocaleLowerCase().split('.').pop();let tracks=[];
