@@ -490,6 +490,63 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .player .player-tools #playerSave:disabled{opacity:.3;pointer-events:none}
 .player.expanded-player .player-tools{max-width:304px!important}
 
+/* SONGVALE 2.2 listening dock: compact hierarchy inspired by mature desktop
+   players without copying their visual identity. */
+@media (min-width:1100px){
+  html{--awun-player-height:84px}
+  .player,html[data-decor="minimal"] .player{
+    padding:9px 18px;grid-template-columns:52px minmax(0,1fr);gap:14px;
+    background:linear-gradient(180deg,rgba(5,11,7,.975),rgba(3,8,5,.992));
+    box-shadow:0 -1px 0 rgba(var(--paper-rgb),.035),0 -18px 46px rgba(0,0,0,.3)
+  }
+  .player .turntable{width:52px;height:52px}
+  .player .player-artwork{width:52px;height:52px;border-radius:6px}
+  .player .player-console{
+    grid-template-columns:minmax(190px,.72fr) minmax(430px,1.55fr) minmax(245px,.8fr);gap:22px
+  }
+  .player .now{padding-right:12px;border-right:1px solid rgba(var(--paper-rgb),.075)}
+  .player .now strong{font-size:13px;font-weight:650;letter-spacing:-.1px}
+  .player .now span{margin-top:5px;font-size:9px}
+  .player .transport{display:grid;grid-template-columns:auto minmax(180px,1fr);align-items:center;gap:16px}
+  .player .transport-buttons{justify-content:flex-start;gap:3px;margin:0}
+  .player .transport-buttons>button{width:31px;height:31px;border-radius:50%;font-size:14px}
+  .player .transport-buttons>button:hover{background:rgba(var(--paper-rgb),.06);color:var(--paper)}
+  .player .transport-buttons .play-pause{width:42px;height:42px;margin:0 3px;font-size:11px;box-shadow:0 4px 18px rgba(var(--accent-rgb),.18)!important}
+  .player .timeline{grid-template-columns:32px minmax(130px,1fr) 32px;gap:7px;font-size:7px;font-variant-numeric:tabular-nums}
+  .player .wave-progress,.player .wave-progress .progress{height:20px}
+  .player .wave-progress:before{opacity:.68}
+  .player .wave-progress:after{filter:drop-shadow(0 0 5px rgba(var(--accent-rgb),.22))}
+  .player .player-tools,.player.expanded-player .player-tools{
+    grid-template-columns:34px 34px 30px minmax(72px,104px) 34px!important;gap:4px!important
+  }
+  .player .player-tools{box-shadow:-12px 0 0 -11px rgba(var(--paper-rgb),.075)}
+  .player .player-tools button{width:32px;height:32px;border-radius:50%}
+  .player .player-tools #playerSave{width:34px;height:34px;font-size:19px}
+  .player .player-tools #playerSave.saved{background:rgba(var(--accent-rgb),.12);color:var(--signal-hot)}
+  .player .player-tools #queueToggle{font-size:18px}
+  .player .player-tools .volume{margin:0 4px}
+}
+
+@media (min-width:761px) and (max-width:1099px){
+  html{--awun-compact-player-height:84px}
+  .player,.player.expanded-player,html[data-decor="minimal"] .player,html[data-decor="minimal"] .player.expanded-player{padding:9px 14px;gap:10px}
+  .player .turntable,.player.expanded-player .turntable{flex-basis:50px;width:50px;height:50px}
+  .player .player-artwork,.player.expanded-player .player-artwork{width:50px;height:50px}
+  .player .player-console,.player.expanded-player .player-console{grid-template-columns:minmax(140px,.65fr) minmax(300px,1.45fr) minmax(190px,.7fr);gap:10px}
+  .player .transport-buttons,.player.expanded-player .transport-buttons{gap:3px}
+  .player .player-tools,.player.expanded-player .player-tools{grid-template-columns:30px 30px 28px minmax(58px,86px)!important;gap:4px!important}
+  .player .player-tools #playerSave,.player.expanded-player .player-tools #playerSave{display:grid!important;width:30px;height:30px}
+  .player .player-tools #expandPlayer,.player.expanded-player .player-tools #expandPlayer{display:none!important}
+}
+
+@media (max-width:760px){
+  .player .player-console,.player.expanded-player .player-console{grid-template-columns:minmax(0,1fr) 66px}
+  .player .player-tools,.player.expanded-player .player-tools{width:66px!important;grid-template-columns:30px 30px!important;gap:4px!important}
+  .player .player-tools #playerSave,.player.expanded-player .player-tools #playerSave,
+  .player .player-tools #queueToggle,.player.expanded-player .player-tools #queueToggle{display:grid!important;width:30px;height:30px}
+  .player .player-tools #playerSave,.player.expanded-player .player-tools #playerSave{font-size:17px}
+}
+
 /* Source diagnostics lives behind Settings and uses measured backend data,
    so it fills the screen only when the listener explicitly opens it. */
 .diagnostics-entry{
