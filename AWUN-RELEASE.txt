@@ -1,20 +1,21 @@
-SONGVALE 2.1.2
+SONGVALE 2.2.0
 Release date: 2026-09-16
 
-This release repairs text-based library transfer for lists copied directly
-from music catalog pages.
+This release turns the persistent player into a focused listening dock that
+feels deliberate on desktop, compact windows and phones.
 
 What changed:
-- A copied playlist row is now parsed as one track: title, one or more artist
-  lines, and duration.
-- Duration values such as 02:40 are ignored as metadata instead of being sent
-  to search as fake track titles.
-- Multiple artist lines remain attached to the same track.
-- The persistent player now includes a direct save/remove-from-library button.
-- The importer no longer turns a small copied library into dozens of invalid
-  searches and misleading "not found" results.
-- Added a browser regression test for the exact multiline format that exposed
-  the problem.
+- Reorganized the player into clear track, transport, timeline and utility
+  zones instead of one oversized waveform strip.
+- Reduced visual noise, empty spacing and control scatter while preserving the
+  waveform as part of SONGVALE's identity.
+- Added compact previous, play, next and repeat controls with consistent hit
+  areas and stronger active states.
+- Kept save/remove-from-library and queue controls visible across supported
+  viewport sizes.
+- Hid secondary volume and expansion tools only where narrow mobile layouts
+  would otherwise become cramped.
+- Updated all reviewed desktop, compact and mobile visual baselines.
 
 Windows package:
 - SONGVALE-Setup-x64.exe — per-user installer.

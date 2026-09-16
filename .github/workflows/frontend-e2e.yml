@@ -6,7 +6,6 @@ on:
   push:
     branches:
       - main
-      - codex/player-dock-2-2
 
 permissions:
   contents: read
@@ -32,22 +31,7 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Run browser and screenshot tests
-        shell: bash
-        run: |
-          if [[ "$GITHUB_REF" == "refs/heads/codex/player-dock-2-2" ]]; then
-            npm run test:e2e:update
-          else
-            npm run test:e2e
-          fi
-      - name: Upload player dock review
-        if: github.ref == 'refs/heads/codex/player-dock-2-2'
-        uses: actions/upload-artifact@v4
-        with:
-          name: songvale-player-dock-review
-          path: |
-            release-captures
-            tests/e2e/awun.spec.js-snapshots
-          if-no-files-found: error
+        run: npm run test:e2e
       - name: Upload browser report on failure
         if: failure()
         uses: actions/upload-artifact@v4

@@ -113,7 +113,7 @@ Open `http://127.0.0.1:8000`. Optional provider credentials and deployment setti
 
 ## Verified release quality
 
-Release `v2.1.2` is built from `main` by GitHub Actions.
+Release `v2.2.0` is built from `main` by GitHub Actions.
 
 - **241 Python tests** cover search, ranking, matching, policy, reliability, security, visual identity and desktop packaging.
 - **28 Playwright scenarios** exercise progressive search, cancellation, provider deadlines, playback recovery, multiline library transfer, queue persistence, large libraries and responsive layouts.
@@ -127,7 +127,7 @@ Release `v2.1.2` is built from `main` by GitHub Actions.
 | Surface | Status | Distribution |
 | --- | --- | --- |
 | Web / PWA | Public beta | [Open application](https://awun-1.onrender.com) |
-| Windows | Released, unsigned beta | [Download v2.1.2](https://github.com/Loro66/AWUN/releases/tag/v2.1.2) |
+| Windows | Released, unsigned beta | [Download v2.2.0](https://github.com/Loro66/AWUN/releases/tag/v2.2.0) |
 | Android | Reproducible Play bundle and store package | Release requires Play Console signing and testing |
 | iOS | Reproducible unsigned beta | Physical distribution requires Apple signing |
 

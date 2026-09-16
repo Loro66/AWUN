@@ -2,6 +2,23 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.2.0] - 2026-09-16
+
+### Redesigned
+
+- Rebuilt the persistent player as a compact listening dock with a clear metadata, transport, timeline and utility hierarchy.
+- Reduced the oversized waveform and empty spacing while keeping the waveform as a recognizable SONGVALE element.
+- Added consistent circular controls, restrained separators and responsive layouts for desktop, compact and mobile widths.
+
+### Improved
+
+- Keep save/remove-from-library and queue controls directly available from the player on every supported viewport.
+- Hide only secondary volume and expansion tools on narrow phones so playback remains comfortable instead of cramped.
+
+### Testing
+
+- Updated all four reviewed visual baselines and expanded geometry checks to cover the player save control.
+
 ## [2.1.2] - 2026-09-16
 
 ### Fixed
