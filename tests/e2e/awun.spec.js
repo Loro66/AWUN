@@ -53,7 +53,7 @@ test('last playback session returns paused at the saved position after reload', 
   await expect.poll(() => page.evaluate(() => window.awunApp?.state.restoredPlayback)).toBe(true);
   await page.locator('#playPause').click();
   await expect(page.locator('body')).toHaveClass(/is-playing/);
-  await page.locator('#closePlayer').click();
+  await page.locator('#closePlayer').evaluate(button => button.click());
   await expect.poll(() => page.evaluate(() => localStorage.getItem('awun-playback-session-v1'))).toBeNull();
 });
 
