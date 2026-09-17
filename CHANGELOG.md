@@ -2,6 +2,24 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.5.0] - 2026-09-17
+
+### Added
+
+- Added a device-local stale-while-revalidate cache for the eight most recent searches. Repeating a query now shows results immediately while every connected source refreshes in the background.
+- Added local playback-session restore for the last track and position. SONGVALE returns paused after restart and resumes only after an explicit play action.
+
+### Improved
+
+- Replace each cached provider group only after that source answers, so a temporarily unavailable provider does not erase useful recent results.
+- Route restored playback through the normal stream-refresh and fallback path instead of attempting to reuse an expired media URL blindly.
+- Keep transient search-cache data out of exported local backups and remove the playback session when the player is explicitly closed.
+
+### Testing
+
+- Added browser scenarios for immediate cached search results, background revalidation, paused playback restore, position recovery and explicit session removal.
+- The release gate now covers 242 Python tests, 9 frontend unit tests and 35 browser behavior/responsive scenarios.
+
 ## [2.4.0] - 2026-09-17
 
 ### Added
@@ -206,4 +224,5 @@ Versions before 1.10.4 were iterative beta builds. Their exact changes remain av
 [2.1.1]: https://github.com/Loro66/AWUN/releases/tag/v2.1.1
 [2.1.2]: https://github.com/Loro66/AWUN/releases/tag/v2.1.2
 [2.3.0]: https://github.com/Loro66/AWUN/releases/tag/v2.3.0
+[2.5.0]: https://github.com/Loro66/AWUN/releases/tag/v2.5.0
 [2.4.0]: https://github.com/Loro66/AWUN/releases/tag/v2.4.0

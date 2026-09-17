@@ -1,24 +1,24 @@
-SONGVALE 2.4.0
+SONGVALE 2.5.0
 Release date: 2026-09-17
 
-This release makes library transfer recoverable and gives uncertain matches a
-safe manual review step instead of silently choosing the wrong recording.
+This release makes repeated everyday actions feel immediate without changing
+the quiet Dark Forest interface.
 
 What changed:
-- Uncertain matches are held for review with the three strongest candidates.
-- Each review item can be selected, skipped or searched again with a refined
-  artist/title query.
-- Interrupted transfers survive reload and resume from the pending tracks.
-- Missed-only retry avoids reprocessing successful matches.
-- Canonical artist/title identity prevents duplicates across provider IDs.
-- Downloaded reports now separate manual-review, not-found and pending tracks.
-- The 200-record anonymized benchmark reports 100 correct matches, 100 correct
-  rejections, zero false matches and zero unexpected misses.
+- The eight most recent searches are cached locally for 30 minutes.
+- A repeated query shows device-local results immediately while connected
+  sources refresh in the background.
+- Provider groups are replaced only after a successful fresh response.
+- The last track and position survive restart for up to 30 days.
+- Restored playback stays paused and never starts without user intent.
+- Pressing play still refreshes short-lived links and keeps normal source
+  fallback behavior.
+- Closing the player removes the stored playback session.
 
 Windows package:
 - SONGVALE-Setup-x64.exe — per-user installer.
 - SONGVALE.exe — portable executable.
 - Separate SHA-256 checksum files, LICENSE.md and EULA.md.
 
-The release is published only after the complete Python suite and all 33
-browser behavior/responsive scenarios pass on GitHub Actions.
+The release is published only after 242 Python tests, 9 frontend unit tests and
+all 35 browser behavior/responsive scenarios pass on GitHub Actions.
