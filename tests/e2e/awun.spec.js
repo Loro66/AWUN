@@ -50,7 +50,7 @@ test('last playback session returns paused at the saved position after reload', 
   await expect(page.locator('#nowTitle')).toHaveText('Midnight Signal');
   await expect(page.locator('#elapsed')).toHaveText('1:13');
   await expect(page.locator('body')).not.toHaveClass(/is-playing/);
-  await expect(page.locator('#message')).toContainText('Последний трек восстановлен');
+  await expect.poll(() => page.evaluate(() => window.awunApp?.state.restoredPlayback)).toBe(true);
   await page.locator('#playPause').click();
   await expect(page.locator('body')).toHaveClass(/is-playing/);
   await page.locator('#closePlayer').click();
