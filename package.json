@@ -1,9 +1,9 @@
 {
   "name": "songvale-frontend-tests",
   "private": true,
-  "version": "2.2.0",
+  "version": "2.3.0",
   "scripts": {
-    "test:audio": "node --test tests/audio-engine.test.js",
+    "test:unit": "node --test tests/audio-engine.test.js tests/library-matcher.test.js",
     "test:e2e": "playwright test",
     "test:e2e:update": "playwright test --update-snapshots=all"
   },

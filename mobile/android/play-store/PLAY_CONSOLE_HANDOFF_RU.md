@@ -24,7 +24,7 @@
 | Название | `ru-RU/title.txt` | `en-US/title.txt` |
 | Краткое описание | `ru-RU/short_description.txt` | `en-US/short_description.txt` |
 | Полное описание | `ru-RU/full_description.txt` | `en-US/full_description.txt` |
-| Примечания к версии | `ru-RU/changelogs/2020000.txt` | `en-US/changelogs/2020000.txt` |
+| Примечания к версии | `ru-RU/changelogs/2030000.txt` | `en-US/changelogs/2030000.txt` |
 
 Для каждой локали загрузить:
 
@@ -71,7 +71,7 @@
 ## Загрузка и тестирование
 
 1. Включить Play App Signing и загрузить подписанный AAB из артефакта
-   `SONGVALE-Google-Play-2.2.0-2020000` во **Внутреннее тестирование**.
+   `SONGVALE-Google-Play-2.3.0-2030000` во **Внутреннее тестирование**.
 2. Добавить русские и английские примечания к версии.
 3. Установить сборку из Google Play на физический Android и проверить поиск,
    воспроизведение, сохранение, «Мою волну», поворот, фон, офлайн-ошибку,

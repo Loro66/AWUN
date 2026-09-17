@@ -1,0 +1,1 @@
+Library transfer now matches harmless title and artist variations, uses track duration, retries cleaned searches and rejects incorrect remix, live or cover versions. Direct streams also gain SONGVALE Sound profiles and overload protection.
