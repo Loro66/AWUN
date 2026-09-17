@@ -506,7 +506,8 @@ function prepareImportReport(total,statusKey='tracksReady'){
 }
 
 function commitImportedMatches(tracks){
-  const identity=track=>[matcher?.cleanArtist(track?.artist)||String(track?.artist||'').toLocaleLowerCase(),matcher?.cleanTitle(track?.title)||String(track?.title||'').toLocaleLowerCase()].join('\u0000');
+  const matchApi=window.SongvaleLibraryMatcher;
+  const identity=track=>[matchApi?.cleanArtist(track?.artist)||String(track?.artist||'').toLocaleLowerCase(),matchApi?.cleanTitle(track?.title)||String(track?.title||'').toLocaleLowerCase()].join('\u0000');
   const existing=new Set(state.saved.map(trackSessionKey)),existingIdentities=new Set(state.saved.map(identity));
   const additions=[];
   tracks.forEach(track=>{const key=trackSessionKey(track),canonical=identity(track);if(existing.has(key)||existingIdentities.has(canonical))return;existing.add(key);existingIdentities.add(canonical);additions.push(track)});
