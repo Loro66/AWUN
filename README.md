@@ -9,7 +9,7 @@
 [![Latest release](https://img.shields.io/github/v/release/Loro66/AWUN?style=for-the-badge&label=RELEASE&labelColor=11120F&color=6E875F)](https://github.com/Loro66/AWUN/releases/latest)
 
 [![Windows build](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&style=flat-square&label=Windows%20build)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
-[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=28%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
+[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=35%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![License](https://img.shields.io/badge/license-source--visible%20freeware-5F665B?style=flat-square)](LICENSE.md)
@@ -113,11 +113,12 @@ Open `http://127.0.0.1:8000`. Optional provider credentials and deployment setti
 
 ## Verified release quality
 
-Release `v2.5.0` is built from `main` by GitHub Actions.
+Release `v2.5.1` is built from `main` by GitHub Actions.
 
-- **242 Python tests** cover search, ranking, matching, policy, reliability, security, visual identity and desktop packaging.
+- **246 Python tests** cover search, ranking, matching, policy, reliability, security, visual identity and desktop packaging.
 - **35 Playwright scenarios** exercise progressive search, instant repeat-search cache, playback-session restore, cancellation, provider deadlines, playback recovery, resumable fuzzy library transfer, manual match review, sound profiles, queue persistence, large libraries and responsive layouts.
 - Repeat searches surface recent device-local results immediately while connected sources revalidate in the background; the last track and position return paused after restart.
+- Track Stories resolve noisy catalog titles through artist-aware LRCLIB and Genius matching, reject conflicting recording versions and can retry Genius with one distinctive lyric line.
 - A deterministic **200-record anonymized matcher benchmark** currently reports 100 correct matches, 100 correct rejections, zero false matches and zero unexpected misses.
 - **SONGVALE Sound** processes direct audio streams through conservative loudness leveling, tonal profiles, soft dynamics and a peak limiter. The official YouTube iframe remains outside the DSP path because it does not expose raw audio samples.
 - Visual and control-bound checks run at **1920, 1280, 1000 and 390 pixels**.
@@ -130,7 +131,7 @@ Release `v2.5.0` is built from `main` by GitHub Actions.
 | Surface | Status | Distribution |
 | --- | --- | --- |
 | Web / PWA | Public beta | [Open application](https://awun-1.onrender.com) |
-| Windows | Released, unsigned beta | [Download v2.5.0](https://github.com/Loro66/AWUN/releases/tag/v2.5.0) |
+| Windows | Released, unsigned beta | [Download v2.5.1](https://github.com/Loro66/AWUN/releases/tag/v2.5.1) |
 | Android | Reproducible Play bundle and store package | Release requires Play Console signing and testing |
 | iOS | Reproducible unsigned beta | Physical distribution requires Apple signing |
 
