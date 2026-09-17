@@ -162,6 +162,64 @@ test('library transfer matches catalog decorations and keeps imported duration',
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('awun-library') || '[]')[0]?.title)).toBe('Midnight Signal');
 });
 
+test('uncertain library matches wait for a manual candidate choice', async ({ page }) => {
+  await openAwun(page);
+  await page.locator('#welcomeImport').click();
+  await page.locator('#importText').fill([
+    'AWUN Artist — Midnight Signal Extended Journey',
+    'AWUN Artist — Midnight Signal Extended Story',
+  ].join('\n'));
+  await page.locator('#importSubmit').click();
+
+  await expect(page.locator('#importReviewCount')).toHaveText('2');
+  await expect(page.locator('#importReviewPanel')).toBeVisible();
+  await expect(page.locator('#importReviewCandidates li')).toHaveCount(3);
+  await page.locator('#importReviewSearchInput').fill('AWUN Artist Midnight Signal');
+  await page.locator('#importReviewSearchButton').click();
+  await expect(page.locator('#importReviewCandidates li')).toHaveCount(3);
+  await page.locator('#importReviewCandidates li').first().locator('button').click();
+  await expect(page.locator('#importReviewCount')).toHaveText('1');
+  await page.locator('#importReviewSkip').click();
+  await expect(page.locator('#importReviewCount')).toHaveText('0');
+  await expect(page.locator('#importAdded')).toHaveText('1');
+  await expect(page.locator('#importMissed')).toHaveText('1');
+  await expect(page.locator('#importReviewPanel')).toBeHidden();
+});
+
+test('unfinished transfer resumes after reload and does not duplicate a saved recording', async ({ page }) => {
+  await openAwun(page);
+  await page.evaluate(() => localStorage.setItem('songvale-import-session-v1',JSON.stringify({
+    version:1,total:1,processed:0,added:0,review:[],missed:[],
+    pendingTracks:[{id:'ym_resume',title:'Midnight Signal',artist:'AWUN Artist',duration:214,source:'yandex_music',stream_url:'',catalog_links:{}}],
+    pending:1,running:false,stopped:true,titleKey:'transferStopped',statusKey:'importStopped',statusValues:{processed:0,total:1},
+  })));
+  await page.reload();
+  await page.locator('#welcomeImport').click();
+  await expect(page.locator('#importResume')).toBeVisible();
+  await page.locator('#importResume').click();
+  await expect(page.locator('#importAdded')).toHaveText('1');
+  await expect(page.locator('#importResume')).toBeHidden();
+
+  await page.locator('#importText').fill('AWUN Artist — Midnight Signal');
+  await page.locator('#importSubmit').click();
+  await expect(page.locator('#importAdded')).toHaveText('0');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('awun-library') || '[]').length)).toBe(1);
+});
+
+test('missed tracks can be retried without reprocessing successful matches', async ({ page }) => {
+  await openAwun(page);
+  await page.locator('#welcomeImport').click();
+  await page.locator('#importText').fill('Unknown Artist — Missing Recording');
+  await page.locator('#importSubmit').click();
+  await expect(page.locator('#importMissed')).toHaveText('1');
+  await expect(page.locator('#importRetryMissed')).toBeVisible();
+  await page.locator('#importRetryMissed').click();
+  await expect(page.locator('#importReportTitle')).toHaveText('Перенос завершён');
+  await expect(page.locator('#importTotal')).toHaveText('1');
+  await expect(page.locator('#importMissed')).toHaveText('1');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('awun-library') || '[]').length)).toBe(0);
+});
+
 test('sound profile persists and direct playback activates the audio engine', async ({ page }) => {
   await openAwun(page);
   await page.locator('#themeButton').click();

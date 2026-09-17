@@ -1,0 +1,1 @@
+Uncertain library matches now wait for manual review with candidate selection, refined search and skip actions. Interrupted transfers can resume after reload, missed tracks can be retried separately, and duplicate recordings are prevented across providers.

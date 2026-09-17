@@ -1,26 +1,24 @@
-SONGVALE 2.3.0
+SONGVALE 2.4.0
 Release date: 2026-09-17
 
-This release improves library transfer for real-world catalog metadata and
-introduces conservative sound processing for direct audio streams.
+This release makes library transfer recoverable and gives uncertain matches a
+safe manual review step instead of silently choosing the wrong recording.
 
 What changed:
-- Library transfer now uses fuzzy title, artist and duration scoring instead
-  of relying on nearly exact metadata.
-- Harmless labels such as Official Audio, punctuation differences and featured
-  artist suffixes no longer prevent a match.
-- Duration is preserved from copied lists, M3U, CSV and JSON exports.
-- Failed matches retry with a cleaned query while incompatible remix, live,
-  acoustic, instrumental, cover, speed and demo versions remain rejected.
-- SONGVALE Sound adds Neutral, Forest Warm and Clarity profiles, conservative
-  loudness leveling, soft dynamics and peak limiting to direct streams.
-- YouTube remains in its official player and is not falsely presented as using
-  the direct-stream DSP path.
+- Uncertain matches are held for review with the three strongest candidates.
+- Each review item can be selected, skipped or searched again with a refined
+  artist/title query.
+- Interrupted transfers survive reload and resume from the pending tracks.
+- Missed-only retry avoids reprocessing successful matches.
+- Canonical artist/title identity prevents duplicates across provider IDs.
+- Downloaded reports now separate manual-review, not-found and pending tracks.
+- The 200-record anonymized benchmark reports 100 correct matches, 100 correct
+  rejections, zero false matches and zero unexpected misses.
 
 Windows package:
 - SONGVALE-Setup-x64.exe — per-user installer.
 - SONGVALE.exe — portable executable.
 - Separate SHA-256 checksum files, LICENSE.md and EULA.md.
 
-The release is published only after the complete Python suite and all 30
+The release is published only after the complete Python suite and all 33
 browser behavior/responsive scenarios pass on GitHub Actions.

@@ -113,10 +113,11 @@ Open `http://127.0.0.1:8000`. Optional provider credentials and deployment setti
 
 ## Verified release quality
 
-Release `v2.3.0` is built from `main` by GitHub Actions.
+Release `v2.4.0` is built from `main` by GitHub Actions.
 
 - **241 Python tests** cover search, ranking, matching, policy, reliability, security, visual identity and desktop packaging.
-- **30 Playwright scenarios** exercise progressive search, cancellation, provider deadlines, playback recovery, fuzzy library transfer, sound profiles, queue persistence, large libraries and responsive layouts.
+- **33 Playwright scenarios** exercise progressive search, cancellation, provider deadlines, playback recovery, resumable fuzzy library transfer, manual match review, sound profiles, queue persistence, large libraries and responsive layouts.
+- A deterministic **200-record anonymized matcher benchmark** currently reports 100 correct matches, 100 correct rejections, zero false matches and zero unexpected misses.
 - **SONGVALE Sound** processes direct audio streams through conservative loudness leveling, tonal profiles, soft dynamics and a peak limiter. The official YouTube iframe remains outside the DSP path because it does not expose raw audio samples.
 - Visual and control-bound checks run at **1920, 1280, 1000 and 390 pixels**.
 - The release workflow builds both Windows executables, generates SHA-256 checksums and publishes the versioned GitHub Release only after tests pass.
@@ -128,7 +129,7 @@ Release `v2.3.0` is built from `main` by GitHub Actions.
 | Surface | Status | Distribution |
 | --- | --- | --- |
 | Web / PWA | Public beta | [Open application](https://awun-1.onrender.com) |
-| Windows | Released, unsigned beta | [Download v2.3.0](https://github.com/Loro66/AWUN/releases/tag/v2.3.0) |
+| Windows | Released, unsigned beta | [Download v2.4.0](https://github.com/Loro66/AWUN/releases/tag/v2.4.0) |
 | Android | Reproducible Play bundle and store package | Release requires Play Console signing and testing |
 | iOS | Reproducible unsigned beta | Physical distribution requires Apple signing |
 
