@@ -43,3 +43,45 @@ test('retry queries remove presentation labels without losing the raw query',()=
     ['Portishead Roads (Official Video)','Portishead Roads','Roads']
   );
 });
+
+test('200-record anonymized benchmark reports no false matches', t=>{
+  const benchmark=[];
+  for(let index=0;index<100;index+=1){
+    const duration=170+(index%55),title=`Signal ${index}`,artist=`Artist ${index}`;
+    benchmark.push({
+      imported:{title,artist,duration},
+      candidates:[
+        track(`${title} (Official Audio)`,artist,duration+(index%3)-1,`correct-${index}`),
+        track(`${title} Remix`,artist,duration,`remix-${index}`),
+        track(`Unrelated ${index}`,`Other ${index}`,duration,`wrong-${index}`),
+      ],
+      expected:`correct-${index}`,
+    });
+  }
+  for(let index=100;index<150;index+=1){
+    benchmark.push({
+      imported:{title:`Forest ${index}`,artist:`Artist ${index}`,duration:200},
+      candidates:[track(`Forest ${index} Live`,`Artist ${index}`,200,`live-${index}`)],
+      expected:null,
+    });
+  }
+  for(let index=150;index<200;index+=1){
+    benchmark.push({
+      imported:{title:`Quiet Path ${index}`,artist:`Artist ${index}`,duration:240},
+      candidates:[track(`Different Road ${index}`,`Other ${index}`,240,`unrelated-${index}`)],
+      expected:null,
+    });
+  }
+
+  const metrics={correct_match:0,correct_rejection:0,false_match:0,not_found:0};
+  benchmark.forEach(record=>{
+    const actual=matcher.bestMatch(record.candidates,record.imported)?.candidate.id||null;
+    if(record.expected&&actual===record.expected)metrics.correct_match+=1;
+    else if(record.expected&&!actual)metrics.not_found+=1;
+    else if(!record.expected&&!actual)metrics.correct_rejection+=1;
+    else metrics.false_match+=1;
+  });
+  t.diagnostic(`benchmark metrics: ${JSON.stringify(metrics)}`);
+  assert.equal(benchmark.length,200);
+  assert.deepEqual(metrics,{correct_match:100,correct_rejection:100,false_match:0,not_found:0});
+});

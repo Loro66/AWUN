@@ -2,6 +2,24 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.4.0] - 2026-09-17
+
+### Added
+
+- Added a calm manual-review queue for uncertain library matches with the three best candidates, refined search, explicit selection and skip actions.
+- Added resumable transfer sessions stored locally on the device and a one-click retry for only the tracks that were not found.
+- Added a deterministic 200-record anonymized matcher benchmark with correct-match, correct-rejection, false-match and not-found metrics.
+
+### Improved
+
+- Prevent duplicate recordings during resume and retry even when the same recording comes back from a different provider ID.
+- Include tracks awaiting review and tracks still pending in the downloadable transfer report.
+
+### Testing
+
+- Added browser coverage for manual review, refined search, selection, skip, resume after reload, missed-only retry and duplicate prevention.
+- Benchmark result: 100/100 correct matches, 100/100 correct rejections, zero false matches and zero unexpected not-found results.
+
 ## [2.3.0] - 2026-09-17
 
 ### Added
@@ -187,3 +205,5 @@ Versions before 1.10.4 were iterative beta builds. Their exact changes remain av
 [2.1.0]: https://github.com/Loro66/AWUN/releases/tag/v2.1.0
 [2.1.1]: https://github.com/Loro66/AWUN/releases/tag/v2.1.1
 [2.1.2]: https://github.com/Loro66/AWUN/releases/tag/v2.1.2
+[2.3.0]: https://github.com/Loro66/AWUN/releases/tag/v2.3.0
+[2.4.0]: https://github.com/Loro66/AWUN/releases/tag/v2.4.0

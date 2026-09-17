@@ -116,7 +116,7 @@ latest commit** in Render if auto-deploy does not start.
 
 ## 6. Build the Google Play Android release
 
-The Android release is `com.loro66.awun`, version `2.3.0` / code `2030000`, and
+The Android release is `com.loro66.awun`, version `2.4.0` / code `2040000`, and
 targets Android 16 API 36. Before building, the verified Play Console account
 owner must configure the four upload-key repository secrets documented in
 `mobile/android/play-store/RELEASE_CHECKLIST.md`.

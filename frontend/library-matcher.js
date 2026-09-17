@@ -58,20 +58,27 @@
     const confidence=title*.62+artist*.28+duration*.10;
     return{candidate,confidence,title,artist,duration};
   }
-  function bestMatch(candidates,imported){
-    const ranked=(Array.isArray(candidates)?candidates:[]).map(candidate=>score(imported,candidate))
+  function rankMatches(candidates,imported){
+    return (Array.isArray(candidates)?candidates:[]).map(candidate=>score(imported,candidate))
       .filter(result=>result.candidate?.stream_url)
       .sort((left,right)=>right.confidence-left.confidence||Number(right.candidate.score||0)-Number(left.candidate.score||0));
+  }
+  function bestMatch(candidates,imported){
+    const ranked=rankMatches(candidates,imported);
     if(!ranked.length)return null;
     const best=ranked[0],hasArtist=Boolean(imported?.artist&&imported.artist!=='Yandex Music');
     const threshold=hasArtist ? .70 : .82,margin=ranked[1]?best.confidence-ranked[1].confidence:1;
     if(best.confidence<threshold||best.title<.68||(hasArtist&&best.artist<.46)||!versionCompatible(imported?.title,best.candidate.title)||(best.confidence<.9&&margin<.025))return null;
     return best;
   }
+  function reviewCandidates(candidates,imported,limit=3){
+    const hasArtist=Boolean(imported?.artist&&imported.artist!=='Yandex Music');
+    return rankMatches(candidates,imported).filter(result=>result.title>=.48&&(!hasArtist||result.artist>=.3)&&versionCompatible(imported?.title,result.candidate.title)).slice(0,Math.max(1,Number(limit)||3));
+  }
   const cleanedSearch=value=>String(value||'').replace(/[[(][^\])]*[\])]/g,' ').replace(PRESENTATION,' ').replace(/\s+/g,' ').trim();
   function searchQueries(imported){
     const artist=imported?.artist==='Yandex Music'?'':String(imported?.artist||'').trim(),title=String(imported?.title||'').trim(),cleaned=cleanedSearch(title);
     return [...new Set([(artist+' '+title).trim(),(artist+' '+cleaned).trim(),cleaned].filter(Boolean))];
   }
-  return{normalize,cleanTitle,cleanArtist,textSimilarity,versionCompatible,durationSimilarity,score,bestMatch,searchQueries};
+  return{normalize,cleanTitle,cleanArtist,textSimilarity,versionCompatible,durationSimilarity,score,rankMatches,bestMatch,reviewCandidates,searchQueries};
 });

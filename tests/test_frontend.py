@@ -173,17 +173,19 @@ def test_library_transfer_is_visible_resumable_and_rejects_weak_matches() -> Non
 
     assert all(f'id="{element}"' in html for element in (
         "welcomePanel", "welcomeImport", "importReport", "importProcessed",
-        "importCancel", "importDownloadReport", "importOpenLibrary",
+        "importCancel", "importResume", "importRetryMissed", "importDownloadReport",
+        "importOpenLibrary", "importReviewPanel", "importReviewCandidates",
     ))
     assert "tracks.slice(0,1000)" in script
     assert "commitImportedMatches" in script and "importController?.abort()" in script
+    assert "songvale-import-session-v1" in script and "pendingTracks" in script
     matcher = (ROOT / "frontend" / "library-matcher.js").read_text(encoding="utf-8")
     assert "SongvaleLibraryMatcher" in script and "bestMatch" in matcher
-    assert "versionCompatible" in matcher and "durationSimilarity" in matcher
+    assert "versionCompatible" in matcher and "durationSimilarity" in matcher and "reviewCandidates" in matcher
     assert "isImportDuration" in script and "importedTrackFromBlock" in script
     assert 'id="playerSave"' in html and "ui.playerSave" in script
-    assert "SONGVALE-import-" in script and "not_found" in script
-    assert ".welcome-panel" in styles and ".import-workspace" in styles
+    assert "SONGVALE-import-" in script and "not_found" in script and "needs_review" in script
+    assert ".welcome-panel" in styles and ".import-workspace" in styles and ".import-review" in styles
 
 
 def test_installable_pwa_is_wired() -> None:

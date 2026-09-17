@@ -341,15 +341,28 @@
           <div><strong id="importTotal">0</strong><span data-i18n="importTotal">ВСЕГО</span></div>
           <div><strong id="importProcessed">0</strong><span data-i18n="importProcessed">ПРОВЕРЕНО</span></div>
           <div><strong id="importAdded">0</strong><span data-i18n="importAdded">ДОБАВЛЕНО</span></div>
+          <div><strong id="importReviewCount">0</strong><span data-i18n="importReview">НА ПРОВЕРКУ</span></div>
           <div><strong id="importMissed">0</strong><span data-i18n="importMissed">НЕ НАЙДЕНО</span></div>
         </div>
         <div class="import-meter"><progress id="importProgress" class="import-progress" value="0" max="100"></progress><span id="importPercent">0%</span></div>
         <p id="importStatus" role="status" data-i18n="importPrivacy">Выбери источник медиатеки. Совпадения будут сохраняться по мере обработки.</p>
         <div class="import-report-actions">
           <button id="importCancel" type="button" hidden data-i18n="stopTransfer">ОСТАНОВИТЬ</button>
+          <button id="importResume" type="button" hidden data-i18n="resumeTransfer">ПРОДОЛЖИТЬ</button>
+          <button id="importRetryMissed" type="button" hidden data-i18n="retryMissed">ПОВТОРИТЬ ПРОПУЩЕННЫЕ</button>
           <button id="importDownloadReport" type="button" hidden data-i18n="downloadReport">СКАЧАТЬ ОТЧЁТ</button>
           <button id="importOpenLibrary" type="button" hidden data-i18n="openLibrary">ОТКРЫТЬ МЕДИАТЕКУ</button>
         </div>
+        <section id="importReviewPanel" class="import-review" hidden aria-labelledby="importReviewTitle">
+          <header><span><small data-i18n="manualReview">РУЧНАЯ ПРОВЕРКА</small><strong id="importReviewTitle"></strong></span><b id="importReviewPosition"></b></header>
+          <p id="importReviewOriginal"></p>
+          <ol id="importReviewCandidates"></ol>
+          <div class="import-review-search">
+            <input id="importReviewSearchInput" type="search" data-i18n-placeholder="reviewSearchPlaceholder" placeholder="Уточнить поиск">
+            <button id="importReviewSearchButton" type="button" data-i18n="searchAgain">ИСКАТЬ</button>
+          </div>
+          <button id="importReviewSkip" class="import-review-skip" type="button" data-i18n="skipTrack">ПРОПУСТИТЬ ТРЕК</button>
+        </section>
         <footer><span data-i18n="importCapacity">ДО 1000 УНИКАЛЬНЫХ ТРЕКОВ ЗА ОДИН ПЕРЕНОС</span><b data-i18n="savedContinuously">СОХРАНЕНИЕ ПО ХОДУ</b></footer>
       </section>
     </div>

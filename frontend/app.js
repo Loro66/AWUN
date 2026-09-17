@@ -165,7 +165,7 @@ const ui={
   player:$('player'),playerArtwork:$('playerArtwork'),nowTitle:$('nowTitle'),nowArtist:$('nowArtist'),nowSource:$('nowSource'),audio:$('audio'),youtubeDock:$('youtubeDock'),youtubePlayer:$('youtubePlayer'),
   previousTrack:$('previousTrack'),playPause:$('playPause'),nextTrack:$('nextTrack'),repeatMode:$('repeatMode'),waveProgress:$('waveProgress'),progress:$('progress'),elapsed:$('elapsed'),totalTime:$('totalTime'),volume:$('volume'),muteButton:$('muteButton'),playerSave:$('playerSave'),closePlayer:$('closePlayer'),minimizeVideo:$('minimizeVideo'),queueToggle:$('queueToggle'),queueClose:$('queueClose'),expandPlayer:$('expandPlayer'),collapsePlayer:$('collapsePlayer'),
   themeButton:$('themeButton'),themeLabel:$('themeLabel'),themePanel:$('themePanel'),themeClose:$('themeClose'),themeBackdrop:$('themeBackdrop'),themeColor:$('themeColor'),motionToggle:$('motionToggle'),motionValue:$('motionValue'),decorToggle:$('decorToggle'),decorValue:$('decorValue'),densityToggle:$('densityToggle'),densityValue:$('densityValue'),soundEngineToggle:$('soundEngineToggle'),soundEngineValue:$('soundEngineValue'),soundEngineStatus:$('soundEngineStatus'),diagnosticsButton:$('diagnosticsButton'),diagnosticsPanel:$('diagnosticsPanel'),diagnosticsClose:$('diagnosticsClose'),diagnosticsRefresh:$('diagnosticsRefresh'),diagnosticsCopy:$('diagnosticsCopy'),diagnosticsList:$('diagnosticsList'),diagnosticsEndpoint:$('diagnosticsEndpoint'),diagnosticsChecked:$('diagnosticsChecked'),diagnosticsCopyStatus:$('diagnosticsCopyStatus'),diagnosticsToolsStatus:$('diagnosticsToolsStatus'),diagnosticsLog:$('diagnosticsLog'),storageExport:$('storageExport'),storageImport:$('storageImport'),storageImportFile:$('storageImportFile'),updateCheck:$('updateCheck'),updateLink:$('updateLink'),
-  importButton:$('importButton'),importPanel:$('importPanel'),importClose:$('importClose'),importBackdrop:$('importBackdrop'),libraryFile:$('libraryFile'),importFileButton:$('importFileButton'),importFileName:$('importFileName'),importText:$('importText'),importStatus:$('importStatus'),importSubmit:$('importSubmit'),importUrl:$('importUrl'),importUrlSubmit:$('importUrlSubmit'),importProgress:$('importProgress'),importReportTitle:$('importReportTitle'),importTotal:$('importTotal'),importProcessed:$('importProcessed'),importAdded:$('importAdded'),importMissed:$('importMissed'),importPercent:$('importPercent'),importCancel:$('importCancel'),importDownloadReport:$('importDownloadReport'),importOpenLibrary:$('importOpenLibrary')
+  importButton:$('importButton'),importPanel:$('importPanel'),importClose:$('importClose'),importBackdrop:$('importBackdrop'),libraryFile:$('libraryFile'),importFileButton:$('importFileButton'),importFileName:$('importFileName'),importText:$('importText'),importStatus:$('importStatus'),importSubmit:$('importSubmit'),importUrl:$('importUrl'),importUrlSubmit:$('importUrlSubmit'),importProgress:$('importProgress'),importReportTitle:$('importReportTitle'),importTotal:$('importTotal'),importProcessed:$('importProcessed'),importAdded:$('importAdded'),importReviewCount:$('importReviewCount'),importMissed:$('importMissed'),importPercent:$('importPercent'),importCancel:$('importCancel'),importResume:$('importResume'),importRetryMissed:$('importRetryMissed'),importDownloadReport:$('importDownloadReport'),importOpenLibrary:$('importOpenLibrary'),importReviewPanel:$('importReviewPanel'),importReviewTitle:$('importReviewTitle'),importReviewPosition:$('importReviewPosition'),importReviewOriginal:$('importReviewOriginal'),importReviewCandidates:$('importReviewCandidates'),importReviewSearchInput:$('importReviewSearchInput'),importReviewSearchButton:$('importReviewSearchButton'),importReviewSkip:$('importReviewSkip')
 };
 const sourceButtonElements=[...ui.sources.querySelectorAll('button[data-source]')];
 const themeChoiceButtons=[...document.querySelectorAll('[data-theme-choice]')];
@@ -184,6 +184,11 @@ function loadQueueState(){
 function loadVisual(){const value=readStoredJson('awun-visual',{});return{theme:['black','white','acid','ultraviolet','cobalt','ember'].includes(value?.theme)?value.theme:'black',motion:value?.motion==='off'?'off':'on',decor:value?.decor==='minimal'?'minimal':'full',density:['compact','standard','airy'].includes(value?.density)?value.density:'standard'}}
 function loadAudioPreferences(){const value=readStoredJson('songvale-audio-v1',{});return{audioProfile:['neutral','warm','clarity'].includes(value?.profile)?value.profile:'neutral',audioProcessing:value?.enabled!==false}}
 function loadLineComments(){const value=readStoredJson('awun-line-comments-v1',{});return value&&typeof value==='object'&&!Array.isArray(value)?value:{}}
+function loadImportSession(){
+  const value=readStoredJson('songvale-import-session-v1',null);
+  if(!value||value.version!==1||!Number.isFinite(Number(value.total)))return null;
+  return{...value,running:false,stopped:Boolean(value.stopped||(value.pendingTracks||[]).length)};
+}
 const visualThemes={black:{labelKey:'themeBlackShort',color:'#030604'},white:{labelKey:'themeWhiteShort',color:'#e7e8df'},acid:{labelKey:'themeAcidShort',color:'#050a05'},ultraviolet:{labelKey:'themeUltravioletShort',color:'#07050c'},cobalt:{labelKey:'themeCobaltShort',color:'#040a0e'},ember:{labelKey:'themeEmberShort',color:'#080704'}};
 const restoredQueue=loadQueueState();
 const state={
@@ -193,7 +198,7 @@ const state={
 let installPrompt=null;
 let language=i18n.language;
 let importController=null,importPreviewTimer=null;
-let latestImportReport=null;
+let latestImportReport=loadImportSession();
 function applyLanguage(){language=i18n.language;i18n.apply();applyVisual(false);applyRepeatMode(false);updateAudioEngineUi();ui.playPause.setAttribute('aria-label',t(state.isPlaying?'pauseAria':'playAria'));render();renderDiagnostics();if(latestImportReport)updateImportReport(latestImportReport)}
 
 function emitAwun(type,detail={}){document.dispatchEvent(new CustomEvent(`awun:${type}`,{detail}))}
@@ -383,7 +388,7 @@ async function ensureAudioEngine(){
 function openThemePanel(){setQueueOpen(false);setPlayerExpanded(false);if(document.body.classList.contains('flow-screen-open'))document.getElementById('flowClose')?.click();ui.importPanel.hidden=true;ui.importBackdrop.hidden=true;ui.importButton.setAttribute('aria-expanded','false');ui.diagnosticsPanel.hidden=true;ui.diagnosticsButton.setAttribute('aria-expanded','false');ui.themePanel.hidden=false;ui.themeBackdrop.hidden=false;ui.themeButton.setAttribute('aria-expanded','true');document.body.classList.add('visual-open')}
 function closeThemePanel(){document.body.classList.remove('visual-open');ui.themeButton.setAttribute('aria-expanded','false');ui.diagnosticsButton.setAttribute('aria-expanded','false');ui.themePanel.hidden=true;ui.diagnosticsPanel.hidden=true;ui.themeBackdrop.hidden=true}
 function openDiagnosticsPanel(){setQueueOpen(false);setPlayerExpanded(false);ui.themePanel.hidden=true;ui.themeButton.setAttribute('aria-expanded','false');ui.diagnosticsPanel.hidden=false;ui.diagnosticsButton.setAttribute('aria-expanded','true');ui.themeBackdrop.hidden=false;renderDiagnostics();document.body.classList.add('visual-open');void refreshStatus()}
-function openImportPanel(){setQueueOpen(false);setPlayerExpanded(false);ui.themePanel.hidden=true;ui.diagnosticsPanel.hidden=true;ui.themeBackdrop.hidden=true;ui.themeButton.setAttribute('aria-expanded','false');ui.importPanel.hidden=false;ui.importBackdrop.hidden=false;ui.importButton.setAttribute('aria-expanded','true');document.body.classList.add('visual-open');requestAnimationFrame(()=>ui.importUrl?.focus({preventScroll:true}))}
+function openImportPanel(){setQueueOpen(false);setPlayerExpanded(false);ui.themePanel.hidden=true;ui.diagnosticsPanel.hidden=true;ui.themeBackdrop.hidden=true;ui.themeButton.setAttribute('aria-expanded','false');ui.importPanel.hidden=false;ui.importBackdrop.hidden=false;ui.importButton.setAttribute('aria-expanded','true');document.body.classList.add('visual-open');if(latestImportReport)updateImportReport(latestImportReport);requestAnimationFrame(()=>ui.importUrl?.focus({preventScroll:true}))}
 function closeImportPanel(){document.body.classList.remove('visual-open');ui.importButton.setAttribute('aria-expanded','false');ui.importPanel.hidden=true;ui.importBackdrop.hidden=true}
 function setQueueOpen(open){
   const next=Boolean(open);ui.player.classList.toggle('queue-open',next);document.body.classList.toggle('queue-open',next);ui.queueToggle?.setAttribute('aria-expanded',String(next));
@@ -474,14 +479,20 @@ function parseImportedLibrary(raw,fileName=''){
 function updateImportReport(report){
   latestImportReport=report;
   const missed=Array.isArray(report.missed)?report.missed.length:Number(report.missed)||0;
+  const review=Array.isArray(report.review)?report.review.length:0,pending=Array.isArray(report.pendingTracks)?report.pendingTracks.length:0;
   const total=Math.max(0,Number(report.total)||0),processed=Math.max(0,Number(report.processed)||0),added=Math.max(0,Number(report.added)||0);
   const percent=total?Math.min(100,Math.round((processed/total)*100)):0;
-  ui.importTotal.textContent=String(total);ui.importProcessed.textContent=String(processed);ui.importAdded.textContent=String(added);ui.importMissed.textContent=String(missed);
+  ui.importTotal.textContent=String(total);ui.importProcessed.textContent=String(processed);ui.importAdded.textContent=String(added);ui.importReviewCount.textContent=String(review);ui.importMissed.textContent=String(missed);
   ui.importProgress.max=Math.max(1,total);ui.importProgress.value=processed;ui.importPercent.textContent=`${percent}%`;
   ui.importReportTitle.textContent=t(report.titleKey||'readyForLibrary',report.titleValues||{});
   if(report.statusKey)ui.importStatus.textContent=t(report.statusKey,report.statusValues||{});
+  if(review&&!report.running)ui.importStatus.textContent=t('reviewQueueStatus',{count:review});
   ui.importDownloadReport.hidden=Boolean(report.running)||processed===0;
   ui.importOpenLibrary.hidden=Boolean(report.running)||state.saved.length===0;
+  ui.importResume.hidden=Boolean(report.running)||pending===0;
+  ui.importRetryMissed.hidden=Boolean(report.running)||missed===0;
+  renderImportReview();
+  writeStoredJson('songvale-import-session-v1',{...report,version:1,running:false,updatedAt:new Date().toISOString()});
 }
 
 function setImportRunning(running){
@@ -491,20 +502,58 @@ function setImportRunning(running){
 }
 
 function prepareImportReport(total,statusKey='tracksReady'){
-  updateImportReport({total,processed:0,added:0,missed:[],pending:total,running:false,titleKey:'readyToTransfer',statusKey,statusValues:{count:total}});
+  updateImportReport({total,processed:0,added:0,review:[],missed:[],pendingTracks:[],pending:total,running:false,titleKey:'readyToTransfer',statusKey,statusValues:{count:total}});
 }
 
 function commitImportedMatches(tracks){
-  const existing=new Set(state.saved.map(trackSessionKey));
+  const identity=track=>[matcher?.cleanArtist(track?.artist)||String(track?.artist||'').toLocaleLowerCase(),matcher?.cleanTitle(track?.title)||String(track?.title||'').toLocaleLowerCase()].join('\u0000');
+  const existing=new Set(state.saved.map(trackSessionKey)),existingIdentities=new Set(state.saved.map(identity));
   const additions=[];
-  tracks.forEach(track=>{const key=trackSessionKey(track);if(existing.has(key))return;existing.add(key);additions.push(track)});
+  tracks.forEach(track=>{const key=trackSessionKey(track),canonical=identity(track);if(existing.has(key)||existingIdentities.has(canonical))return;existing.add(key);existingIdentities.add(canonical);additions.push(track)});
   if(additions.length){state.saved=[...additions,...state.saved].slice(0,1500);persistLibrary()}
   return additions.length;
 }
 
+function renderImportReview(){
+  if(!ui.importReviewPanel)return;
+  const review=latestImportReport?.review||[],item=review[0];ui.importReviewPanel.hidden=!item;ui.importReviewCandidates.replaceChildren();
+  if(!item)return;
+  const imported=item.imported||{};ui.importReviewTitle.textContent=decodeText(imported.title||t('manualReview'));ui.importReviewOriginal.textContent=[decodeText(imported.artist),decodeText(imported.title),imported.duration?formatTime(imported.duration):''].filter(Boolean).join(' · ');ui.importReviewPosition.textContent='1 / '+review.length;
+  const key=importKey(imported.artist,imported.title);if(ui.importReviewSearchInput.dataset.trackKey!==key){ui.importReviewSearchInput.dataset.trackKey=key;ui.importReviewSearchInput.value=((imported.artist==='Yandex Music'?'':imported.artist)+' '+imported.title).trim()}
+  (item.candidates||[]).forEach((result,index)=>{
+    const candidate=result.candidate||result,row=document.createElement('li'),copy=document.createElement('span'),title=document.createElement('strong'),meta=document.createElement('small'),choose=document.createElement('button');
+    title.textContent=decodeText(candidate.artist)+' — '+decodeText(candidate.title);meta.textContent=t('reviewCandidateMeta',{source:sourceLabels[candidate.source]||candidate.source,duration:formatTime(candidate.duration),confidence:Math.round((Number(result.confidence)||0)*100)});choose.type='button';choose.textContent=t('chooseMatch');choose.addEventListener('click',()=>chooseImportCandidate(index));copy.append(title,meta);row.append(copy,choose);ui.importReviewCandidates.append(row);
+  });
+}
+
+function chooseImportCandidate(index){
+  const review=[...(latestImportReport?.review||[])],item=review.shift(),result=item?.candidates?.[index],candidate=result?.candidate||result;if(!item||!candidate)return;
+  candidate.catalog_links={...candidate.catalog_links,...item.imported?.catalog_links};candidate.import_origin='library_transfer_manual';
+  const inserted=commitImportedMatches([candidate]),added=(Number(latestImportReport.added)||0)+inserted;
+  updateImportReport({...latestImportReport,added,review,titleKey:'transferComplete',statusKey:review.length?'reviewQueueStatus':'importDone',statusValues:review.length?{count:review.length}:{added,missed:(latestImportReport.missed||[]).length}});
+}
+
+function skipImportReview(){
+  const review=[...(latestImportReport?.review||[])],item=review.shift();if(!item)return;
+  const missed=[...(latestImportReport.missed||[]),{...item.imported,skip_reason:'manual'}];
+  updateImportReport({...latestImportReport,review,missed,titleKey:'transferComplete',statusKey:review.length?'reviewQueueStatus':'importDone',statusValues:review.length?{count:review.length}:{added:latestImportReport.added||0,missed:missed.length}});
+}
+
+async function searchImportReview(){
+  const item=latestImportReport?.review?.[0],query=ui.importReviewSearchInput.value.trim();if(!item||!query)return;
+  ui.importReviewSearchButton.disabled=true;
+  try{
+    const sources=[...state.sources].filter(source=>state.available.has(source)),{data}=await requestSearch({query,limit:18,sources:sources.length?sources:[...state.available],region:state.region,locale:navigator.language||null},{waitForFallback:true});
+    const candidates=window.SongvaleLibraryMatcher?.reviewCandidates(data.tracks,item.imported,3)||[];
+    if(!candidates.length){ui.importStatus.textContent=t('reviewSearchEmpty');return}
+    const review=[...latestImportReport.review];review[0]={...item,candidates,query};updateImportReport({...latestImportReport,review});
+  }catch(error){ui.importStatus.textContent=error.message||t('reviewSearchEmpty')}finally{ui.importReviewSearchButton.disabled=false}
+}
+
 function downloadImportReport(){
   if(!latestImportReport)return;
-  const payload={app:'SONGVALE',version:staticAssetVersion||null,created_at:new Date().toISOString(),total:latestImportReport.total,processed:latestImportReport.processed,added:latestImportReport.added,stopped:Boolean(latestImportReport.stopped),not_found:(latestImportReport.missed||[]).map(track=>({artist:track.artist||'',title:track.title||''}))};
+  const concise=track=>({artist:track.artist||'',title:track.title||'',duration:track.duration||0});
+  const payload={app:'SONGVALE',version:staticAssetVersion||null,created_at:new Date().toISOString(),total:latestImportReport.total,processed:latestImportReport.processed,added:latestImportReport.added,stopped:Boolean(latestImportReport.stopped),needs_review:(latestImportReport.review||[]).map(item=>concise(item.imported||{})),not_found:(latestImportReport.missed||[]).map(concise),pending:(latestImportReport.pendingTracks||[]).map(concise)};
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');
   link.href=url;link.download=`SONGVALE-import-${new Date().toISOString().slice(0,10)}.json`;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),0);
 }
@@ -1127,18 +1176,19 @@ function matchText(value){return decodeText(value).toLocaleLowerCase().normalize
 function bestImportedMatch(candidates,imported){
   return window.SongvaleLibraryMatcher?.bestMatch(candidates,imported)?.candidate||null;
 }
-async function searchImportedMatch(track,signal,limit=14){
+async function searchImportedResolution(track,signal,limit=14){
   const sources=[...state.sources].filter(source=>state.available.has(source)),matcher=window.SongvaleLibraryMatcher;
   const fallbackQuery=((track.artist==='Yandex Music'?'':track.artist)+' '+track.title).trim();
   const queries=matcher?.searchQueries(track)||[fallbackQuery],candidates=[],seen=new Set();
   for(const query of queries){
     const {data}=await requestSearch({query,limit,sources:sources.length?sources:[...state.available],region:state.region,locale:navigator.language||null},{signal,waitForFallback:true});
     for(const candidate of data.tracks||[]){if(candidate?.id&&!seen.has(candidate.id)){seen.add(candidate.id);candidates.push(candidate)}}
-    const match=bestImportedMatch(candidates,track);if(match)return match;
+    const match=bestImportedMatch(candidates,track);if(match)return{match,candidates:[]};
     if(signal?.aborted)throw new DOMException('Import matching aborted','AbortError');
   }
-  return null;
+  return{match:null,candidates:matcher?.reviewCandidates(candidates,track,3)||[]};
 }
+async function searchImportedMatch(track,signal,limit=14){return(await searchImportedResolution(track,signal,limit)).match}
 async function matchImportedTrack(track,expectedGeneration=state.playbackGeneration,signal){
   setMessage(t('matchingTrack',{track:`${decodeText(track.artist)} — ${decodeText(track.title)}`}),'loading');
   try{
@@ -1153,22 +1203,23 @@ function directImportedTrack(entry){
   if(entry.source!=='youtube'||!entry.external_id)return null;
   return{id:`yt_${entry.external_id}`,title:entry.title,artist:entry.artist||'YouTube',duration:0,quality:'VIDEO',source:'youtube',stream_url:entry.external_url||`https://www.youtube.com/watch?v=${entry.external_id}`,download_url:null,thumbnail:entry.thumbnail||null,score:82,catalog_links:{youtube:entry.external_url||`https://www.youtube.com/watch?v=${entry.external_id}`}};
 }
-async function findImportedMatch(track,signal){
-  if(track.source==='youtube'&&track.external_id)return directImportedTrack(track);
-  return searchImportedMatch(track,signal);
+async function findImportedResolution(track,signal){
+  if(track.source==='youtube'&&track.external_id)return{match:directImportedTrack(track),candidates:[]};
+  return searchImportedResolution(track,signal);
 }
 async function matchAndSaveImported(tracks){
   if(!tracks.length)throw new Error(t('noTracksInLibrary'));
-  const queue=tracks.slice(0,1000),staged=[],missed=[];let cursor=0,done=0,found=0,added=0;
+  const queue=tracks.slice(0,1000),staged=[],missed=[],review=[],completed=new Set();let cursor=0,done=0,found=0,added=0;
   const controller=new AbortController();importController?.abort();importController=controller;setImportRunning(true);
-  updateImportReport({total:queue.length,processed:0,added:0,missed:[],pending:queue.length,running:true,titleKey:'transferInProgress',statusKey:'matchingProgress',statusValues:{done:0,total:queue.length,found:0}});
+  updateImportReport({total:queue.length,processed:0,added:0,review:[],missed:[],pendingTracks:[...queue],pending:queue.length,running:true,titleKey:'transferInProgress',statusKey:'matchingProgress',statusValues:{done:0,total:queue.length,found:0}});
   const flush=()=>{if(!staged.length)return;added+=commitImportedMatches(staged.splice(0));};
-  const refresh=()=>updateImportReport({total:queue.length,processed:done,added,missed:[...missed],pending:queue.length-done,running:true,titleKey:'transferInProgress',statusKey:'matchingProgress',statusValues:{done,total:queue.length,found}});
-  const worker=async()=>{while(!controller.signal.aborted&&cursor<queue.length){const track=queue[cursor++];let processed=false;try{const result=await findImportedMatch(track,controller.signal);if(controller.signal.aborted)break;if(result){result.import_origin='library_transfer';staged.push(result);found+=1}else missed.push(track);processed=true}catch(error){if(controller.signal.aborted||error?.name==='AbortError')break;missed.push(track);processed=true}finally{if(processed){done+=1;if(done%12===0)flush();refresh()}}}};
+  const pendingTracks=()=>queue.filter(track=>!completed.has(importKey(track.artist,track.title)));
+  const refresh=()=>updateImportReport({total:queue.length,processed:done,added,review:[...review],missed:[...missed],pendingTracks:pendingTracks(),pending:queue.length-done,running:true,titleKey:'transferInProgress',statusKey:'matchingProgress',statusValues:{done,total:queue.length,found}});
+  const worker=async()=>{while(!controller.signal.aborted&&cursor<queue.length){const track=queue[cursor++];let processed=false;try{const resolution=await findImportedResolution(track,controller.signal);if(controller.signal.aborted)break;if(resolution.match){resolution.match.import_origin='library_transfer';staged.push(resolution.match);found+=1}else if(resolution.candidates?.length)review.push({imported:track,candidates:resolution.candidates});else missed.push(track);processed=true}catch(error){if(controller.signal.aborted||error?.name==='AbortError')break;missed.push(track);processed=true}finally{if(processed){completed.add(importKey(track.artist,track.title));done+=1;if(done%12===0)flush();refresh()}}}};
   try{
     await Promise.all(Array.from({length:Math.min(3,queue.length)},worker));flush();
     const stopped=controller.signal.aborted;state.library=state.saved.length>0;ui.libraryButton.classList.toggle('active',state.library);ui.libraryButton.setAttribute('aria-pressed',String(state.library));ui.searchNavButton.classList.toggle('active',!state.library);ui.searchNavButton.setAttribute('aria-pressed',String(!state.library));render();
-    const report={total:queue.length,processed:done,added,missed,pending:queue.length-done,running:false,stopped,titleKey:stopped?'transferStopped':'transferComplete',statusKey:stopped?'importStopped':'importDone',statusValues:{added,missed:missed.length,processed:done,total:queue.length}};updateImportReport(report);setMessage(t(stopped?'importStoppedSummary':'importSummary',{added,missed:missed.length,processed:done,total:queue.length}),'notice');runtimeLog?.log?.('library.import',{total:queue.length,processed:done,added,missed:missed.length,stopped});
+    const pending=pendingTracks(),report={total:queue.length,processed:done,added,review,missed,pendingTracks:pending,pending:pending.length,running:false,stopped,titleKey:stopped?'transferStopped':'transferComplete',statusKey:review.length?'reviewQueueStatus':stopped?'importStopped':'importDone',statusValues:review.length?{count:review.length}:{added,missed:missed.length,processed:done,total:queue.length}};updateImportReport(report);setMessage(t(review.length?'reviewQueueStatus':stopped?'importStoppedSummary':'importSummary',review.length?{count:review.length}:{added,missed:missed.length,processed:done,total:queue.length}),'notice');runtimeLog?.log?.('library.import',{total:queue.length,processed:done,added,review:review.length,missed:missed.length,pending:pending.length,stopped});
   }finally{if(importController===controller)importController=null;setImportRunning(false)}
 }
 async function importLibraryUrl(){
@@ -1335,6 +1386,9 @@ ui.limitSelect.addEventListener('change',()=>{const value=Number(ui.limitSelect.
 ui.themeButton.addEventListener('click',()=>ui.themePanel.hidden?openThemePanel():closeThemePanel());ui.themeClose.addEventListener('click',closeThemePanel);ui.themeBackdrop.addEventListener('click',closeThemePanel);ui.diagnosticsButton.addEventListener('click',openDiagnosticsPanel);ui.diagnosticsClose.addEventListener('click',closeThemePanel);ui.diagnosticsRefresh.addEventListener('click',refreshStatus);ui.diagnosticsCopy.addEventListener('click',copyDiagnostics);document.getElementById('flowButton')?.addEventListener('click',()=>{setQueueOpen(false);setPlayerExpanded(false);if(!ui.themePanel.hidden||!ui.diagnosticsPanel.hidden)closeThemePanel()});
 ui.diagnosticsLog.addEventListener('click',()=>runtimeLog?.download?.(`SONGVALE-log-${new Date().toISOString().slice(0,10)}.json`));ui.storageExport.addEventListener('click',exportLocalData);ui.storageImport.addEventListener('click',()=>ui.storageImportFile.click());ui.storageImportFile.addEventListener('change',importLocalData);ui.updateCheck.addEventListener('click',checkForUpdates);
 ui.importButton.addEventListener('click',()=>ui.importPanel.hidden?openImportPanel():closeImportPanel());ui.importClose.addEventListener('click',closeImportPanel);ui.importBackdrop.addEventListener('click',closeImportPanel);ui.importFileButton.addEventListener('click',()=>ui.libraryFile.click());ui.importSubmit.addEventListener('click',importLibrary);ui.importUrlSubmit.addEventListener('click',importLibraryUrl);ui.importCancel.addEventListener('click',()=>importController?.abort());ui.importDownloadReport.addEventListener('click',downloadImportReport);ui.importOpenLibrary.addEventListener('click',()=>{closeImportPanel();setLibraryView(true)});
+ui.importResume.addEventListener('click',()=>{const tracks=latestImportReport?.pendingTracks||[];if(tracks.length)void matchAndSaveImported(tracks)});
+ui.importRetryMissed.addEventListener('click',()=>{const tracks=latestImportReport?.missed||[];if(tracks.length)void matchAndSaveImported(tracks)});
+ui.importReviewSkip.addEventListener('click',skipImportReview);ui.importReviewSearchButton.addEventListener('click',()=>void searchImportReview());ui.importReviewSearchInput.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();void searchImportReview()}});
 ui.importText.addEventListener('input',()=>{clearTimeout(importPreviewTimer);importPreviewTimer=setTimeout(()=>{if(importController)return;const count=parseImportedLibrary(ui.importText.value,ui.libraryFile.files?.[0]?.name||'').length;prepareImportReport(count,'uniqueTracksReady')},180)});
 ui.libraryFile.addEventListener('change',async()=>{const file=ui.libraryFile.files?.[0];if(!file)return;if(file.size>2*1024*1024){ui.importStatus.textContent=t('fileTooLarge');return}try{ui.importText.value=await file.text();ui.importFileName.textContent=file.name;const count=parseImportedLibrary(ui.importText.value,file.name).length;prepareImportReport(count,'uniqueTracksReady')}catch(error){ui.importStatus.textContent=error.message||t('fileReadFailed')}});
 themeChoiceButtons.forEach(button=>button.addEventListener('click',()=>{state.theme=button.dataset.themeChoice;applyVisual()}));
