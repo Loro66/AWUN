@@ -61,7 +61,7 @@ library; dislikes remove it from future Flow queues on that device.
 
 Click any result (or its **STORY** button) to open a Track Story. AWUN requests
 plain or time-synced lyrics from LRCLIB on demand and, when
-`AWUN_GENIUS_ACCESS_TOKEN` is configured, attaches official Genius annotations
+`AWUN_GENIUS_ACCESS_TOKEN` is configured, attaches public Genius annotations
 to the closest lyric line. Each line also accepts private AWUN notes stored only
 in that browser. AWUN does not scrape Genius pages and does not cache lyrics.
 
@@ -175,13 +175,32 @@ for AWUN currently requires a user-provided metadata file or pasted track list.
 `GET /api/v1/track-details?artist=...&title=...&duration=...` returns an ordered
 list of lyric lines. When LRCLIB provides LRC timestamps, selecting a timestamp
 seeks the active track to that line. Selecting the lyric itself opens its
-thread: official Genius annotations appear first and the listener can add or
+thread: Genius annotations appear first and the listener can add or
 delete local notes beneath them.
+
+Track identity is resolved conservatively before any annotation is shown. AWUN
+first asks LRCLIB for an exact artist/title/duration match and falls back to a
+ranked catalog search. The fallback compares the normalized title, lead artist
+and duration instead of accepting result zero. The canonical LRCLIB metadata is
+then used for Genius lookup when available.
+
+The Genius lookup runs at most three bounded queries: lead artist plus canonical
+title, canonical title alone, and one distinctive LRCLIB lyric line plus the
+artist. Every Genius hit is scored again by title, artist and recording markers;
+conflicting live, remix, cover, acoustic, instrumental, demo, remaster, slowed or
+sped-up versions are rejected. A result below the confidence threshold is
+reported as not found. For a confirmed song, AWUN reads at most two pages of
+referents and attaches their annotations to the nearest matching LRCLIB line.
+
+The public Genius API is not used as a full-text lyrics source. Full plain or
+synced text remains supplied by LRCLIB; Genius contributes song identity, the
+canonical song link and available line annotations. AWUN never scrapes a Genius
+web page to manufacture missing lyrics.
 
 The beta intentionally separates provider content from AWUN user data:
 
 - lyrics are requested from <https://lrclib.net/docs> and not persisted by the API;
-- Genius referents use <https://docs.genius.com/> only when a server-side token exists;
+- Genius search and referents use <https://docs.genius.com/> only when a server-side token exists;
 - personal line notes live in browser `localStorage` and are not public or synced.
 
 A public multi-user comment network will require authenticated accounts,

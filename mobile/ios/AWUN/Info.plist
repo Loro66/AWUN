@@ -9,8 +9,8 @@
     <key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
     <key>CFBundleName</key><string>$(PRODUCT_NAME)</string>
     <key>CFBundlePackageType</key><string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
-    <key>CFBundleShortVersionString</key><string>2.5.0</string>
-    <key>CFBundleVersion</key><string>27</string>
+    <key>CFBundleShortVersionString</key><string>2.5.1</string>
+    <key>CFBundleVersion</key><string>28</string>
     <key>AWUNPrimaryURL</key><string>https://awun-1.onrender.com</string>
     <key>AWUNMirrorURL</key><string></string>
     <key>LSRequiresIPhoneOS</key><true/>

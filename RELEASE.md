@@ -83,6 +83,10 @@ Open `https://YOUR-AWUN-API/` after deployment.
 - Switching **INTERFACE → MINIMAL** removes telemetry and source chrome while keeping search, results and playback usable.
 - Clicking a result opens a Track Story without starting or interrupting playback.
 - A known LRCLIB song displays plain or synced lyrics from `/api/v1/track-details`.
+- A noisy title resolves against LRCLIB and Genius by title, artist, duration and recording version;
+  an unrelated artist or live/remix/cover variant is rejected.
+- If title search is inconclusive, Genius lookup may use one distinctive LRCLIB lyric line while
+  keeping the same artist/title confidence gate.
 - A timed lyric line seeks the active player; a lyric line opens its annotations and notes.
 - With `AWUN_GENIUS_ACCESS_TOKEN`, `/health` reports Genius annotations as connected.
 - Added lyric notes survive reload on the same device and can be deleted.
@@ -116,7 +120,7 @@ latest commit** in Render if auto-deploy does not start.
 
 ## 6. Build the Google Play Android release
 
-The Android release is `com.loro66.awun`, version `2.5.0` / code `2050000`, and
+The Android release is `com.loro66.awun`, version `2.5.1` / code `2050100`, and
 targets Android 16 API 36. Before building, the verified Play Console account
 owner must configure the four upload-key repository secrets documented in
 `mobile/android/play-store/RELEASE_CHECKLIST.md`.

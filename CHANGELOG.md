@@ -2,6 +2,21 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.5.1] - 2026-09-17
+
+### Improved
+
+- Resolve LRCLIB fallback results by artist, canonical title and duration instead of accepting a same-title recording by another artist.
+- Score Genius hits by artist, title, search rank and recording version, rejecting conflicting live, remix, cover, acoustic, instrumental, demo, remaster, slowed and sped-up variants.
+- Retry an inconclusive Genius lookup with one distinctive lyric line from the confirmed LRCLIB result while keeping the same confidence gates.
+- Read a bounded second page of Genius referents and attach annotations to the nearest matching lyric line.
+- Clarify that full plain or synced text comes from LRCLIB and that SONGVALE does not scrape Genius lyric pages.
+
+### Testing
+
+- Added regression coverage for same-title artist collisions, out-of-order Genius results, recording-version conflicts and lyric-line fallback queries.
+- The release gate now covers 246 Python tests, 9 frontend unit tests and 35 browser behavior/responsive scenarios.
+
 ## [2.5.0] - 2026-09-17
 
 ### Added
@@ -224,5 +239,6 @@ Versions before 1.10.4 were iterative beta builds. Their exact changes remain av
 [2.1.1]: https://github.com/Loro66/AWUN/releases/tag/v2.1.1
 [2.1.2]: https://github.com/Loro66/AWUN/releases/tag/v2.1.2
 [2.3.0]: https://github.com/Loro66/AWUN/releases/tag/v2.3.0
-[2.5.0]: https://github.com/Loro66/AWUN/releases/tag/v2.5.0
 [2.4.0]: https://github.com/Loro66/AWUN/releases/tag/v2.4.0
+[2.5.0]: https://github.com/Loro66/AWUN/releases/tag/v2.5.0
+[2.5.1]: https://github.com/Loro66/AWUN/releases/tag/v2.5.1

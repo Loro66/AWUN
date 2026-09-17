@@ -1,0 +1,1 @@
+Track Stories now match LRCLIB and Genius by artist, title and recording version. Wrong-artist and live/remix/cover collisions are rejected, with a bounded lyric-line fallback for difficult songs.

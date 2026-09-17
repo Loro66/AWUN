@@ -1,24 +1,27 @@
-SONGVALE 2.5.0
+SONGVALE 2.5.1
 Release date: 2026-09-17
 
-This release makes repeated everyday actions feel immediate without changing
-the quiet Dark Forest interface.
+This release makes Track Stories find the intended song more reliably without
+changing the quiet Dark Forest interface.
 
 What changed:
-- The eight most recent searches are cached locally for 30 minutes.
-- A repeated query shows device-local results immediately while connected
-  sources refresh in the background.
-- Provider groups are replaced only after a successful fresh response.
-- The last track and position survive restart for up to 30 days.
-- Restored playback stays paused and never starts without user intent.
-- Pressing play still refreshes short-lived links and keeps normal source
-  fallback behavior.
-- Closing the player removes the stored playback session.
+- LRCLIB fallback search now compares artist, canonical title and duration.
+- Genius results are rescored by artist, title and recording version instead
+  of trusting result order.
+- Conflicting live, remix, cover, acoustic, instrumental, demo, remaster,
+  slowed and sped-up recordings are rejected.
+- Noisy presentation labels such as Official Audio and lyrics are removed from
+  the lookup title.
+- If metadata search is inconclusive, SONGVALE can retry Genius with one
+  distinctive LRCLIB lyric line and the artist.
+- Genius referents are fetched in a bounded two-page request and attached to
+  the closest matching lyric line.
+- Full lyric text still comes from LRCLIB; SONGVALE does not scrape Genius.
 
 Windows package:
 - SONGVALE-Setup-x64.exe — per-user installer.
 - SONGVALE.exe — portable executable.
 - Separate SHA-256 checksum files, LICENSE.md and EULA.md.
 
-The release is published only after 242 Python tests, 9 frontend unit tests and
+The release is published only after 246 Python tests, 9 frontend unit tests and
 all 35 browser behavior/responsive scenarios pass on GitHub Actions.
