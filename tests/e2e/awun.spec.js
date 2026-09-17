@@ -23,6 +23,40 @@ test('progressive search renders the first provider before the slowest provider'
   await expect(page.locator('#trackList .track')).toHaveCount(8);
 });
 
+test('repeat search shows cached results immediately and refreshes them in background', async ({ page }) => {
+  await openAwun(page, { delays: { youtube: 650, soundcloud: 650, audius: 650, jamendo: 650, internet_archive: 650 } });
+  await searchFor(page, 'midnight signal');
+  await expect(page.locator('#results')).toHaveAttribute('aria-busy', 'false');
+  await page.reload();
+  await expect(page.locator('#searchInput')).toBeVisible();
+  await page.locator('#searchInput').fill('midnight signal');
+  await page.locator('#searchForm').evaluate(form => form.requestSubmit());
+
+  await expect(page.locator('#trackList .track').first()).toBeVisible();
+  await expect(page.locator('#results')).toHaveAttribute('aria-busy', 'true');
+  await expect(page.locator('#message')).toContainText('Показаны результаты с устройства');
+  await expect(page.locator('#results')).toHaveAttribute('aria-busy', 'false');
+});
+
+test('last playback session returns paused at the saved position after reload', async ({ page }) => {
+  await openAwun(page);
+  await searchFor(page, 'midnight signal');
+  await page.locator('#trackList .track[data-source="audius"]').first().locator('.play').click();
+  await expect(page.locator('#nowSource')).toHaveText('Audius');
+  await page.locator('#audio').evaluate(audio => { audio.currentTime = 73; });
+  await page.reload();
+
+  await expect(page.locator('#player')).not.toHaveClass(/player-empty/);
+  await expect(page.locator('#nowTitle')).toHaveText('Midnight Signal');
+  await expect(page.locator('#elapsed')).toHaveText('1:13');
+  await expect(page.locator('body')).not.toHaveClass(/is-playing/);
+  await expect.poll(() => page.evaluate(() => window.awunApp?.state.restoredPlayback)).toBe(true);
+  await page.locator('#playPause').click();
+  await expect(page.locator('body')).toHaveClass(/is-playing/);
+  await page.locator('#closePlayer').evaluate(button => button.click());
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('awun-playback-session-v1'))).toBeNull();
+});
+
 test('My Wave starts playback and fills a persistent queue', async ({ page }) => {
   await openAwun(page);
   await searchFor(page, 'midnight signal');

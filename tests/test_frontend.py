@@ -436,3 +436,17 @@ def test_russian_translation_covers_static_and_dynamic_ui() -> None:
     assert "ИЩЕМ ВО ВСЕХ ИСТОЧНИКАХ" in i18n
     assert "ПЕРЕНОС МЕДИАТЕКИ" in i18n
     assert "МОЯ ВОЛНА остановлена" in i18n
+
+
+def test_search_cache_and_playback_session_are_local_and_recoverable() -> None:
+    app = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
+    storage = (ROOT / "frontend" / "storage.js").read_text(encoding="utf-8")
+    i18n = (ROOT / "frontend" / "i18n.js").read_text(encoding="utf-8")
+
+    assert "awun-search-cache-v1" in app and "rememberSearch" in app
+    assert "cachedResultsRefreshing" in app and "revalidatedSources" in app
+    assert "awun-search-cache-v1" in storage
+    assert "awun-playback-session-v1" in app and "restorePlaybackSession" in app
+    assert "state.restoredPlayback?togglePlayback():resumePlayback()" in app
+    assert "pagehide" in app and "visibilitychange" in app
+    assert "Последний трек восстановлен" in i18n

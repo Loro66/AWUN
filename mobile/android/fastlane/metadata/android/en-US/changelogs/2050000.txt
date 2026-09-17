@@ -1,0 +1,1 @@
+Repeat searches now show recent on-device results immediately while sources refresh in the background. The last track and listening position return paused after restart, ready to continue when you press play.
