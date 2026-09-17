@@ -146,6 +146,22 @@ test('library transfer groups copied playlist rows instead of matching metadata 
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('awun-library') || '[]').map(track => track.title))).toEqual(['Midnight Signal']);
 });
 
+test('library transfer matches catalog decorations and keeps imported duration', async ({ page }) => {
+  await openAwun(page);
+  await page.locator('#welcomeImport').click();
+  await page.locator('#importText').fill([
+    'Midnight Signal (Official Audio)',
+    'AWUN Artist feat. Guest',
+    '03:34',
+  ].join('\n'));
+  await page.locator('#importSubmit').click();
+
+  await expect(page.locator('#importReportTitle')).toHaveText('Перенос завершён');
+  await expect(page.locator('#importAdded')).toHaveText('1');
+  await expect(page.locator('#importMissed')).toHaveText('0');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('awun-library') || '[]')[0]?.title)).toBe('Midnight Signal');
+});
+
 test('sound profile persists and direct playback activates the audio engine', async ({ page }) => {
   await openAwun(page);
   await page.locator('#themeButton').click();

@@ -1,26 +1,26 @@
-SONGVALE 2.2.0
-Release date: 2026-09-16
+SONGVALE 2.3.0
+Release date: 2026-09-17
 
-This release turns the persistent player into a focused listening dock that
-feels deliberate on desktop, compact windows and phones.
+This release improves library transfer for real-world catalog metadata and
+introduces conservative sound processing for direct audio streams.
 
 What changed:
-- Reorganized the player into clear track, transport, timeline and utility
-  zones instead of one oversized waveform strip.
-- Reduced visual noise, empty spacing and control scatter while preserving the
-  waveform as part of SONGVALE's identity.
-- Added compact previous, play, next and repeat controls with consistent hit
-  areas and stronger active states.
-- Kept save/remove-from-library and queue controls visible across supported
-  viewport sizes.
-- Hid secondary volume and expansion tools only where narrow mobile layouts
-  would otherwise become cramped.
-- Updated all reviewed desktop, compact and mobile visual baselines.
+- Library transfer now uses fuzzy title, artist and duration scoring instead
+  of relying on nearly exact metadata.
+- Harmless labels such as Official Audio, punctuation differences and featured
+  artist suffixes no longer prevent a match.
+- Duration is preserved from copied lists, M3U, CSV and JSON exports.
+- Failed matches retry with a cleaned query while incompatible remix, live,
+  acoustic, instrumental, cover, speed and demo versions remain rejected.
+- SONGVALE Sound adds Neutral, Forest Warm and Clarity profiles, conservative
+  loudness leveling, soft dynamics and peak limiting to direct streams.
+- YouTube remains in its official player and is not falsely presented as using
+  the direct-stream DSP path.
 
 Windows package:
 - SONGVALE-Setup-x64.exe — per-user installer.
 - SONGVALE.exe — portable executable.
 - Separate SHA-256 checksum files, LICENSE.md and EULA.md.
 
-The release is published only after the complete Python suite and all 28
+The release is published only after the complete Python suite and all 30
 browser behavior/responsive scenarios pass on GitHub Actions.

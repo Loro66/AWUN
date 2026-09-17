@@ -2,6 +2,28 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.3.0] - 2026-09-17
+
+### Added
+
+- Added SONGVALE Sound processing for direct audio streams with conservative loudness leveling, tonal profiles, soft compression and peak limiting.
+- Added Neutral, Forest Warm and Clarity profiles with locally persisted settings.
+
+### Improved
+
+- Replaced fixed-threshold library matching with fuzzy title, artist and duration scoring.
+- Ignore harmless catalog decorations such as Official Audio, punctuation differences and featured-artist suffixes.
+- Retry unmatched imports with cleaned artist-title and title-only queries.
+- Preserve durations from copied lists, M3U, CSV and JSON exports to distinguish recordings more accurately.
+
+### Safety
+
+- Reject mismatched remix, live, acoustic, instrumental, cover, speed and demo variants instead of inflating the import count with wrong recordings.
+
+### Testing
+
+- Added dedicated matcher unit tests and a browser regression scenario for non-exact catalog metadata.
+
 ## [2.2.0] - 2026-09-16
 
 ### Redesigned
