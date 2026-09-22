@@ -1,9 +1,13 @@
 import unittest
 
+from fastapi.responses import Response
+
+from backend.core.config import Settings
 from backend.core.media import InvalidMediaToken, MediaSigner
 from backend.core.models import SearchResponse, Track
 from backend.api.main import (
     _apply_client_policy,
+    _apply_security_headers,
     _download_filename,
     _is_playlist,
     _rewrite_hls_playlist,
@@ -36,6 +40,19 @@ class MediaSignerTests(unittest.TestCase):
     def test_rejects_non_http_url(self) -> None:
         with self.assertRaises(InvalidMediaToken):
             self.signer.sign("file:///etc/passwd", now=100)
+
+    def test_default_media_secret_is_random_and_production_length(self) -> None:
+        first = Settings(_env_file=None).media_secret
+        second = Settings(_env_file=None).media_secret
+        self.assertGreaterEqual(len(first), 32)
+        self.assertNotEqual(first, second)
+
+    def test_security_headers_apply_to_all_responses(self) -> None:
+        response = _apply_security_headers(Response())
+        self.assertEqual(response.headers["x-content-type-options"], "nosniff")
+        self.assertEqual(response.headers["x-frame-options"], "DENY")
+        self.assertIn("frame-ancestors 'none'", response.headers["content-security-policy"])
+        self.assertIn("camera=()", response.headers["permissions-policy"])
 
     def test_download_filename_is_safe_and_uses_media_type(self) -> None:
         self.assertEqual(

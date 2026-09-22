@@ -86,7 +86,7 @@ Search results are normalized into a shared track model, deduplicated and ranked
 
 Download the [per-user installer](https://github.com/Loro66/AWUN/releases/latest/download/SONGVALE-Setup-x64.exe) or the [portable executable](https://github.com/Loro66/AWUN/releases/latest/download/SONGVALE.exe). SHA-256 files are published beside both binaries in every release.
 
-The beta binaries are not Authenticode-signed yet, so Windows SmartScreen may show a warning. Verify the checksum before running the downloaded file.
+The published v2.5.1 beta binaries are not Authenticode-signed, so Windows SmartScreen may show a warning. The release workflow now signs and verifies future builds when the repository signing certificate is configured; always verify the checksum too.
 
 ### Web and PWA
 
@@ -122,7 +122,7 @@ Release `v2.5.1` is built from `main` by GitHub Actions.
 - A deterministic **200-record anonymized matcher benchmark** currently reports 100 correct matches, 100 correct rejections, zero false matches and zero unexpected misses.
 - **SONGVALE Sound** processes direct audio streams through conservative loudness leveling, tonal profiles, soft dynamics and a peak limiter. The official YouTube iframe remains outside the DSP path because it does not expose raw audio samples.
 - Visual and control-bound checks run at **1920, 1280, 1000 and 390 pixels**.
-- The release workflow builds both Windows executables, generates SHA-256 checksums and publishes the versioned GitHub Release only after tests pass.
+- The release workflow builds both Windows executables, optionally Authenticode-signs and verifies them, generates SHA-256 checksums and publishes the versioned GitHub Release only after tests pass.
 
 [Testing strategy and limitations](docs/TESTING.md) · [CI runs](https://github.com/Loro66/AWUN/actions) · [Latest release](https://github.com/Loro66/AWUN/releases/latest)
 

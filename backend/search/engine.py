@@ -15,6 +15,10 @@ from backend.search.track_identity import TrackFingerprint, same_fingerprint
 from backend.sources.base import BaseAdapter
 
 
+class SearchCapacityError(RuntimeError):
+    """Raised when accepting another distinct search would exhaust capacity."""
+
+
 class SearchEngine:
     _MAX_BACKGROUND_ENRICHMENTS = 8
 
@@ -28,6 +32,7 @@ class SearchEngine:
         cache_ttl_seconds: float = 90.0,
         cache_max_size: int = 256,
         enrichment_wait_seconds: float = 0.2,
+        max_inflight_searches: int = 32,
     ) -> None:
         self._adapters = {adapter.source: adapter for adapter in adapters}
         self._timeout = timeout_seconds
@@ -45,6 +50,7 @@ class SearchEngine:
             max_size=cache_max_size,
         )
         self._enrichment_wait = max(0.01, enrichment_wait_seconds)
+        self._max_inflight_searches = max(1, max_inflight_searches)
         self._inflight: dict[tuple[object, ...], asyncio.Task[SearchResponse]] = {}
         self._background_tasks: set[asyncio.Task[list[str]]] = set()
         self._enrichment_inflight: dict[
@@ -83,6 +89,8 @@ class SearchEngine:
 
         task = self._inflight.get(cache_key)
         if task is None:
+            if len(self._inflight) >= self._max_inflight_searches:
+                raise SearchCapacityError("Сервер обрабатывает слишком много поисков")
             task = asyncio.create_task(self._search_and_cache(request, cache_key))
             self._inflight[cache_key] = task
             task.add_done_callback(

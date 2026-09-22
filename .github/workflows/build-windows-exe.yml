@@ -16,25 +16,22 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: "3.11"
           cache: pip
-          cache-dependency-path: requirements-desktop.txt
+          cache-dependency-path: |
+            requirements.lock
+            requirements-desktop.txt
       - name: Install desktop dependencies
-        run: python -m pip install -r requirements-desktop.txt pytest
+        run: |
+          python -m pip install --require-hashes -r requirements.lock
+          python -m pip install -r requirements-desktop.txt pytest==9.1.1
       - name: Run release tests
         run: python -m pytest -q
       - name: Build SONGVALE.exe
         run: pyinstaller --noconfirm --clean AWUN.spec
-      - name: Create SHA256 checksum
-        shell: pwsh
-        run: |
-          $hash = (Get-FileHash dist/SONGVALE.exe -Algorithm SHA256).Hash.ToLower()
-          Set-Content -Encoding ascii dist/SONGVALE.exe.sha256 "$hash *SONGVALE.exe"
-          Copy-Item LICENSE.md dist/LICENSE.md
-          Copy-Item EULA.md dist/EULA.md
       - name: Build per-user Windows installer
         shell: pwsh
         run: |
@@ -43,10 +40,42 @@ jobs:
           $compiler = Join-Path ${env:ProgramFiles(x86)} "Inno Setup 6\ISCC.exe"
           & $compiler "/DMyAppVersion=$version" "installer\AWUN.iss"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          $hash = (Get-FileHash dist/SONGVALE-Setup-x64.exe -Algorithm SHA256).Hash.ToLower()
-          Set-Content -Encoding ascii dist/SONGVALE-Setup-x64.exe.sha256 "$hash *SONGVALE-Setup-x64.exe"
+      - name: Sign Windows artifacts when certificate is configured
+        shell: pwsh
+        env:
+          WINDOWS_SIGNING_CERTIFICATE_BASE64: ${{ secrets.WINDOWS_SIGNING_CERTIFICATE_BASE64 }}
+          WINDOWS_SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_SIGNING_CERTIFICATE_PASSWORD }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:WINDOWS_SIGNING_CERTIFICATE_BASE64)) {
+            Write-Host "Signing certificate is not configured; leaving internal-test artifacts unsigned."
+            exit 0
+          }
+          if ([string]::IsNullOrWhiteSpace($env:WINDOWS_SIGNING_CERTIFICATE_PASSWORD)) {
+            throw "WINDOWS_SIGNING_CERTIFICATE_PASSWORD is required when a certificate is configured"
+          }
+          $certificate = Join-Path $env:RUNNER_TEMP "songvale-signing.pfx"
+          $signtool = Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin\*\x64\signtool.exe" |
+            Sort-Object FullName | Select-Object -Last 1 -ExpandProperty FullName
+          if (-not $signtool) { throw "signtool.exe was not found" }
+          [IO.File]::WriteAllBytes($certificate, [Convert]::FromBase64String($env:WINDOWS_SIGNING_CERTIFICATE_BASE64))
+          foreach ($artifact in @("dist/SONGVALE.exe", "dist/SONGVALE-Setup-x64.exe")) {
+            & $signtool sign /fd SHA256 /td SHA256 /tr http://timestamp.digicert.com /f $certificate /p $env:WINDOWS_SIGNING_CERTIFICATE_PASSWORD $artifact
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            & $signtool verify /pa $artifact
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+          Remove-Item $certificate -Force
+      - name: Create checksums and release metadata
+        shell: pwsh
+        run: |
+          foreach ($artifact in @("SONGVALE.exe", "SONGVALE-Setup-x64.exe")) {
+            $hash = (Get-FileHash "dist/$artifact" -Algorithm SHA256).Hash.ToLower()
+            Set-Content -Encoding ascii "dist/$artifact.sha256" "$hash *$artifact"
+          }
+          Copy-Item LICENSE.md dist/LICENSE.md
+          Copy-Item EULA.md dist/EULA.md
       - name: Upload Windows artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: SONGVALE-Windows-x64
           path: |
@@ -66,7 +95,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - name: Resolve release tag
         shell: pwsh
         run: |
@@ -80,7 +109,7 @@ jobs:
           }
           "SONGVALE_RELEASE_TAG=$tag" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
       - name: Download Windows artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
         with:
           name: SONGVALE-Windows-x64
           path: dist
