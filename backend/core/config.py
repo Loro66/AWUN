@@ -1,4 +1,5 @@
 from functools import lru_cache
+import secrets
 
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -27,12 +28,16 @@ class Settings(BaseSettings):
     fast_search_timeout_seconds: float = Field(default=6.0, gt=0, le=20)
     search_cache_ttl_seconds: float = Field(default=90.0, gt=0, le=3600)
     search_cache_max_size: int = Field(default=256, ge=1, le=5000)
+    max_inflight_searches: int = Field(default=32, ge=1, le=500)
+    max_concurrent_imports: int = Field(default=4, ge=1, le=50)
     query_enrichment_wait_seconds: float = Field(default=0.2, gt=0, le=5)
     ytdlp_socket_timeout_seconds: float = Field(default=12.0, gt=0, le=60)
     media_proxy_enabled: bool = True
-    media_secret: str = Field(default="dev-only-change-me", min_length=16)
+    media_secret: str = Field(default_factory=lambda: secrets.token_urlsafe(32), min_length=32)
     media_token_ttl_seconds: int = Field(default=1800, ge=60, le=86400)
     media_connect_timeout_seconds: float = Field(default=15.0, gt=0, le=60)
+    media_read_timeout_seconds: float = Field(default=30.0, gt=0, le=300)
+    media_max_connections: int = Field(default=32, ge=1, le=500)
     query_expansion_limit: int = Field(default=6, ge=1, le=10)
 
     youtube_enabled: bool = True

@@ -81,6 +81,9 @@ def test_android_shell_is_localized_secure_and_has_owned_fallback() -> None:
     assert 'cleartextTrafficPermitted="false"' in network
     assert "AWUN_MIRROR_URL" in gradle
     assert "AWUNBrand" in swift and "SONGVALE-iOS/2.0" in swift and "didFailProvisionalNavigation" in swift
+    assert "private func isTrusted" in swift and "caseInsensitiveCompare(host)" in swift
+    assert '["https", "mailto"].contains(scheme)' in swift
+    assert "url.scheme?.lowercased() == \"https\"" in swift
     assert "platforms;android-36" in workflow and 'gradle-version: "8.13"' in workflow
     assert png_size(
         ANDROID / "app" / "src" / "main" / "res" / "mipmap-xxxhdpi" / "ic_launcher.png"
@@ -97,7 +100,7 @@ def test_play_workflow_builds_signed_aab_without_auto_publishing() -> None:
     assert "PLAY_UPLOAD_KEYSTORE_BASE64" in workflow
     assert "PLAY_UPLOAD_STORE_PASSWORD" in workflow
     assert "jarsigner -verify" in workflow
-    assert "upload-artifact@v4" in workflow
+    assert "actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4" in workflow
     assert "google-github-actions" not in workflow
     assert "play.google.com" not in workflow
 
@@ -110,7 +113,7 @@ def test_unsigned_play_workflow_builds_without_repository_secrets() -> None:
     assert "bundleRelease" in workflow and "lintRelease" in workflow
     assert "SONGVALE-unsigned-${AWUN_VERSION_NAME}-${AWUN_VERSION_CODE}.aab" in workflow
     assert "PLAY_UPLOAD_KEYSTORE_BASE64" not in workflow
-    assert "actions/upload-artifact@v4" in workflow
+    assert "actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4" in workflow
     assert "pull_request:" in workflow
     assert 'branches:\n      - main' in workflow
 

@@ -1,7 +1,7 @@
 import asyncio
 
 from backend.core.models import SearchRequest, Track
-from backend.search.engine import SearchEngine
+from backend.search.engine import SearchCapacityError, SearchEngine
 from backend.sources.base import BaseAdapter
 
 
@@ -169,3 +169,34 @@ def test_concurrent_searches_share_metadata_but_keep_independent_responses() -> 
     assert all(response.tracks[0].title == "Song" for response in responses)
     responses[0].tracks[0].title = "changed"
     assert responses[1].tracks[0].title == "Song"
+
+
+def test_distinct_searches_are_rejected_when_capacity_is_full() -> None:
+    class BlockingAdapter(CountingAdapter):
+        async def search(self, query: str, limit: int, *, region=None) -> list[Track]:
+            self.calls += 1
+            await asyncio.Event().wait()
+            return []
+
+    engine = SearchEngine(
+        [BlockingAdapter()],
+        max_inflight_searches=1,
+        enrichment_wait_seconds=0.001,
+    )
+
+    async def scenario() -> None:
+        first = asyncio.create_task(engine.search(SearchRequest(query="first")))
+        await asyncio.sleep(0.01)
+        try:
+            try:
+                await engine.search(SearchRequest(query="second"))
+            except SearchCapacityError:
+                pass
+            else:
+                raise AssertionError("the second distinct search must be rejected")
+        finally:
+            first.cancel()
+            await asyncio.gather(first, return_exceptions=True)
+            await engine.close()
+
+    asyncio.run(scenario())

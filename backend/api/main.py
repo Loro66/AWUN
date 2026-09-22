@@ -1,3 +1,4 @@
+import asyncio
 from contextlib import asynccontextmanager
 import gzip
 from pathlib import Path
@@ -26,7 +27,7 @@ from backend.importers.library_url import LibraryImportError, LibraryUrlImporter
 from backend.metadata.lyrics import TrackDetailsService
 from backend.policy.client_capabilities import capabilities_for
 from backend.policy.rights import SOURCE_RIGHTS
-from backend.search.engine import SearchEngine
+from backend.search.engine import SearchCapacityError, SearchEngine
 from backend.security.media_headers import sanitize_media_headers
 from backend.security.safe_url import UnsafeUrl, validate_outbound_url
 from backend.sources.factory import build_adapters, build_enricher
@@ -146,6 +147,26 @@ def _apply_client_policy(response: SearchResponse, client_id: str | None) -> Sea
     return response
 
 
+def _apply_security_headers(response: Response) -> Response:
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault("X-Frame-Options", "DENY")
+    response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+    response.headers.setdefault(
+        "Permissions-Policy",
+        "camera=(), microphone=(), geolocation=(), payment=()",
+    )
+    response.headers.setdefault(
+        "Content-Security-Policy",
+        "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; "
+        "script-src 'self' 'unsafe-inline' https://www.youtube.com https://s.ytimg.com; "
+        "style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; "
+        "media-src 'self' blob:; connect-src 'self' https:; "
+        "frame-src https://www.youtube.com https://www.youtube-nocookie.com; "
+        "font-src 'self' data:; worker-src 'self'",
+    )
+    return response
+
+
 async def _open_safe_media(
     session: aiohttp.ClientSession,
     url: str,
@@ -190,13 +211,28 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             cache_ttl_seconds=settings.search_cache_ttl_seconds,
             cache_max_size=settings.search_cache_max_size,
             enrichment_wait_seconds=settings.query_enrichment_wait_seconds,
+            max_inflight_searches=settings.max_inflight_searches,
         )
         app.state.track_details = TrackDetailsService(settings)
         app.state.library_importer = LibraryUrlImporter(
             settings.youtube_api_key,
             timeout_seconds=min(settings.search_timeout_seconds, 30),
         )
+        app.state.import_slots = asyncio.Semaphore(settings.max_concurrent_imports)
+        app.state.media_session = aiohttp.ClientSession(
+            timeout=aiohttp.ClientTimeout(
+                total=None,
+                connect=settings.media_connect_timeout_seconds,
+                sock_connect=settings.media_connect_timeout_seconds,
+                sock_read=settings.media_read_timeout_seconds,
+            ),
+            connector=aiohttp.TCPConnector(
+                limit=settings.media_max_connections,
+                limit_per_host=max(1, settings.media_max_connections // 2),
+            ),
+        )
         yield
+        await app.state.media_session.close()
         await app.state.search_engine.close()
         await app.state.track_details.close()
 
@@ -216,6 +252,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         allow_methods=["GET", "POST"],
         allow_headers=["*"],
     )
+
+    @app.middleware("http")
+    async def security_headers(request: Request, call_next):
+        return _apply_security_headers(await call_next(request))
 
     def engine(request: Request) -> SearchEngine:
         return request.app.state.search_engine
@@ -399,11 +439,26 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 track.download_url = f"{base_url}{settings.api_prefix}/media/{download_token}?{query}"
         return response
 
+    async def run_search(
+        body: SearchRequest,
+        request: Request,
+        search_engine: SearchEngine,
+    ) -> SearchResponse:
+        try:
+            response = await search_engine.search(body)
+        except SearchCapacityError as exc:
+            raise HTTPException(
+                503,
+                str(exc),
+                headers={"Retry-After": "2"},
+            ) from exc
+        return proxied(response, request)
+
     @app.post(f"{settings.api_prefix}/search", response_model=SearchResponse, tags=["поиск"])
     async def search(body: SearchRequest, request: Request, search_engine: Engine) -> SearchResponse:
         if body.limit > settings.max_limit:
             raise HTTPException(422, f"Количество результатов не может превышать {settings.max_limit}")
-        return proxied(await search_engine.search(body), request)
+        return await run_search(body, request, search_engine)
 
     @app.post(
         f"{settings.api_prefix}/library/import-url",
@@ -413,10 +468,21 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def import_library_url(body: LibraryImportRequest, request: Request) -> LibraryImportResponse:
         """Read metadata from a public playlist; private-account access is deliberately unsupported."""
         importer: LibraryUrlImporter = request.app.state.library_importer
+        slots: asyncio.Semaphore = request.app.state.import_slots
+        try:
+            await asyncio.wait_for(slots.acquire(), timeout=0.05)
+        except TimeoutError as exc:
+            raise HTTPException(
+                503,
+                "Сервер уже обрабатывает максимальное число импортов",
+                headers={"Retry-After": "2"},
+            ) from exc
         try:
             return await importer.import_url(body.url, body.max_tracks)
         except LibraryImportError as exc:
             raise HTTPException(422, str(exc)) from exc
+        finally:
+            slots.release()
 
     @app.get(f"{settings.api_prefix}/search", response_model=SearchResponse, tags=["поиск"])
     async def search_get(
@@ -428,16 +494,18 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         region: Annotated[RegionName, Query()] = "AUTO",
         locale: Annotated[str | None, Query(max_length=35)] = None,
     ) -> SearchResponse:
-        response = await search_engine.search(
+        response = await run_search(
             SearchRequest(
                 query=q,
                 limit=limit,
                 sources=sources,
                 region=region,
                 locale=locale,
-            )
+            ),
+            request,
+            search_engine,
         )
-        return proxied(response, request)
+        return response
 
     @app.get(f"{settings.api_prefix}/media/{{token}}", tags=["медиа"])
     async def media(
@@ -465,25 +533,20 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             ),
         )
 
-        session = aiohttp.ClientSession(
-            timeout=aiohttp.ClientTimeout(total=None, connect=settings.media_connect_timeout_seconds)
-        )
+        session: aiohttp.ClientSession = request.app.state.media_session
         try:
             upstream = await _open_safe_media(session, target.url, headers=headers)
         except (aiohttp.ClientError, TimeoutError, UnsafeUrl) as exc:
-            await session.close()
             raise HTTPException(502, "Источник аудио сейчас недоступен") from exc
 
         if upstream.status not in {200, 206}:
             upstream.release()
-            await session.close()
             raise HTTPException(502, f"Источник аудио вернул ошибку HTTP {upstream.status}")
 
         content_type = upstream.headers.get("content-type", "audio/mpeg")
         if _is_playlist(str(upstream.url), content_type):
             if download:
                 upstream.release()
-                await session.close()
                 raise HTTPException(409, "Источник предоставляет потоковый плейлист, а не скачиваемый аудиофайл")
             try:
                 playlist = await upstream.read()
@@ -498,7 +561,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 raise HTTPException(502, "Источник аудио вернул некорректный HLS-плейлист") from exc
             finally:
                 upstream.release()
-                await session.close()
             return Response(
                 content=rewritten,
                 media_type=content_type.partition(";")[0].strip() or "application/vnd.apple.mpegurl",
@@ -514,7 +576,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                     yield chunk
             finally:
                 upstream.release()
-                await session.close()
 
         response_headers = {
             "Cache-Control": "private, no-store",

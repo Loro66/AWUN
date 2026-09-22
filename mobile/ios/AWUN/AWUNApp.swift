@@ -35,7 +35,13 @@ struct AWUNWebView: UIViewRepresentable {
     private var endpoints: [URL] {
         let primary = Bundle.main.object(forInfoDictionaryKey: "AWUNPrimaryURL") as? String ?? "https://awun-1.onrender.com"
         let mirror = Bundle.main.object(forInfoDictionaryKey: "AWUNMirrorURL") as? String ?? ""
-        return [primary, mirror].compactMap { $0.isEmpty ? nil : URL(string: $0) }
+        return [primary, mirror].compactMap { candidate in
+            guard !candidate.isEmpty,
+                  let url = URL(string: candidate),
+                  url.scheme?.lowercased() == "https",
+                  url.host != nil else { return nil }
+            return url
+        }
     }
 
     func makeCoordinator() -> Coordinator { Coordinator() }
@@ -79,17 +85,52 @@ struct AWUNWebView: UIViewRepresentable {
             control.endRefreshing()
         }
 
+        private func effectivePort(_ url: URL) -> Int? {
+            url.port ?? (url.scheme?.lowercased() == "https" ? 443 : nil)
+        }
+
+        private func isTrusted(_ url: URL) -> Bool {
+            guard url.scheme?.lowercased() == "https", let host = url.host else { return false }
+            return endpoints.contains { endpoint in
+                endpoint.scheme?.lowercased() == "https"
+                    && endpoint.host?.caseInsensitiveCompare(host) == .orderedSame
+                    && effectivePort(endpoint) == effectivePort(url)
+            }
+        }
+
+        private func openExternal(_ url: URL) {
+            guard let scheme = url.scheme?.lowercased(), ["https", "mailto"].contains(scheme) else { return }
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+
         func webView(
             _ webView: WKWebView,
             decidePolicyFor navigationAction: WKNavigationAction,
             decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
         ) {
-            if navigationAction.targetFrame == nil, let externalURL = navigationAction.request.url {
-                UIApplication.shared.open(externalURL)
+            guard let destination = navigationAction.request.url else {
                 decisionHandler(.cancel)
                 return
             }
-            decisionHandler(.allow)
+            if navigationAction.targetFrame?.isMainFrame == false {
+                decisionHandler(.allow)
+                return
+            }
+            if navigationAction.targetFrame == nil {
+                if isTrusted(destination) {
+                    webView.load(navigationAction.request)
+                } else {
+                    openExternal(destination)
+                }
+                decisionHandler(.cancel)
+                return
+            }
+            if isTrusted(destination) {
+                decisionHandler(.allow)
+            } else {
+                openExternal(destination)
+                decisionHandler(.cancel)
+            }
         }
 
         func webView(

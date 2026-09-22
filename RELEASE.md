@@ -107,8 +107,15 @@ loopback port. It queries the bundled local backend first and uses the configure
 public AWUN endpoint only as a provider-level fallback. The interface defaults
 to Russian in the desktop build.
 
-The binary is not code-signed yet. Treat code signing as a release requirement
-before broad public distribution.
+For Authenticode signing, add `WINDOWS_SIGNING_CERTIFICATE_BASE64` (a base64
+encoded PFX) and `WINDOWS_SIGNING_CERTIFICATE_PASSWORD` as GitHub Actions
+repository secrets. The workflow signs and verifies both executables before it
+calculates their checksums. Without those secrets it still produces an unsigned
+internal-test build; do not use that path for broad public distribution.
+
+Python versions are pinned in `requirements.txt`; the container and browser CI
+install the transitive, hash-verified `requirements.lock`. Regenerate that lock
+only together with a reviewed dependency update.
 
 ## 5. Updating the existing Loro66/AWUN Render service
 

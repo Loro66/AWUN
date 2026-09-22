@@ -21,7 +21,8 @@ Never post API keys, cookies, account tokens, authorization headers or personal 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install --require-hashes -r requirements.lock
+pip install pytest==9.1.1
 npm ci
 ```
 

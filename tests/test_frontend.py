@@ -201,6 +201,7 @@ def test_installable_pwa_is_wired() -> None:
     assert "songvale-icon.png" in manifest and "songvale-maskable.png" in manifest
     assert "__AWUN_VERSION__" in worker and "songvale-shell-${SONGVALE_VERSION}" in worker
     assert "startsWith('/api/')" in worker
+    assert "NEVER_CACHE" in worker and "'/health'" in worker and "'/openapi.json'" in worker
     assert "hls.light.min.js" not in worker
     assert all(asset not in worker for asset in ("styles.css", "forest.css", "redesign.css"))
     assert "design-system.css?v=__AWUN_VERSION__" in worker

@@ -6,7 +6,7 @@ import ipaddress
 import json
 import socket
 from typing import Any
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, urljoin, urlparse
 
 import aiohttp
 
@@ -98,17 +98,114 @@ def structured_tracks(documents: list[Any], limit: int) -> list[LibraryImportEnt
     return list(unique.values())[:limit]
 
 
-async def _public_host(hostname: str) -> None:
+async def _public_addresses(hostname: str, port: int = 443) -> list[str]:
     if not hostname or hostname.lower() == "localhost":
         raise LibraryImportError("Можно переносить только публичные ссылки HTTPS.")
     try:
-        addresses = await asyncio.to_thread(socket.getaddrinfo, hostname, 443, type=socket.SOCK_STREAM)
+        addresses = await asyncio.to_thread(
+            socket.getaddrinfo,
+            hostname,
+            port,
+            type=socket.SOCK_STREAM,
+            proto=socket.IPPROTO_TCP,
+        )
     except socket.gaierror as exc:
         raise LibraryImportError("Не удалось найти сервер плейлиста.") from exc
+    public: list[str] = []
     for address in addresses:
-        ip = ipaddress.ip_address(address[4][0])
+        raw_ip = address[4][0].split("%", 1)[0]
+        ip = ipaddress.ip_address(raw_ip)
         if not ip.is_global:
             raise LibraryImportError("Ссылки на приватную или локальную сеть запрещены.")
+        normalized = str(ip)
+        if normalized not in public:
+            public.append(normalized)
+    if not public:
+        raise LibraryImportError("Не удалось найти публичный адрес сервера плейлиста.")
+    return public
+
+
+async def _public_host(hostname: str) -> None:
+    await _public_addresses(hostname)
+
+
+class _PinnedResolver(aiohttp.abc.AbstractResolver):
+    """Resolve one already-validated host to the exact validated addresses."""
+
+    def __init__(self, hostname: str, addresses: list[str]) -> None:
+        self.hostname = hostname.rstrip(".").casefold()
+        self.addresses = tuple(addresses)
+
+    async def resolve(
+        self,
+        host: str,
+        port: int = 0,
+        family: socket.AddressFamily = socket.AF_UNSPEC,
+    ) -> list[dict[str, Any]]:
+        if host.rstrip(".").casefold() != self.hostname:
+            raise OSError("Pinned resolver received an unexpected host")
+        return [
+            {
+                "hostname": host,
+                "host": address,
+                "port": port,
+                "family": socket.AF_INET6 if ":" in address else socket.AF_INET,
+                "proto": socket.IPPROTO_TCP,
+                "flags": socket.AI_NUMERICHOST,
+            }
+            for address in self.addresses
+        ]
+
+    async def close(self) -> None:
+        return None
+
+
+async def _read_public_page(
+    url: str,
+    *,
+    headers: dict[str, str],
+    timeout: aiohttp.ClientTimeout,
+    max_redirects: int = 4,
+) -> tuple[bytes, str, str]:
+    """Fetch an HTTPS page while pinning every DNS result and redirect hop."""
+
+    current = url
+    for redirect_index in range(max_redirects + 1):
+        parsed = urlparse(current)
+        if parsed.scheme != "https" or parsed.username or parsed.password:
+            raise LibraryImportError("Плейлист перенаправил запрос на небезопасный адрес.")
+        try:
+            port = parsed.port
+        except ValueError as exc:
+            raise LibraryImportError("Ссылка плейлиста содержит некорректный порт.") from exc
+        if port not in {None, 443}:
+            raise LibraryImportError("Для переноса разрешены только HTTPS-ссылки на порту 443.")
+        hostname = parsed.hostname or ""
+        addresses = await _public_addresses(hostname, 443)
+        connector = aiohttp.TCPConnector(
+            resolver=_PinnedResolver(hostname, addresses),
+            use_dns_cache=False,
+            limit=1,
+        )
+        async with aiohttp.ClientSession(timeout=timeout, connector=connector) as session:
+            async with session.get(current, headers=headers, allow_redirects=False) as response:
+                if response.status in {301, 302, 303, 307, 308}:
+                    location = response.headers.get("location")
+                    if not location:
+                        raise LibraryImportError("Перенаправление плейлиста не содержит адрес.")
+                    if redirect_index >= max_redirects:
+                        raise LibraryImportError("Страница плейлиста создала слишком много перенаправлений.")
+                    current = urljoin(str(response.url), location)
+                    continue
+                if response.status != 200:
+                    raise LibraryImportError(f"Страница плейлиста вернула ошибку HTTP {response.status}.")
+                if int(response.headers.get("content-length") or 0) > 2_000_000:
+                    raise LibraryImportError("Страница плейлиста слишком большая для безопасного переноса.")
+                raw = await response.content.read(2_000_001)
+                if len(raw) > 2_000_000:
+                    raise LibraryImportError("Страница плейлиста слишком большая для безопасного переноса.")
+                return raw, response.charset or "utf-8", str(response.url)
+    raise LibraryImportError("Не удалось безопасно открыть страницу плейлиста.")
 
 
 class LibraryUrlImporter:
@@ -171,24 +268,16 @@ class LibraryUrlImporter:
 
     async def _structured_page(self, url: str, limit: int) -> LibraryImportResponse:
         headers = {"User-Agent": "SONGVALE/2.0 public-playlist-importer (+https://github.com/Loro66/AWUN)", "Accept": "text/html,application/xhtml+xml,application/json;q=0.8"}
-        async with aiohttp.ClientSession(timeout=self.timeout) as session:
-            async with session.get(url, headers=headers, allow_redirects=True, max_redirects=4) as response:
-                final = urlparse(str(response.url))
-                if final.scheme != "https":
-                    raise LibraryImportError("Плейлист перенаправил запрос на адрес без HTTPS.")
-                await _public_host(final.hostname or "")
-                if response.status != 200:
-                    raise LibraryImportError(f"Страница плейлиста вернула ошибку HTTP {response.status}.")
-                if int(response.headers.get("content-length") or 0) > 2_000_000:
-                    raise LibraryImportError("Страница плейлиста слишком большая для безопасного переноса.")
-                raw = await response.content.read(2_000_001)
-                if len(raw) > 2_000_000:
-                    raise LibraryImportError("Страница плейлиста слишком большая для безопасного переноса.")
+        raw, charset, final_url = await _read_public_page(
+            url,
+            headers=headers,
+            timeout=self.timeout,
+        )
         parser = _StructuredDataParser()
-        parser.feed(raw.decode(response.charset or "utf-8", errors="replace"))
+        parser.feed(raw.decode(charset, errors="replace"))
         tracks = structured_tracks(parser.documents, limit)
         if not tracks:
-            host = (urlparse(url).hostname or "").lower()
+            host = (urlparse(final_url).hostname or "").lower()
             if host.endswith("music.yandex.ru"):
                 raise LibraryImportError("Яндекс Музыка не отдаёт эту медиатеку через поддерживаемый публичный API. Загрузи экспорт в формате CSV, JSON, M3U или TXT.")
             raise LibraryImportError("Открытый список треков не найден. Попробуй официальную публичную ссылку или загрузи файл экспорта.")
