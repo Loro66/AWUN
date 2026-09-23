@@ -22,16 +22,26 @@
     <header class="site-header">
       <a class="logo" href="/" aria-label="Главная SONGVALE" data-i18n-aria-label="homeAria"><span class="logo-copy"><strong>SONGVALE</strong><small data-i18n="brandLine">EVERY SOUND FINDS A WAY</small></span></a>
       <div class="top-actions">
-        <button id="searchNavButton" class="library search-nav active" type="button" aria-controls="searchInput" aria-pressed="true">
-          <i aria-hidden="true">⌕</i><span data-i18n="search">ПОИСК</span><b aria-hidden="true">01</b>
+        <button id="searchNavButton" class="library search-nav active" type="button" aria-controls="searchInput" aria-pressed="true" data-i18n-aria-label="search">
+          <i aria-hidden="true">⌕</i><span data-i18n="search">ПОИСК</span><small class="mobile-nav-label" data-i18n="search">ПОИСК</small><b aria-hidden="true">01</b>
         </button>
-        <button id="libraryButton" class="library" type="button" aria-pressed="false"><i aria-hidden="true">♫</i><span data-i18n="library">МОЯ МУЗЫКА</span><b>00</b></button>
-        <button id="flowButton" class="library flow-button" type="button" aria-expanded="false" aria-controls="flowPanel">
-          <i aria-hidden="true">◌</i><span data-i18n="wave">МОЯ ВОЛНА</span><b id="flowBadge" data-i18n="ready">ГОТОВО</b>
+        <button id="libraryButton" class="library" type="button" aria-pressed="false" data-i18n-aria-label="library"><i aria-hidden="true">♫</i><span data-i18n="library">МОЯ МУЗЫКА</span><small class="mobile-nav-label" data-i18n="libraryShort">МУЗЫКА</small><b>00</b></button>
+        <button id="flowButton" class="library flow-button" type="button" aria-expanded="false" aria-controls="flowPanel" data-i18n-aria-label="wave">
+          <i aria-hidden="true">◌</i><span data-i18n="wave">МОЯ ВОЛНА</span><small class="mobile-nav-label" data-i18n="waveShort">ВОЛНА</small><b id="flowBadge" data-i18n="ready">ГОТОВО</b>
         </button>
-        <button id="importButton" class="library import-button" type="button" aria-expanded="false" aria-controls="importPanel"><i aria-hidden="true">⇣</i><span data-i18n="import">ПЕРЕНОС</span><b aria-hidden="true">↗</b></button>
+        <button id="importButton" class="library import-button" type="button" aria-expanded="false" aria-controls="importPanel" data-i18n-aria-label="import"><i aria-hidden="true">⇣</i><span data-i18n="import">ПЕРЕНОС</span><b aria-hidden="true">↗</b></button>
+        <section class="sidebar-listening" aria-label="Продолжить слушать" data-i18n-aria-label="sidebarListening">
+          <div class="sidebar-section">
+            <div class="sidebar-section-heading"><h2 data-i18n="upNext">ДАЛЕЕ</h2><button id="sidebarQueueAll" type="button" data-i18n="queue" aria-label="Открыть очередь" data-i18n-aria-label="sidebarOpenQueue">ОЧЕРЕДЬ</button></div>
+            <ol id="sidebarQueue" class="sidebar-track-list"></ol>
+          </div>
+          <div class="sidebar-section">
+            <div class="sidebar-section-heading"><h2 data-i18n="sidebarRecent">НЕДАВНО</h2><button id="sidebarRecentAll" type="button" data-i18n="viewAll" aria-label="Показать недавно прослушанное" data-i18n-aria-label="sidebarOpenRecent">СМОТРЕТЬ ВСЁ</button></div>
+            <ol id="sidebarRecent" class="sidebar-track-list"></ol>
+          </div>
+        </section>
         <button id="languageButton" class="library language-button" type="button" aria-label="Сменить язык" data-i18n-aria-label="switchLanguageAria"><i aria-hidden="true">A</i><span data-i18n="language">ЯЗЫК</span><b id="languageLabel">RU</b></button>
-        <button id="themeButton" class="theme-button" type="button" aria-expanded="false" aria-controls="themePanel">
+        <button id="themeButton" class="theme-button" type="button" aria-expanded="false" aria-controls="themePanel" data-i18n-aria-label="settings">
           <i aria-hidden="true">⚙</i><span data-i18n="settings">НАСТРОЙКИ</span><b id="themeLabel">ЧЁРНАЯ</b>
         </button>
         <button id="installButton" class="library install-button" type="button" hidden><i aria-hidden="true">↓</i><span data-i18n="install">УСТАНОВИТЬ</span><b data-i18n="app">SONGVALE</b></button>
