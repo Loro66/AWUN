@@ -33,6 +33,7 @@ test('repeat search shows cached results immediately and refreshes them in backg
   await page.locator('#searchForm').evaluate(form => form.requestSubmit());
 
   await expect(page.locator('#trackList .track').first()).toBeVisible();
+  await expect(page.locator('#trackList .skeleton')).toHaveCount(0);
   await expect(page.locator('#results')).toHaveAttribute('aria-busy', 'true');
   await expect(page.locator('#message')).toContainText('Показаны результаты с устройства');
   await expect(page.locator('#results')).toHaveAttribute('aria-busy', 'false');
@@ -113,6 +114,29 @@ test('manual queue survives a page reload and remains reorderable', async ({ pag
   const secondTitle = await page.locator('#queueList .queue-item').nth(1).locator('strong').textContent();
   await page.locator('#queueList .queue-item').nth(1).locator('.queue-controls button').first().click();
   await expect(page.locator('#queueList .queue-item').first().locator('strong')).toHaveText(secondTitle);
+});
+
+test('desktop sidebar keeps upcoming and recent tracks within reach', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openAwun(page);
+  await expect(page.locator('#sidebarQueue')).toContainText('Включи трек');
+  await expect(page.locator('#sidebarRecent')).toContainText('Здесь появятся');
+  await searchFor(page, 'midnight signal');
+  await page.locator('#trackList .track[data-source="audius"]').first().locator('.play').click();
+
+  await expect(page.locator('#sidebarQueue .sidebar-track').first()).toBeVisible();
+  await expect(page.locator('#sidebarRecent .sidebar-track').first()).toContainText('Midnight Signal');
+  const nextId = await page.evaluate(() => window.awunApp.state.queue[0].id);
+  await page.locator('#sidebarQueue .sidebar-track').first().click();
+  await expect.poll(() => page.evaluate(() => window.awunApp.state.active?.id)).toBe(nextId);
+  await page.locator('#sidebarQueueAll').click();
+  await expect(page.locator('#player')).toHaveClass(/queue-open/);
+  await page.locator('#sidebarRecentAll').click();
+  await expect(page.locator('#results')).toBeVisible();
+  await expect(page.locator('#trackList .track')).toHaveCount(2);
+
+  await page.setViewportSize({ width: 1000, height: 800 });
+  await expect(page.locator('.sidebar-listening')).toBeHidden();
 });
 
 test('backup import rejects invalid data, respects cancellation and restores after confirmation', async ({ page }) => {
@@ -311,6 +335,7 @@ for (const viewport of [
       expect(control.right, `${control.selector} right edge`).toBeLessThanOrEqual(layout.player.right + 1);
       expect(control.bottom, `${control.selector} bottom edge`).toBeLessThanOrEqual(layout.player.bottom + 1);
     }
-    await expect(page).toHaveScreenshot(`${viewport.name}.png`);
+    // Chromium patch versions vary slightly in font rasterization across CI and local builds.
+    await expect(page).toHaveScreenshot(`${viewport.name}.png`, { maxDiffPixelRatio: 0.02 });
   });
 }

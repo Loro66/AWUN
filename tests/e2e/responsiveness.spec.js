@@ -1,5 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { openAwun, searchFor, TRACKS } = require('./fixtures');
+const { openAwun, searchFor, TRACKS, healthPayload, installApiMocks, installMediaMocks } = require('./fixtures');
 const pageErrors = new WeakMap();
 test.beforeEach(async ({ page }) => {
   const errors = []; pageErrors.set(page, errors);
@@ -17,6 +17,24 @@ test('startup checks health once and shows loading feedback before results', asy
   await expect(page.locator('#results .skeleton')).toHaveCount(4);
   await expect(page.locator('#results')).toBeVisible();
   await expect(page.locator('#cancelSearch')).toBeVisible();
+  await expect(page.locator('#results')).toHaveAttribute('aria-busy', 'false');
+});
+
+test('search submitted before source status arrives still starts when sources connect', async ({ page }) => {
+  await installMediaMocks(page);
+  await installApiMocks(page);
+  let releaseHealth;
+  const pendingHealth = new Promise(resolve => { releaseHealth = resolve; });
+  await page.route('**/health', async route => {
+    await pendingHealth;
+    await route.fulfill({ json: healthPayload() });
+  });
+  await page.goto('/?lang=ru');
+  await page.locator('#searchInput').fill('midnight signal');
+  await page.locator('#searchInput').press('Enter');
+  await expect(page.locator('#trackList .skeleton')).toHaveCount(4);
+  releaseHealth();
+  await expect(page.locator('#trackList .track')).toHaveCount(8);
   await expect(page.locator('#results')).toHaveAttribute('aria-busy', 'false');
 });
 
@@ -126,7 +144,7 @@ test('a stale saved-link lookup cannot replace a newer playback choice', async (
   await expect(page.locator('#nowSource')).toHaveText('YouTube');
 });
 
-for (const width of [1920, 1280, 1000, 390]) {
+for (const width of [1920, 1280, 1000, 390, 320]) {
   for (const theme of ['black', 'white']) {
     test(`readable controls ${width}px ${theme}`, async ({ page }, testInfo) => {
       await page.setViewportSize({ width, height: 900 });
