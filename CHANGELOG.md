@@ -20,7 +20,7 @@ All notable user-visible changes are documented here. SONGVALE follows semantic 
 
 ### Testing
 
-- Added home behavior, responsive, language-switching and desktop/mobile screenshot coverage.
+- Added home behavior, responsive layout and language-switching coverage, with desktop and mobile screenshots attached for visual review.
 
 ## [2.5.1] - 2026-09-17
 

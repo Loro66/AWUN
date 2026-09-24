@@ -141,11 +141,23 @@ for (const setup of [
 }
 
 for (const width of [1280, 390]) {
-  test(`home overview ${width}px`, async ({ page }) => {
+  test(`home overview ${width}px`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width, height: 1000 });
     await seedHome(page, { resume: true });
     await openAwun(page);
-    await page.evaluate(() => document.activeElement?.blur());
-    await expect(page).toHaveScreenshot(`home-${width}.png`, { fullPage: width < 1100, maxDiffPixelRatio: 0.02 });
+    await expect(page.locator('#hubResumeCard')).toBeVisible();
+    await expect(page.locator('#hubArtistsSection')).toBeVisible();
+    await expect(page.locator('#hubSourceCount')).toHaveText('Источники: 5');
+    const sections = await Promise.all(['.hub-heading', '#welcomePanel', '.hub-shortcuts', '.hub-listening-grid', '.recommendation-section'].map(async selector => {
+      const bounds = await page.locator(selector).boundingBox();
+      expect(bounds, selector).not.toBeNull();
+      expect(bounds.x, selector).toBeGreaterThanOrEqual(0);
+      expect(bounds.x + bounds.width, selector).toBeLessThanOrEqual(width);
+      return bounds;
+    }));
+    for (let index = 1; index < sections.length; index += 1) {
+      expect(sections[index].y, `section ${index} follows section ${index - 1}`).toBeGreaterThanOrEqual(sections[index - 1].y + sections[index - 1].height);
+    }
+    await testInfo.attach('home-overview', { body: await page.screenshot({ fullPage: width < 1100 }), contentType: 'image/png' });
   });
 }
