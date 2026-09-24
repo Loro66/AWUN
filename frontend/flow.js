@@ -68,7 +68,7 @@
   }
   function contextTerms(){return[moodTerms[profile.mood],activityTerms[profile.activity],languageTerms[profile.language],eraTerms[profile.era]].filter(Boolean).join(' ')}
   function revealFlowResults(){
-    state.library=false;state.hasSearched=true;ui.libraryButton.classList.remove('active');ui.libraryButton.setAttribute('aria-pressed','false');ui.searchNavButton.classList.add('active');ui.searchNavButton.setAttribute('aria-pressed','true');
+    state.collection='';state.library=false;state.hasSearched=true;ui.libraryButton.classList.remove('active');ui.libraryButton.setAttribute('aria-pressed','false');ui.searchNavButton.classList.add('active');ui.searchNavButton.setAttribute('aria-pressed','true');
   }
   function buildQueries(){
     const seeds=positiveSeeds(),base=state.flow.baseQuery||ui.searchInput.value.trim(),context=contextTerms(),queries=[];
