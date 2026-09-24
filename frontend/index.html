@@ -104,25 +104,54 @@
       </div>
     </section>
 
-    <section id="homeSections" class="home-sections" aria-label="Главная SONGVALE">
+    <section id="homeSections" class="home-sections" aria-labelledby="hubTitle">
+      <header class="hub-heading">
+        <div><span class="section-kicker" data-i18n="hubKicker">ТВОЁ МУЗЫКАЛЬНОЕ ПРОСТРАНСТВО</span><h1 id="hubTitle" tabindex="-1" data-i18n="hubTitle">Главная</h1></div>
+        <button id="hubSources" class="hub-source-status" type="button" aria-label="Настроить источники поиска" data-i18n-aria-label="hubSourcesAria"><i aria-hidden="true"></i><span id="hubSourceCount"></span><span aria-hidden="true">↗</span></button>
+      </header>
       <section id="welcomePanel" class="welcome-panel" aria-labelledby="welcomeTitle">
         <div class="welcome-copy">
-          <span class="welcome-kicker" data-i18n="welcomeKicker">ТИХОЕ МЕСТО ДЛЯ ТВОЕЙ МУЗЫКИ</span>
-          <h1 id="welcomeTitle" data-i18n="welcomeTitle">Собери музыку<br>в одном месте.</h1>
-          <p data-i18n="welcomeBody">Перенеси знакомые треки, находи новые записи и слушай без суеты. Медиатека останется на этом компьютере.</p>
+          <span class="welcome-kicker" data-i18n="hubWelcomeKicker">В ТВОЁМ РИТМЕ</span>
+          <h2 id="welcomeTitle"></h2>
+          <p id="hubWelcomeBody"></p>
           <div class="welcome-actions">
-            <button id="welcomeImport" class="welcome-primary" type="button"><span data-i18n="startTransfer">ПЕРЕНЕСТИ МЕДИАТЕКУ</span></button>
-            <button id="welcomeSearch" class="welcome-secondary" type="button" data-i18n="findTrack">НАЧАТЬ ПОИСК</button>
+            <button id="welcomeSearch" class="welcome-primary" type="button"><span aria-hidden="true">⌕</span><span data-i18n="hubFindMusic">Найти музыку</span></button>
+            <button id="welcomeImport" class="welcome-secondary" type="button" data-i18n="hubImport">Перенести плейлист</button>
           </div>
-          <p id="welcomeLibraryCount" class="welcome-library-state">0 сохранено на этом устройстве</p>
+          <p id="welcomeLibraryCount" class="welcome-library-state"></p>
         </div>
+        <div id="hubResumeCard" class="hub-resume-card" hidden>
+          <span id="hubResumeKicker" class="section-kicker"></span>
+          <div class="hub-resume-track"><span id="hubResumeCover" class="hub-resume-cover" aria-hidden="true"></span><div><strong id="hubResumeTitle"></strong><span id="hubResumeArtist"></span></div></div>
+          <p id="hubResumeMeta"></p>
+          <button id="hubResume" type="button"><span aria-hidden="true">▶</span><span></span></button>
+        </div>
+        <button id="hubWave" class="hub-wave-card" type="button">
+          <span class="hub-wave-art" aria-hidden="true"><i></i><i></i><i></i><b>◌</b></span>
+          <span class="section-kicker" data-i18n="personalRadio">ПЕРСОНАЛЬНОЕ РАДИО</span><strong data-i18n="hubWave">Моя волна</strong><span data-i18n="hubWaveBody">Выбери настроение — остальное подхватит музыка.</span><b class="hub-wave-action"><span data-i18n="hubTuneWave">Настроить волну</span> ↗</b>
+        </button>
       </section>
-      <section class="dashboard-section continue-section" aria-labelledby="continueTitle">
-        <div class="section-heading"><div><span class="section-kicker" data-i18n="continueKicker">ПРОДОЛЖИМ СЛУШАТЬ</span><h1 id="continueTitle" data-i18n="continueListening">Продолжить слушать</h1></div><button class="section-link" type="button" data-home-action="all-recent" data-i18n="viewAll">СМОТРЕТЬ ВСЁ</button></div>
-        <ol id="recentList" class="home-track-grid" aria-live="polite"></ol>
+      <nav class="hub-shortcuts" aria-label="Твоя музыка" data-i18n-aria-label="hubShortcuts">
+        <div class="hub-shortcut"><button id="hubLibrary" class="hub-shortcut-main" type="button"><i aria-hidden="true">♡</i><span><strong data-i18n="hubLibrary">Моя музыка</strong><small data-i18n="hubSavedHint">Сохранено на устройстве</small></span><b id="hubSavedCount">0</b></button><button id="hubShuffle" class="hub-shuffle" type="button" aria-label="Перемешать медиатеку" data-i18n-aria-label="hubShuffle">⤨</button></div>
+        <div class="hub-shortcut"><button id="hubRecent" class="hub-shortcut-main" type="button"><i aria-hidden="true">↺</i><span><strong data-i18n="hubRecent">Недавно</strong><small data-i18n="hubRecentHint">Вернуться к знакомому</small></span><b id="hubRecentCount">0</b></button></div>
+        <div class="hub-shortcut"><button id="hubQueue" class="hub-shortcut-main" type="button"><i aria-hidden="true">☷</i><span><strong data-i18n="hubQueue">Далее в очереди</strong><small data-i18n="hubQueueHint">Твоя следующая музыка</small></span><b id="hubQueueCount">0</b></button></div>
+      </nav>
+      <section id="hubSearchHistory" class="hub-search-history" aria-labelledby="hubSearchHistoryTitle" hidden>
+        <div><h2 id="hubSearchHistoryTitle" data-i18n="hubRecentSearches">Ты искал</h2><button id="hubClearSearches" type="button" data-i18n="clearQueue" data-i18n-aria-label="hubClearSearches">ОЧИСТИТЬ</button></div><div id="hubSearchChips" class="hub-search-chips"></div>
       </section>
+      <div class="hub-listening-grid">
+        <section class="dashboard-section continue-section" aria-labelledby="continueTitle">
+          <div class="section-heading"><div><span class="section-kicker" data-i18n="hubKeepClose">ВСЕГДА ПОД РУКОЙ</span><h2 id="continueTitle"></h2></div><button id="hubAllRecent" class="section-link" type="button" data-i18n="viewAll">СМОТРЕТЬ ВСЁ</button></div>
+          <ol id="recentList" class="home-track-grid"></ol>
+          <div id="hubRecentEmpty" class="hub-empty"><span aria-hidden="true">♫</span><div><strong data-i18n="hubHistoryEmptyTitle">Здесь начинается твоя история</strong><p data-i18n="hubHistoryEmptyBody">Включи первый трек. Любимая музыка будет рядом, когда вернёшься.</p></div><button id="hubEmptySearch" type="button" data-i18n="hubFindMusic">Найти музыку</button></div>
+        </section>
+        <section id="hubArtistsSection" class="hub-artists-section" aria-labelledby="hubArtistsTitle" hidden>
+          <div class="section-heading"><div><span class="section-kicker" data-i18n="hubFromYourMusic">ИЗ ТВОЕЙ МУЗЫКИ</span><h2 id="hubArtistsTitle" data-i18n="hubArtists">Знакомые голоса</h2></div></div><div id="hubArtists" class="hub-artists"></div>
+          <button id="hubArtistWave" class="hub-artist-wave" type="button"><i aria-hidden="true">◌</i><span><strong data-i18n="hubWave">Моя волна</strong><small data-i18n="hubWaveMiniBody">Знакомый вкус. Новые открытия.</small></span><b aria-hidden="true">↗</b></button>
+        </section>
+      </div>
       <section class="dashboard-section recommendation-section" aria-labelledby="recommendTitle">
-        <div class="section-heading"><div><span class="section-kicker" data-i18n="forYouKicker">ПОД ТВОЙ РИТМ</span><h2 id="recommendTitle" data-i18n="recommendedForYou">Рекомендовано для тебя</h2></div></div>
+        <div class="section-heading"><div><span class="section-kicker" data-i18n="hubDiscoverKicker">ЕСТЬ НАСТРОЕНИЕ — ЕСТЬ МУЗЫКА</span><h2 id="recommendTitle" data-i18n="hubMoods">Что включим?</h2></div><button id="hubWaveShortcut" class="section-link" type="button" data-i18n="hubTuneWave">Настроить волну</button></div>
         <div id="recommendationGrid" class="recommendation-grid"></div>
       </section>
     </section>
@@ -212,7 +241,7 @@
     <section class="player-console">
       <div class="now">
         <small class="now-kicker" data-i18n="nowPlayingKicker">СЕЙЧАС</small>
-        <strong id="nowTitle" data-i18n="nothingPlaying">НИЧЕГО НЕ ИГРАЕТ</strong>
+        <strong id="nowTitle">НИЧЕГО НЕ ИГРАЕТ</strong>
         <span id="nowArtist">SONGVALE</span>
         <div class="mini-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
       </div>
@@ -386,6 +415,7 @@
   <script src="/static/player-core.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/library-matcher.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/audio-engine.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/home-hub.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/app.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/flow.js?v=__AWUN_VERSION__" defer></script>
 </body>

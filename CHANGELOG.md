@@ -2,6 +2,26 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [Unreleased]
+
+### Added
+
+- A home hub that adapts to the local library and listening history, with paused-session resume, library shuffle, queue access and familiar-artist searches.
+- Six recent search shortcuts, persisted on the device with a clear-history action.
+- Localized mood searches and useful first-visit states, without background catalog requests.
+
+### Improved
+
+- Compact recent-track cards keep focus and reflect loading, playing, paused and saved states without rebuilding the controls.
+- The logo returns home without restarting playback; leaving search clears its URL so reloading home stays on home.
+- Shuffle retains every library track, including the previously active recording.
+- The home layout works from 320 px through wide desktop screens, with a compact resume card on mobile and readable light-theme player controls.
+- Changing language keeps the active track title and play/pause labels correct.
+
+### Testing
+
+- Added home behavior, responsive layout and language-switching coverage, with desktop and mobile screenshots attached for visual review.
+
 ## [2.5.1] - 2026-09-17
 
 ### Improved
