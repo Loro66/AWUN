@@ -2,6 +2,23 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.5.3] - 2026-10-01
+
+### Added
+
+- Named local playlists with independent track membership, a quick library filter and playlist shortcuts on the home screen.
+- Transfers from a file, text list or public URL now keep confident matches in a named playlist in the source order. Interrupted transfers and manual review continue filling that playlist.
+
+### Improved
+
+- Playlist membership survives removal from favorites, and refreshed playback links update the corresponding playlist entries.
+- Full or unavailable local storage reports a visible error instead of pretending a favorite or playlist was saved. Playlist data is included in exported backups and validated before restore.
+- Playlist creation, track menus and library filtering fit narrow screens and keep the controls available in both languages.
+
+### Testing
+
+- Added browser scenarios for playlist persistence, imported order, backup inclusion, storage failure and mobile controls.
+
 ## [2.5.2] - 2026-09-30
 
 ### Added

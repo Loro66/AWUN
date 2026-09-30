@@ -16,7 +16,7 @@
     const rows = new Map();
     let recentSource = [];
     let resumeTrack = null;
-    let artistSignature = '', querySignature = '', moodLanguage = '';
+    let artistSignature = '', querySignature = '', playlistSignature = '', moodLanguage = '';
     const stored = storage?.readJSON(HISTORY_KEY, []);
     let queries = Array.isArray(stored) ? [...new Set(stored.filter(query => typeof query === 'string').map(query => query.trim().slice(0, 200)).filter(Boolean))].slice(0, 6) : [];
 
@@ -126,6 +126,20 @@
       }));
     }
 
+    function renderPlaylists() {
+      const visible = state.playlists.slice(0, 4);
+      const signature = JSON.stringify([language(), visible.map(list => [list.id, list.name, list.items.length])]);
+      if (signature === playlistSignature) return;
+      playlistSignature = signature;
+      $('hubPlaylists').hidden = !visible.length;
+      $('hubPlaylistCards').replaceChildren(...visible.map(list => {
+        const button = element('button', 'hub-playlist-card');button.type = 'button';button.dataset.hubPlaylist = list.id;
+        const art = element('span', 'hub-playlist-art', '♫');art.setAttribute('aria-hidden', 'true');
+        const copy = element('span');copy.append(element('strong', '', list.name), element('small', '', t('playlistTrackCount', { count: list.items.length })));
+        button.append(art, copy, element('b', '', '↗'));return button;
+      }));
+    }
+
     function renderMoods() {
       if (moodLanguage === language()) return;
       moodLanguage = language();
@@ -185,7 +199,7 @@
         const position = state.active?.id === resumeTrack.id && state.restoredPlayback ? state.playbackPosition : 0;
         $('hubResumeMeta').textContent = [sourceLabels[resumeTrack.source] || resumeTrack.source, position > 0 ? t('hubResumePosition', { time: formatTime(position) }) : Number(resumeTrack.duration) > 0 ? formatTime(resumeTrack.duration) : ''].filter(Boolean).join(' · ');
       }
-      renderTracks();renderArtists();renderQueries();renderMoods();syncPlayback();
+      renderTracks();renderArtists();renderQueries();renderPlaylists();renderMoods();syncPlayback();
     }
 
     function rememberQuery(query) {
@@ -196,6 +210,8 @@
     }
 
     root.addEventListener('click', event => {
+      const playlist = event.target.closest('[data-hub-playlist]');
+      if (playlist) { actions.showPlaylist(playlist.dataset.hubPlaylist); return; }
       const query = event.target.closest('[data-hub-query]');
       if (query) { actions.search(query.dataset.hubQuery); return; }
       const button = event.target.closest('[data-hub-action]');
@@ -206,6 +222,7 @@
     });
     $('hubResume').addEventListener('click', () => playFromHome(resumeTrack));
     $('hubLibrary').addEventListener('click', actions.showLibrary);
+    $('hubAllPlaylists').addEventListener('click', actions.showLibrary);
     $('hubRecent').addEventListener('click', actions.showRecent);
     $('hubAllRecent').addEventListener('click', () => state.recents.length ? actions.showRecent() : actions.showLibrary());
     $('hubQueue').addEventListener('click', actions.showQueue);

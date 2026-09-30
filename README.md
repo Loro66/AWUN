@@ -9,7 +9,7 @@
 [![Latest release](https://img.shields.io/github/v/release/Loro66/AWUN?style=for-the-badge&label=RELEASE&labelColor=11120F&color=6E875F)](https://github.com/Loro66/AWUN/releases/latest)
 
 [![Windows build](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&style=flat-square&label=Windows%20build)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
-[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=35%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
+[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=59%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![License](https://img.shields.io/badge/license-source--visible%20freeware-5F665B?style=flat-square)](LICENSE.md)
@@ -44,7 +44,7 @@ SONGVALE treats those failures as normal system conditions rather than exception
 
 | Discover | Listen | Keep | Understand |
 | --- | --- | --- | --- |
-| YouTube, SoundCloud, Audius, Jamendo and Internet Archive integrations | Official YouTube player, HLS playback, real or provider-derived waveforms | On-device library, persistent queue, backup and restore | Source health, latency, safe runtime report and explicit rights state |
+| YouTube, SoundCloud, Audius, Jamendo and Internet Archive integrations | Official YouTube player, HLS playback, real or provider-derived waveforms | On-device library, named playlists, quick filter, persistent queue, backup and restore | Source health, latency, safe runtime report and explicit rights state |
 | AUTO and regional discovery modes | Play next, append, reorder, repeat and Media Session | No mandatory account and no advertising profile | Track Stories with LRCLIB lyrics and optional Genius annotations |
 
 ### My Wave
@@ -53,7 +53,7 @@ My Wave turns the current track, local library and on-device taste signals into 
 
 ### Library transfer
 
-Bring an existing collection through a public playlist link, an exported CSV, JSON, M3U or TXT file, or a pasted `Artist — Track` list. SONGVALE resolves each item against connected sources, saves confident matches on the device and produces a downloadable report for anything it could not match.
+Bring an existing collection through a public playlist link, an exported CSV, JSON, M3U or TXT file, or a pasted `Artist — Track` list. SONGVALE resolves each item against connected sources, saves confident matches in a named local playlist in source order and produces a downloadable report for anything it could not match. Private account access and licensed offline downloads are not supported.
 
 <p align="center">
   <img src="docs/media/songvale-transfer.webp" width="100%" alt="SONGVALE library transfer workspace with live progress and match report" />
@@ -113,10 +113,11 @@ Open `http://127.0.0.1:8000`. Optional provider credentials and deployment setti
 
 ## Verified release quality
 
-Release `v2.5.2` is built from `main` by GitHub Actions.
+Release `v2.5.3` is built from `main` by GitHub Actions.
 
 - Python tests cover search, ranking, matching, policy, reliability, security, visual identity and desktop packaging.
-- **55 Playwright scenarios** exercise progressive search, instant repeat-search cache, playback-session restore, cancellation, provider deadlines, playback recovery, resumable fuzzy library transfer, manual match review, sound profiles, queue persistence, large libraries and responsive layouts.
+- **59 Playwright scenarios** exercise progressive search, instant repeat-search cache, playback-session restore, cancellation, provider deadlines, playback recovery, resumable fuzzy library transfer, manual match review, sound profiles, queue persistence, large libraries and responsive layouts.
+- Named playlists, local library filtering and home shortcuts make imported collections playable in their original order. Playlist membership remains after removing a favorite.
 - Repeat searches surface recent device-local results immediately while connected sources revalidate in the background; the last track and position return paused after restart.
 - Track Stories resolve noisy catalog titles through artist-aware LRCLIB and Genius matching, reject conflicting recording versions and can retry Genius with one distinctive lyric line.
 - A deterministic **200-record anonymized matcher benchmark** currently reports 100 correct matches, 100 correct rejections, zero false matches and zero unexpected misses.
@@ -131,7 +132,7 @@ Release `v2.5.2` is built from `main` by GitHub Actions.
 | Surface | Status | Distribution |
 | --- | --- | --- |
 | Web / PWA | Public beta | [Open application](https://awun-1.onrender.com) |
-| Windows | Unsigned beta unless signing is configured | [Download v2.5.2](https://github.com/Loro66/AWUN/releases/tag/v2.5.2) |
+| Windows | Unsigned beta unless signing is configured | [Download v2.5.3](https://github.com/Loro66/AWUN/releases/tag/v2.5.3) |
 | Android | Reproducible Play bundle and store package | Release requires Play Console signing and testing |
 | iOS | Reproducible unsigned beta | Physical distribution requires Apple signing |
 

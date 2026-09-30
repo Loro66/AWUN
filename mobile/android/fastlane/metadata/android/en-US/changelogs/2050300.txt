@@ -1,0 +1,1 @@
+Named local playlists, quick library filtering and playlist cards on the home screen. Transfers keep playable matches together in source order. Storage errors are shown instead of silently losing changes.

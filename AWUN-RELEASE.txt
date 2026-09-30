@@ -1,18 +1,17 @@
-SONGVALE 2.5.2
-Release date: 2026-09-30
+SONGVALE 2.5.3
+Release date: 2026-10-01
 
-This release improves library transfer, source settings and search reliability.
+This release adds named playlists and faster navigation through a personal library.
 
 What changed:
-- The home hub adapts to the saved library, recent tracks and searches.
-- Search starts without waiting for a delayed source status check.
-- Selected search sources survive a restart.
-- The transfer reads Russian CSV headers, quoted fields and copied track lists.
-- Files over 1000 tracks are reported instead of silently truncated; matching
-  progress and interrupted sessions remain visible.
-- Mobile hub labels are easier to read and shuffle has a larger touch target.
-- HLS media reads are bounded and media DNS resolution rejects private targets.
-- Docker defaults to one worker; multiple workers require AWUN_MEDIA_SECRET.
+- Create up to 25 local playlists, each containing up to 1000 tracks, and add
+  recordings from search results without losing them when removing a favorite.
+- Filter your saved tracks or a playlist by artist and title without waiting for
+  another online search. Open recent playlists directly from the home hub.
+- Imported file, text and public-link collections keep a named playlist in the
+  original order. Interrupted transfers and manual picks can continue it.
+- Playlist data is included in local backup exports and validated on restore.
+- Storage failures are shown instead of silently accepting unsaved changes.
 
 Windows package:
 - SONGVALE-Setup-x64.exe — per-user installer.
