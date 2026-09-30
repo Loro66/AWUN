@@ -181,6 +181,101 @@ test('library transfer keeps only confident matches and exposes a final report',
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('awun-library') || '[]').map(track => track.title))).toEqual(['Midnight Signal']);
 });
 
+test('named playlists remain independent of favorites and filter without a network search', async ({ page }) => {
+  await openAwun(page);
+  await page.locator('#libraryButton').click();
+  await page.locator('#playlistName').fill('Вечер');
+  await page.locator('#playlistCreate button').click();
+  await expect(page.locator('#playlistTabs [aria-pressed="true"]')).toContainText('Вечер');
+  await page.locator('#searchNavButton').click();
+  await searchFor(page, 'midnight signal');
+  const track = page.locator('#trackList .track[data-source="audius"]').first();
+  await track.locator('.track-queue-menu summary').click();
+  await track.locator('.playlist-option').click();
+  await track.locator('.save').click();
+  await page.locator('#libraryButton').click();
+  await expect(page.locator('#trackList .track')).toHaveCount(1);
+  await page.locator('#libraryFilter').fill('not here');
+  await expect(page.locator('#trackList .track')).toHaveCount(0);
+  await expect(page.locator('#libraryEmptyState')).toContainText('По этому запросу');
+  await page.locator('#libraryFilter').fill('AWUN Artist');
+  await expect(page.locator('#trackList .track')).toHaveCount(1);
+  await page.reload();
+  await expect(page.locator('#hubPlaylistCards .hub-playlist-card')).toContainText(['Вечер']);
+  await page.locator('#hubPlaylistCards .hub-playlist-card').click();
+  await expect(page.locator('#resultTitle')).toHaveText('Вечер');
+  await page.locator('#searchNavButton').click();
+  await page.locator('#libraryButton').click();
+  await page.locator('#playlistTabs .playlist-tab').nth(1).click();
+  await expect(page.locator('#trackList .track')).toHaveCount(1);
+  await page.locator('#playlistTabs .playlist-tab').first().click();
+  await expect(page.locator('#trackList .track')).toHaveCount(1);
+  await page.locator('#playlistTabs .playlist-tab').nth(1).click();
+  await page.locator('#trackList .track .save').click();
+  await expect(page.locator('#trackList .track')).toHaveCount(1);
+  await page.locator('#playlistTabs .playlist-tab').first().click();
+  await expect(page.locator('#trackList .track')).toHaveCount(0);
+});
+
+test('transfer keeps a named playlist in source order across reload and backup', async ({ page }) => {
+  await openAwun(page);
+  await page.locator('#importButton').click();
+  await page.locator('#importPlaylistName').fill('Мой экспорт');
+  await page.locator('#importText').fill('AWUN Artist — Forest Echo\nAWUN Artist — Midnight Signal');
+  await page.locator('#importSubmit').click();
+  await expect(page.locator('#importReportTitle')).toHaveText('Перенос завершён');
+  await expect(page.locator('#importAdded')).toHaveText('2');
+  await page.locator('#importOpenLibrary').click();
+  await expect(page.locator('#resultTitle')).toHaveText('Мой экспорт');
+  await expect(page.locator('#trackList .track .name strong')).toHaveText(['Forest Echo', 'Midnight Signal']);
+  const backup = await page.evaluate(() => JSON.parse(window.awunStorage.exportState()));
+  expect(JSON.parse(backup.data['awun-playlists-v1'])[0].items).toHaveLength(2);
+  await page.evaluate(async snapshot => {
+    localStorage.removeItem('awun-playlists-v1');
+    await window.awunStorage.importState(snapshot);
+  }, backup);
+  await page.reload();
+  await page.locator('#libraryButton').click();
+  await page.locator('#playlistTabs .playlist-tab').nth(1).click();
+  await expect(page.locator('#trackList .track .name strong')).toHaveText(['Forest Echo', 'Midnight Signal']);
+});
+
+test('failed local writes leave no misleading favorites or playlists in memory', async ({ page }) => {
+  await page.addInitScript(() => {
+    const original = Storage.prototype.setItem;
+    Storage.prototype.setItem = function(key, value) {
+      if (key === 'awun-playlists-v1' || key === 'awun-library') throw new DOMException('Quota exceeded', 'QuotaExceededError');
+      return original.call(this, key, value);
+    };
+  });
+  await openAwun(page);
+  await page.locator('#libraryButton').click();
+  await page.locator('#playlistName').fill('Нельзя сохранить');
+  await page.locator('#playlistCreate button').click();
+  await expect(page.locator('#message')).toContainText('Не удалось сохранить');
+  expect(await page.evaluate(() => window.awunApp.state.playlists)).toEqual([]);
+  await expect(page.locator('#playlistTabs .playlist-tab')).toHaveCount(1);
+  await page.locator('#searchNavButton').click();
+  await searchFor(page, 'midnight signal');
+  const save = page.locator('#trackList .track[data-source="audius"]').first().locator('.save');
+  await save.click();
+  await expect(page.locator('#message')).toContainText('Не удалось сохранить');
+  await expect(save).toHaveAttribute('aria-pressed', 'false');
+  expect(await page.evaluate(() => window.awunApp.state.saved)).toEqual([]);
+});
+
+test('playlist controls fit a narrow screen', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 800 });
+  await openAwun(page);
+  await page.locator('#libraryButton').click();
+  await expect(page.locator('#libraryFilter')).toBeVisible();
+  await expect(page.locator('#playlistName')).toBeVisible();
+  const bounds = await page.evaluate(() => [document.querySelector('#libraryFilter'),document.querySelector('#playlistName'),document.querySelector('#playlistCreate button')].map(node => {
+    const rect = node.getBoundingClientRect();return [rect.left,rect.right];
+  }));
+  bounds.forEach(([left,right]) => { expect(left).toBeGreaterThanOrEqual(0);expect(right).toBeLessThanOrEqual(391); });
+});
+
 test('library transfer recognizes Russian CSV headers, quoted fields and semicolons', async ({ page }) => {
   await openAwun(page);
   await page.locator('#welcomeImport').click();

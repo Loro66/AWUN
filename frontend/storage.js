@@ -170,6 +170,15 @@
         if (!Array.isArray(tracks) || tracks.some(track => !track || typeof track !== 'object' || Array.isArray(track) || !['string', 'number'].includes(typeof track.id))) {
           throw new Error('Invalid track data in SONGVALE backup');
         }
+      } else if (key === 'awun-playlists-v1') {
+        const lists = JSON.parse(raw);
+        if (!Array.isArray(lists) || lists.length > 25 || lists.some(list =>
+          !list || typeof list.id !== 'string' || !list.id || typeof list.name !== 'string' || list.name.length > 60 ||
+          !Array.isArray(list.items) || list.items.length > 1000 || list.items.some(item =>
+            !item || !Number.isFinite(item.position) || !item.track ||
+            !['string', 'number'].includes(typeof item.track.id) || typeof item.track.source !== 'string'
+          ) || (list.importKeys !== undefined && (!Array.isArray(list.importKeys) || list.importKeys.length > 1000 || list.importKeys.some(entry => typeof entry !== 'string')))
+        )) throw new Error('Invalid playlists in SONGVALE backup');
       } else if (objectKeys.has(key)) {
         const parsed = JSON.parse(raw);
         if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('Invalid settings in SONGVALE backup');

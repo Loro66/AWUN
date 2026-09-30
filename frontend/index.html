@@ -136,6 +136,10 @@
         <div class="hub-shortcut"><button id="hubRecent" class="hub-shortcut-main" type="button"><i aria-hidden="true">↺</i><span><strong data-i18n="hubRecent">Недавно</strong><small data-i18n="hubRecentHint">Вернуться к знакомому</small></span><b id="hubRecentCount">0</b></button></div>
         <div class="hub-shortcut"><button id="hubQueue" class="hub-shortcut-main" type="button"><i aria-hidden="true">☷</i><span><strong data-i18n="hubQueue">Далее в очереди</strong><small data-i18n="hubQueueHint">Твоя следующая музыка</small></span><b id="hubQueueCount">0</b></button></div>
       </nav>
+      <section id="hubPlaylists" class="hub-playlists" aria-labelledby="hubPlaylistsTitle" hidden>
+        <div class="section-heading"><div><span class="section-kicker" data-i18n="hubFromYourMusic">ИЗ ТВОЕЙ МУЗЫКИ</span><h2 id="hubPlaylistsTitle" data-i18n="myPlaylists">Мои плейлисты</h2></div><button id="hubAllPlaylists" class="section-link" type="button" data-i18n="viewAll">СМОТРЕТЬ ВСЁ</button></div>
+        <div id="hubPlaylistCards" class="hub-playlist-cards"></div>
+      </section>
       <section id="hubSearchHistory" class="hub-search-history" aria-labelledby="hubSearchHistoryTitle" hidden>
         <div><h2 id="hubSearchHistoryTitle" data-i18n="hubRecentSearches">Ты искал</h2><button id="hubClearSearches" type="button" data-i18n="clearQueue" data-i18n-aria-label="hubClearSearches">ОЧИСТИТЬ</button></div><div id="hubSearchChips" class="hub-search-chips"></div>
       </section>
@@ -167,6 +171,15 @@
         </div>
       </div>
 
+      <section id="libraryWorkspace" class="library-workspace" aria-label="Плейлисты и поиск по медиатеке" data-i18n-aria-label="libraryWorkspaceAria" hidden>
+        <div class="library-tools">
+          <label class="library-filter" for="libraryFilter"><span data-i18n="filterLibrary">ПОИСК В МЕДИАТЕКЕ</span><input id="libraryFilter" type="search" autocomplete="off" data-i18n-placeholder="filterLibraryPlaceholder" placeholder="Трек или исполнитель"></label>
+          <form id="playlistCreate" class="playlist-create"><label for="playlistName" data-i18n="newPlaylist">НОВЫЙ ПЛЕЙЛИСТ</label><div><input id="playlistName" type="text" maxlength="60" required data-i18n-placeholder="playlistNamePlaceholder" placeholder="Название плейлиста"><button type="submit" data-i18n="createPlaylist">СОЗДАТЬ</button></div></form>
+        </div>
+        <div id="playlistTabs" class="playlist-tabs" role="group" aria-label="Выбор плейлиста" data-i18n-aria-label="playlistTabsAria"></div>
+        <div id="playlistActions" class="playlist-actions" hidden><span id="playlistDescription"></span><button id="deletePlaylist" type="button" data-i18n="deletePlaylist">УДАЛИТЬ ПЛЕЙЛИСТ</button></div>
+        <p id="libraryEmptyState" class="library-empty-state" hidden></p>
+      </section>
       <div class="search-feedback">
         <p id="message" class="message" role="status" data-i18n="initialMessage">Введи исполнителя или название трека и нажми Enter.</p>
         <button id="cancelSearch" type="button" hidden data-i18n="cancelSearch">Остановить поиск</button>
@@ -374,6 +387,7 @@
           <label class="import-copy" for="importText"><span class="sr-only" data-i18n="orPasteTracks">ВСТАВЬ СПИСОК ТРЕКОВ</span><textarea id="importText" rows="8" placeholder="Исполнитель — Трек&#10;Другой исполнитель — Другой трек" data-i18n-placeholder="importTextPlaceholder"></textarea></label>
           <button id="importSubmit" class="import-start" type="button" data-i18n="importToAwun">НАЧАТЬ ПЕРЕНОС</button>
         </section>
+        <label class="import-playlist-name" for="importPlaylistName"><span data-i18n="transferPlaylistName">СОХРАНИТЬ КАК ПЛЕЙЛИСТ</span><input id="importPlaylistName" type="text" maxlength="60" data-i18n-placeholder="transferPlaylistPlaceholder" placeholder="Название (необязательно)"></label>
       </div>
       <section id="importReport" class="import-report" aria-labelledby="importReportTitle">
         <header><span><small data-i18n="transferStatus">СТАТУС ПЕРЕНОСА</small><strong id="importReportTitle" data-i18n="readyForLibrary">Готов к медиатеке</strong></span></header>
