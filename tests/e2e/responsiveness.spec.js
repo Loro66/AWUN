@@ -38,6 +38,53 @@ test('search submitted before source status arrives still starts when sources co
   await expect(page.locator('#results')).toHaveAttribute('aria-busy', 'false');
 });
 
+test('a failed health check does not block a working search API', async ({ page }) => {
+  await installMediaMocks(page);
+  await installApiMocks(page);
+  await page.route('**/health', route => route.abort('failed'));
+  let searches = 0;
+  page.on('request', request => { if (new URL(request.url()).pathname === '/api/v1/search') searches++; });
+  await page.goto('/?lang=ru&q=midnight%20signal');
+  await expect(page.locator('#trackList .track')).toHaveCount(8);
+  expect(searches).toBeGreaterThan(0);
+  await expect.poll(() => page.evaluate(() => window.awunApp.state.diagnostics?.origin)).toBe('unavailable');
+  await expect(page.locator('#sources button[data-source]:not([disabled])')).toHaveCount(5);
+});
+
+test('a deep link searches while source health is still pending', async ({ page }) => {
+  await installMediaMocks(page);
+  await installApiMocks(page);
+  let releaseHealth;
+  const pendingHealth = new Promise(resolve => { releaseHealth = resolve; });
+  await page.route('**/health', async route => {
+    await pendingHealth;
+    await route.fulfill({ json: healthPayload() });
+  });
+  try {
+    await page.goto('/?lang=ru&q=midnight%20signal');
+    await expect(page.locator('#trackList .track')).toHaveCount(8);
+    expect(await page.evaluate(() => window.awunApp.state.diagnostics)).toBeNull();
+  } finally { releaseHealth(); }
+  await expect(page.locator('#sources button[data-source]:not([disabled])')).toHaveCount(5);
+});
+
+test('source choices and the home counter survive a reload', async ({ page }) => {
+  await openAwun(page);
+  await page.locator('#advancedSearch summary').click();
+  for (const source of ['youtube', 'soundcloud', 'jamendo', 'internet_archive']) {
+    await page.locator(`#sources button[data-source="${source}"]`).click();
+  }
+  await expect(page.locator('#hubSourceCount')).toHaveText('Источники: 1');
+  await expect(page.locator('#sources button.on[data-source]')).toHaveCount(1);
+  await page.reload();
+  await expect(page.locator('#sources button[data-source]:not([disabled])')).toHaveCount(5);
+  await expect(page.locator('#sources button.on[data-source]')).toHaveCount(1);
+  await expect(page.locator('#hubSourceCount')).toHaveText('Источники: 1');
+  await page.locator('#searchInput').fill('forest');
+  await page.locator('#searchInput').press('Enter');
+  await expect(page.locator('#trackList .track')).toHaveCount(TRACKS.audius.length);
+});
+
 test('late providers preserve the first result, its focus and its open menu', async ({ page }) => {
   await openAwun(page, { delays: { audius: 10, youtube: 900, soundcloud: 1100, jamendo: 1300, internet_archive: 1500 } });
   await searchFor(page, 'midnight signal');

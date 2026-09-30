@@ -176,8 +176,8 @@
       $('hubShuffle').disabled = !state.saved.length;
       $('hubRecent').disabled = !state.recents.length;
       $('hubQueue').disabled = !state.queue.length;
-      $('hubSourceCount').textContent = t(!state.diagnostics ? 'connecting' : !state.available.size ? 'hubSourcesUnavailable' : 'hubSourcesCount', { count: state.available.size });
-      $('hubSources').classList.toggle('unavailable', Boolean(state.diagnostics && !state.available.size));
+      $('hubSourceCount').textContent = t(!state.diagnostics ? 'connecting' : 'hubSourcesCount', { count: state.sources.size });
+      $('hubSources').classList.toggle('unavailable', state.diagnostics?.origin === 'unavailable' || Boolean(state.diagnostics && !state.available.size));
       if (resumeTrack) {
         artwork($('hubResumeCover'), resumeTrack);
         $('hubResumeTitle').textContent = decodeText(resumeTrack.title) || t('unknownTitle');

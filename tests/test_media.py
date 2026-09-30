@@ -1,4 +1,5 @@
 import unittest
+import socket
 
 from fastapi.responses import Response
 
@@ -11,8 +12,11 @@ from backend.api.main import (
     _download_filename,
     _is_playlist,
     _rewrite_hls_playlist,
+    _read_hls_manifest,
     _safe_filename_stem,
 )
+from backend.security.public_dns import public_address_records
+from backend.security.safe_url import UnsafeUrl
 
 
 class MediaSignerTests(unittest.TestCase):
@@ -145,3 +149,36 @@ class MediaSignerTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class MediaNetworkSafetyTests(unittest.IsolatedAsyncioTestCase):
+    def test_resolver_rejects_private_address_even_if_public_address_is_first(self) -> None:
+        addresses = [
+            (socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP, "", ("8.8.8.8", 443)),
+            (socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP, "", ("127.0.0.1", 443)),
+        ]
+        with self.assertRaises(UnsafeUrl):
+            public_address_records("media.example", 443, addresses)
+
+    def test_resolver_accepts_public_address(self) -> None:
+        addresses = [(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP, "", ("8.8.8.8", 443))]
+        self.assertEqual(public_address_records("media.example", 443, addresses)[0]["host"], "8.8.8.8")
+
+    async def test_hls_manifest_stops_after_limit_without_content_length(self) -> None:
+        class Content:
+            def __init__(self):
+                self.reads = 0
+
+            async def iter_chunked(self, _size):
+                for _ in range(100):
+                    self.reads += 1
+                    yield b"x" * (64 * 1024)
+
+        class Response:
+            headers = {}
+            content = Content()
+
+        response = Response()
+        with self.assertRaises(UnsafeUrl):
+            await _read_hls_manifest(response)
+        self.assertEqual(response.content.reads, 9)

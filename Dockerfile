@@ -15,4 +15,4 @@ COPY LICENSE.md EULA.md VERSION ./
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "uvicorn backend.api.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${WEB_CONCURRENCY:-2}"]
+CMD ["sh", "-c", "if [ \"${WEB_CONCURRENCY:-1}\" -gt 1 ] && [ -z \"${AWUN_MEDIA_SECRET:-}\" ]; then echo 'AWUN_MEDIA_SECRET is required with multiple workers' >&2; exit 1; fi; exec uvicorn backend.api.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${WEB_CONCURRENCY:-1}"]

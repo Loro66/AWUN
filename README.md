@@ -86,7 +86,7 @@ Search results are normalized into a shared track model, deduplicated and ranked
 
 Download the [per-user installer](https://github.com/Loro66/AWUN/releases/latest/download/SONGVALE-Setup-x64.exe) or the [portable executable](https://github.com/Loro66/AWUN/releases/latest/download/SONGVALE.exe). SHA-256 files are published beside both binaries in every release.
 
-The published v2.5.1 beta binaries are not Authenticode-signed, so Windows SmartScreen may show a warning. The release workflow now signs and verifies future builds when the repository signing certificate is configured; always verify the checksum too.
+Windows beta binaries are unsigned unless a signing certificate is configured; Windows SmartScreen may show a warning. The release workflow signs and verifies builds when the certificate is configured; verify the checksum too.
 
 ### Web and PWA
 
@@ -113,10 +113,10 @@ Open `http://127.0.0.1:8000`. Optional provider credentials and deployment setti
 
 ## Verified release quality
 
-Release `v2.5.1` is built from `main` by GitHub Actions.
+Release `v2.5.2` is built from `main` by GitHub Actions.
 
-- **246 Python tests** cover search, ranking, matching, policy, reliability, security, visual identity and desktop packaging.
-- **35 Playwright scenarios** exercise progressive search, instant repeat-search cache, playback-session restore, cancellation, provider deadlines, playback recovery, resumable fuzzy library transfer, manual match review, sound profiles, queue persistence, large libraries and responsive layouts.
+- Python tests cover search, ranking, matching, policy, reliability, security, visual identity and desktop packaging.
+- **55 Playwright scenarios** exercise progressive search, instant repeat-search cache, playback-session restore, cancellation, provider deadlines, playback recovery, resumable fuzzy library transfer, manual match review, sound profiles, queue persistence, large libraries and responsive layouts.
 - Repeat searches surface recent device-local results immediately while connected sources revalidate in the background; the last track and position return paused after restart.
 - Track Stories resolve noisy catalog titles through artist-aware LRCLIB and Genius matching, reject conflicting recording versions and can retry Genius with one distinctive lyric line.
 - A deterministic **200-record anonymized matcher benchmark** currently reports 100 correct matches, 100 correct rejections, zero false matches and zero unexpected misses.
@@ -131,7 +131,7 @@ Release `v2.5.1` is built from `main` by GitHub Actions.
 | Surface | Status | Distribution |
 | --- | --- | --- |
 | Web / PWA | Public beta | [Open application](https://awun-1.onrender.com) |
-| Windows | Released, unsigned beta | [Download v2.5.1](https://github.com/Loro66/AWUN/releases/tag/v2.5.1) |
+| Windows | Unsigned beta unless signing is configured | [Download v2.5.2](https://github.com/Loro66/AWUN/releases/tag/v2.5.2) |
 | Android | Reproducible Play bundle and store package | Release requires Play Console signing and testing |
 | iOS | Reproducible unsigned beta | Physical distribution requires Apple signing |
 
