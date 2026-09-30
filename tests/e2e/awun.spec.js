@@ -181,6 +181,31 @@ test('library transfer keeps only confident matches and exposes a final report',
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('awun-library') || '[]').map(track => track.title))).toEqual(['Midnight Signal']);
 });
 
+test('library transfer recognizes Russian CSV headers, quoted fields and semicolons', async ({ page }) => {
+  await openAwun(page);
+  await page.locator('#welcomeImport').click();
+  await page.locator('#libraryFile').setInputFiles({
+    name: 'collection.csv', mimeType: 'text/csv',
+    buffer: Buffer.from('Исполнитель;Название;Длительность\n"AWUN Artist";"Midnight Signal";03:34\n"Unknown; Artist";"Missing Recording";01:43'),
+  });
+  await expect(page.locator('#importTotal')).toHaveText('2');
+  await page.locator('#importSubmit').click();
+  await expect(page.locator('#importReportTitle')).toHaveText('Перенос завершён');
+  await expect(page.locator('#importAdded')).toHaveText('1');
+  await expect(page.locator('#importMissed')).toHaveText('1');
+});
+
+test('oversized transfer reports every track instead of silently dropping the tail', async ({ page }) => {
+  await openAwun(page);
+  await page.locator('#welcomeImport').click();
+  await page.locator('#importText').fill(Array.from({ length: 1001 }, (_, index) => `Artist ${index} — Track ${index}`).join('\n'));
+  await expect(page.locator('#importTotal')).toHaveText('1001');
+  await expect(page.locator('#importStatus')).toContainText('Найдено 1001 уникальных треков');
+  await page.locator('#importSubmit').click();
+  await expect(page.locator('#importStatus')).toContainText('раздели файл на части');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('awun-library') || '[]'))).toEqual([]);
+});
+
 test('library transfer groups copied playlist rows instead of matching metadata lines', async ({ page }) => {
   await openAwun(page);
   await page.locator('#welcomeImport').click();

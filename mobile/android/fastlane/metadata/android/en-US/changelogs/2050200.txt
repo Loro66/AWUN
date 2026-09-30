@@ -1,0 +1,1 @@
+Search starts without waiting for source health and selected sources persist. Library transfer reads Russian CSV and reports limits without losing tracks. The mobile hub and media proxy reliability are improved.

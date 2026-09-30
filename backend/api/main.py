@@ -29,6 +29,7 @@ from backend.policy.client_capabilities import capabilities_for
 from backend.policy.rights import SOURCE_RIGHTS
 from backend.search.engine import SearchCapacityError, SearchEngine
 from backend.security.media_headers import sanitize_media_headers
+from backend.security.public_dns import PublicMediaResolver
 from backend.security.safe_url import UnsafeUrl, validate_outbound_url
 from backend.sources.factory import build_adapters, build_enricher
 
@@ -132,6 +133,18 @@ def _rewrite_hls_playlist(
     return ("\n".join(rewritten) + "\n").encode("utf-8")
 
 
+async def _read_hls_manifest(response: aiohttp.ClientResponse) -> bytes:
+    declared_length = response.headers.get("content-length", "")
+    if declared_length.isdecimal() and int(declared_length) > _MAX_HLS_MANIFEST_BYTES:
+        raise UnsafeUrl("HLS manifest is too large")
+    payload = bytearray()
+    async for chunk in response.content.iter_chunked(64 * 1024):
+        payload.extend(chunk)
+        if len(payload) > _MAX_HLS_MANIFEST_BYTES:
+            raise UnsafeUrl("HLS manifest is too large")
+    return bytes(payload)
+
+
 def _apply_client_policy(response: SearchResponse, client_id: str | None) -> SearchResponse:
     capabilities = capabilities_for(client_id)
     for track in response.tracks:
@@ -229,6 +242,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             connector=aiohttp.TCPConnector(
                 limit=settings.media_max_connections,
                 limit_per_host=max(1, settings.media_max_connections // 2),
+                resolver=PublicMediaResolver(),
+                use_dns_cache=False,
             ),
         )
         yield
@@ -549,7 +564,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 upstream.release()
                 raise HTTPException(409, "Источник предоставляет потоковый плейлист, а не скачиваемый аудиофайл")
             try:
-                playlist = await upstream.read()
+                async with asyncio.timeout(settings.media_read_timeout_seconds):
+                    playlist = await _read_hls_manifest(upstream)
                 rewritten = _rewrite_hls_playlist(
                     playlist,
                     upstream_url=str(upstream.url),
@@ -557,7 +573,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                     signer=media_signer,
                     headers=target.headers,
                 )
-            except UnsafeUrl as exc:
+            except (UnsafeUrl, TimeoutError) as exc:
                 raise HTTPException(502, "Источник аудио вернул некорректный HLS-плейлист") from exc
             finally:
                 upstream.release()

@@ -2,7 +2,7 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
-## [Unreleased]
+## [2.5.2] - 2026-09-30
 
 ### Added
 
@@ -17,6 +17,10 @@ All notable user-visible changes are documented here. SONGVALE follows semantic 
 - Shuffle retains every library track, including the previously active recording.
 - The home layout works from 320 px through wide desktop screens, with a compact resume card on mobile and readable light-theme player controls.
 - Changing language keeps the active track title and play/pause labels correct.
+- Search and deep links run even while source diagnostics are delayed or unavailable; source choices persist after restart.
+- The library transfer accepts Russian CSV headers and quoted fields, reports collections larger than 1000 tracks instead of silently truncating them, and updates progress in batches.
+- The mobile hub uses readable labels and a larger shuffle target.
+- The media proxy bounds HLS reads, rejects private DNS answers at connection time, and Docker requires a shared signing secret when configured with multiple workers.
 
 ### Testing
 

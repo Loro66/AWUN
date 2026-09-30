@@ -153,16 +153,14 @@ control or trust: AWUN does not embed unknown proxy IPs.
 
 `POST /api/v1/library/import-url` accepts a public HTTPS playlist URL and returns track metadata for automatic matching in AWUN. YouTube playlists use the official YouTube Data API when `AWUN_YOUTUBE_API_KEY` is configured. Other sites are supported only when they publish standard JSON-LD `MusicPlaylist`/`MusicRecording` metadata.
 
-Private libraries, login-protected pages, account tokens and undocumented private APIs are deliberately unsupported. Yandex Music exports can still be imported as CSV, JSON, M3U or TXT. The browser matches up to 100 entries per run against the enabled playable sources, adds only playable matches, and reports the rest.
+Private libraries, login-protected pages, account tokens and undocumented private APIs are deliberately unsupported. User-provided Yandex Music track lists can be imported as CSV, JSON, M3U or TXT. The browser matches up to 1000 unique entries per transfer against the selected playable sources, adds only playable matches, and reports the rest. Larger files are rejected with their full count so the user can split them; an existing local library is limited to 1500 saved tracks. Encrypted offline files cannot be transferred.
 
 ### Yandex Music export
 
-Click **IMPORT → YM** and upload a CSV, JSON, M3U/M3U8 or TXT file, or paste one
-`Artist — Track` per line. AWUN stores only normalized track metadata in the
-browser library. The first time an imported item is played, AWUN searches the
-currently connected sources, selects the closest playable match and replaces
-the placeholder with that live result. Every item retains an official Yandex
-Music catalog link.
+Open **Library transfer** and upload a CSV, JSON, M3U/M3U8 or TXT file, or paste
+one `Artist — Track` per line. SONGVALE searches the selected sources and saves
+high-confidence playable matches as the transfer runs. Ambiguous matches wait
+for manual review, and the report includes missing and pending tracks.
 
 AWUN does not ask for a Yandex password or account token and does not call
 undocumented private endpoints or extract protected Yandex media URLs. Yandex
