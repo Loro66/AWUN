@@ -176,7 +176,8 @@ def test_library_transfer_is_visible_resumable_and_rejects_weak_matches() -> Non
         "importCancel", "importResume", "importRetryMissed", "importDownloadReport",
         "importOpenLibrary", "importReviewPanel", "importReviewCandidates",
     ))
-    assert "tracks.slice(0,1000)" in script
+    assert "validateImportCapacity" in script and "tooManyTracks" in script
+    assert "tracks.slice(0,1000)" not in script
     assert "commitImportedMatches" in script and "importController?.abort()" in script
     assert "songvale-import-session-v1" in script and "pendingTracks" in script
     matcher = (ROOT / "frontend" / "library-matcher.js").read_text(encoding="utf-8")
