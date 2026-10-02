@@ -1,34 +1,69 @@
 # User accounts and cross-device library sync
 
-SONGVALE 2.5.4 runs as a guest app. Favorites, playlists, listening history and
-the transfer state are stored in the browser on each device. The iPhone Home
-Screen installation does not create an account or sync that state. A backup can
-be exported and imported manually from Settings.
+SONGVALE has optional email accounts. The Settings panel shows sign-in and
+registration only when the hosted service is connected to persistent Supabase
+Auth and Postgres. Otherwise guest mode and device backups keep working.
 
-## Delivery requirements
+## Activate on the hosted service
 
-1. Provision a persistent database and an identity service for the hosted app.
-   The current free web container has no durable account database. Never use
-   its local filesystem for passwords or libraries. Configure credentials in
-   deployment secrets, not the repository.
-2. Add verified email sign-in (with an optional Apple sign-in path later),
-   sign-out and account deletion. Use short-lived sessions in secure, HTTP-only
-   cookies. The frontend must never store a long-lived bearer token in
-   `localStorage`.
-3. Store favorites and named playlists per account, with a server revision for
-   every mutation. Keep only track metadata and catalog identifiers; playback
-   URLs expire and must be refreshed on the device. Do not upload listening
-   logs or imported file contents without a separate, explicit choice.
-4. On first sign-in, show a review of the device library and merge it into the
-   account without replacing existing cloud entries. Keep a local copy for
-   offline browsing. Multiple devices must handle conflicting edits without
-   silently dropping playlist membership or changing playlist order.
-5. Test: guest use without an account; verified sign-in and sign-out; two-device
-   round-trip; unauthorized access to another user's data; session expiry;
-   interrupted writes; conflict resolution; export and deletion. Only expose
-   the account controls after persistent storage and these tests are live.
+1. Create a Supabase project. In its SQL editor run
+   [`backend/accounts/schema.sql`](../backend/accounts/schema.sql). The table
+   has row-level security: authenticated users can only select, insert and
+   update their own row. Keep the secret key on the server.
+2. In Supabase Auth, enable email confirmations and set **Site URL** to the
+   public SONGVALE origin, for example `https://awun-1.onrender.com`.
+   Configure **custom SMTP** before inviting real users: Supabase's default
+   sender does not deliver confirmation messages to arbitrary addresses.
+3. Set these deployment environment variables in the server's secret settings,
+   then redeploy. Set `AWUN_ACCOUNTS_ENABLED=true` only after the SQL table and
+   email delivery are verified:
 
-The initial account release can sync favorites and playlists. Listening history,
-recommendations, settings and import progress can follow as separately
-described features. Until that release, users moving from Windows to iPhone can
-use the Settings backup export/import flow.
+   ```text
+   AWUN_ACCOUNTS_SUPABASE_URL=https://<project-ref>.supabase.co
+   AWUN_ACCOUNTS_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+   AWUN_ACCOUNTS_SUPABASE_SECRET_KEY=sb_secret_...
+   AWUN_ACCOUNTS_ENABLED=true
+   ```
+
+   Do not put the secret key in the repository, frontend, iOS/Android bundle or
+   a public issue. The endpoint `GET /api/v1/account/config` should return
+   `{"enabled":true}` after configuration. If the SQL table or email sender is
+   missing, leave the account service disabled rather than advertise sync.
+4. Register a test user, confirm the email, sign in on one device, merge a
+   guest library, and open the same account on a second device. Check that
+   favorites and playlists arrive, that a conflicting edit offers an explicit
+   choice, and that sign-out clears local account music. Test account deletion
+   with a fresh password entry. Check “Forgot password?” from a signed-out
+   browser: the email link returns to the Site URL, where SONGVALE removes the
+   fragment from the address and prompts for a new password.
+
+## Behavior and limits
+
+- The guest library stays on the device. On first sign-in, choose to combine it
+  with the account or replace it with the account copy. If this device holds a
+  *different* account's library, SONGVALE does not merge it into the new user.
+  Export a backup in Diagnostics before replacing any local copy.
+- The service stores only favorite/playlist track metadata and catalog IDs.
+  Temporary stream and download URLs are not uploaded. Playback resolves a
+  fresh link when needed. Listening history, queue, taste signals, comments,
+  search history, settings and in-progress imports remain device-local.
+- Changes are saved locally first, then synced with a revision check. Network
+  failures leave the copy on the device. If another device changed the cloud
+  copy, the user chooses to combine copies or use the current account copy.
+  The Sync button and returning to a tab after a minute check for newer data.
+- Sign-out requires pending changes to sync first. It clears the account's
+  local favorites, playlists, queue, recent listening and active player, while
+  leaving the cloud copy intact. Account deletion rechecks the password and
+  deletes the Auth user and its cloud library; export anything you need first.
+- The account gateway is on the same origin. Session credentials use HTTP-only,
+  Secure, SameSite=Strict cookies in production. Mutations check the Origin
+  header. Browser storage holds only sync revision/owner metadata, not tokens.
+- Confirmation links clear their fragment and ask the user to sign in. Recovery
+  tokens are held in memory only until the new password is accepted. Password
+  recovery requires working email delivery.
+
+The free Render container has ephemeral storage. Its filesystem is not an
+account database. For real use, arrange a persistent Supabase plan and monitor
+its limits and email delivery. The code can be tested locally without provider
+credentials through mocked gateway and browser tests, but real registration and
+cross-device delivery require the deployment configuration above.

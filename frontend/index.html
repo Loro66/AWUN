@@ -43,7 +43,6 @@
             <ol id="sidebarRecent" class="sidebar-track-list"></ol>
           </div>
         </section>
-        <button id="languageButton" class="library language-button" type="button" aria-label="Сменить язык" data-i18n-aria-label="switchLanguageAria"><i aria-hidden="true">A</i><span data-i18n="language">ЯЗЫК</span><b id="languageLabel">RU</b></button>
         <button id="themeButton" class="theme-button" type="button" aria-expanded="false" aria-controls="themePanel" data-i18n-aria-label="settings">
           <i aria-hidden="true">⚙</i><span data-i18n="settings">НАСТРОЙКИ</span><b id="themeLabel">ЧЁРНАЯ</b>
         </button>
@@ -305,12 +304,29 @@
   </aside>
 
   <div id="themeBackdrop" class="theme-backdrop" hidden></div>
-  <aside id="themePanel" class="theme-panel" hidden aria-label="Настройки внешнего вида" data-i18n-aria-label="visualSettingsAria">
+  <aside id="themePanel" class="theme-panel" hidden aria-label="Настройки" data-i18n-aria-label="visualSettingsAria">
     <div class="theme-panel-head">
-      <div><strong data-i18n="visualSystem">ВНЕШНИЙ ВИД</strong></div>
-      <button id="themeClose" type="button" aria-label="Закрыть настройки внешнего вида" data-i18n-aria-label="closeVisualAria">×</button>
+      <div><strong data-i18n="visualSystem">НАСТРОЙКИ</strong></div>
+      <button id="themeClose" type="button" aria-label="Закрыть настройки" data-i18n-aria-label="closeVisualAria">×</button>
     </div>
-    <p data-i18n="visualDescription">Выбери цветовую тему. Переключи интерфейс в минимальный режим, если хочешь оставить на экране только музыку. Настройки сохраняются на этом устройстве.</p>
+    <p data-i18n="visualDescription">Выбери цветовую тему и настрой музыкальное пространство. Параметры внешнего вида хранятся на этом устройстве.</p>
+    <div class="settings-language-row">
+      <span data-i18n="language">ЯЗЫК</span>
+      <button id="languageButton" class="settings-language" type="button" aria-label="Сменить язык" data-i18n-aria-label="switchLanguageAria"><span data-i18n="switchLanguageHint">Переключить язык интерфейса</span><b id="languageLabel">RU</b></button>
+    </div>
+    <section class="account-settings" aria-labelledby="accountTitle">
+      <div class="account-heading"><div><small data-i18n="accountKicker">МЕДИАТЕКА НА ВСЕХ УСТРОЙСТВАХ</small><h2 id="accountTitle" data-i18n="accountTitle">Аккаунт</h2></div><span id="accountBadge" data-i18n="accountGuest">ГОСТЬ</span></div>
+      <p id="accountStatus" role="status" aria-live="polite" data-i18n="accountChecking">Проверяем доступность аккаунтов…</p>
+      <form id="accountForm" hidden>
+        <label for="accountEmail" data-i18n="accountEmail">Электронная почта</label><input id="accountEmail" type="email" autocomplete="email" inputmode="email" required maxlength="254">
+        <label for="accountPassword" data-i18n="accountPassword">Пароль (от 12 символов)</label><input id="accountPassword" type="password" autocomplete="current-password" minlength="12" maxlength="128" required>
+        <div class="account-actions"><button id="accountLogin" type="submit" data-i18n="accountLogin">ВОЙТИ</button><button id="accountSignup" type="button" data-i18n="accountSignup">СОЗДАТЬ АККАУНТ</button></div>
+        <button id="accountForgot" class="account-forgot" type="button" data-i18n="accountForgot">ЗАБЫЛИ ПАРОЛЬ?</button>
+      </form>
+      <form id="accountRecoveryForm" hidden><label for="accountNewPassword" data-i18n="accountNewPassword">Новый пароль (от 12 символов)</label><input id="accountNewPassword" type="password" autocomplete="new-password" minlength="12" maxlength="128" required><div class="account-actions"><button type="submit" data-i18n="accountSetPassword">СОХРАНИТЬ ПАРОЛЬ</button></div></form>
+      <div id="accountConnected" hidden><span id="accountIdentity"></span><div class="account-actions"><button id="accountSync" type="button" data-i18n="accountSync">СИНХРОНИЗИРОВАТЬ</button><button id="accountLogout" type="button" data-i18n="accountLogout">ВЫЙТИ</button></div><details><summary data-i18n="accountDelete">Удалить аккаунт</summary><p data-i18n="accountDeleteHint">Введи пароль, чтобы безвозвратно удалить аккаунт и облачную медиатеку.</p><label for="accountDeletePassword" data-i18n="accountPassword">Пароль (от 12 символов)</label><input id="accountDeletePassword" type="password" autocomplete="current-password" minlength="12" maxlength="128"><button id="accountDeleteConfirm" type="button" data-i18n="accountDeleteConfirm">ПОДТВЕРДИТЬ УДАЛЕНИЕ</button></details></div>
+      <div id="accountChoice" hidden><p id="accountChoiceText"></p><div class="account-actions"><button id="accountMerge" type="button" data-i18n="accountMerge">ОБЪЕДИНИТЬ</button><button id="accountUseCloud" type="button" data-i18n="accountUseCloud">ИСПОЛЬЗОВАТЬ ОБЛАКО</button></div><small data-i18n="accountChoiceHint">Если на устройстве есть важные треки, сначала экспортируй резервную копию в диагностике.</small></div>
+    </section>
     <div class="theme-grid" role="group" aria-label="Цветовая тема" data-i18n-aria-label="colorThemeAria">
       <button type="button" data-theme-choice="black" aria-pressed="true"><i></i><span data-i18n="themeBlack">ТЁМНЫЙ ЛЕС</span><small data-i18n="themeBlackHint">00 / ТИХАЯ</small></button>
       <button type="button" data-theme-choice="white" aria-pressed="false"><i></i><span data-i18n="themeWhite">БЕЛАЯ</span><small data-i18n="themeWhiteHint">01 / БУМАГА</small></button>

@@ -32,18 +32,19 @@
     <h1>Конфиденциальность</h1>
     <p>Эта политика описывает обработку данных в SONGVALE — приложении для поиска музыки, локальной медиатеки и персональных рекомендаций.</p>
 
-    <div class="notice"><strong>Коротко:</strong> в SONGVALE нет аккаунтов, рекламы и аналитических SDK. Медиатека, настройки и профиль «Моей волны» хранятся на устройстве. Для поиска приложение передаёт запрос серверу SONGVALE и подключённым музыкальным каталогам.</div>
+    <div class="notice"><strong>Коротко:</strong> аккаунт необязателен. После подключения сервиса аккаунтов адрес почты, избранное и плейлисты сохраняются для синхронизации между устройствами. История прослушивания, настройки и профиль «Моей волны» остаются локальными. Рекламы и аналитических SDK нет.</div>
 
     <h2>1. Какие данные обрабатываются</h2>
     <ul>
       <li><strong>Поисковые запросы.</strong> Исполнитель, название трека и выбранные параметры поиска передаются по HTTPS серверу SONGVALE для выполнения запроса.</li>
+      <li><strong>Аккаунт по желанию.</strong> При регистрации электронная почта и пароль передаются через сервер SONGVALE в Supabase Auth. Пароль не хранится в базе SONGVALE; токены сессии остаются в защищённых HTTP-only cookies. После входа в Supabase Postgres сохраняются идентификаторы и метаданные избранных треков и плейлистов. Временные адреса потоков и загрузок не синхронизируются.</li>
       <li><strong>Публичные ссылки на плейлисты.</strong> Ссылка, которую пользователь сам вставил, передаётся серверу только для чтения открытых метаданных и сопоставления треков.</li>
       <li><strong>Технические данные.</strong> Хостинг, сеть доставки и внешние сервисы могут автоматически обрабатывать IP-адрес, User-Agent, время запроса и стандартные серверные журналы для доставки, безопасности и диагностики.</li>
       <li><strong>Внешний медиаконтент.</strong> При загрузке обложек, официального плеера YouTube или переходе по каталожной ссылке соответствующий сервис получает обычные данные сетевого запроса и может использовать cookies согласно собственной политике.</li>
     </ul>
 
     <h2>2. Что остаётся на устройстве</h2>
-    <p>Сохранённые треки, тема, регион, история реакций «Моей волны», локальные комментарии и содержимое импортируемого файла обрабатываются в хранилище приложения. Содержимое файла не загружается целиком; для поиска совпадений серверу отправляются названия отдельных треков. Локальные данные можно удалить в настройках SONGVALE, очистив данные приложения в Android или удалив приложение.</p>
+    <p>Гостевые треки, тема, регион, история реакций «Моей волны», локальные комментарии и содержимое импортируемого файла обрабатываются в хранилище приложения. После входа копия избранного и плейлистов хранится также в аккаунте. Содержимое импортированного файла не загружается целиком; для поиска совпадений серверу отправляются названия отдельных треков. При выходе локальная копия медиатеки этого аккаунта удаляется; серверная копия остаётся до удаления аккаунта.</p>
 
     <h2>3. Для чего нужны данные</h2>
     <p>Только для функций, которые запросил пользователь: поиска, воспроизведения, чтения открытого плейлиста, сопоставления метаданных, восстановления временной медиассылки и формирования локальных рекомендаций. SONGVALE не продаёт данные, не строит рекламные профили и не отправляет маркетинговые уведомления.</p>
@@ -52,29 +53,29 @@
     <p>В зависимости от доступности источников SONGVALE может обращаться к YouTube, SoundCloud, Audius, Jamendo, Internet Archive, MusicBrainz, LRCLIB и Genius. Эти сервисы действуют по собственным условиям и политикам. В Google Play-версии YouTube воспроизводится только в видимом официальном плеере; скачивание музыки отключено.</p>
 
     <h2>5. Хранение и защита</h2>
-    <p>Код SONGVALE не создаёт серверную базу поисковых запросов, публичных ссылок или пользовательских профилей. Данные запроса обрабатываются в памяти не дольше, чем необходимо для ответа. Инфраструктурные журналы могут временно храниться хостингом в соответствии с его настройками безопасности. Передача между приложением и сервером выполняется по HTTPS.</p>
+    <p>SONGVALE не создаёт серверную базу поисковых запросов или публичных ссылок. Для аккаунта используется управляемая база Supabase с ограничением доступа к собственной медиатеке. Удаление аккаунта из настроек удаляет пользователя и его облачную медиатеку; резервные копии инфраструктуры могут сохраняться по правилам провайдера. Инфраструктурные журналы могут временно храниться хостингом. Передача между приложением и сервером выполняется по HTTPS.</p>
 
     <h2>6. Дети</h2>
     <p>SONGVALE не предназначен для детей младше 13 лет и не собирает возраст. Если вы считаете, что ребёнок передал персональные данные, напишите по адресу ниже.</p>
 
     <h2>7. Запросы и изменения</h2>
-    <p>В SONGVALE нет учётной записи и удалённого пользовательского профиля. Вопросы о данных, серверных журналах или этой политике можно оставить в <a href="https://github.com/Loro66/AWUN/issues">GitHub Issues</a>. Существенные изменения политики публикуются на этой странице с новой датой.</p>
+    <p>Когда аккаунты подключены, удалить его вместе с облачной медиатекой можно в Настройках. Вопросы о данных, серверных журналах или этой политике можно оставить в <a href="https://github.com/Loro66/AWUN/issues">GitHub Issues</a>. Существенные изменения политики публикуются на этой странице.</p>
   </article>
 
   <article lang="en">
     <h1>Privacy policy</h1>
     <p>This policy explains data handling in SONGVALE, a music search, local library and personal discovery app.</p>
 
-    <div class="notice"><strong>In short:</strong> SONGVALE has no user accounts, ads or analytics SDKs. Your library, settings and My Wave profile remain on your device. Search requires sending your query to the SONGVALE server and connected music catalogs.</div>
+    <div class="notice"><strong>In short:</strong> an account is optional. Once the account service is configured, email, favorites and playlists can sync across devices. Listening history, settings and My Wave remain on the device. There are no ads or analytics SDKs.</div>
 
     <h2>Data processed</h2>
-    <p>Search terms and user-submitted public playlist URLs are transmitted over HTTPS to provide the requested feature. Hosting providers and external services may process IP address, User-Agent, request time and standard security logs. Loading artwork, the official YouTube player or an external catalog link may send ordinary network data and cookies to that provider.</p>
+    <p>Search terms and user-submitted public playlist URLs are transmitted over HTTPS to provide the requested feature. If you create an account, your email and password pass through SONGVALE to Supabase Auth. SONGVALE does not store your password in its database; session tokens stay in HTTP-only cookies. Track identifiers and metadata for favorites and playlists are stored in Supabase Postgres; expiring stream and download URLs are excluded. Hosting providers and external services may process IP address, User-Agent, request time and standard security logs. Artwork, the official YouTube player and external catalog links can send network data and cookies to those providers.</p>
 
     <h2>On-device data</h2>
-    <p>Saved tracks, visual settings, region, My Wave reactions, local comments and imported file contents are stored locally. An imported file is parsed on-device; individual artist and track names are sent only when SONGVALE searches for matches. Delete this data through SONGVALE controls, Android's Clear storage action or by uninstalling the app.</p>
+    <p>Guest tracks, visual settings, region, My Wave reactions, local comments and imported file contents are stored locally. After signing in, favorites and playlists also have an account copy. An imported file is parsed on-device; artist and track names are sent when SONGVALE searches for matches. Signing out clears this account's local library while leaving its cloud copy. Deleting the account removes its cloud library.</p>
 
     <h2>Purpose, sharing and retention</h2>
-    <p>Data is used only for app functionality requested by the user. SONGVALE does not sell data, build advertising profiles or send marketing notifications. The SONGVALE code does not create a server-side database of searches, playlist links or user profiles; requests are processed ephemerally. Infrastructure logs may be retained temporarily for security. Depending on availability, SONGVALE may use YouTube, SoundCloud, Audius, Jamendo, Internet Archive, MusicBrainz, LRCLIB and Genius under their own policies.</p>
+    <p>Data is used for app functions requested by the user. SONGVALE does not sell data, build advertising profiles or send marketing notifications. There is no server-side search history or public-link database; optional account libraries use Supabase with per-user access rules. Account deletion removes the user and cloud library, while provider backups and infrastructure logs may be retained under their own policies. Depending on availability, SONGVALE may use YouTube, SoundCloud, Audius, Jamendo, Internet Archive, MusicBrainz, LRCLIB and Genius under their own policies.</p>
 
     <h2>Children and contact</h2>
     <p>SONGVALE is not directed to children under 13. Questions about data or this policy can be submitted through <a href="https://github.com/Loro66/AWUN/issues">GitHub Issues</a>. Material policy changes will be published here with a revised date.</p>

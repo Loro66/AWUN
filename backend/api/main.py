@@ -13,6 +13,7 @@ from fastapi.responses import FileResponse, Response, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
 from backend.core.config import Settings, get_settings
+from backend.api.accounts import register_account_routes
 from backend.core.media import InvalidMediaToken, MediaSigner
 from backend.core.models import (
     LibraryImportRequest,
@@ -276,6 +277,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         return request.app.state.search_engine
 
     Engine = Annotated[SearchEngine, Depends(engine)]
+    register_account_routes(app, settings)
 
     frontend_dir = Path(__file__).resolve().parents[2] / "frontend"
     project_dir = frontend_dir.parent

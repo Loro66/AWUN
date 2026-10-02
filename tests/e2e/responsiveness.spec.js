@@ -20,7 +20,7 @@ test('startup checks health once and shows loading feedback before results', asy
   await expect(page.locator('#results')).toHaveAttribute('aria-busy', 'false');
 });
 
-test('search submitted before source status arrives still starts when sources connect', async ({ page }) => {
+test('search submitted before source status arrives completes without waiting for health', async ({ page }) => {
   await installMediaMocks(page);
   await installApiMocks(page);
   let releaseHealth;
@@ -30,10 +30,13 @@ test('search submitted before source status arrives still starts when sources co
     await route.fulfill({ json: healthPayload() });
   });
   await page.goto('/?lang=ru');
-  await page.locator('#searchInput').fill('midnight signal');
-  await page.locator('#searchInput').press('Enter');
-  await expect(page.locator('#trackList .skeleton')).toHaveCount(4);
-  releaseHealth();
+  try {
+    await expect.poll(() => page.evaluate(() => Boolean(window.awunApp))).toBe(true);
+    await page.locator('#searchInput').fill('midnight signal');
+    await page.locator('#searchInput').press('Enter');
+    await expect(page.locator('#trackList .track')).toHaveCount(8);
+    expect(await page.evaluate(() => window.awunApp.state.diagnostics)).toBeNull();
+  } finally { releaseHealth(); }
   await expect(page.locator('#trackList .track')).toHaveCount(8);
   await expect(page.locator('#results')).toHaveAttribute('aria-busy', 'false');
 });
