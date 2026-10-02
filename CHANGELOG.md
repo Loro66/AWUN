@@ -2,6 +2,22 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.5.5] - 2026-10-02
+
+### Added
+
+- Optional email accounts with sign-in, email confirmation, password recovery, sign-out and password-confirmed deletion when a persistent Supabase project and SMTP are configured on the hosted service.
+- Favorites and named playlists sync with revision checks. First sign-in reviews guest data; conflicts offer an explicit combine or cloud-copy choice. Other-account data cannot be merged accidentally.
+
+### Improved
+
+- Moved language switching into Settings and freed the sidebar.
+- Account sessions use HTTP-only cookies; the cloud stores track metadata without expiring stream or download URLs. The local library works during account-service interruptions.
+
+### Testing
+
+- Added server checks for origin isolation, account-scoped writes, stale revisions, deletion and metadata sanitization, plus browser scenarios for first-device merge, fresh-device restore, conflicts and sign-out.
+
 ## [2.5.4] - 2026-10-03
 
 ### Added

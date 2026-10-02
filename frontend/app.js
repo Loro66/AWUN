@@ -16,6 +16,9 @@ const writeStoredText=(key,value,options)=>storage?.writeText?.(key,value,option
 const removeStored=key=>storage?.remove?.(key)??false;
 storage?.migrate?.();
 const runtimeParams=new URLSearchParams(location.search);
+const authFragment=new URLSearchParams(location.hash.slice(1));
+let accountRecoveryToken=authFragment.get('type')==='recovery'?authFragment.get('access_token'):null;
+if(authFragment.has('access_token')||authFragment.has('error'))history.replaceState(null,'',`${location.pathname}${location.search}`);
 const runtimePlatform=runtimeParams.get('platform')||'web';
 const playStoreMode=runtimePlatform==='android-play';
 const appScript=[...document.scripts].find(script=>/\/app\.js(?:\?|$)/.test(script.src));
@@ -187,6 +190,7 @@ const ui={
   themeButton:$('themeButton'),themeLabel:$('themeLabel'),themePanel:$('themePanel'),themeClose:$('themeClose'),themeBackdrop:$('themeBackdrop'),themeColor:$('themeColor'),motionToggle:$('motionToggle'),motionValue:$('motionValue'),decorToggle:$('decorToggle'),decorValue:$('decorValue'),densityToggle:$('densityToggle'),densityValue:$('densityValue'),soundEngineToggle:$('soundEngineToggle'),soundEngineValue:$('soundEngineValue'),soundEngineStatus:$('soundEngineStatus'),diagnosticsButton:$('diagnosticsButton'),diagnosticsPanel:$('diagnosticsPanel'),diagnosticsClose:$('diagnosticsClose'),diagnosticsRefresh:$('diagnosticsRefresh'),diagnosticsCopy:$('diagnosticsCopy'),diagnosticsList:$('diagnosticsList'),diagnosticsEndpoint:$('diagnosticsEndpoint'),diagnosticsChecked:$('diagnosticsChecked'),diagnosticsCopyStatus:$('diagnosticsCopyStatus'),diagnosticsToolsStatus:$('diagnosticsToolsStatus'),diagnosticsLog:$('diagnosticsLog'),storageExport:$('storageExport'),storageImport:$('storageImport'),storageImportFile:$('storageImportFile'),updateCheck:$('updateCheck'),updateLink:$('updateLink'),
   importButton:$('importButton'),importPanel:$('importPanel'),importClose:$('importClose'),importBackdrop:$('importBackdrop'),libraryFile:$('libraryFile'),importFileButton:$('importFileButton'),importFileName:$('importFileName'),importText:$('importText'),importStatus:$('importStatus'),importSubmit:$('importSubmit'),importUrl:$('importUrl'),importUrlSubmit:$('importUrlSubmit'),importPlaylistName:$('importPlaylistName'),importProgress:$('importProgress'),importReportTitle:$('importReportTitle'),importTotal:$('importTotal'),importProcessed:$('importProcessed'),importAdded:$('importAdded'),importReviewCount:$('importReviewCount'),importMissed:$('importMissed'),importPercent:$('importPercent'),importCancel:$('importCancel'),importResume:$('importResume'),importRetryMissed:$('importRetryMissed'),importDownloadReport:$('importDownloadReport'),importOpenLibrary:$('importOpenLibrary'),importReviewPanel:$('importReviewPanel'),importReviewTitle:$('importReviewTitle'),importReviewPosition:$('importReviewPosition'),importReviewOriginal:$('importReviewOriginal'),importReviewCandidates:$('importReviewCandidates'),importReviewSearchInput:$('importReviewSearchInput'),importReviewSearchButton:$('importReviewSearchButton'),importReviewSkip:$('importReviewSkip')
 };
+Object.assign(ui,Object.fromEntries(['accountBadge','accountStatus','accountForm','accountEmail','accountPassword','accountLogin','accountSignup','accountForgot','accountRecoveryForm','accountNewPassword','accountConnected','accountIdentity','accountSync','accountLogout','accountDeletePassword','accountDeleteConfirm','accountChoice','accountChoiceText','accountMerge','accountUseCloud'].map(id=>[id,$(id)])));
 const sourceButtonElements=[...ui.sources.querySelectorAll('button[data-source]')];
 const sourceChoiceKey='awun-selected-sources-v1';
 const knownSearchSources=sourceButtonElements.map(button=>button.dataset.source);
@@ -238,6 +242,194 @@ let language=i18n.language;
 let homeHub=null;
 let importController=null,importPreviewTimer=null;
 let latestImportReport=loadImportSession();
+const accountOwnerKey='songvale-account-owner-v1';
+const accountSyncKey=id=>`songvale-account-sync-${id}`;
+let accountUser=null,accountAvailable=false,accountStatusKey='accountChecking',accountChoice=null,accountRevision=0,accountDirty=false,accountGeneration=0,accountTimer=null,accountBusy=false;
+let lastAccountRefresh=0;
+function accountStatus(key){accountStatusKey=key;ui.accountStatus.textContent=t(key)}
+function renderAccountStatus(){
+  ui.accountBadge.textContent=t(accountUser?'accountConnectedBadge':'accountGuest');
+  ui.accountForm.hidden=!accountAvailable||Boolean(accountUser)||Boolean(accountRecoveryToken);
+  ui.accountRecoveryForm.hidden=!accountAvailable||!accountRecoveryToken;
+  ui.accountConnected.hidden=!accountUser;
+  ui.accountIdentity.textContent=accountUser?.email||'';
+  ui.accountChoice.hidden=!accountChoice;
+  if(accountChoice){ui.accountChoiceText.textContent=t(accountChoice==='other'?'accountOtherChoice':accountChoice==='guest'?'accountGuestChoice':'accountConflict');ui.accountMerge.hidden=accountChoice==='other'}
+  ui.accountStatus.textContent=t(accountStatusKey);
+}
+async function accountRequest(path,{method='GET',body}={}){
+  const response=await fetch(`/api/v1/account/${path}`,{method,credentials:'same-origin',cache:'no-store',headers:{'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});
+  let payload;try{payload=await response.json()}catch{payload=null}
+  if(!response.ok){const error=new Error('Account request failed');error.status=response.status;throw error}
+  return payload;
+}
+function localAccountCopy(){return{library:loadLibrary(),playlists:loadPlaylists()}}
+function accountCopy(){return{library:state.saved,playlists:state.playlists}}
+function copyHasMusic(copy){return Boolean(copy.library.length||copy.playlists.length)}
+function applyAccountCopy(copy){
+  if(!writeStoredJson('awun-library',copy.library)||!writeStoredJson(playlistsKey,copy.playlists)){accountStatus('accountSyncFailed');return false}
+  state.saved=copy.library;state.playlists=copy.playlists;
+  if(!state.playlists.some(list=>list.id===state.activePlaylistId))state.activePlaylistId=null;
+  ui.playlistTabs.dataset.rendered='';updateLibraryCount();render();return true;
+}
+function mergeAccountCopies(remote,local){
+  const tracks=new Map(remote.library.map(track=>[trackSessionKey(track),track]));
+  local.library.forEach(track=>{if(!tracks.has(trackSessionKey(track))){if(tracks.size>=1500)throw new Error('accountLimit');tracks.set(trackSessionKey(track),track)}});
+  const lists=new Map(remote.playlists.map(list=>[list.id,list]));
+  local.playlists.forEach(list=>{
+    const existing=lists.get(list.id);
+    if(!existing){if(lists.size>=25)throw new Error('accountLimit');lists.set(list.id,list);return}
+    const items=new Map(existing.items.map(item=>[trackSessionKey(item.track),item]));
+    let nextPosition=Math.max(0,...existing.items.map(item=>item.position));
+    list.items.forEach(item=>{if(!items.has(trackSessionKey(item.track))){if(items.size>=1000)throw new Error('accountLimit');items.set(trackSessionKey(item.track),{...item,position:++nextPosition})}});
+    lists.set(list.id,{...existing,items:[...items.values()]});
+  });
+  return{library:[...tracks.values()],playlists:[...lists.values()]};
+}
+function saveAccountMetadata(){if(accountUser)writeStoredJson(accountSyncKey(accountUser.id),{revision:accountRevision,dirty:accountDirty},{backup:false})}
+function markAccountDirty(){
+  if(!accountUser){
+    const owner=readStoredText(accountOwnerKey,'');
+    if(owner){const previous=readStoredJson(accountSyncKey(owner),{revision:0});writeStoredJson(accountSyncKey(owner),{revision:previous.revision||0,dirty:true},{backup:false})}
+    return;
+  }
+  accountDirty=true;accountGeneration++;saveAccountMetadata();
+  if(!accountChoice){clearTimeout(accountTimer);accountTimer=setTimeout(()=>void syncAccount(),800)}
+}
+async function syncAccount(){
+  if(!accountUser||accountChoice||accountBusy)return;
+  accountBusy=true;lastAccountRefresh=Date.now();accountStatus('accountSyncing');
+  try{
+    if(!accountDirty){
+      const generation=accountGeneration;
+      const remote=await accountRequest('library');
+      if(accountDirty||generation!==accountGeneration){accountChoice='conflict';accountStatus('accountConflict');renderAccountStatus();return}
+      if(remote.revision!==accountRevision){
+        if(!applyAccountCopy(remote))return;
+        accountRevision=remote.revision;saveAccountMetadata();
+      }
+    }else{
+      const generation=accountGeneration;
+      const result=await accountRequest('library',{method:'PUT',body:{revision:accountRevision,...accountCopy()}});
+      accountRevision=result.revision;accountDirty=generation!==accountGeneration;saveAccountMetadata();
+      if(accountDirty){accountTimer=setTimeout(()=>void syncAccount(),100)}
+    }
+    accountStatus(accountDirty?'accountSyncing':'accountSignedIn');
+  }catch(error){
+    if(error.status===409){accountChoice='conflict';accountStatus('accountConflict');renderAccountStatus()}
+    else accountStatus('accountSyncFailed');
+  }finally{accountBusy=false}
+}
+async function connectAccount(user){
+  accountUser=user;accountAvailable=true;renderAccountStatus();
+  const priorOwner=readStoredText(accountOwnerKey,'');
+  if(priorOwner&&priorOwner!==user.id){state.saved=[];state.playlists=[];updateLibraryCount();render()}
+  try{
+    const remote=await accountRequest('library');
+    const owner=readStoredText(accountOwnerKey,''),local=localAccountCopy();
+    const metadata=readStoredJson(accountSyncKey(user.id),{});
+    accountRevision=remote.revision;accountDirty=false;
+    if(owner&&owner!==user.id&&copyHasMusic(local))accountChoice='other';
+    else if(!owner&&copyHasMusic(local))accountChoice='guest';
+    else if(owner===user.id&&metadata.dirty){
+      accountRevision=Number.isInteger(metadata.revision)?metadata.revision:0;
+      accountDirty=true;
+      if(accountRevision!==remote.revision)accountChoice='conflict';
+      else{writeStoredText(accountOwnerKey,user.id,{backup:false});void syncAccount()}
+    }else if(applyAccountCopy(remote)){writeStoredText(accountOwnerKey,user.id,{backup:false});saveAccountMetadata();accountStatus('accountSignedIn')}
+    if(accountChoice)accountStatus(accountChoice==='conflict'?'accountConflict':accountChoice==='other'?'accountOtherChoice':'accountGuestChoice');
+  }catch{accountStatus('accountOffline')}
+  renderAccountStatus();
+}
+async function initializeAccount(){
+  try{
+    const config=await accountRequest('config');accountAvailable=config.enabled===true;
+    if(!accountAvailable){accountStatus('accountUnavailable');renderAccountStatus();return}
+    if(accountRecoveryToken){accountStatus('accountRecoveryPrompt');renderAccountStatus();return}
+    renderAccountStatus();
+    try{await connectAccount(await accountRequest('session'))}
+    catch(error){accountStatus(error.status===401?'accountGuestStatus':'accountOffline');renderAccountStatus()}
+  }catch{accountStatus('accountOffline');renderAccountStatus()}
+}
+async function accountSignIn(action){
+  if(!ui.accountForm.reportValidity())return;
+  const email=ui.accountEmail.value.trim(),password=ui.accountPassword.value;
+  ui.accountLogin.disabled=ui.accountSignup.disabled=true;
+  try{
+    const result=await accountRequest(action,{method:'POST',body:{email,password}});
+    ui.accountPassword.value='';
+    if(action==='signup'&&result.pending){accountStatus('accountPending');return}
+    await connectAccount(await accountRequest('session'));
+  }catch{accountStatus('accountError')}
+  finally{ui.accountLogin.disabled=ui.accountSignup.disabled=false}
+}
+ui.accountForm.addEventListener('submit',event=>{event.preventDefault();void accountSignIn('login')});
+ui.accountSignup.addEventListener('click',()=>void accountSignIn('signup'));
+ui.accountForgot.addEventListener('click',async()=>{
+  if(!ui.accountEmail.reportValidity())return;
+  ui.accountForgot.disabled=true;
+  try{await accountRequest('recover',{method:'POST',body:{email:ui.accountEmail.value.trim()}});accountStatus('accountRecoverSent')}
+  catch{accountStatus('accountError')}
+  finally{ui.accountForgot.disabled=false}
+});
+ui.accountRecoveryForm.addEventListener('submit',async event=>{
+  event.preventDefault();if(!accountRecoveryToken||!ui.accountRecoveryForm.reportValidity())return;
+  const button=ui.accountRecoveryForm.querySelector('button[type="submit"]');button.disabled=true;
+  try{
+    await accountRequest('recover/complete',{method:'POST',body:{access_token:accountRecoveryToken,password:ui.accountNewPassword.value}});
+    accountRecoveryToken=null;ui.accountNewPassword.value='';accountStatus('accountRecoveryDone');renderAccountStatus();
+  }catch{accountStatus('accountError')}
+  finally{button.disabled=false}
+});
+ui.accountSync.addEventListener('click',()=>void syncAccount());
+ui.accountMerge.addEventListener('click',async()=>{
+  if(!accountUser||accountChoice==='other')return;
+  const prior=accountChoice;
+  try{
+    const remote=await accountRequest('library');
+    if(!applyAccountCopy(mergeAccountCopies(remote,localAccountCopy())))return;
+    accountRevision=remote.revision;accountChoice=null;writeStoredText(accountOwnerKey,accountUser.id,{backup:false});
+    accountDirty=true;accountGeneration++;saveAccountMetadata();renderAccountStatus();await syncAccount();
+  }catch(error){accountChoice=prior;accountStatus(error.message==='accountLimit'?'accountLimit':'accountSyncFailed');renderAccountStatus()}
+});
+ui.accountUseCloud.addEventListener('click',async()=>{
+  if(!accountUser)return;
+  try{
+    const remote=await accountRequest('library');
+    if(!applyAccountCopy(remote))return;
+    accountRevision=remote.revision;accountDirty=false;accountChoice=null;
+    writeStoredText(accountOwnerKey,accountUser.id,{backup:false});saveAccountMetadata();accountStatus('accountSignedIn');renderAccountStatus();
+  }catch{accountStatus('accountSyncFailed')}
+});
+async function leaveAccount(deleteAccount=false){
+  if(!accountUser)return;
+  if(importController){accountStatus('accountImportBusy');return}
+  const preserveLocal=accountChoice==='guest'||accountChoice==='other';
+  if(!deleteAccount&&!preserveLocal&&(accountDirty||accountChoice||accountBusy)){accountStatus('accountLogoutPending');return}
+  if(deleteAccount&&!confirm(t('accountDeletePrompt')))return;
+  const user=accountUser,password=ui.accountDeletePassword.value;
+  if(deleteAccount&&password.length<12){accountStatus('accountError');return}
+  try{
+    await accountRequest(deleteAccount?'delete':'logout',{method:'POST',body:deleteAccount?{email:user.email,password}:undefined});
+    ui.accountDeletePassword.value='';clearTimeout(accountTimer);
+    if(preserveLocal){
+      const local=localAccountCopy();accountUser=null;accountRevision=0;accountDirty=false;accountChoice=null;removeStored(accountSyncKey(user.id));
+      state.saved=local.library;state.playlists=local.playlists;updateLibraryCount();render();accountStatus('accountGuestStatus');renderAccountStatus();return;
+    }
+    // The cloud copy remains on the server after sign-out; this device becomes a guest.
+    if(!applyAccountCopy({library:[],playlists:[]}))return;
+    ui.closePlayer.click();
+    state.recents=[];persistRecents();state.queue=[];persistQueue();
+    latestImportReport=null;removeStored('songvale-import-session-v1');
+    accountUser=null;accountRevision=0;accountDirty=false;accountChoice=null;
+    removeStored(accountOwnerKey);removeStored(accountSyncKey(user.id));
+    accountStatus(await storage?.backupNow?.()===false?'accountLocalCleanupFailed':'accountGuestStatus');renderAccountStatus();
+  }catch{accountStatus('accountError')}
+}
+ui.accountLogout.addEventListener('click',()=>void leaveAccount());
+ui.accountDeleteConfirm.addEventListener('click',()=>void leaveAccount(true));
+window.addEventListener('online',()=>{if(accountUser&&accountDirty)void syncAccount();else if(!accountUser&&(!accountAvailable||accountStatusKey==='accountOffline'))void initializeAccount()});
+window.addEventListener('focus',()=>{if(accountUser&&!accountChoice&&!accountBusy&&Date.now()-lastAccountRefresh>60000)void syncAccount()});
 function applyLanguage(){language=i18n.language;i18n.apply();applyVisual(false);applyRepeatMode(false);updateAudioEngineUi();ui.playPause.setAttribute('aria-label',t(state.isPlaying?'pauseAria':'playAria'));render();renderDiagnostics();if(latestImportReport)updateImportReport(latestImportReport)}
 
 function emitAwun(type,detail={}){document.dispatchEvent(new CustomEvent(`awun:${type}`,{detail}))}
@@ -385,10 +577,10 @@ function updateLibraryCount(){
   ui.welcomePanel?.classList.toggle('has-library',Boolean(state.saved.length));
 }
 
-function persistLibrary(){const saved=writeStoredJson('awun-library',state.saved);if(saved)updateLibraryCount();return saved}
+function persistLibrary(){const saved=writeStoredJson('awun-library',state.saved);if(saved){updateLibraryCount();markAccountDirty()}return saved}
 function storePlaylists(next){
   if(!writeStoredJson(playlistsKey,next)){setMessage(t('storageSaveFailed'),'error');return false}
-  state.playlists=next;return true;
+  state.playlists=next;markAccountDirty();return true;
 }
 function createPlaylist(name,{activate=true,importKeys=[]}={}){
   const base=String(name||'').trim().slice(0,60);if(!base)return null;
@@ -1653,11 +1845,12 @@ async function bootstrap(){
   runtimeLog?.log?.('app.bootstrap',{platform:runtimePlatform,storage_schema:storage?.SCHEMA_VERSION||null});
   const url=runtimeParams,requestedRegion=url.get('region')?.toUpperCase(),requestedLimit=Number(url.get('limit'));if(regions.includes(requestedRegion)){state.region=requestedRegion;writeStoredText('awun-region',state.region)}if(resultLimits.includes(requestedLimit)){state.resultLimit=requestedLimit;writeStoredText('awun-result-limit',String(requestedLimit))}ui.regionSelect.value=state.region;ui.limitSelect.value=String(state.resultLimit);
   if(!playStoreMode&&'serviceWorker'in navigator)navigator.serviceWorker.register('/service-worker.js').catch(()=>{});ui.player.hidden=false;ui.player.classList.add('player-empty');showIOSInstallGuide();updateLibraryCount();setRange(ui.volume,82);setRange(ui.progress,0);applyLanguage();restorePlaybackSession();syncSourceSelection();
+  void initializeAccount();
   const status=refreshStatus();
   const query=url.get('q');if(query){ui.searchInput.value=query;void search(query)}
   void status.then(()=>runtimeLog?.log?.('app.ready',{sources:[...state.available]}));
 }
 window.awunApp={state,ui,playTrack,render,search,toggleSave,currentList,setMessage,sourceLabels,decodeText,matchText,loadingRows,awunFetch,requestSearch,pausePlayback,playStoreMode,apiBase,fallbackApiBase,apiUrl,refreshStatus,replaceQueue,appendQueue,cancelSearch};
 window.songvaleApp=window.awunApp;
-document.addEventListener('awun:language',event=>{language=event.detail.language;applyVisual(false);applyRepeatMode(false);render();renderDiagnostics();if(latestImportReport)updateImportReport(latestImportReport);refreshStatus()});
+document.addEventListener('awun:language',event=>{language=event.detail.language;applyVisual(false);applyRepeatMode(false);render();renderAccountStatus();renderDiagnostics();if(latestImportReport)updateImportReport(latestImportReport);refreshStatus()});
 bootstrap();

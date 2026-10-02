@@ -61,6 +61,10 @@ class Settings(BaseSettings):
     track_details_timeout_seconds: float = Field(default=10.0, gt=0, le=30)
 
     cors_origins: list[str] = Field(default_factory=lambda: ["*"])
+    accounts_enabled: bool = False
+    accounts_supabase_url: str | None = None
+    accounts_supabase_publishable_key: str | None = None
+    accounts_supabase_secret_key: str | None = None
 
     @field_validator("api_prefix")
     @classmethod

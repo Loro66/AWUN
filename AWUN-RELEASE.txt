@@ -1,16 +1,18 @@
-SONGVALE 2.5.4
-Release date: 2026-10-03
+SONGVALE 2.5.5
+Release date: 2026-10-02
 
-This release makes SONGVALE installable and easier to launch on iPhone.
+This release moves language selection into Settings and prepares optional
+cross-device accounts.
 
 What changed:
-- Open the hosted app in iPhone Safari and use Share > Add to Home Screen.
-- The installed web app starts from its cached interface during server wake-up
-  or temporary network loss; music and search still require a connection.
-- Localized installation instructions show on iPhone and disappear in installed
-  mode. The service worker excludes API responses and audio/video from cache.
-- Account and cross-device sync requirements are recorded for the next stage.
-  Favorites and playlists are still stored on each device in this release.
+- The language control now lives in Settings, freeing the sidebar.
+- Optional email accounts have sign-up, sign-in, password recovery, sign-out, deletion and
+  revision-checked favorites/playlist sync with guest-library review.
+- Stream URLs, listening history and taste signals remain device-local.
+- Accounts are available after the host has configured a persistent
+  Supabase project, the SQL schema and custom email delivery, then enabled
+  the feature flag. Until then the
+  app remains in guest mode and does not claim that libraries are syncing.
 
 Windows package:
 - SONGVALE-Setup-x64.exe — per-user installer.

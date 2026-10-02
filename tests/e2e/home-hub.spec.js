@@ -130,7 +130,9 @@ for (const setup of [
         expect(bounds.height, selector).toBeGreaterThanOrEqual(28);
       }
     }
+    await page.locator('#themeButton').click();
     await page.locator('#languageButton').click();
+    await page.locator('#themeClose').click();
     await expect(page.locator('#hubTitle')).toHaveText('Home');
     await expect(page.locator('#recommendationGrid')).toContainText('Find your focus');
     await expect(page.locator('#hubResumeMeta')).toContainText('Resume at 1:13');
