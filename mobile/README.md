@@ -11,8 +11,8 @@ screen if every configured SONGVALE endpoint is unavailable.
 Google Play identity:
 
 - application ID: `com.loro66.awun`;
-- version: read from the repository `VERSION` file (`2.5.1` currently);
-- version code: derived from `VERSION` by Gradle (`2050100` currently);
+- version: read from the repository `VERSION` file (`2.5.4` currently);
+- version code: derived from `VERSION` by Gradle (`2050400` currently);
 - minimum Android: 7.0 / API 24;
 - compile and target SDK: Android 16 / API 36;
 - release format: signed Android App Bundle (`.aab`);
@@ -43,6 +43,11 @@ the official YouTube Player and follows YouTube's own availability; SONGVALE doe
 not proxy or download YouTube media.
 
 ## iOS
+
+For an iPhone today, open [the hosted SONGVALE site](https://awun-1.onrender.com)
+in Safari and choose Share → Add to Home Screen → Add. This installs the web app
+with a Home Screen icon and does not require Apple signing. Search and streaming
+still need internet. Local favorites and playlists are not synced between devices.
 
 The iOS project remains an unsigned beta shell for the hosted SONGVALE deployment.
 GitHub Actions produces an unsigned device archive and a Simulator build. A

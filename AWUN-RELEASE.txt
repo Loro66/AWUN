@@ -1,17 +1,16 @@
-SONGVALE 2.5.3
-Release date: 2026-10-01
+SONGVALE 2.5.4
+Release date: 2026-10-03
 
-This release adds named playlists and faster navigation through a personal library.
+This release makes SONGVALE installable and easier to launch on iPhone.
 
 What changed:
-- Create up to 25 local playlists, each containing up to 1000 tracks, and add
-  recordings from search results without losing them when removing a favorite.
-- Filter your saved tracks or a playlist by artist and title without waiting for
-  another online search. Open recent playlists directly from the home hub.
-- Imported file, text and public-link collections keep a named playlist in the
-  original order. Interrupted transfers and manual picks can continue it.
-- Playlist data is included in local backup exports and validated on restore.
-- Storage failures are shown instead of silently accepting unsaved changes.
+- Open the hosted app in iPhone Safari and use Share > Add to Home Screen.
+- The installed web app starts from its cached interface during server wake-up
+  or temporary network loss; music and search still require a connection.
+- Localized installation instructions show on iPhone and disappear in installed
+  mode. The service worker excludes API responses and audio/video from cache.
+- Account and cross-device sync requirements are recorded for the next stage.
+  Favorites and playlists are still stored on each device in this release.
 
 Windows package:
 - SONGVALE-Setup-x64.exe — per-user installer.

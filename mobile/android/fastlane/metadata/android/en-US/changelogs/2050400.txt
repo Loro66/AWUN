@@ -1,0 +1,1 @@
+iPhone Home Screen installation guide, faster cached launch, and safer web cache handling. Favorites and playlists remain local until account sync is available.

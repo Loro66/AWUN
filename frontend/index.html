@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta id="themeColor" name="theme-color" content="#09120c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="SONGVALE">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="description" content="SONGVALE ищет настоящую музыку во всех подключённых источниках и сразу запускает воспроизведение.">
   <title>SONGVALE — вся музыка сходится здесь</title>
   <link rel="icon" href="/static/brand/songvale-mark.svg" type="image/svg+xml">
@@ -109,6 +112,11 @@
         <div><span class="section-kicker" data-i18n="hubKicker">ТВОЁ МУЗЫКАЛЬНОЕ ПРОСТРАНСТВО</span><h1 id="hubTitle" tabindex="-1" data-i18n="hubTitle">Главная</h1></div>
         <button id="hubSources" class="hub-source-status" type="button" aria-label="Настроить источники поиска" data-i18n-aria-label="hubSourcesAria"><i aria-hidden="true"></i><span id="hubSourceCount"></span><span aria-hidden="true">↗</span></button>
       </header>
+      <section id="iosInstallGuide" class="ios-install-guide" aria-labelledby="iosInstallTitle" hidden>
+        <img src="/static/brand/songvale-icon.png" width="58" height="58" alt="">
+        <div><span class="section-kicker" data-i18n="iosInstallKicker">SONGVALE / IPHONE</span><h2 id="iosInstallTitle" data-i18n="iosInstallTitle">Установи SONGVALE на iPhone</h2><p data-i18n="iosInstallSteps">Открой эту страницу в Safari → нажми «Поделиться» → «На экран Домой» → «Добавить». Если появится переключатель «Открывать как веб-приложение», включи его.</p><small data-i18n="iosInstallOnline">Иконка появится на экране телефона. Для поиска и прослушивания нужен интернет.</small></div>
+        <button id="iosInstallDismiss" type="button" aria-label="Скрыть инструкцию" data-i18n-aria-label="iosInstallDismiss">×</button>
+      </section>
       <section id="welcomePanel" class="welcome-panel" aria-labelledby="welcomeTitle">
         <div class="welcome-copy">
           <span class="welcome-kicker" data-i18n="hubWelcomeKicker">В ТВОЁМ РИТМЕ</span>

@@ -1178,6 +1178,16 @@ html[data-theme="black"]{
 .home-sections .hub-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;margin:2px 0 20px}
 .hub-heading h1{margin:5px 0 0;color:var(--paper);font:650 28px/1.2 Inter,ui-sans-serif,sans-serif;letter-spacing:-.7px}
 .hub-heading .section-kicker{font-size:8px;letter-spacing:1.4px}
+.ios-install-guide{display:flex;align-items:flex-start;gap:16px;margin:-5px 0 18px;padding:17px;border:1px solid rgba(var(--accent-rgb),.35);border-radius:11px;background:linear-gradient(110deg,var(--signal-soft),var(--track-bg));color:var(--paper)}
+.ios-install-guide[hidden]{display:none!important}
+.ios-install-guide>img{flex:none;width:58px;height:58px;border-radius:12px}
+.ios-install-guide>div{flex:1;min-width:0}
+.ios-install-guide h2{margin:4px 0 8px;font-size:17px;line-height:1.25}
+.ios-install-guide p{margin:0;color:var(--paper);font-size:12px;line-height:1.55}
+.ios-install-guide small{display:block;margin-top:9px;color:var(--paper-muted);font-size:10px;line-height:1.5}
+.ios-install-guide>button{flex:none;min-width:30px;min-height:30px;border:0;border-radius:6px;background:transparent;color:var(--paper-muted);font-size:22px;cursor:pointer}
+.ios-install-guide>button:hover{background:var(--signal-soft);color:var(--paper)}
+@media (max-width:480px){.ios-install-guide{gap:11px;padding:13px}.ios-install-guide>img{width:42px;height:42px;border-radius:9px}.ios-install-guide h2{font-size:15px}.ios-install-guide p{font-size:11px}.ios-install-guide>button{min-width:26px}}
 .hub-source-status{display:flex;align-items:center;gap:8px;min-height:36px;padding:0 11px;border:1px solid var(--line);border-radius:99px;background:var(--control-bg);color:var(--paper-muted);font-size:10px;cursor:pointer}
 .hub-source-status i{width:6px;height:6px;border-radius:50%;background:var(--moss)}
 .hub-source-status.unavailable i{background:#cf9873}
