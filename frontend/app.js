@@ -416,14 +416,15 @@ async function leaveAccount(deleteAccount=false){
       const local=localAccountCopy();accountUser=null;accountRevision=0;accountDirty=false;accountChoice=null;removeStored(accountSyncKey(user.id));
       state.saved=local.library;state.playlists=local.playlists;updateLibraryCount();render();accountStatus('accountGuestStatus');renderAccountStatus();return;
     }
-    // The cloud copy remains on the server after sign-out; this device becomes a guest.
-    if(!applyAccountCopy({library:[],playlists:[]}))return;
+    const libraryCleared=writeStoredJson('awun-library',[]),playlistsCleared=writeStoredJson(playlistsKey,[]);
+    state.saved=[];state.playlists=[];state.activePlaylistId=null;ui.playlistTabs.dataset.rendered='';updateLibraryCount();render();
     ui.closePlayer.click();
     state.recents=[];persistRecents();state.queue=[];persistQueue();
     latestImportReport=null;removeStored('songvale-import-session-v1');
     accountUser=null;accountRevision=0;accountDirty=false;accountChoice=null;
     removeStored(accountOwnerKey);removeStored(accountSyncKey(user.id));
-    accountStatus(await storage?.backupNow?.()===false?'accountLocalCleanupFailed':'accountGuestStatus');renderAccountStatus();
+    const backupCleared=await storage?.backupNow?.();
+    accountStatus(libraryCleared&&playlistsCleared&&backupCleared!==false?'accountGuestStatus':'accountLocalCleanupFailed');renderAccountStatus();
   }catch{accountStatus('accountError')}
 }
 ui.accountLogout.addEventListener('click',()=>void leaveAccount());

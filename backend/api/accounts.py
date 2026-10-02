@@ -221,11 +221,19 @@ def register_account_routes(app: FastAPI, settings: Settings) -> None:
     @app.put("/api/v1/account/library", tags=["account"])
     async def account_save_library(request: Request, response: Response) -> dict:
         _origin(request)
-        raw = await request.body()
-        if len(raw) > MAX_STATE_BYTES:
-            raise HTTPException(413, "Library too large")
         try:
-            body = json.loads(raw)
+            declared_size = int(request.headers.get("content-length") or 0)
+        except ValueError as exc:
+            raise HTTPException(400, "Invalid Content-Length") from exc
+        if declared_size > MAX_STATE_BYTES:
+            raise HTTPException(413, "Library too large")
+        chunks = bytearray()
+        async for chunk in request.stream():
+            chunks.extend(chunk)
+            if len(chunks) > MAX_STATE_BYTES:
+                raise HTTPException(413, "Library too large")
+        try:
+            body = json.loads(chunks)
         except ValueError as exc:
             raise HTTPException(422, "Invalid library") from exc
         revision = body.get("revision") if isinstance(body, dict) else None
@@ -253,7 +261,10 @@ def register_account_routes(app: FastAPI, settings: Settings) -> None:
         _origin(request)
         access = request.cookies.get(ACCESS_COOKIE, "")
         if access and gateway.enabled:
-            await gateway.call("POST", "/auth/v1/logout", token=access)
+            try:
+                await gateway.call("POST", "/auth/v1/logout", token=access)
+            except HTTPException:
+                pass  # Clear this browser's session even if the provider is down.
         _clear_cookies(response)
         return {"ok": True}
 

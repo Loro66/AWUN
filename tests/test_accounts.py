@@ -100,6 +100,18 @@ def test_account_write_uses_user_jwt_and_rejects_stale_revision():
     assert "revision=eq.1" in calls[3][1]
 
 
+def test_oversized_account_write_is_rejected_before_authentication():
+    from backend.api.accounts import MAX_STATE_BYTES
+    save = endpoint("/api/v1/account/library", "PUT")
+    oversized = request("PUT", {"revision": 0, "library": [], "playlists": [], "padding": "x" * MAX_STATE_BYTES})
+    try:
+        asyncio.run(save(oversized, Response()))
+    except HTTPException as exc:
+        assert exc.status_code == 413
+    else:
+        raise AssertionError("Oversized write was accepted")
+
+
 def test_account_deletion_rechecks_password_and_uses_server_secret():
     delete = endpoint("/api/v1/account/delete", "POST")
     from backend.api.accounts import Credentials
@@ -147,3 +159,13 @@ def test_recovery_requires_valid_link_token_before_password_change():
             assert exc.status_code == 401
         else:
             raise AssertionError("Expired recovery link changed the password")
+
+
+def test_logout_clears_cookie_even_when_identity_provider_is_unavailable():
+    logout = endpoint("/api/v1/account/logout", "POST")
+    async def unavailable(self, method, path, **kwargs):
+        raise HTTPException(502, "Provider unavailable")
+    with patch.object(AccountGateway, "call", unavailable):
+        response = Response()
+        assert asyncio.run(logout(request("POST"), response)) == {"ok": True}
+    assert "songvale_access=" in response.headers["set-cookie"]
