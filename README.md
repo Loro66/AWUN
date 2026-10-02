@@ -9,7 +9,7 @@
 [![Latest release](https://img.shields.io/github/v/release/Loro66/AWUN?style=for-the-badge&label=RELEASE&labelColor=11120F&color=6E875F)](https://github.com/Loro66/AWUN/releases/latest)
 
 [![Windows build](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&style=flat-square&label=Windows%20build)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
-[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=59%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
+[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=62%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![License](https://img.shields.io/badge/license-source--visible%20freeware-5F665B?style=flat-square)](LICENSE.md)
@@ -92,6 +92,8 @@ Windows beta binaries are unsigned unless a signing certificate is configured; W
 
 Open [awun-1.onrender.com](https://awun-1.onrender.com). Chrome and Edge can install the site as a PWA from the browser menu.
 
+**iPhone:** open that link in Safari, tap Share → Add to Home Screen → Add (turn on “Open as Web App” if offered). SONGVALE gets a Home Screen icon. The cached shell opens during a server interruption, while search and playback still need internet. The first visit after the free server has slept can take longer. This is a web app installation; there is no signed IPA or App Store listing yet. Favorites and playlists remain on this device until [accounts and persistent sync storage](docs/ACCOUNTS.md) are available; export a backup from settings before removing the app.
+
 ### Development
 
 ```bash
@@ -113,10 +115,10 @@ Open `http://127.0.0.1:8000`. Optional provider credentials and deployment setti
 
 ## Verified release quality
 
-Release `v2.5.3` is built from `main` by GitHub Actions.
+Release `v2.5.4` is built from `main` by GitHub Actions.
 
 - Python tests cover search, ranking, matching, policy, reliability, security, visual identity and desktop packaging.
-- **59 Playwright scenarios** exercise progressive search, instant repeat-search cache, playback-session restore, cancellation, provider deadlines, playback recovery, resumable fuzzy library transfer, manual match review, sound profiles, queue persistence, large libraries and responsive layouts.
+- **62 Playwright scenarios** exercise progressive search, instant repeat-search cache, playback-session restore, cancellation, provider deadlines, playback recovery, resumable fuzzy library transfer, manual match review, sound profiles, queue persistence, large libraries, responsive layouts and offline shell launch.
 - Named playlists, local library filtering and home shortcuts make imported collections playable in their original order. Playlist membership remains after removing a favorite.
 - Repeat searches surface recent device-local results immediately while connected sources revalidate in the background; the last track and position return paused after restart.
 - Track Stories resolve noisy catalog titles through artist-aware LRCLIB and Genius matching, reject conflicting recording versions and can retry Genius with one distinctive lyric line.
@@ -132,9 +134,10 @@ Release `v2.5.3` is built from `main` by GitHub Actions.
 | Surface | Status | Distribution |
 | --- | --- | --- |
 | Web / PWA | Public beta | [Open application](https://awun-1.onrender.com) |
-| Windows | Unsigned beta unless signing is configured | [Download v2.5.3](https://github.com/Loro66/AWUN/releases/tag/v2.5.3) |
+| Windows | Unsigned beta unless signing is configured | [Download v2.5.4](https://github.com/Loro66/AWUN/releases/tag/v2.5.4) |
 | Android | Reproducible Play bundle and store package | Release requires Play Console signing and testing |
-| iOS | Reproducible unsigned beta | Physical distribution requires Apple signing |
+| iPhone | Installable web app | [Open in Safari and add to Home Screen](https://awun-1.onrender.com) |
+| iOS IPA | Reproducible unsigned beta | Native device distribution requires Apple signing |
 
 Public availability does not imply measured adoption. SONGVALE currently makes no claims about user count, retention or revenue. The [project case study](docs/PROJECT_CASE_STUDY.md) separates implemented work from planned user validation.
 

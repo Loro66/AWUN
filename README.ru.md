@@ -9,7 +9,7 @@
 [![Последний релиз](https://img.shields.io/github/v/release/Loro66/AWUN?style=for-the-badge&label=RELEASE&labelColor=11120F&color=6E875F)](https://github.com/Loro66/AWUN/releases/latest)
 
 [![Windows build](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&style=flat-square&label=Windows%20build)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
-[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=59%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
+[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=62%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![License](https://img.shields.io/badge/license-source--visible%20freeware-5F665B?style=flat-square)](LICENSE.md)
@@ -92,6 +92,8 @@ Windows-версия упаковывает frontend и FastAPI backend в од�
 
 Открой [awun-1.onrender.com](https://awun-1.onrender.com). Chrome и Edge позволяют установить сайт как PWA через меню браузера.
 
+**iPhone:** открой ссылку именно в Safari, нажми «Поделиться» → «На экран Домой» → «Добавить» (если предложено, включи «Открывать как веб-приложение»). На экране появится иконка SONGVALE. Оболочка запускается из кэша, но поиск и прослушивание требуют интернета. Первый запуск после простоя бесплатного сервера может занять время. Это установка веб-приложения; подписанного IPA или версии App Store пока нет. Избранное и плейлисты пока хранятся на этом устройстве: перед удалением приложения сохрани резервную копию в настройках. Для синхронизации между устройствами нужны [аккаунты и постоянное серверное хранилище](docs/ACCOUNTS.md).
+
 ### Локальная разработка
 
 ```bash
@@ -113,10 +115,10 @@ uvicorn backend.api.main:app --reload
 
 ## Проверенное качество релиза
 
-Релиз `v2.5.3` автоматически собирается из `main` через GitHub Actions.
+Релиз `v2.5.4` автоматически собирается из `main` через GitHub Actions.
 
 - Python-тесты проверяют поиск, ranking, matching, policy, надёжность, безопасность, визуальную идентичность и desktop-упаковку.
-- **59 Playwright-сценариев** проверяют постепенный поиск, мгновенный кэш повторного запроса, восстановление сессии проигрывателя, отмену, тайм-аут источника, восстановление воспроизведения, возобновляемый перенос медиатеки, ручную проверку совпадений, звуковые профили, очередь, большие библиотеки и адаптивность.
+- **62 Playwright-сценария** проверяют постепенный поиск, мгновенный кэш повторного запроса, восстановление сессии проигрывателя, отмену, тайм-аут источника, восстановление воспроизведения, возобновляемый перенос медиатеки, ручную проверку совпадений, звуковые профили, очередь, большие библиотеки, адаптивность и запуск установленной оболочки без сети.
 - Именованные плейлисты, локальный поиск по медиатеке и карточки на главной позволяют открыть перенесённую коллекцию в исходном порядке. Удаление из избранного сохраняет трек в плейлисте.
 - Повторный поиск сразу показывает свежие результаты с устройства и обновляет их в фоне; после перезапуска последний трек и позиция возвращаются без автовоспроизведения.
 - Track Stories сопоставляют шумные названия с LRCLIB и Genius по исполнителю и версии записи, отбрасывают чужие live/remix/cover-варианты и при необходимости повторяют Genius-поиск по характерной строке текста.
@@ -132,9 +134,10 @@ uvicorn backend.api.main:app --reload
 | Платформа | Статус | Где получить |
 | --- | --- | --- |
 | Web / PWA | Публичная бета | [Открыть приложение](https://awun-1.onrender.com) |
-| Windows | Бета без подписи, если не настроен сертификат | [Скачать v2.5.3](https://github.com/Loro66/AWUN/releases/tag/v2.5.3) |
+| Windows | Бета без подписи, если не настроен сертификат | [Скачать v2.5.4](https://github.com/Loro66/AWUN/releases/tag/v2.5.4) |
 | Android | Воспроизводимая Play-сборка и пакет страницы магазина | Публикация требует подписи и тестирования в Play Console |
-| iOS | Воспроизводимая неподписанная бета | Установка на устройства требует подписи Apple |
+| iPhone | Устанавливаемое веб-приложение | [Открыть в Safari и добавить на экран Домой](https://awun-1.onrender.com) |
+| iOS IPA | Воспроизводимая неподписанная бета | Установка нативной сборки на устройства требует подписи Apple |
 
 Публичная доступность не означает подтверждённую аудиторию. SONGVALE пока не заявляет количество пользователей, retention или выручку. В [проверяемой справке о проекте](docs/PROJECT_CASE_STUDY.ru.md) реализованные результаты отделены от будущего пользовательского пилота.
 

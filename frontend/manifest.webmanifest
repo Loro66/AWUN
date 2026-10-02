@@ -2,6 +2,7 @@
   "name": "SONGVALE — вся музыка сходится здесь",
   "short_name": "SONGVALE",
   "description": "Ищи музыку во всех подключённых каталогах, собирай локальную медиатеку и запускай Мою волну.",
+  "id": "/",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

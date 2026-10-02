@@ -38,7 +38,7 @@ an update.
 
 ## Try and install
 
-- **Web / PWA:** open [awun-1.onrender.com](https://awun-1.onrender.com). In Chrome or Edge choose **INSTALL APP** to add AWUN to the Start menu, desktop or phone home screen.
+- **Web / PWA:** open [awun-1.onrender.com](https://awun-1.onrender.com). Chrome and Edge can install the PWA. On iPhone use Safari's Share → Add to Home Screen; enable “Open as Web App” when offered. The cached shell launches during server downtime, while search and playback still require connectivity.
 - **Windows:** download the installer or portable executable from the [latest GitHub Release](https://github.com/Loro66/AWUN/releases/latest). The executable is unsigned during beta, so SmartScreen may ask for confirmation.
 - **Android / iOS beta:** reproducible shells live in [`mobile/`](../mobile/README.md). A physical iOS release requires Apple signing.
 

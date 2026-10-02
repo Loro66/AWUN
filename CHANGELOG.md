@@ -2,6 +2,22 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.5.4] - 2026-10-03
+
+### Added
+
+- iPhone Safari visitors see localized Add to Home Screen instructions. The installed app hides those instructions and opens with its own Home Screen icon.
+- Documented the account and cross-device library sync requirements, including guest-library migration and persistent storage.
+
+### Improved
+
+- The installed web app opens its cached interface while the hosting service wakes or the network is temporarily unavailable. Music search and streaming continue to require internet.
+- The service worker leaves API responses and media streams out of its cache and no longer removes unrelated caches during updates.
+
+### Testing
+
+- Added browser checks for iPhone installation guidance, standalone mode and offline shell launch.
+
 ## [2.5.3] - 2026-10-01
 
 ### Added
