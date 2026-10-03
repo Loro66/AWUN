@@ -1,8 +1,8 @@
-SONGVALE 2.5.8
+SONGVALE 2.5.9
 Release date: 2026-10-03
 
-This release protects cloud libraries during full backup restore and makes My Wave
-find music faster when connected sources return empty results.
+This release adds clear playback and My Wave progress states, alongside the
+recent cloud restore safeguards and faster recommendation searches.
 
 What changed:
 - Restoring a full backup while signed in pauses cloud sync and asks whether to
@@ -11,6 +11,11 @@ What changed:
 - My Wave starts with short discovery searches, then widens empty results, waits
   for connected fallback sources, and keeps existing music playing when no new
   tracks are found.
+- The player says when a track is loading, looking for another source or
+  unavailable. Play retries a failed track.
+- My Wave shows search attempts, distinguishes empty results from source errors,
+  and stops retrying after a bounded search. Retry and setting changes can start
+  a new search.
 - Accounts are available after the host has configured a persistent
   Supabase project, the SQL schema and custom email delivery, then enabled
   the feature flag. Until then the app remains in guest mode.

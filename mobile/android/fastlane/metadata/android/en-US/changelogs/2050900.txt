@@ -1,0 +1,1 @@
+Clear loading and unavailable-track messages in the player. My Wave shows search progress, distinguishes empty results from source errors, and offers Retry when it finishes searching.

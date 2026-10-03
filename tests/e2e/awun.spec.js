@@ -106,9 +106,131 @@ test('My Wave keeps playing local tracks when connected searches return no new m
   await page.locator('#flowButton').click();
   await page.locator('#flowStart').click();
 
-  await expect(page.locator('#message')).toContainText('Играет музыка с этого устройства');
+  await expect(page.locator('#message')).toContainText('Пока всё: новых треков не найдено');
   await expect(page.locator('body')).toHaveClass(/flow-active/);
   await expect(page.locator('#player')).not.toHaveClass(/player-empty/);
+});
+
+test('My Wave shows search progress, stops after empty sources, and retries on request', async ({ page }) => {
+  await openAwun(page);
+  await searchFor(page, 'midnight signal');
+  await page.locator('#trackList .track[data-source="audius"]').first().locator('.play').click();
+  let releaseFirst;
+  const firstSearch = new Promise(resolve => { releaseFirst = resolve; });
+  let calls = 0, allowNewTracks = false;
+  const recommendation = { ...TRACKS.jamendo[0], id: 'jamendo_wave-retry', title: 'Second Chance' };
+  await page.route('**/api/v1/search', async route => {
+    const body = route.request().postDataJSON();
+    calls += 1;
+    if (calls === 1) await firstSearch;
+    const tracks = allowNewTracks ? [recommendation] : [];
+    await route.fulfill({ json: { query: body.query, tracks, total: tracks.length, searched_sources: body.sources, errors: {} } });
+  });
+  await page.locator('#flowButton').click();
+  await page.locator('#flowStart').click();
+  await page.locator('#flowButton').click();
+  await expect(page.locator('#flowBadge')).toHaveText('ИЩЕМ');
+  await expect(page.locator('#flowBadge')).toBeVisible();
+  await expect(page.locator('#sidebarWaveStatus')).toContainText('запрос 1 из');
+  await expect(page.locator('#sidebarWaveStatus')).toBeVisible();
+  await expect(page.locator('#flowStatus')).toContainText('запрос 1 из');
+  releaseFirst();
+
+  await expect(page.locator('#flowStatus')).toContainText('Пока всё: новых треков не найдено');
+  await expect(page.locator('#flowBadge')).toHaveText('НЕТ НОВЫХ');
+  await expect(page.locator('#sidebarWaveStatus')).toContainText('Пока всё');
+  await expect(page.locator('#flowRetry')).toBeVisible();
+  const exhaustedCalls = calls;
+  await page.locator('#nextTrack').click();
+  expect(calls).toBe(exhaustedCalls);
+  allowNewTracks = true;
+  await page.locator('#flowRetry').click();
+  await expect(page.locator('#flowStatus')).toContainText('Найдено треков: 1');
+  await expect(page.locator('#flowBadge')).toHaveText('ЭФИР');
+  await expect(page.locator('#flowRetry')).toBeHidden();
+  await expect.poll(() => page.evaluate(() => window.awunApp.state.queue.some(track => track.id === 'jamendo_wave-retry'))).toBe(true);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.locator('#flowStatusCard')).toBeVisible();
+  await expect(page.locator('#flowBadge')).toBeVisible();
+  await expect(page.locator('#sidebarWaveStatus')).toBeHidden();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});
+
+test('My Wave distinguishes unavailable sources from an empty search', async ({ page }) => {
+  await openAwun(page);
+  await searchFor(page, 'midnight signal');
+  await page.route('**/api/v1/search', route => route.fulfill({ status: 502, json: { detail: 'unavailable' } }));
+  await page.locator('#flowButton').click();
+  await page.locator('#flowStart').click();
+  await page.locator('#flowButton').click();
+  await expect(page.locator('#flowStatus')).toContainText('Источники не ответили');
+  await expect(page.locator('#flowBadge')).toHaveText('ОШИБКА СЕТИ');
+  await expect(page.locator('#flowRetry')).toBeVisible();
+});
+
+test('changing Wave settings replaces a pending search with the new choice', async ({ page }) => {
+  await openAwun(page);
+  await searchFor(page, 'midnight signal');
+  let releaseOld;
+  const oldSearch = new Promise(resolve => { releaseOld = resolve; });
+  const queries = [];
+  const recommendation = { ...TRACKS.jamendo[0], id: 'jamendo_calm-choice', title: 'Calm Choice' };
+  await page.route('**/api/v1/search', async route => {
+    const body = route.request().postDataJSON();
+    queries.push(body.query);
+    if (queries.length === 1) await oldSearch;
+    const tracks = body.query.includes('calm') ? [recommendation] : [];
+    await route.fulfill({ json: { query: body.query, tracks, total: tracks.length, searched_sources: body.sources, errors: {} } });
+  });
+  try {
+    await page.locator('#flowButton').click();
+    await page.locator('#flowStart').click();
+    await page.locator('#flowButton').click();
+    await expect(page.locator('#flowStatus')).toContainText('запрос 1 из');
+    await page.locator('#flowMood').selectOption('calm');
+    await expect.poll(() => queries.some(query => query.includes('calm'))).toBe(true);
+    await expect(page.locator('#flowStatus')).toContainText('Найдено треков: 1');
+  } finally { releaseOld(); }
+});
+
+test('My Wave reports a finished search when no playable music exists', async ({ page }) => {
+  await openAwun(page);
+  await page.route('**/api/v1/search', route => {
+    const body = route.request().postDataJSON();
+    return route.fulfill({ json: { query: body.query, tracks: [], total: 0, searched_sources: body.sources, errors: {} } });
+  });
+  await page.locator('#flowButton').click();
+  await page.locator('#flowStart').click();
+  await page.locator('#flowButton').click();
+  await expect(page.locator('#flowStatus')).toContainText('не нашла доступных рекомендаций');
+  await expect(page.locator('#flowBadge')).toHaveText('НЕ НАЙДЕНО');
+  await expect(page.locator('body')).not.toHaveClass(/flow-active/);
+});
+
+test('the player shows loading and a clear unavailable-track result', async ({ page }) => {
+  await openAwun(page);
+  await searchFor(page, 'midnight signal');
+  await page.evaluate(() => {
+    const audio = document.getElementById('audio');
+    audio.play = () => new Promise(resolve => { window.releaseAudio = resolve; });
+  });
+  await page.locator('#trackList .track[data-source="audius"]').first().locator('.play').click();
+  await expect(page.locator('#playerStatus')).toContainText('Загружаем «Midnight Signal»');
+  await expect(page.locator('#playerStatus')).toBeVisible();
+  await page.evaluate(() => window.releaseAudio());
+  await expect(page.locator('#playerStatus')).toBeHidden();
+
+  await page.route('**/api/v1/search', route => {
+    const body = route.request().postDataJSON();
+    return route.fulfill({ json: { query: body.query, tracks: [], total: 0, searched_sources: body.sources, errors: {} } });
+  });
+  await page.evaluate(() => { document.getElementById('audio').play = () => Promise.reject(new Error('audio unavailable')); });
+  await page.locator('#trackList .track[data-source="audius"]').nth(1).locator('.play').click();
+  await expect(page.locator('#playerStatus')).toContainText('Трек не найден или недоступен');
+  await expect(page.locator('#playerStatus')).toHaveAttribute('data-tone', 'error');
+  await page.evaluate(() => { document.getElementById('audio').play = () => Promise.resolve(); });
+  await page.locator('#playPause').click();
+  await expect(page.locator('#playerStatus')).toBeHidden();
 });
 
 test('an unavailable YouTube embed switches to the matching connected source', async ({ page }) => {
