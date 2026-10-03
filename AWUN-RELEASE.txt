@@ -1,18 +1,23 @@
-SONGVALE 2.5.5
-Release date: 2026-10-02
+SONGVALE 2.5.6
+Release date: 2026-10-03
 
-This release moves language selection into Settings and prepares optional
-cross-device accounts.
+This release adds a visible profile and portable library transfer, and improves
+account synchronization and the installed web app's recovery from slow hosting.
 
 What changed:
-- The language control now lives in Settings, freeing the sidebar.
-- Optional email accounts have sign-up, sign-in, password recovery, sign-out, deletion and
-  revision-checked favorites/playlist sync with guest-library review.
-- Stream URLs, listening history and taste signals remain device-local.
+- An account profile can show and edit a display name.
+- Favorites and playlists can be exported and imported between devices even
+  when account service is not configured. Imports offer combine or replace.
+- Account writes retry after network failures, detect lost acknowledgements,
+  and accept optional null metadata returned by music sources. Sign-out clears
+  the account view in other open tabs.
+- The installed web app opens a cached shell when a slow or failing host cannot
+  serve a fresh page promptly.
+- Stream URLs, passwords, listening history and taste signals are excluded from
+  portable library files.
 - Accounts are available after the host has configured a persistent
   Supabase project, the SQL schema and custom email delivery, then enabled
-  the feature flag. Until then the
-  app remains in guest mode and does not claim that libraries are syncing.
+  the feature flag. Until then the app remains in guest mode.
 
 Windows package:
 - SONGVALE-Setup-x64.exe — per-user installer.

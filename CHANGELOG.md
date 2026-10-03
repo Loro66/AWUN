@@ -2,6 +2,24 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.5.6] - 2026-10-03
+
+### Added
+
+- Editable profile names for optional email accounts, with name and library counts shown in Settings.
+- A portable favorites and playlists file in Settings for moving libraries between devices, including guest devices. Imports show a preview and offer combine or replace.
+
+### Improved
+
+- Account requests now have a deadline; failed saves retry while local edits remain available. A save that succeeded in the cloud but lost its response is recognized without a false conflict.
+- Signing out in one tab clears the account view in other open tabs. Imported catalog links only open through web URLs.
+- Optional null track metadata no longer blocks cloud sync or file transfer.
+- The installed web app prefers a fresh page online and falls back to its cached shell when the host is slow or returns a server error.
+
+### Testing
+
+- Added server profile and nullable-metadata tests; browser scenarios cover profile editing, guest library transfer, retry and lost-response recovery.
+
 ## [2.5.5] - 2026-10-02
 
 ### Added

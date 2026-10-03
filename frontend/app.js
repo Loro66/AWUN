@@ -190,7 +190,7 @@ const ui={
   themeButton:$('themeButton'),themeLabel:$('themeLabel'),themePanel:$('themePanel'),themeClose:$('themeClose'),themeBackdrop:$('themeBackdrop'),themeColor:$('themeColor'),motionToggle:$('motionToggle'),motionValue:$('motionValue'),decorToggle:$('decorToggle'),decorValue:$('decorValue'),densityToggle:$('densityToggle'),densityValue:$('densityValue'),soundEngineToggle:$('soundEngineToggle'),soundEngineValue:$('soundEngineValue'),soundEngineStatus:$('soundEngineStatus'),diagnosticsButton:$('diagnosticsButton'),diagnosticsPanel:$('diagnosticsPanel'),diagnosticsClose:$('diagnosticsClose'),diagnosticsRefresh:$('diagnosticsRefresh'),diagnosticsCopy:$('diagnosticsCopy'),diagnosticsList:$('diagnosticsList'),diagnosticsEndpoint:$('diagnosticsEndpoint'),diagnosticsChecked:$('diagnosticsChecked'),diagnosticsCopyStatus:$('diagnosticsCopyStatus'),diagnosticsToolsStatus:$('diagnosticsToolsStatus'),diagnosticsLog:$('diagnosticsLog'),storageExport:$('storageExport'),storageImport:$('storageImport'),storageImportFile:$('storageImportFile'),updateCheck:$('updateCheck'),updateLink:$('updateLink'),
   importButton:$('importButton'),importPanel:$('importPanel'),importClose:$('importClose'),importBackdrop:$('importBackdrop'),libraryFile:$('libraryFile'),importFileButton:$('importFileButton'),importFileName:$('importFileName'),importText:$('importText'),importStatus:$('importStatus'),importSubmit:$('importSubmit'),importUrl:$('importUrl'),importUrlSubmit:$('importUrlSubmit'),importPlaylistName:$('importPlaylistName'),importProgress:$('importProgress'),importReportTitle:$('importReportTitle'),importTotal:$('importTotal'),importProcessed:$('importProcessed'),importAdded:$('importAdded'),importReviewCount:$('importReviewCount'),importMissed:$('importMissed'),importPercent:$('importPercent'),importCancel:$('importCancel'),importResume:$('importResume'),importRetryMissed:$('importRetryMissed'),importDownloadReport:$('importDownloadReport'),importOpenLibrary:$('importOpenLibrary'),importReviewPanel:$('importReviewPanel'),importReviewTitle:$('importReviewTitle'),importReviewPosition:$('importReviewPosition'),importReviewOriginal:$('importReviewOriginal'),importReviewCandidates:$('importReviewCandidates'),importReviewSearchInput:$('importReviewSearchInput'),importReviewSearchButton:$('importReviewSearchButton'),importReviewSkip:$('importReviewSkip')
 };
-Object.assign(ui,Object.fromEntries(['accountBadge','accountStatus','accountForm','accountEmail','accountPassword','accountLogin','accountSignup','accountForgot','accountRecoveryForm','accountNewPassword','accountConnected','accountIdentity','accountSync','accountLogout','accountDeletePassword','accountDeleteConfirm','accountChoice','accountChoiceText','accountMerge','accountUseCloud'].map(id=>[id,$(id)])));
+Object.assign(ui,Object.fromEntries(['accountBadge','accountStatus','accountForm','accountEmail','accountPassword','accountLogin','accountSignup','accountForgot','accountRecoveryForm','accountNewPassword','accountConnected','accountIdentity','accountAvatar','accountEmailDisplay','accountTrackCount','accountPlaylistCount','accountProfileForm','accountDisplayName','accountSaveProfile','accountSync','accountLogout','accountDeletePassword','accountDeleteConfirm','accountChoice','accountChoiceText','accountMerge','accountUseCloud','portableExport','portableImport','portableFile','portablePreview','portablePreviewText','portableMerge','portableReplace','portableCancel','portableStatus'].map(id=>[id,$(id)])));
 const sourceButtonElements=[...ui.sources.querySelectorAll('button[data-source]')];
 const sourceChoiceKey='awun-selected-sources-v1';
 const knownSearchSources=sourceButtonElements.map(button=>button.dataset.source);
@@ -244,33 +244,51 @@ let importController=null,importPreviewTimer=null;
 let latestImportReport=loadImportSession();
 const accountOwnerKey='songvale-account-owner-v1';
 const accountSyncKey=id=>`songvale-account-sync-${id}`;
-let accountUser=null,accountAvailable=false,accountStatusKey='accountChecking',accountChoice=null,accountRevision=0,accountDirty=false,accountGeneration=0,accountTimer=null,accountBusy=false;
+let accountUser=null,accountAvailable=false,accountStatusKey='accountChecking',accountChoice=null,accountRevision=0,accountDirty=false,accountGeneration=0,accountTimer=null,accountBusy=false,accountRetryMs=2000,accountSyncedSignature='',accountEpoch=0;
 let lastAccountRefresh=0;
+let portablePending=null,portableStatusKey='';
 function accountStatus(key){accountStatusKey=key;ui.accountStatus.textContent=t(key)}
 function renderAccountStatus(){
+  state.accountConnected=Boolean(accountUser);
   ui.accountBadge.textContent=t(accountUser?'accountConnectedBadge':'accountGuest');
   ui.accountForm.hidden=!accountAvailable||Boolean(accountUser)||Boolean(accountRecoveryToken);
   ui.accountRecoveryForm.hidden=!accountAvailable||!accountRecoveryToken;
   ui.accountConnected.hidden=!accountUser;
-  ui.accountIdentity.textContent=accountUser?.email||'';
+  const identity=accountUser?.display_name||accountUser?.email?.split('@')[0]||'';
+  ui.accountIdentity.textContent=identity;
+  ui.accountAvatar.textContent=identity?Array.from(identity)[0].toUpperCase():'♫';
+  ui.accountEmailDisplay.textContent=accountUser?.email||'';
+  ui.accountTrackCount.textContent=String(state.saved.length);
+  ui.accountPlaylistCount.textContent=String(state.playlists.length);
+  ui.accountSync.disabled=accountBusy||Boolean(accountChoice);
+  if(accountUser&&ui.accountDisplayName.dataset.userId!==accountUser.id){ui.accountDisplayName.value=accountUser.display_name||'';ui.accountDisplayName.dataset.userId=accountUser.id}
+  if(!accountUser)delete ui.accountDisplayName.dataset.userId;
   ui.accountChoice.hidden=!accountChoice;
   if(accountChoice){ui.accountChoiceText.textContent=t(accountChoice==='other'?'accountOtherChoice':accountChoice==='guest'?'accountGuestChoice':'accountConflict');ui.accountMerge.hidden=accountChoice==='other'}
   ui.accountStatus.textContent=t(accountStatusKey);
+  homeHub?.render();
 }
 async function accountRequest(path,{method='GET',body}={}){
-  const response=await fetch(`/api/v1/account/${path}`,{method,credentials:'same-origin',cache:'no-store',headers:{'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});
-  let payload;try{payload=await response.json()}catch{payload=null}
-  if(!response.ok){const error=new Error('Account request failed');error.status=response.status;throw error}
-  return payload;
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+  try{
+    const response=await fetch(`/api/v1/account/${path}`,{method,credentials:'same-origin',cache:'no-store',signal:controller.signal,headers:body===undefined?{}:{'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});
+    let payload;try{payload=await response.json()}catch{payload=null}
+    if(!response.ok){const error=new Error('Account request failed');error.status=response.status;throw error}
+    return payload;
+  }finally{clearTimeout(timer)}
 }
 function localAccountCopy(){return{library:loadLibrary(),playlists:loadPlaylists()}}
 function accountCopy(){return{library:state.saved,playlists:state.playlists}}
 function copyHasMusic(copy){return Boolean(copy.library.length||copy.playlists.length)}
 function applyAccountCopy(copy){
-  if(!writeStoredJson('awun-library',copy.library)||!writeStoredJson(playlistsKey,copy.playlists)){accountStatus('accountSyncFailed');return false}
+  const previous=localAccountCopy();
+  if(!writeStoredJson('awun-library',copy.library)||!writeStoredJson(playlistsKey,copy.playlists)){
+    writeStoredJson('awun-library',previous.library);writeStoredJson(playlistsKey,previous.playlists);
+    accountStatus('accountSyncFailed');return false;
+  }
   state.saved=copy.library;state.playlists=copy.playlists;
   if(!state.playlists.some(list=>list.id===state.activePlaylistId))state.activePlaylistId=null;
-  ui.playlistTabs.dataset.rendered='';updateLibraryCount();render();return true;
+  ui.playlistTabs.dataset.rendered='';updateLibraryCount();render();renderAccountStatus();return true;
 }
 function mergeAccountCopies(remote,local){
   const tracks=new Map(remote.library.map(track=>[trackSessionKey(track),track]));
@@ -286,7 +304,16 @@ function mergeAccountCopies(remote,local){
   });
   return{library:[...tracks.values()],playlists:[...lists.values()]};
 }
-function saveAccountMetadata(){if(accountUser)writeStoredJson(accountSyncKey(accountUser.id),{revision:accountRevision,dirty:accountDirty},{backup:false})}
+function librarySignature(copy){
+  const serialized=JSON.stringify([copy.library,copy.playlists]);let hash=2166136261;
+  for(let index=0;index<serialized.length;index+=1)hash=Math.imul(hash^serialized.charCodeAt(index),16777619);
+  return `${serialized.length}:${hash>>>0}`;
+}
+function sameAccountCopy(left,right){
+  try{return JSON.stringify(portableCopy(left))===JSON.stringify(portableCopy(right))}catch{return false}
+}
+function saveAccountMetadata(){if(accountUser)writeStoredJson(accountSyncKey(accountUser.id),{revision:accountRevision,dirty:accountDirty,signature:accountSyncedSignature},{backup:false})}
+function scheduleAccountSync(delay){clearTimeout(accountTimer);accountTimer=setTimeout(()=>void syncAccount(),delay)}
 function markAccountDirty(){
   if(!accountUser){
     const owner=readStoredText(accountOwnerKey,'');
@@ -294,52 +321,89 @@ function markAccountDirty(){
     return;
   }
   accountDirty=true;accountGeneration++;saveAccountMetadata();
-  if(!accountChoice){clearTimeout(accountTimer);accountTimer=setTimeout(()=>void syncAccount(),800)}
+  renderAccountStatus();
+  if(!accountChoice)scheduleAccountSync(800);
 }
 async function syncAccount(){
   if(!accountUser||accountChoice||accountBusy)return;
+  const epoch=accountEpoch;
   accountBusy=true;lastAccountRefresh=Date.now();accountStatus('accountSyncing');
   try{
     if(!accountDirty){
       const generation=accountGeneration;
       const remote=await accountRequest('library');
+      if(epoch!==accountEpoch)return;
       if(accountDirty||generation!==accountGeneration){accountChoice='conflict';accountStatus('accountConflict');renderAccountStatus();return}
       if(remote.revision!==accountRevision){
         if(!applyAccountCopy(remote))return;
         accountRevision=remote.revision;saveAccountMetadata();
       }
+      accountSyncedSignature=librarySignature(accountCopy());saveAccountMetadata();
     }else{
       const generation=accountGeneration;
-      const result=await accountRequest('library',{method:'PUT',body:{revision:accountRevision,...accountCopy()}});
+      const copy=accountCopy();
+      const result=await accountRequest('library',{method:'PUT',body:{revision:accountRevision,...copy}});
+      if(epoch!==accountEpoch)return;
       accountRevision=result.revision;accountDirty=generation!==accountGeneration;saveAccountMetadata();
-      if(accountDirty){accountTimer=setTimeout(()=>void syncAccount(),100)}
+      accountSyncedSignature=librarySignature(copy);saveAccountMetadata();
+      if(accountDirty)scheduleAccountSync(100);
     }
+    accountRetryMs=2000;
     accountStatus(accountDirty?'accountSyncing':'accountSignedIn');
   }catch(error){
-    if(error.status===409){accountChoice='conflict';accountStatus('accountConflict');renderAccountStatus()}
-    else accountStatus('accountSyncFailed');
-  }finally{accountBusy=false}
+    if(epoch!==accountEpoch)return;
+    if(error.status===409){
+      try{
+        const remote=await accountRequest('library');
+        if(epoch!==accountEpoch)return;
+        if(sameAccountCopy(remote,accountCopy())){
+          accountRevision=remote.revision;accountDirty=false;accountSyncedSignature=librarySignature(accountCopy());saveAccountMetadata();accountRetryMs=2000;accountStatus('accountSignedIn');
+        }else{accountChoice='conflict';accountStatus('accountConflict');renderAccountStatus()}
+      }catch{if(epoch!==accountEpoch)return;accountStatus('accountSyncFailed');scheduleAccountSync(accountRetryMs);accountRetryMs=Math.min(accountRetryMs*2,60000)}
+    }
+    else if(error.status===401){
+      saveAccountMetadata();clearTimeout(accountTimer);accountUser=null;accountChoice=null;
+      accountEpoch++;accountBusy=false;
+      accountStatus('accountSessionExpired');renderAccountStatus();
+    }else if(error.status===413||error.status===422){accountStatus(error.status===413?'accountLimit':'accountSyncInvalid')}
+    else{
+      accountStatus('accountSyncFailed');
+      if(accountDirty&&!accountChoice){scheduleAccountSync(accountRetryMs);accountRetryMs=Math.min(accountRetryMs*2,60000)}
+    }
+  }finally{if(epoch===accountEpoch)accountBusy=false}
 }
 async function connectAccount(user){
-  accountUser=user;accountAvailable=true;renderAccountStatus();
+  const epoch=++accountEpoch;
+  accountUser=user;accountAvailable=true;accountChoice=null;accountBusy=true;renderAccountStatus();
   const priorOwner=readStoredText(accountOwnerKey,'');
   if(priorOwner&&priorOwner!==user.id){state.saved=[];state.playlists=[];updateLibraryCount();render()}
+  const generation=accountGeneration;
+  let syncAfterConnect=false;
   try{
     const remote=await accountRequest('library');
+    if(epoch!==accountEpoch)return;
     const owner=readStoredText(accountOwnerKey,''),local=localAccountCopy();
     const metadata=readStoredJson(accountSyncKey(user.id),{});
-    accountRevision=remote.revision;accountDirty=false;
+    accountRevision=remote.revision;accountSyncedSignature=typeof metadata.signature==='string'?metadata.signature:'';
+    accountDirty=Boolean(metadata.dirty||owner===user.id&&metadata.signature&&metadata.signature!==librarySignature(local)||owner===user.id&&generation!==accountGeneration);
     if(owner&&owner!==user.id&&copyHasMusic(local))accountChoice='other';
     else if(!owner&&copyHasMusic(local))accountChoice='guest';
-    else if(owner===user.id&&metadata.dirty){
+    else if(owner===user.id&&accountDirty){
       accountRevision=Number.isInteger(metadata.revision)?metadata.revision:0;
-      accountDirty=true;
-      if(accountRevision!==remote.revision)accountChoice='conflict';
-      else{writeStoredText(accountOwnerKey,user.id,{backup:false});void syncAccount()}
-    }else if(applyAccountCopy(remote)){writeStoredText(accountOwnerKey,user.id,{backup:false});saveAccountMetadata();accountStatus('accountSignedIn')}
+      if(accountRevision!==remote.revision&&sameAccountCopy(remote,local)){
+        accountRevision=remote.revision;accountDirty=false;accountSyncedSignature=librarySignature(local);writeStoredText(accountOwnerKey,user.id,{backup:false});saveAccountMetadata();accountStatus('accountSignedIn');
+      }else if(accountRevision!==remote.revision)accountChoice='conflict';
+      else{writeStoredText(accountOwnerKey,user.id,{backup:false});saveAccountMetadata();syncAfterConnect=true}
+    }else if(applyAccountCopy(remote)){
+      writeStoredText(accountOwnerKey,user.id,{backup:false});
+      accountSyncedSignature=librarySignature(accountCopy());saveAccountMetadata();accountStatus('accountSignedIn');
+    }
     if(accountChoice)accountStatus(accountChoice==='conflict'?'accountConflict':accountChoice==='other'?'accountOtherChoice':'accountGuestChoice');
-  }catch{accountStatus('accountOffline')}
+  }catch{if(epoch!==accountEpoch)return;accountStatus('accountOffline')}
+  finally{if(epoch===accountEpoch)accountBusy=false}
+  if(epoch!==accountEpoch)return;
   renderAccountStatus();
+  if(syncAfterConnect)void syncAccount();
 }
 async function initializeAccount(){
   try{
@@ -384,22 +448,26 @@ ui.accountRecoveryForm.addEventListener('submit',async event=>{
 ui.accountSync.addEventListener('click',()=>void syncAccount());
 ui.accountMerge.addEventListener('click',async()=>{
   if(!accountUser||accountChoice==='other')return;
-  const prior=accountChoice;
+  const prior=accountChoice,epoch=accountEpoch;
   try{
     const remote=await accountRequest('library');
+    if(epoch!==accountEpoch)return;
     if(!applyAccountCopy(mergeAccountCopies(remote,localAccountCopy())))return;
     accountRevision=remote.revision;accountChoice=null;writeStoredText(accountOwnerKey,accountUser.id,{backup:false});
     accountDirty=true;accountGeneration++;saveAccountMetadata();renderAccountStatus();await syncAccount();
-  }catch(error){accountChoice=prior;accountStatus(error.message==='accountLimit'?'accountLimit':'accountSyncFailed');renderAccountStatus()}
+  }catch(error){if(epoch!==accountEpoch)return;accountChoice=prior;accountStatus(error.message==='accountLimit'?'accountLimit':'accountSyncFailed');renderAccountStatus()}
 });
 ui.accountUseCloud.addEventListener('click',async()=>{
   if(!accountUser)return;
+  const epoch=accountEpoch;
   try{
     const remote=await accountRequest('library');
+    if(epoch!==accountEpoch)return;
     if(!applyAccountCopy(remote))return;
     accountRevision=remote.revision;accountDirty=false;accountChoice=null;
+    accountSyncedSignature=librarySignature(accountCopy());
     writeStoredText(accountOwnerKey,accountUser.id,{backup:false});saveAccountMetadata();accountStatus('accountSignedIn');renderAccountStatus();
-  }catch{accountStatus('accountSyncFailed')}
+  }catch{if(epoch===accountEpoch)accountStatus('accountSyncFailed')}
 });
 async function leaveAccount(deleteAccount=false){
   if(!accountUser)return;
@@ -407,13 +475,14 @@ async function leaveAccount(deleteAccount=false){
   const preserveLocal=accountChoice==='guest'||accountChoice==='other';
   if(!deleteAccount&&!preserveLocal&&(accountDirty||accountChoice||accountBusy)){accountStatus('accountLogoutPending');return}
   if(deleteAccount&&!confirm(t('accountDeletePrompt')))return;
-  const user=accountUser,password=ui.accountDeletePassword.value;
+  const user=accountUser,password=ui.accountDeletePassword.value,epoch=accountEpoch;
   if(deleteAccount&&password.length<12){accountStatus('accountError');return}
   try{
     await accountRequest(deleteAccount?'delete':'logout',{method:'POST',body:deleteAccount?{email:user.email,password}:undefined});
+    if(epoch!==accountEpoch)return;
     ui.accountDeletePassword.value='';clearTimeout(accountTimer);
     if(preserveLocal){
-      const local=localAccountCopy();accountUser=null;accountRevision=0;accountDirty=false;accountChoice=null;removeStored(accountSyncKey(user.id));
+      const local=localAccountCopy();accountUser=null;accountRevision=0;accountDirty=false;accountChoice=null;accountSyncedSignature='';removeStored(accountSyncKey(user.id));
       state.saved=local.library;state.playlists=local.playlists;updateLibraryCount();render();accountStatus('accountGuestStatus');renderAccountStatus();return;
     }
     const libraryCleared=writeStoredJson('awun-library',[]),playlistsCleared=writeStoredJson(playlistsKey,[]);
@@ -421,7 +490,7 @@ async function leaveAccount(deleteAccount=false){
     ui.closePlayer.click();
     state.recents=[];persistRecents();state.queue=[];persistQueue();
     latestImportReport=null;removeStored('songvale-import-session-v1');
-    accountUser=null;accountRevision=0;accountDirty=false;accountChoice=null;
+    accountUser=null;accountRevision=0;accountDirty=false;accountChoice=null;accountSyncedSignature='';
     removeStored(accountOwnerKey);removeStored(accountSyncKey(user.id));
     const backupCleared=await storage?.backupNow?.();
     accountStatus(libraryCleared&&playlistsCleared&&backupCleared!==false?'accountGuestStatus':'accountLocalCleanupFailed');renderAccountStatus();
@@ -429,8 +498,104 @@ async function leaveAccount(deleteAccount=false){
 }
 ui.accountLogout.addEventListener('click',()=>void leaveAccount());
 ui.accountDeleteConfirm.addEventListener('click',()=>void leaveAccount(true));
+ui.accountProfileForm.addEventListener('submit',async event=>{
+  event.preventDefault();if(!accountUser||!ui.accountProfileForm.reportValidity())return;
+  const name=ui.accountDisplayName.value.trim().replace(/\s+/g,' ');
+  if(name.length<2||name.length>40){accountStatus('accountProfileFailed');return}
+  const epoch=accountEpoch;
+  ui.accountSaveProfile.disabled=true;
+  try{
+    const updated=await accountRequest('profile',{method:'PUT',body:{display_name:name}});
+    if(epoch!==accountEpoch||updated.id!==accountUser?.id)return;
+    accountUser=updated;ui.accountDisplayName.value=updated.display_name;renderAccountStatus();accountStatus('accountProfileSaved');
+  }catch{if(epoch===accountEpoch)accountStatus('accountProfileFailed')}
+  finally{ui.accountSaveProfile.disabled=false}
+});
+
+const portableTrackFields=['source','id','title','artist','duration','quality','thumbnail','external_url','catalog_links','import_origin'];
+function portableTrack(track){
+  if(!track||typeof track!=='object'||Array.isArray(track))throw new Error('invalid track');
+  for(const [key,limit] of [['source',40],['id',200],['title',300],['artist',300]]){
+    if(typeof track[key]!=='string'||!track[key]||track[key].length>limit)throw new Error('invalid track');
+  }
+  const result=Object.fromEntries(portableTrackFields.filter(key=>Object.hasOwn(track,key)&&track[key]!=null).map(key=>[key,track[key]]));
+  for(const key of ['quality','thumbnail','external_url','import_origin']){
+    if(key in result&&(typeof result[key]!=='string'||result[key].length>1000))throw new Error('invalid track');
+  }
+  if('duration'in result&&(!Number.isFinite(result.duration)||result.duration<0||result.duration>86400))throw new Error('invalid duration');
+  if('catalog_links'in result){
+    const links=result.catalog_links;
+    if(!links||typeof links!=='object'||Array.isArray(links)||Object.keys(links).length>10||Object.entries(links).some(([key,value])=>key.length>40||typeof value!=='string'||value.length>1000))throw new Error('invalid links');
+  }
+  return result;
+}
+function portableCopy(copy){
+  if(!Array.isArray(copy?.library)||copy.library.length>1500||!Array.isArray(copy.playlists)||copy.playlists.length>25)throw new Error('invalid library');
+  return{
+    library:copy.library.map(portableTrack),
+    playlists:copy.playlists.map(list=>{
+      if(!list||typeof list.id!=='string'||!list.id||list.id.length>100||typeof list.name!=='string'||!list.name||list.name.length>60||!Array.isArray(list.items)||list.items.length>1000||!Array.isArray(list.importKeys??[])||(list.importKeys??[]).length>1000||(list.importKeys??[]).some(key=>typeof key!=='string'||key.length>500))throw new Error('invalid playlist');
+      return{id:list.id,name:list.name,items:list.items.map(item=>{
+        if(!item||!Number.isInteger(item.position)||item.position<0||item.position>=100000)throw new Error('invalid order');
+        return{position:item.position,track:portableTrack(item.track)};
+      }),importKeys:list.importKeys??[]};
+    })
+  };
+}
+function portableStatus(key){portableStatusKey=key;ui.portableStatus.textContent=key?t(key):''}
+function dismissPortablePreview(){portablePending=null;ui.portablePreview.hidden=true;ui.portableFile.value=''}
+ui.portableExport.addEventListener('click',()=>{
+  if(accountChoice){portableStatus('portableBusy');return}
+  try{
+    const content=JSON.stringify({app:'SONGVALE',kind:'library',version:1,...portableCopy(accountCopy())},null,2);
+    const blob=new Blob([content],{type:'application/json;charset=utf-8'});
+    if(blob.size>4*1024*1024)throw new Error('library too large');
+    const url=URL.createObjectURL(blob),link=document.createElement('a');
+    link.href=url;link.download=`SONGVALE-library-${new Date().toISOString().slice(0,10)}.json`;
+    document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
+    portableStatus('portableExported');
+  }catch{portableStatus('portableInvalid')}
+});
+ui.portableImport.addEventListener('click',()=>{
+  if(accountChoice||accountBusy||importController){portableStatus('portableBusy');return}
+  ui.portableFile.click();
+});
+ui.portableFile.addEventListener('change',async()=>{
+  const file=ui.portableFile.files?.[0];if(!file)return;
+  try{
+    if(file.size>4*1024*1024)throw new Error('library too large');
+    const parsed=JSON.parse(await file.text());
+    if(parsed.app!=='SONGVALE'||parsed.kind!=='library'||parsed.version!==1)throw new Error('invalid library file');
+    portablePending=portableCopy(parsed);
+    ui.portablePreviewText.textContent=t('portablePreview',{tracks:portablePending.library.length,playlists:portablePending.playlists.length});
+    ui.portablePreview.hidden=false;portableStatus('');
+  }catch{dismissPortablePreview();portableStatus('portableInvalid')}
+});
+async function acceptPortableCopy(merge){
+  if(!portablePending)return;
+  if(accountChoice||accountBusy||importController){portableStatus('portableBusy');return}
+  try{
+    const next=merge?mergeAccountCopies(accountCopy(),portablePending):portablePending;
+    if(!applyAccountCopy(next)){portableStatus('portableStorageFailed');return}
+    markAccountDirty();
+    dismissPortablePreview();portableStatus('portableImported');
+  }catch{portableStatus('portableInvalid')}
+}
+ui.portableMerge.addEventListener('click',()=>void acceptPortableCopy(true));
+ui.portableReplace.addEventListener('click',()=>void acceptPortableCopy(false));
+ui.portableCancel.addEventListener('click',()=>{dismissPortablePreview();portableStatus('')});
 window.addEventListener('online',()=>{if(accountUser&&accountDirty)void syncAccount();else if(!accountUser&&(!accountAvailable||accountStatusKey==='accountOffline'))void initializeAccount()});
-window.addEventListener('focus',()=>{if(accountUser&&!accountChoice&&!accountBusy&&Date.now()-lastAccountRefresh>60000)void syncAccount()});
+window.addEventListener('storage',event=>{
+  if(event.key!==accountOwnerKey||!accountUser||event.newValue===accountUser.id)return;
+  accountEpoch++;clearTimeout(accountTimer);accountUser=null;accountChoice=null;accountRevision=0;accountDirty=false;accountSyncedSignature='';accountBusy=false;
+  ui.closePlayer.click();state.saved=[];state.playlists=[];state.activePlaylistId=null;state.queue=[];state.recents=[];
+  ui.playlistTabs.dataset.rendered='';updateLibraryCount();render();accountStatus('accountGuestStatus');renderAccountStatus();
+  if(event.newValue)void initializeAccount();
+});
+window.addEventListener('focus',()=>{
+  if(accountUser&&!accountChoice&&!accountBusy&&Date.now()-lastAccountRefresh>60000)void syncAccount();
+  else if(!accountUser&&accountStatusKey==='accountOffline')void initializeAccount();
+});
 function applyLanguage(){language=i18n.language;i18n.apply();applyVisual(false);applyRepeatMode(false);updateAudioEngineUi();ui.playPause.setAttribute('aria-label',t(state.isPlaying?'pauseAria':'playAria'));render();renderDiagnostics();if(latestImportReport)updateImportReport(latestImportReport)}
 
 function emitAwun(type,detail={}){document.dispatchEvent(new CustomEvent(`awun:${type}`,{detail}))}
@@ -1227,7 +1392,7 @@ function createTrackRow(track,index,saved=selectedIds()){
     const queueMenu=document.createElement('details');queueMenu.className='track-queue-menu';const queueSummary=document.createElement('summary');queueSummary.textContent=t('queue');queueSummary.setAttribute('aria-label',t('queueActionsAria',{track:decodeText(track.title)}));const queueOptions=document.createElement('div');const playNext=document.createElement('button');playNext.type='button';playNext.textContent=t('playNext');playNext.onclick=event=>{event.stopPropagation();queueTrack(track,'next');queueMenu.open=false};const addQueue=document.createElement('button');addQueue.type='button';addQueue.textContent=t('addToQueue');addQueue.onclick=event=>{event.stopPropagation();queueTrack(track,'end');queueMenu.open=false};queueOptions.append(playNext,addQueue);queueMenu.append(queueSummary,queueOptions);queueMenu.addEventListener('toggle',()=>{row.classList.toggle('queue-menu-open',queueMenu.open);if(!queueMenu.open){queueMenu.classList.remove('opens-up');return}queueOptions.querySelectorAll('.playlist-option,.playlist-option-label').forEach(node=>node.remove());if(state.playlists.length){const label=document.createElement('span');label.className='playlist-option-label';label.textContent=t('playlistMenuTitle');queueOptions.append(label);state.playlists.forEach(list=>{const option=document.createElement('button');option.className='playlist-option';option.type='button';const included=list.items.some(item=>trackSessionKey(item.track)===trackSessionKey(track));option.textContent=`${included?'✓ ':''}${list.name}`;option.setAttribute('aria-label',t(included?'removeFromPlaylistAria':'addToPlaylistAria',{name:list.name,track:decodeText(track.title)}));option.onclick=event=>{event.stopPropagation();queueMenu.open=false;togglePlaylistTrack(list.id,track)};queueOptions.append(option)})}document.querySelectorAll('.track-queue-menu[open]').forEach(menu=>{if(menu!==queueMenu)menu.open=false});requestAnimationFrame(()=>{const boundary=ui.results.getBoundingClientRect(),options=queueOptions.getBoundingClientRect();queueMenu.classList.toggle('opens-up',options.bottom>boundary.bottom-8)})});actions.append(queueMenu);
     if(track.download_url&&!playStoreMode){const download=document.createElement('a');download.className='download';download.href=track.download_url;download.download='';download.rel='noopener';download.textContent=t('download');download.onclick=event=>event.stopPropagation();actions.append(download)}
     const catalog=document.createElement('div');catalog.className='catalog-links';
-    [['spotify','SPOTIFY'],['apple_music','APPLE'],['yandex_music','YANDEX']].forEach(([provider,label])=>{const href=track.catalog_links?.[provider];if(!href)return;const link=document.createElement('a');link.className='catalog-link';link.href=href;link.target='_blank';link.rel='noopener noreferrer';link.textContent=`${label} ↗`;link.setAttribute('aria-label',t('findCatalogAria',{title:decodeText(track.title),source:label}));catalog.append(link)});
+    [['spotify','SPOTIFY'],['apple_music','APPLE'],['yandex_music','YANDEX']].forEach(([provider,label])=>{const href=safeImage(track.catalog_links?.[provider]);if(!href)return;const link=document.createElement('a');link.className='catalog-link';link.href=href;link.target='_blank';link.rel='noopener noreferrer';link.textContent=`${label} ↗`;link.setAttribute('aria-label',t('findCatalogAria',{title:decodeText(track.title),source:label}));catalog.append(link)});
     if(catalog.childElementCount)actions.append(catalog);
     row.addEventListener('click',event=>{if(!event.target.closest('button,a,input,textarea,select,details,summary'))activateTrack()});
     row.append(cover,play,name,waveform,source,quality,duration,actions);row.view={play,save,story,waveform};
@@ -1853,5 +2018,5 @@ async function bootstrap(){
 }
 window.awunApp={state,ui,playTrack,render,search,toggleSave,currentList,setMessage,sourceLabels,decodeText,matchText,loadingRows,awunFetch,requestSearch,pausePlayback,playStoreMode,apiBase,fallbackApiBase,apiUrl,refreshStatus,replaceQueue,appendQueue,cancelSearch};
 window.songvaleApp=window.awunApp;
-document.addEventListener('awun:language',event=>{language=event.detail.language;applyVisual(false);applyRepeatMode(false);render();renderAccountStatus();renderDiagnostics();if(latestImportReport)updateImportReport(latestImportReport);refreshStatus()});
+document.addEventListener('awun:language',event=>{language=event.detail.language;applyVisual(false);applyRepeatMode(false);render();renderAccountStatus();portableStatus(portableStatusKey);if(portablePending)ui.portablePreviewText.textContent=t('portablePreview',{tracks:portablePending.library.length,playlists:portablePending.playlists.length});renderDiagnostics();if(latestImportReport)updateImportReport(latestImportReport);refreshStatus()});
 bootstrap();

@@ -52,7 +52,7 @@ def test_invalid_provider_configuration_stays_disabled():
 
 
 def test_library_payload_strips_ephemeral_stream_credentials():
-    track = {"source": "audius", "id": "a1", "title": "Song", "artist": "Artist", "stream_url": "https://host/?secret=token", "download_url": "https://host/?secret=other"}
+    track = {"source": "audius", "id": "a1", "title": "Song", "artist": "Artist", "stream_url": "https://host/?secret=token", "download_url": "https://host/?secret=other", "thumbnail": None, "duration": None}
     clean = _library_payload({"library": [track], "playlists": [{"id": "p", "name": "Music", "items": [{"position": 0, "track": track}]}]})
     assert clean["library"][0] == {"source": "audius", "id": "a1", "title": "Song", "artist": "Artist"}
     assert clean["playlists"][0]["items"][0]["track"] == clean["library"][0]
@@ -169,3 +169,34 @@ def test_logout_clears_cookie_even_when_identity_provider_is_unavailable():
         response = Response()
         assert asyncio.run(logout(request("POST"), response)) == {"ok": True}
     assert "songvale_access=" in response.headers["set-cookie"]
+
+
+def test_profile_reads_and_updates_only_its_own_user_metadata():
+    from backend.api.accounts import ProfileUpdate
+    profile = endpoint("/api/v1/account/profile", "PUT")
+    session = endpoint("/api/v1/account/session", "GET")
+    calls = []
+
+    async def fake_call(self, method, path, **kwargs):
+        calls.append((method, path, kwargs))
+        if method == "GET":
+            return 200, {"id": USER_ID, "email": "listener@example.com", "user_metadata": {"songvale_display_name": "Old Name"}}
+        return 200, {"id": USER_ID, "email": "listener@example.com", "user_metadata": {"songvale_display_name": kwargs["data"]["data"]["songvale_display_name"]}}
+
+    with patch.object(AccountGateway, "call", fake_call):
+        assert asyncio.run(session(request(), Response()))["display_name"] == "Old Name"
+        updated = asyncio.run(profile(ProfileUpdate(display_name="  New   Name  "), request("PUT"), Response()))
+    assert updated == {"id": USER_ID, "email": "listener@example.com", "display_name": "New Name"}
+    assert calls[-1] == ("PUT", "/auth/v1/user", {"data": {"data": {"songvale_display_name": "New Name"}}, "token": "user-jwt"})
+
+
+def test_profile_rejects_cross_origin_and_invalid_name():
+    from backend.api.accounts import ProfileUpdate
+    profile = endpoint("/api/v1/account/profile", "PUT")
+    for value, origin in (("Name", "https://attacker.example"), ("  ", "https://songvale.example")):
+        try:
+            asyncio.run(profile(ProfileUpdate(display_name=value), request("PUT", origin=origin), Response()))
+        except HTTPException as exc:
+            assert exc.status_code in (403, 422)
+        else:
+            raise AssertionError("Invalid profile update accepted")

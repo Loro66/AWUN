@@ -181,7 +181,7 @@
       root.classList.toggle('has-resume', Boolean(resumeTrack));
       $('welcomeTitle').textContent = t(resumeTrack ? 'hubWelcomeBack' : 'hubWelcomeTitle');
       $('hubWelcomeBody').textContent = t(resumeTrack ? 'hubWelcomeBackBody' : 'hubWelcomeBody');
-      $('welcomeLibraryCount').textContent = state.saved.length ? t('tracksOnDevice', { count: state.saved.length }) : t('hubLocalHint');
+      $('welcomeLibraryCount').textContent = state.saved.length ? t('tracksOnDevice', { count: state.saved.length }) : t(state.accountConnected ? 'hubCloudHint' : 'hubLocalHint');
       $('hubResumeCard').hidden = !resumeTrack;
       $('hubWave').hidden = Boolean(resumeTrack);
       $('hubSavedCount').textContent = state.saved.length;

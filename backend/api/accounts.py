@@ -31,6 +31,27 @@ class RecoveryComplete(BaseModel):
     password: str = Field(min_length=12, max_length=128)
 
 
+class ProfileUpdate(BaseModel):
+    display_name: str = Field(min_length=2, max_length=40)
+
+
+def _profile(user: dict) -> dict:
+    metadata = user.get("user_metadata") or {}
+    name = metadata.get("songvale_display_name") if isinstance(metadata, dict) else None
+    return {
+        "id": user["id"],
+        "email": user.get("email", ""),
+        "display_name": name if isinstance(name, str) and 2 <= len(name) <= 40 else "",
+    }
+
+
+def _display_name(value: str) -> str:
+    value = " ".join(value.split())
+    if not 2 <= len(value) <= 40 or any(ord(char) < 32 or ord(char) == 127 for char in value):
+        raise HTTPException(422, "Enter a name between 2 and 40 characters")
+    return value
+
+
 def _email(value: str) -> str:
     value = value.strip().lower()
     if not re.fullmatch(r"[^\s@]+@[^\s@]+\.[^\s@]+", value):
@@ -67,7 +88,7 @@ def _clear_cookies(response: Response) -> None:
 def _track(value: object) -> dict:
     if not isinstance(value, dict):
         raise HTTPException(422, "Invalid track")
-    result = {key: value[key] for key in TRACK_FIELDS if key in value}
+    result = {key: value[key] for key in TRACK_FIELDS if key in value and (key in ("source", "id", "title", "artist") or value[key] is not None)}
     if not all(isinstance(result.get(key), str) and 0 < len(result[key]) <= limit for key, limit in (("source", 40), ("id", 200), ("title", 300), ("artist", 300))):
         raise HTTPException(422, "Invalid track metadata")
     for key in ("quality", "thumbnail", "external_url", "import_origin"):
@@ -207,7 +228,21 @@ def register_account_routes(app: FastAPI, settings: Settings) -> None:
     async def account_session(request: Request, response: Response) -> dict:
         user, _ = await gateway.user(request, response)
         response.headers["Cache-Control"] = "no-store"
-        return {"id": user["id"], "email": user.get("email", "")}
+        return _profile(user)
+
+    @app.put("/api/v1/account/profile", tags=["account"])
+    async def account_profile(details: ProfileUpdate, request: Request, response: Response) -> dict:
+        _origin(request)
+        name = _display_name(details.display_name)
+        user, access = await gateway.user(request, response)
+        status, updated = await gateway.call(
+            "PUT", "/auth/v1/user",
+            data={"data": {"songvale_display_name": name}}, token=access,
+        )
+        if status != 200 or not isinstance(updated, dict) or updated.get("id") != user["id"]:
+            raise HTTPException(502, "Could not save profile")
+        response.headers["Cache-Control"] = "no-store"
+        return _profile(updated)
 
     @app.get("/api/v1/account/library", tags=["account"])
     async def account_library(request: Request, response: Response) -> dict:

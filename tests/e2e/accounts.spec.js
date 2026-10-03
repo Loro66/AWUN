@@ -1,5 +1,148 @@
 const { test, expect } = require('@playwright/test');
 const { openAwun, TRACKS } = require('./fixtures');
+const { readFile } = require('node:fs/promises');
+
+test('profile name persists across reload without changing the account identity', async ({ page }, testInfo) => {
+  const user = { id: 'd6d229bf-e421-4ddc-898f-1aac3eadac43', email: 'listener@example.com', display_name: '' };
+  await page.route('**/api/v1/account/**', route => {
+    const operation = new URL(route.request().url()).pathname.split('/').pop();
+    if (operation === 'config') return route.fulfill({ json: { enabled: true } });
+    if (operation === 'session') return route.fulfill({ json: user });
+    if (operation === 'profile') {
+      user.display_name = route.request().postDataJSON().display_name.replace(/\s+/g, ' ').trim();
+      return route.fulfill({ json: user });
+    }
+    if (operation === 'library') return route.fulfill({ json: { revision: 0, library: [], playlists: [] } });
+    return route.fulfill({ status: 404, json: {} });
+  });
+  await openAwun(page);
+  await page.locator('#themeButton').click();
+  await expect(page.locator('#accountIdentity')).toHaveText('listener');
+  await page.locator('#accountDisplayName').fill('  Forest   Listener  ');
+  await page.locator('#accountSaveProfile').click();
+  await expect(page.locator('#accountIdentity')).toHaveText('Forest Listener');
+  await expect(page.locator('#accountAvatar')).toHaveText('F');
+  await expect(page.locator('#accountEmailDisplay')).toHaveText(user.email);
+  await page.screenshot({ path: testInfo.outputPath('account-profile.png') });
+  await page.reload();
+  await page.locator('#themeButton').click();
+  await expect(page.locator('#accountIdentity')).toHaveText('Forest Listener');
+});
+
+test('a guest can move a clean library file to another device and merge it safely', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.addInitScript(track => {
+    if (!sessionStorage.getItem('portable-seeded')) {
+      localStorage.setItem('awun-library', JSON.stringify([track]));
+      sessionStorage.setItem('portable-seeded', 'yes');
+    }
+  }, TRACKS.audius[0]);
+  await openAwun(page);
+  await page.locator('#themeButton').click();
+  await expect(page.locator('#portableExport')).toBeVisible();
+  const [download] = await Promise.all([page.waitForEvent('download'), page.locator('#portableExport').click()]);
+  const exported = JSON.parse(await readFile(await download.path(), 'utf8'));
+  expect(exported.kind).toBe('library');
+  expect(exported.library[0].id).toBe(TRACKS.audius[0].id);
+  expect(exported.library[0]).not.toHaveProperty('stream_url');
+  expect(exported.library[0]).not.toHaveProperty('download_url');
+
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
+  await page.locator('#themeButton').click();
+  await page.locator('#portableFile').setInputFiles({ name: 'SONGVALE-library.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(exported)) });
+  await expect(page.locator('#portablePreview')).toBeVisible();
+  await page.locator('#portableReplace').click();
+  await expect(page.locator('#accountConnected')).toBeHidden();
+  expect(await page.evaluate(() => window.awunApp.state.saved.map(track => track.id))).toEqual([TRACKS.audius[0].id]);
+
+  const extra = { ...exported, library: [TRACKS.jamendo[0]] };
+  await page.locator('#portableFile').setInputFiles({ name: 'more.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(extra)) });
+  await page.locator('#portableMerge').click();
+  expect(await page.evaluate(() => window.awunApp.state.saved.map(track => track.id))).toEqual([TRACKS.audius[0].id, TRACKS.jamendo[0].id]);
+  await page.locator('#portableFile').setInputFiles({ name: 'broken.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify({ ...exported, library: [{ id: '' }] })) });
+  await expect(page.locator('#portableStatus')).toContainText('повреждён');
+  expect(await page.evaluate(() => window.awunApp.state.saved.length)).toBe(2);
+});
+
+test('failed account writes retry automatically and retain the local edit', async ({ page }) => {
+  const user = { id: 'd6d229bf-e421-4ddc-898f-1aac3eadac43', email: 'listener@example.com' };
+  const cloud = { revision: 0, library: [], playlists: [] };
+  let writes = 0;
+  await page.route('**/api/v1/account/**', route => {
+    const operation = new URL(route.request().url()).pathname.split('/').pop();
+    if (operation === 'config') return route.fulfill({ json: { enabled: true } });
+    if (operation === 'session') return route.fulfill({ json: user });
+    if (operation === 'library' && route.request().method() === 'GET') return route.fulfill({ json: cloud });
+    if (operation === 'library' && route.request().method() === 'PUT') {
+      writes += 1;
+      if (writes === 1) return route.fulfill({ status: 502, json: {} });
+      const body = route.request().postDataJSON();
+      Object.assign(cloud, { revision: cloud.revision + 1, library: body.library });
+      return route.fulfill({ json: { revision: cloud.revision } });
+    }
+    return route.fulfill({ status: 404, json: {} });
+  });
+  await openAwun(page);
+  await searchAndSave(page);
+  await expect.poll(() => writes).toBe(2);
+  expect(cloud.library.map(track => track.id)).toContain(TRACKS.soundcloud[1].id);
+});
+
+test('a lost save response reconciles the matching cloud copy without a false conflict', async ({ page }) => {
+  const user = { id: 'd6d229bf-e421-4ddc-898f-1aac3eadac43', email: 'listener@example.com' };
+  const cloud = { revision: 0, library: [], playlists: [] };
+  let writes = 0;
+  await page.route('**/api/v1/account/**', route => {
+    const operation = new URL(route.request().url()).pathname.split('/').pop();
+    if (operation === 'config') return route.fulfill({ json: { enabled: true } });
+    if (operation === 'session') return route.fulfill({ json: user });
+    if (operation === 'library' && route.request().method() === 'GET') return route.fulfill({ json: cloud });
+    if (operation === 'library' && route.request().method() === 'PUT') {
+      const body = route.request().postDataJSON();
+      writes += 1;
+      if (writes === 1) {
+        Object.assign(cloud, { revision: 1, library: body.library, playlists: body.playlists });
+        return route.fulfill({ status: 502, json: {} });
+      }
+      return route.fulfill({ status: 409, json: {} });
+    }
+    return route.fulfill({ status: 404, json: {} });
+  });
+  await openAwun(page);
+  await searchAndSave(page);
+  await expect.poll(() => writes).toBe(2);
+  await page.locator('#themeButton').click();
+  await expect(page.locator('#accountStatus')).toContainText('синхронизирована');
+  await expect(page.locator('#accountChoice')).toBeHidden();
+  expect(await page.evaluate(() => window.awunApp.state.saved.length)).toBe(1);
+});
+
+test('signing out in another tab clears the account view without a reload', async ({ page, context }) => {
+  const user = { id: 'd6d229bf-e421-4ddc-898f-1aac3eadac43', email: 'listener@example.com' };
+  let signedIn = true;
+  const handleAccount = route => {
+    const operation = new URL(route.request().url()).pathname.split('/').pop();
+    if (operation === 'config') return route.fulfill({ json: { enabled: true } });
+    if (operation === 'session') return route.fulfill({ status: signedIn ? 200 : 401, json: signedIn ? user : {} });
+    if (operation === 'library') return route.fulfill({ json: { revision: 1, library: [TRACKS.audius[0]], playlists: [] } });
+    if (operation === 'logout') { signedIn = false; return route.fulfill({ json: { ok: true } }); }
+    return route.fulfill({ status: 404, json: {} });
+  };
+  await page.route('**/api/v1/account/**', handleAccount);
+  await openAwun(page);
+  await expect.poll(() => page.evaluate(() => window.awunApp.state.saved.length)).toBe(1);
+  const second = await context.newPage();
+  await second.route('**/api/v1/account/**', handleAccount);
+  await openAwun(second);
+  await expect.poll(() => second.evaluate(() => window.awunApp.state.saved.length)).toBe(1);
+  await second.locator('#themeButton').click();
+  await second.locator('#accountLogout').click();
+  await expect.poll(() => page.evaluate(() => window.awunApp.state.saved.length)).toBe(0);
+  await page.locator('#themeButton').click();
+  await expect(page.locator('#accountConnected')).toBeHidden();
+  await second.close();
+});
 
 test('guest library merges into an account, restores on a fresh device, then clears on sign-out', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
