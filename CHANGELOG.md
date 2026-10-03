@@ -2,6 +2,17 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.5.11] - 2026-10-03
+
+### Fixed
+
+- Importing a library file cannot replace an account-linked library, even when the account service is offline. Combining the file preserves existing tracks.
+- Restoring a full backup only offers combining with the cloud or keeping the cloud copy. Cloud-only tracks are preserved across failed writes and retries.
+
+### Testing
+
+- Browser checks cover a signed-in account, an offline account, full backup recovery, and retry after a failed merge.
+
 ## [2.5.10] - 2026-10-03
 
 ### Improved

@@ -320,7 +320,7 @@ test('restoring a full backup cannot silently replace an account library', async
   await restoreFullBackup(page, [TRACKS.soundcloud[1]]);
   await expect(page.locator('#accountChoice')).toBeVisible();
   await expect(page.locator('#accountChoiceText')).toContainText('восстановлена полная копия');
-  await expect(page.locator('#accountReplaceCloud')).toBeVisible();
+  await expect(page.locator('#accountReplaceCloud')).toHaveCount(0);
   expect(writes()).toBe(0);
   expect(cloud.library.map(track => track.id)).toEqual([TRACKS.audius[0].id]);
 
@@ -346,14 +346,10 @@ test('combining a restored backup preserves cloud-only tracks', async ({ page })
   expect(await page.evaluate(() => localStorage.getItem('songvale-backup-restore-pending-v1'))).toBeNull();
 });
 
-test('replacing the cloud needs confirmation and a failed write stays pending', async ({ page }) => {
+test('a failed backup merge stays pending and preserves cloud-only tracks after retry', async ({ page }) => {
   const { cloud, writes } = await accountWithCloud(page, { failFirstWrite: true });
   await restoreFullBackup(page, [TRACKS.soundcloud[1]]);
-  page.once('dialog', dialog => dialog.dismiss());
-  await page.locator('#accountReplaceCloud').click();
-  expect(writes()).toBe(0);
-  page.once('dialog', dialog => dialog.accept());
-  await page.locator('#accountReplaceCloud').click();
+  await page.locator('#accountMerge').click();
   await expect.poll(writes).toBe(1);
   await expect(page.locator('#accountChoice')).toBeVisible();
   expect(cloud.library.map(track => track.id)).toEqual([TRACKS.audius[0].id]);
@@ -361,13 +357,52 @@ test('replacing the cloud needs confirmation and a failed write stays pending', 
   await page.locator('#themeButton').click();
   await expect(page.locator('#accountChoice')).toBeVisible();
   expect(writes()).toBe(1);
-  page.once('dialog', dialog => dialog.accept());
-  await page.locator('#accountReplaceCloud').click();
+  await page.locator('#accountMerge').click();
   await expect.poll(() => cloud.revision).toBe(2);
-  expect(cloud.library.map(track => track.id)).toEqual([TRACKS.soundcloud[1].id]);
+  expect(new Set(cloud.library.map(track => track.id))).toEqual(new Set([TRACKS.audius[0].id, TRACKS.soundcloud[1].id]));
   await expect(page.locator('#accountChoice')).toBeHidden();
   expect(await page.evaluate(() => localStorage.getItem('songvale-backup-restore-pending-v1'))).toBeNull();
 });
+
+test('a library file cannot replace music in a signed-in account', async ({ page }) => {
+  const { cloud, writes } = await accountWithCloud(page);
+  await page.locator('#themeButton').click();
+  await openLibraryFile(page, [TRACKS.soundcloud[1]]);
+  await expect(page.locator('#portablePreview')).toBeVisible();
+  await expect(page.locator('#portableReplace')).toBeHidden();
+  await page.locator('#portableReplace').evaluate(button => button.click());
+  await expect(page.locator('#portableStatus')).toContainText('нельзя заменить');
+  expect(writes()).toBe(0);
+  expect(cloud.library.map(track => track.id)).toEqual([TRACKS.audius[0].id]);
+  await page.locator('#portableMerge').click();
+  await expect.poll(() => cloud.revision).toBe(2);
+  expect(new Set(cloud.library.map(track => track.id))).toEqual(new Set([TRACKS.audius[0].id, TRACKS.soundcloud[1].id]));
+});
+
+test('a library file cannot replace an account copy while the account service is offline', async ({ page }) => {
+  const { cloud, writes } = await accountWithCloud(page);
+  const offline = route => route.fulfill({ status: 503, json: {} });
+  await page.route('**/api/v1/account/**', offline);
+  await page.reload();
+  await page.locator('#themeButton').click();
+  await openLibraryFile(page, [TRACKS.soundcloud[1]]);
+  await expect(page.locator('#portableReplace')).toBeHidden();
+  await page.locator('#portableReplace').evaluate(button => button.click());
+  await expect(page.locator('#portableStatus')).toContainText('нельзя заменить');
+  expect(await page.evaluate(() => window.awunApp.state.saved.map(track => track.id))).toEqual([TRACKS.audius[0].id]);
+  await page.unroute('**/api/v1/account/**', offline);
+  await page.reload();
+  await expect.poll(() => page.evaluate(() => window.awunApp.state.saved.map(track => track.id))).toEqual([TRACKS.audius[0].id]);
+  expect(writes()).toBe(0);
+  expect(cloud.library.map(track => track.id)).toEqual([TRACKS.audius[0].id]);
+});
+
+async function openLibraryFile(page, library) {
+  await page.locator('#portableFile').setInputFiles({
+    name: 'SONGVALE-library.json', mimeType: 'application/json',
+    buffer: Buffer.from(JSON.stringify({ app: 'SONGVALE', kind: 'library', version: 1, library, playlists: [] })),
+  });
+}
 
 async function accountWithCloud(page, { failFirstWrite = false } = {}) {
   const cloud = { revision: 1, library: [TRACKS.audius[0]], playlists: [] };

@@ -67,10 +67,11 @@ backups remain under Diagnostics and serve a different purpose.
   The Sync button and returning to a tab after a minute check for newer data.
 - Restoring a full device backup while signed in pauses account sync. After the
   reload, explicitly combine the restored library with the cloud, keep the
-  cloud library, or replace the cloud with the restored copy. Replacing the
-  cloud requires a second confirmation. The choice remains pending across
-  reloads and failed writes; the backup is never uploaded merely because its
-  local files differ from the last synced library.
+  cloud library, or cancel by keeping the cloud copy. Cloud-only tracks are
+  never removed by a backup restore. The choice remains pending across reloads
+  and failed writes; the backup is never uploaded merely because its local
+  files differ from the last synced library. A library file can replace a guest
+  library, but an account-linked library can only be combined with the file.
 - Sign-out requires pending changes to sync first. It clears the account's
   local favorites, playlists, queue, recent listening and active player, while
   leaving the cloud copy intact. Account deletion rechecks the password and
