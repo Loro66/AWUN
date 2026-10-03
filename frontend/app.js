@@ -190,7 +190,7 @@ const ui={
   themeButton:$('themeButton'),themeLabel:$('themeLabel'),themePanel:$('themePanel'),themeClose:$('themeClose'),themeBackdrop:$('themeBackdrop'),themeColor:$('themeColor'),motionToggle:$('motionToggle'),motionValue:$('motionValue'),decorToggle:$('decorToggle'),decorValue:$('decorValue'),densityToggle:$('densityToggle'),densityValue:$('densityValue'),soundEngineToggle:$('soundEngineToggle'),soundEngineValue:$('soundEngineValue'),soundEngineStatus:$('soundEngineStatus'),diagnosticsButton:$('diagnosticsButton'),diagnosticsPanel:$('diagnosticsPanel'),diagnosticsClose:$('diagnosticsClose'),diagnosticsRefresh:$('diagnosticsRefresh'),diagnosticsCopy:$('diagnosticsCopy'),diagnosticsList:$('diagnosticsList'),diagnosticsEndpoint:$('diagnosticsEndpoint'),diagnosticsChecked:$('diagnosticsChecked'),diagnosticsCopyStatus:$('diagnosticsCopyStatus'),diagnosticsToolsStatus:$('diagnosticsToolsStatus'),diagnosticsLog:$('diagnosticsLog'),storageExport:$('storageExport'),storageImport:$('storageImport'),storageImportFile:$('storageImportFile'),updateCheck:$('updateCheck'),updateLink:$('updateLink'),
   importButton:$('importButton'),importPanel:$('importPanel'),importClose:$('importClose'),importBackdrop:$('importBackdrop'),libraryFile:$('libraryFile'),importFileButton:$('importFileButton'),importFileName:$('importFileName'),importText:$('importText'),importStatus:$('importStatus'),importSubmit:$('importSubmit'),importUrl:$('importUrl'),importUrlSubmit:$('importUrlSubmit'),importPlaylistName:$('importPlaylistName'),importProgress:$('importProgress'),importReportTitle:$('importReportTitle'),importTotal:$('importTotal'),importProcessed:$('importProcessed'),importAdded:$('importAdded'),importReviewCount:$('importReviewCount'),importMissed:$('importMissed'),importPercent:$('importPercent'),importCancel:$('importCancel'),importResume:$('importResume'),importRetryMissed:$('importRetryMissed'),importDownloadReport:$('importDownloadReport'),importOpenLibrary:$('importOpenLibrary'),importReviewPanel:$('importReviewPanel'),importReviewTitle:$('importReviewTitle'),importReviewPosition:$('importReviewPosition'),importReviewOriginal:$('importReviewOriginal'),importReviewCandidates:$('importReviewCandidates'),importReviewSearchInput:$('importReviewSearchInput'),importReviewSearchButton:$('importReviewSearchButton'),importReviewSkip:$('importReviewSkip')
 };
-Object.assign(ui,Object.fromEntries(['accountBadge','accountStatus','accountForm','accountEmail','accountPassword','accountLogin','accountSignup','accountForgot','accountRecoveryForm','accountNewPassword','accountConnected','accountIdentity','accountAvatar','accountEmailDisplay','accountTrackCount','accountPlaylistCount','accountProfileForm','accountDisplayName','accountSaveProfile','accountSync','accountLogout','accountDeletePassword','accountDeleteConfirm','accountChoice','accountChoiceText','accountMerge','accountUseCloud','accountReplaceCloud','portableExport','portableImport','portableFile','portablePreview','portablePreviewText','portableMerge','portableReplace','portableCancel','portableStatus'].map(id=>[id,$(id)])));
+Object.assign(ui,Object.fromEntries(['accountBadge','accountStatus','accountForm','accountEmail','accountPassword','accountLogin','accountSignup','accountForgot','accountRecoveryForm','accountNewPassword','accountConnected','accountIdentity','accountAvatar','accountEmailDisplay','accountTrackCount','accountPlaylistCount','accountProfileForm','accountDisplayName','accountSaveProfile','accountSync','accountLogout','accountDeletePassword','accountDeleteConfirm','accountChoice','accountChoiceText','accountMerge','accountUseCloud','portableExport','portableImport','portableFile','portablePreview','portablePreviewText','portableMerge','portableReplace','portableCancel','portableStatus'].map(id=>[id,$(id)])));
 const sourceButtonElements=[...ui.sources.querySelectorAll('button[data-source]')];
 const sourceChoiceKey='awun-selected-sources-v1';
 const knownSearchSources=sourceButtonElements.map(button=>button.dataset.source);
@@ -267,8 +267,9 @@ function renderAccountStatus(){
   if(accountUser&&ui.accountDisplayName.dataset.userId!==accountUser.id){ui.accountDisplayName.value=accountUser.display_name||'';ui.accountDisplayName.dataset.userId=accountUser.id}
   if(!accountUser)delete ui.accountDisplayName.dataset.userId;
   ui.accountChoice.hidden=!accountChoice;
-  if(accountChoice){ui.accountChoiceText.textContent=t(accountChoice==='other'?'accountOtherChoice':accountChoice==='guest'?'accountGuestChoice':accountChoice==='restore'?'accountRestoreChoice':'accountConflict');ui.accountMerge.hidden=accountChoice==='other';ui.accountReplaceCloud.hidden=accountChoice!=='restore'}
+  if(accountChoice){ui.accountChoiceText.textContent=t(accountChoice==='other'?'accountOtherChoice':accountChoice==='guest'?'accountGuestChoice':accountChoice==='restore'?'accountRestoreChoice':'accountConflict');ui.accountMerge.hidden=accountChoice==='other'}
   ui.accountStatus.textContent=t(accountStatusKey);
+  if(portablePending)renderPortablePreview();
   homeHub?.render();
 }
 async function accountRequest(path,{method='GET',body}={}){
@@ -477,18 +478,6 @@ ui.accountUseCloud.addEventListener('click',async()=>{
     writeStoredText(accountOwnerKey,accountUser.id,{backup:false});saveAccountMetadata();clearRestorePending();accountStatus('accountSignedIn');renderAccountStatus();
   }catch{if(epoch===accountEpoch)accountStatus('accountSyncFailed')}
 });
-ui.accountReplaceCloud.addEventListener('click',async()=>{
-  if(!accountUser||accountChoice!=='restore'||accountBusy||!confirm(t('accountReplaceCloudPrompt')))return;
-  const epoch=accountEpoch;
-  try{
-    const remote=await accountRequest('library');
-    if(epoch!==accountEpoch)return;
-    accountRevision=remote.revision;accountDirty=true;accountGeneration++;
-    accountChoice=null;saveAccountMetadata();renderAccountStatus();
-    await syncAccount(true);
-    if(restorePending()&&!accountChoice){accountChoice='restore';accountStatus('accountRestoreChoice');renderAccountStatus()}
-  }catch{if(epoch===accountEpoch){accountChoice='restore';accountStatus('accountSyncFailed');renderAccountStatus()}}
-});
 async function leaveAccount(deleteAccount=false){
   if(!accountUser)return;
   if(importController){accountStatus('accountImportBusy');return}
@@ -563,6 +552,12 @@ function portableCopy(copy){
   };
 }
 function portableStatus(key){portableStatusKey=key;ui.portableStatus.textContent=key?t(key):''}
+function renderPortablePreview(){
+  if(!portablePending)return;
+  const protectedCloud=Boolean(accountUser||readStoredText(accountOwnerKey,''));
+  ui.portableReplace.hidden=protectedCloud;
+  ui.portablePreviewText.textContent=t(protectedCloud?'portablePreviewAccount':'portablePreview',{tracks:portablePending.library.length,playlists:portablePending.playlists.length});
+}
 function dismissPortablePreview(){portablePending=null;ui.portablePreview.hidden=true;ui.portableFile.value=''}
 ui.portableExport.addEventListener('click',()=>{
   if(accountChoice){portableStatus('portableBusy');return}
@@ -587,13 +582,14 @@ ui.portableFile.addEventListener('change',async()=>{
     const parsed=JSON.parse(await file.text());
     if(parsed.app!=='SONGVALE'||parsed.kind!=='library'||parsed.version!==1)throw new Error('invalid library file');
     portablePending=portableCopy(parsed);
-    ui.portablePreviewText.textContent=t('portablePreview',{tracks:portablePending.library.length,playlists:portablePending.playlists.length});
+    renderPortablePreview();
     ui.portablePreview.hidden=false;portableStatus('');
   }catch{dismissPortablePreview();portableStatus('portableInvalid')}
 });
 async function acceptPortableCopy(merge){
   if(!portablePending)return;
   if(accountChoice||accountBusy||importController){portableStatus('portableBusy');return}
+  if(!merge&&(accountUser||readStoredText(accountOwnerKey,''))){portableStatus('portableReplaceProtected');return}
   try{
     const next=merge?mergeAccountCopies(accountCopy(),portablePending):portablePending;
     if(!applyAccountCopy(next)){portableStatus('portableStorageFailed');return}

@@ -1,0 +1,1 @@
+Restoring or importing a library can no longer replace music in an account. Combine libraries to keep existing cloud tracks, including when reconnecting after an outage.
