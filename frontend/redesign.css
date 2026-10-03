@@ -877,28 +877,29 @@ html[data-theme="white"] .diagnostics-entry,html[data-theme="white"] .diagnostic
 }
 @media (prefers-reduced-motion:reduce){.track,.search-feedback button{transition:none}}
 
-/* SONGVALE identity: a compact sound-valley mark and a calm grotesk wordmark. */
+/* SONGVALE identity: one valley mark and a restrained editorial wordmark. */
 .site-header .logo img,
 html[data-theme="white"] .site-header .logo img{
-  display:block;content:normal;width:46px;height:46px;filter:none;transform:none;
+  display:block;width:38px;height:38px;filter:none;transform:none;
 }
 .site-header .logo:hover img{transform:translateY(-1px)}
-.site-header .logo-copy{display:grid;justify-items:center;gap:4px;min-width:0}
+.site-header .logo-copy{display:grid;justify-items:center;min-width:0}
 .site-header .logo strong{
-  color:var(--paper);font-family:"Segoe UI Variable Display","Avenir Next","Helvetica Neue",Arial,sans-serif;
-  font-size:17px;font-weight:680;font-style:normal;line-height:1;letter-spacing:.16em;
+  color:var(--paper);font-family:Iowan Old Style,"Palatino Linotype",Georgia,serif;
+  font-size:18px;font-weight:400;font-style:normal;line-height:1.1;letter-spacing:.20em;white-space:nowrap;
 }
-.site-header .logo small{color:var(--signal);font-size:6px;font-weight:750;line-height:1;letter-spacing:.16em;white-space:nowrap}
+html[data-theme="white"] .site-header .logo img{filter:brightness(0) opacity(.85)}
+@media (min-width:1100px){
+  .site-header .logo{gap:7px}
+}
 @media (max-width:1099px){
-  .site-header .logo img,html[data-theme="white"] .site-header .logo img{width:34px;height:34px}
-  .site-header .logo-copy{justify-items:start;gap:3px}
-  .site-header .logo strong{font-size:15px;letter-spacing:.13em}
-  .site-header .logo small{font-size:5px;letter-spacing:.12em}
+  .site-header .logo img,html[data-theme="white"] .site-header .logo img{width:32px;height:32px}
+  .site-header .logo-copy{justify-items:start}
+  .site-header .logo strong{font-size:16px;letter-spacing:.16em}
 }
 @media (max-width:760px){
-  .site-header .logo img,html[data-theme="white"] .site-header .logo img{display:block;width:30px;height:30px}
-  .site-header .logo strong{font-size:13px;letter-spacing:.1em}
-  .site-header .logo small{display:none}
+  .site-header .logo img,html[data-theme="white"] .site-header .logo img{width:27px;height:27px}
+  .site-header .logo strong{font-size:14px;letter-spacing:.12em}
 }
 
 /* SONGVALE 2.1 release experience: the first screen and import workspace make
@@ -1004,13 +1005,6 @@ html[data-theme="black"]{
 }
 
 .theme-button:before{display:none!important}
-.site-header .logo img{display:none!important}
-.site-header .logo-copy{justify-items:center;gap:7px}
-.site-header .logo strong{
-  font-family:Iowan Old Style,"Palatino Linotype",Georgia,serif;
-  font-size:19px;font-weight:400;letter-spacing:.24em;
-}
-.site-header .logo small{color:rgba(var(--paper-rgb),.48);font-size:5px;font-weight:600;letter-spacing:.2em}
 .site-header .search-nav.active,.site-header .flow-button[aria-expanded="true"],.site-header #libraryButton.active{
   border-left-color:rgba(178,162,125,.72);
   background:linear-gradient(90deg,rgba(156,171,145,.1),transparent);
@@ -1184,8 +1178,7 @@ html[data-theme="black"]{
   .site-header .top-actions .library[aria-expanded="true"] .mobile-nav-label{color:var(--paper)}
 }
 @media (max-width:350px){
-  .site-header .logo strong{font-size:0;letter-spacing:0}
-  .site-header .logo strong:before{content:"SV";font-size:16px;letter-spacing:.08em}
+  .site-header .logo-copy{display:none}
 }
 
 /* Home hub: a compact overview built from the listener's own local data. */

@@ -1,10 +1,12 @@
-SONGVALE 2.5.9
+SONGVALE 2.5.10
 Release date: 2026-10-03
 
-This release adds clear playback and My Wave progress states, alongside the
-recent cloud restore safeguards and faster recommendation searches.
+This release refreshes the SONGVALE identity across the website and app icons,
+alongside clear playback and My Wave progress states.
 
 What changed:
+- The sidebar now has a distinct valley mark and SONGVALE wordmark without the
+  unreadable tagline. The same mark appears on iPhone, Android and web icons.
 - Restoring a full backup while signed in pauses cloud sync and asks whether to
   combine libraries, keep the cloud copy, or explicitly replace it.
 - A failed cloud replacement remains pending after a reload.

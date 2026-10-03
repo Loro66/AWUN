@@ -108,10 +108,11 @@ def test_identity_minimal_mode_and_track_stories_are_wired() -> None:
     release = (ROOT / "frontend" / "redesign.css").read_text(encoding="utf-8")
 
     assert '/static/brand/songvale-mark.svg' in html and '<strong>SONGVALE</strong>' in html
-    assert '<a class="logo"' in html and '<a class="logo" href="/" aria-label="Главная SONGVALE" data-i18n-aria-label="homeAria"><span' in html
+    assert '<a class="logo"' in html and '<a class="logo" href="/" aria-label="Главная SONGVALE" data-i18n-aria-label="homeAria"><img' in html
+    assert '/static/brand/songvale-glyph.svg' in html and 'data-i18n="brandLine"' not in html
     assert 'data-i18n="interface"' in html and "state.decor==='minimal'" in script
     assert 'viewBox="0 0 128 128"' in mark
-    assert mark.count("<rect") == 1 and '>S</text>' in mark and '#ff6b1a' not in mark
+    assert mark.count("<rect") == 1 and '<path d="M21 30' in mark and '<text' not in mark
     assert 'Iowan Old Style,"Palatino Linotype",Georgia,serif' in release
     assert "/api/v1/track-details" in script
     assert "awun-line-comments-v1" in script
@@ -414,7 +415,8 @@ def test_quiet_forest_identity_avoids_decorative_status_signifiers() -> None:
     redesign = (ROOT / "frontend" / "redesign.css").read_text(encoding="utf-8")
 
     logo = re.search(r'<a class="logo".*?</a>', html)
-    assert logo is not None and "<img" not in logo.group(0)
+    assert logo is not None and '<img src="/static/brand/songvale-glyph.svg"' in logo.group(0)
+    assert "<small" not in logo.group(0)
     assert 'class="welcome-signal"' not in html
     assert "SONGVALE / LOCAL" not in html
     assert "<header><b>01</b>" not in html

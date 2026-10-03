@@ -1,7 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
   <title id="title">SONGVALE</title>
-  <desc id="desc">A quiet serif S monogram on a deep forest background.</desc>
-  <rect x="4" y="4" width="120" height="120" rx="18" fill="#071009" stroke="#405045" stroke-width="3"/>
-  <text x="64" y="89" fill="#e8e4d8" font-family="Georgia, 'Times New Roman', serif" font-size="78" font-weight="400" text-anchor="middle">S</text>
-  <path d="M35 104H93" fill="none" stroke="#b2a27d" stroke-width="2"/>
+  <desc id="desc">A broad V narrows into a rounded valley.</desc>
+  <rect width="128" height="128" fill="#071009"/>
+  <path d="M21 30h18l25 57 25-57h18l-33.5 73c-4 9-15 9-19 0L21 30Z" fill="#e8e4d8"/>
 </svg>
