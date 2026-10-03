@@ -9,7 +9,7 @@
 [![Latest release](https://img.shields.io/github/v/release/Loro66/AWUN?style=for-the-badge&label=RELEASE&labelColor=11120F&color=6E875F)](https://github.com/Loro66/AWUN/releases/latest)
 
 [![Windows build](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&style=flat-square&label=Windows%20build)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
-[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=62%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
+[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=Browser%20tests)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![License](https://img.shields.io/badge/license-source--visible%20freeware-5F665B?style=flat-square)](LICENSE.md)
@@ -54,6 +54,8 @@ My Wave turns the current track, local library and on-device taste signals into 
 ### Library transfer
 
 Bring an existing collection through a public playlist link, an exported CSV, JSON, M3U or TXT file, or a pasted `Artist — Track` list. SONGVALE resolves each item against connected sources, saves confident matches in a named local playlist in source order and produces a downloadable report for anything it could not match. Private account access and licensed offline downloads are not supported.
+
+To move a SONGVALE library to another device, open **Settings → Move between devices**. Download the portable library file, open it on the other device, review its contents and choose combine or replace. This works without an account. Optional email accounts can also sync favorites and playlists after [server setup](docs/ACCOUNTS.md).
 
 <p align="center">
   <img src="docs/media/songvale-transfer.webp" width="100%" alt="SONGVALE library transfer workspace with live progress and match report" />
@@ -115,7 +117,7 @@ Open `http://127.0.0.1:8000`. Optional provider credentials and deployment setti
 
 ## Verified release quality
 
-Release `v2.5.5` is built from `main` by GitHub Actions.
+Release `v2.5.6` is built from `main` by GitHub Actions.
 
 - Python tests cover search, ranking, matching, policy, reliability, security, visual identity and desktop packaging.
 - Playwright scenarios exercise progressive search, playback recovery, library transfer, responsive layouts, offline shell launch and account merge, conflict, sign-out and recovery flows.

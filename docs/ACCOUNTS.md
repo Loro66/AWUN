@@ -2,7 +2,18 @@
 
 SONGVALE has optional email accounts. The Settings panel shows sign-in and
 registration only when the hosted service is connected to persistent Supabase
-Auth and Postgres. Otherwise guest mode and device backups keep working.
+Auth and Postgres. Otherwise guest mode and file transfers keep working.
+
+## Move a library without an account
+
+Open **Settings → Move between devices → Download library** on the first
+device, then open SONGVALE on the second device and choose **Open library file**.
+Review the track and playlist counts, then explicitly combine or replace the
+library on that device. The portable JSON contains favorites and named playlists
+only; no passwords, session cookies, listening history, settings, temporary
+stream/download URLs or in-progress imports. The file is parsed locally and
+limited to 4 MB. Keep a copy before replacing data. Existing full-device
+backups remain under Diagnostics and serve a different purpose.
 
 ## Activate on the hosted service
 
@@ -29,7 +40,8 @@ Auth and Postgres. Otherwise guest mode and device backups keep working.
    a public issue. The endpoint `GET /api/v1/account/config` should return
    `{"enabled":true}` after configuration. If the SQL table or email sender is
    missing, leave the account service disabled rather than advertise sync.
-4. Register a test user, confirm the email, sign in on one device, merge a
+4. Register a test user, confirm the email, sign in on one device, set a
+   profile name, merge a
    guest library, and open the same account on a second device. Check that
    favorites and playlists arrive, that a conflicting edit offers an explicit
    choice, and that sign-out clears local account music. Test account deletion
@@ -48,7 +60,9 @@ Auth and Postgres. Otherwise guest mode and device backups keep working.
   fresh link when needed. Listening history, queue, taste signals, comments,
   search history, settings and in-progress imports remain device-local.
 - Changes are saved locally first, then synced with a revision check. Network
-  failures leave the copy on the device. If another device changed the cloud
+  failures leave the copy on the device and retry with bounded backoff. A lost
+  save response is reconciled against the cloud copy before showing a conflict.
+  If another device changed the cloud
   copy, the user chooses to combine copies or use the current account copy.
   The Sync button and returning to a tab after a minute check for newer data.
 - Sign-out requires pending changes to sync first. It clears the account's
@@ -61,6 +75,8 @@ Auth and Postgres. Otherwise guest mode and device backups keep working.
 - Confirmation links clear their fragment and ask the user to sign in. Recovery
   tokens are held in memory only until the new password is accepted. Password
   recovery requires working email delivery.
+- An optional display name is stored in Supabase Auth user metadata. It is
+  presentation data, never used for account isolation or authorization.
 
 The free Render container has ephemeral storage. Its filesystem is not an
 account database. For real use, arrange a persistent Supabase plan and monitor

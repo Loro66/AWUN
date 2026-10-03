@@ -9,7 +9,7 @@
 [![Последний релиз](https://img.shields.io/github/v/release/Loro66/AWUN?style=for-the-badge&label=RELEASE&labelColor=11120F&color=6E875F)](https://github.com/Loro66/AWUN/releases/latest)
 
 [![Windows build](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&style=flat-square&label=Windows%20build)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
-[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=62%20browser%20scenarios)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
+[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=Browser%20tests)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![License](https://img.shields.io/badge/license-source--visible%20freeware-5F665B?style=flat-square)](LICENSE.md)
@@ -54,6 +54,8 @@ SONGVALE рассматривает такие сбои как штатное с
 ### Перенос медиатеки
 
 Перенеси коллекцию по публичной ссылке на плейлист, из экспортированного CSV, JSON, M3U или TXT либо вставь список в формате `Исполнитель — Трек`. SONGVALE сопоставит позиции с подключёнными источниками, сохранит уверенные совпадения в именованном плейлисте по исходному порядку и подготовит скачиваемый отчёт о том, что найти не удалось. Доступ к закрытому аккаунту и лицензионные офлайн-загрузки не поддерживаются.
+
+Чтобы перенести уже собранную медиатеку SONGVALE на другое устройство, открой **Настройки → Перенос между устройствами**. Скачай файл медиатеки, открой его на втором устройстве, проверь состав и выбери объединение или замену. Это работает и без аккаунта. После [настройки сервера](docs/ACCOUNTS.md) аккаунт сможет автоматически синхронизировать избранное и плейлисты.
 
 <p align="center">
   <img src="docs/media/songvale-transfer.webp" width="100%" alt="Перенос медиатеки SONGVALE с прогрессом и отчётом о совпадениях" />
@@ -115,7 +117,7 @@ uvicorn backend.api.main:app --reload
 
 ## Проверенное качество релиза
 
-Релиз `v2.5.5` автоматически собирается из `main` через GitHub Actions.
+Релиз `v2.5.6` автоматически собирается из `main` через GitHub Actions.
 
 - Python-тесты проверяют поиск, ranking, matching, policy, надёжность, безопасность, визуальную идентичность и desktop-упаковку.
 - Браузерные сценарии проверяют поиск, восстановление воспроизведения, перенос медиатеки, адаптивность, автономную оболочку, объединение аккаунтов, конфликты, выход и восстановление пароля.
