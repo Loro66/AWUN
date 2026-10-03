@@ -2,6 +2,17 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.5.10] - 2026-10-03
+
+### Improved
+
+- The sidebar has a clear valley mark beside the SONGVALE wordmark, with the tiny tagline removed. The mark stays readable in dark and light themes and on narrow phones.
+- Updated the web app icon, iPhone icon, Android launcher and splash icon, and Play Store icon and feature graphic to use the same mark.
+
+### Testing
+
+- Browser checks cover desktop, phone and narrow phone headers in both themes.
+
 ## [2.5.9] - 2026-10-03
 
 ### Improved

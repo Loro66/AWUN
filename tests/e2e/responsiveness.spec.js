@@ -7,6 +7,27 @@ test.beforeEach(async ({ page }) => {
 });
 test.afterEach(async ({ page }) => { expect(pageErrors.get(page)).toEqual([]); });
 
+for (const width of [1280, 390, 320]) {
+  for (const theme of ['black', 'white']) {
+    test(`brand mark fits ${width}px ${theme}`, async ({ page }, testInfo) => {
+      await page.setViewportSize({ width, height: 800 });
+      await page.addInitScript(value => localStorage.setItem('awun-visual', JSON.stringify({ theme: value })), theme);
+      await openAwun(page);
+      const logo = page.locator('.site-header .logo');
+      const mark = logo.locator('img');
+      await expect(mark).toBeVisible();
+      await expect.poll(() => mark.evaluate(image => image.naturalWidth)).toBeGreaterThan(0);
+      await expect(logo.locator('small')).toHaveCount(0);
+      if (width >= 350) await expect(logo.locator('strong')).toBeVisible();
+      const bounds = await logo.boundingBox();
+      expect(bounds.x).toBeGreaterThanOrEqual(0);
+      expect(bounds.x + bounds.width).toBeLessThanOrEqual(width);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+      await logo.screenshot({ path: testInfo.outputPath('logo.png') });
+    });
+  }
+}
+
 test('startup checks health once and shows loading feedback before results', async ({ page }) => {
   let healthRequests = 0;
   page.on('request', request => { if (new URL(request.url()).pathname === '/health') healthRequests++; });
