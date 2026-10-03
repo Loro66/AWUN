@@ -2,6 +2,12 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.5.8] - 2026-10-03
+
+### Improved
+
+- My Wave now sends a short mood or activity and language query first. A live check found that adding the release era to the first discovery query caused empty results after provider timeouts, while the shorter queries returned playable tracks.
+
 ## [2.5.7] - 2026-10-03
 
 ### Fixed

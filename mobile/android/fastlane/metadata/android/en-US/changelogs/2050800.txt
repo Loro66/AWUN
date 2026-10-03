@@ -1,0 +1,1 @@
+My Wave now starts with a faster, shorter search, broadens empty results, and keeps music playing. Full backup restoration asks before changing your cloud library.

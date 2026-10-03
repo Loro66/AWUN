@@ -74,7 +74,7 @@
     const mood=moodTerms[profile.mood],activity=activityTerms[profile.activity],language=languageTerms[profile.language],era=eraTerms[profile.era];
     const add=(...parts)=>{const query=parts.filter(Boolean).join(' ').trim();if(query&&!queries.includes(query))queries.push(query)};
     if(profile.discovery==='new'){
-      add(mood||activity,language,era||'new music');
+      add(mood||activity,language);
       add(activity,language);
       add(language,era||'new music');
       add(language||'music');

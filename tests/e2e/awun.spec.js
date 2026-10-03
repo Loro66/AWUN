@@ -90,7 +90,7 @@ test('My Wave broadens an empty discovery search without repeating the playing t
   await page.locator('#flowStart').click();
 
   await expect.poll(() => page.evaluate(() => window.awunApp.state.queue.some(track => track.id === 'jamendo_fresh-energy'))).toBe(true);
-  expect(queries.slice(0, 2)).toEqual(['energetic instrumental new music', 'workout instrumental']);
+  expect(queries.slice(0, 2)).toEqual(['energetic instrumental', 'workout instrumental']);
   expect(queries.every(query => !query.toLowerCase().includes('midnight signal'))).toBe(true);
   await expect(page.locator('#message')).toContainText('МОЯ ВОЛНА запущена');
 });
