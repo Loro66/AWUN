@@ -2,6 +2,18 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.5.9] - 2026-10-03
+
+### Improved
+
+- The player shows which track and source are loading, when it is looking for another playable version, and when no connected source can play the track. Pressing Play after an error retries the track.
+- My Wave shows each search attempt in its panel and desktop sidebar, with a visible navigation badge on desktop and mobile. Empty results, source errors and the end of the queue have separate messages and an explicit Retry button.
+- After its bounded search is exhausted, My Wave stops requesting more tracks until Retry or a setting change. Changing settings cancels an older pending Wave search.
+
+### Testing
+
+- Browser scenarios cover delayed playback, unavailable tracks, search progress, exhausted queues, source errors, retry, settings changes and mobile layout.
+
 ## [2.5.8] - 2026-10-03
 
 ### Improved

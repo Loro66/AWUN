@@ -32,6 +32,7 @@
         <button id="flowButton" class="library flow-button" type="button" aria-expanded="false" aria-controls="flowPanel" data-i18n-aria-label="wave">
           <i aria-hidden="true">◌</i><span data-i18n="wave">МОЯ ВОЛНА</span><small class="mobile-nav-label" data-i18n="waveShort">ВОЛНА</small><b id="flowBadge" data-i18n="ready">ГОТОВО</b>
         </button>
+        <p id="sidebarWaveStatus" class="sidebar-wave-status" aria-hidden="true" hidden></p>
         <button id="importButton" class="library import-button" type="button" aria-expanded="false" aria-controls="importPanel" data-i18n-aria-label="import"><i aria-hidden="true">⇣</i><span data-i18n="import">ПЕРЕНОС</span><b aria-hidden="true">↗</b></button>
         <section class="sidebar-listening" aria-label="Продолжить слушать" data-i18n-aria-label="sidebarListening">
           <div class="sidebar-section">
@@ -220,6 +221,11 @@
         <button id="flowClose" type="button" aria-label="Закрыть настройки волны" data-i18n-aria-label="closeFlowAria">×</button>
       </header>
       <p data-i18n="flowDescription">Бесконечная личная станция: выбери степень знакомства с музыкой, настроение, язык и эпоху, а затем улучшай подборку лайками и пропусками.</p>
+      <div id="flowStatusCard" class="flow-status-card" data-tone="idle" role="status" aria-live="polite" aria-atomic="true">
+        <span class="flow-status-dot" aria-hidden="true"></span>
+        <span id="flowStatus" data-i18n="flowReadyStatus">Выбери настройки и запусти волну.</span>
+        <button id="flowRetry" type="button" hidden data-i18n="flowRetry">ПОПРОБОВАТЬ ЕЩЁ РАЗ</button>
+      </div>
       <div class="flow-controls">
         <fieldset>
           <legend data-i18n="discoveryMode">РЕЖИМ ПОДБОРА</legend>
@@ -263,6 +269,7 @@
         <small class="now-kicker" data-i18n="nowPlayingKicker">СЕЙЧАС</small>
         <strong id="nowTitle">НИЧЕГО НЕ ИГРАЕТ</strong>
         <span id="nowArtist">SONGVALE</span>
+        <span id="playerStatus" class="player-status" role="status" aria-live="polite" hidden></span>
         <div class="mini-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
       </div>
 
