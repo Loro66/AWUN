@@ -2,6 +2,18 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.5.7] - 2026-10-03
+
+### Fixed
+
+- Restoring a full device backup while signed in pauses cloud sync and asks whether to combine libraries, keep the cloud copy, or explicitly replace it. A failed replacement stays pending after reload rather than retrying silently.
+- My Wave tries broader searches when a specific recommendation query comes back empty and waits for a connected fallback source. Discovery no longer appends all settings to the playing track title.
+- When no new recommendations are available, My Wave keeps the current music playing and explains that it will try again as the queue runs low.
+
+### Testing
+
+- Browser coverage includes backup restore and all three cloud choices, a failed replacement, empty discovery results, and a local-only Wave queue.
+
 ## [2.5.6] - 2026-10-03
 
 ### Added

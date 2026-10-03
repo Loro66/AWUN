@@ -10,6 +10,8 @@
   const BACKUP_STORE = 'snapshots';
   const MAX_IMPORT_BYTES = 4 * 1024 * 1024;
   const EXCLUDED_BACKUP_KEYS = new Set(['awun-runtime-log-v1', 'awun-waveforms-v1', 'awun-search-cache-v1']);
+  const ACCOUNT_OWNER_KEY = 'songvale-account-owner-v1';
+  const RESTORE_PENDING_KEY = 'songvale-backup-restore-pending-v1';
   let lastError = null;
   let backupTimer = null;
 
@@ -206,6 +208,10 @@
     try {
       const target = storage();
       if (!target) throw new Error('Local storage unavailable');
+      // A full backup does not contain account metadata. Mark the restore before
+      // changing local music so a reload cannot mistake it for an account edit.
+      const owner = target.getItem(RESTORE_PENDING_KEY) || target.getItem(ACCOUNT_OWNER_KEY);
+      if (owner) target.setItem(RESTORE_PENDING_KEY, owner);
       Object.keys(previous).forEach(key => target.removeItem(key));
       entries.forEach(([key, raw]) => target.setItem(key, raw));
       if (migrate() === false) throw new Error('Imported data could not be migrated');
