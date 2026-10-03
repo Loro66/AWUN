@@ -1,20 +1,15 @@
-SONGVALE 2.5.6
+SONGVALE 2.5.7
 Release date: 2026-10-03
 
-This release adds a visible profile and portable library transfer, and improves
-account synchronization and the installed web app's recovery from slow hosting.
+This release protects cloud libraries during full backup restore and makes My Wave
+more reliable when connected sources return empty results.
 
 What changed:
-- An account profile can show and edit a display name.
-- Favorites and playlists can be exported and imported between devices even
-  when account service is not configured. Imports offer combine or replace.
-- Account writes retry after network failures, detect lost acknowledgements,
-  and accept optional null metadata returned by music sources. Sign-out clears
-  the account view in other open tabs.
-- The installed web app opens a cached shell when a slow or failing host cannot
-  serve a fresh page promptly.
-- Stream URLs, passwords, listening history and taste signals are excluded from
-  portable library files.
+- Restoring a full backup while signed in pauses cloud sync and asks whether to
+  combine libraries, keep the cloud copy, or explicitly replace it.
+- A failed cloud replacement remains pending after a reload.
+- My Wave widens overly specific discovery searches, waits for connected fallback
+  sources, and keeps existing music playing when no new tracks are found.
 - Accounts are available after the host has configured a persistent
   Supabase project, the SQL schema and custom email delivery, then enabled
   the feature flag. Until then the app remains in guest mode.

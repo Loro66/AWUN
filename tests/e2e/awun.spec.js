@@ -69,6 +69,48 @@ test('My Wave starts playback and fills a persistent queue', async ({ page }) =>
   await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('awun-queue-v1') || '{}').items?.length || 0)).toBeGreaterThan(0);
 });
 
+test('My Wave broadens an empty discovery search without repeating the playing title', async ({ page }) => {
+  await openAwun(page);
+  await searchFor(page, 'midnight signal');
+  await page.locator('#trackList .track[data-source="soundcloud"]').first().locator('.play').click();
+  const queries = [];
+  const recommendation = { ...TRACKS.jamendo[0], id: 'jamendo_fresh-energy', title: 'Fresh Energy' };
+  await page.route('**/api/v1/search', route => {
+    const body = route.request().postDataJSON();
+    queries.push(body.query);
+    const tracks = body.query === 'workout instrumental' ? [recommendation] : [];
+    return route.fulfill({ json: { query: body.query, tracks, total: tracks.length, searched_sources: body.sources, errors: {} } });
+  });
+  await page.locator('#flowButton').click();
+  await page.locator('[data-flow-discovery="new"]').click();
+  await page.locator('#flowMood').selectOption('energy');
+  await page.locator('#flowActivity').selectOption('training');
+  await page.locator('#flowLanguage').selectOption('instrumental');
+  await page.locator('#flowEra').selectOption('fresh');
+  await page.locator('#flowStart').click();
+
+  await expect.poll(() => page.evaluate(() => window.awunApp.state.queue.some(track => track.id === 'jamendo_fresh-energy'))).toBe(true);
+  expect(queries.slice(0, 2)).toEqual(['energetic instrumental new music', 'workout instrumental']);
+  expect(queries.every(query => !query.toLowerCase().includes('midnight signal'))).toBe(true);
+  await expect(page.locator('#message')).toContainText('МОЯ ВОЛНА запущена');
+});
+
+test('My Wave keeps playing local tracks when connected searches return no new music', async ({ page }) => {
+  await openAwun(page);
+  await searchFor(page, 'midnight signal');
+  await page.locator('#trackList .track[data-source="soundcloud"]').first().locator('.play').click();
+  await page.route('**/api/v1/search', route => {
+    const body = route.request().postDataJSON();
+    return route.fulfill({ json: { query: body.query, tracks: [], total: 0, searched_sources: body.sources, errors: {} } });
+  });
+  await page.locator('#flowButton').click();
+  await page.locator('#flowStart').click();
+
+  await expect(page.locator('#message')).toContainText('Играет музыка с этого устройства');
+  await expect(page.locator('body')).toHaveClass(/flow-active/);
+  await expect(page.locator('#player')).not.toHaveClass(/player-empty/);
+});
+
 test('an unavailable YouTube embed switches to the matching connected source', async ({ page }) => {
   await openAwun(page);
   await searchFor(page, 'unavailable signal');

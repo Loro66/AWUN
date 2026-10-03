@@ -315,6 +315,96 @@ test('offline edits under the same account sync after reconnecting', async ({ pa
   expect(cloud.library.map(track => track.id)).toContain(TRACKS.soundcloud[1].id);
 });
 
+test('restoring a full backup cannot silently replace an account library', async ({ page }) => {
+  const { cloud, writes } = await accountWithCloud(page);
+  await restoreFullBackup(page, [TRACKS.soundcloud[1]]);
+  await expect(page.locator('#accountChoice')).toBeVisible();
+  await expect(page.locator('#accountChoiceText')).toContainText('восстановлена полная копия');
+  await expect(page.locator('#accountReplaceCloud')).toBeVisible();
+  expect(writes()).toBe(0);
+  expect(cloud.library.map(track => track.id)).toEqual([TRACKS.audius[0].id]);
+
+  await page.reload();
+  await page.locator('#themeButton').click();
+  await expect(page.locator('#accountChoice')).toBeVisible();
+  await page.locator('#accountSync').evaluate(button => button.click());
+  expect(writes()).toBe(0);
+  await page.locator('#accountUseCloud').click();
+  await expect(page.locator('#accountChoice')).toBeHidden();
+  expect(await page.evaluate(() => window.awunApp.state.saved.map(track => track.id))).toEqual([TRACKS.audius[0].id]);
+  expect(await page.evaluate(() => localStorage.getItem('songvale-backup-restore-pending-v1'))).toBeNull();
+});
+
+test('combining a restored backup preserves cloud-only tracks', async ({ page }) => {
+  const { cloud, writes } = await accountWithCloud(page);
+  await restoreFullBackup(page, [TRACKS.soundcloud[1]]);
+  await page.locator('#accountMerge').click();
+  await expect.poll(() => cloud.revision).toBe(2);
+  expect(writes()).toBe(1);
+  expect(new Set(cloud.library.map(track => track.id))).toEqual(new Set([TRACKS.audius[0].id, TRACKS.soundcloud[1].id]));
+  await expect(page.locator('#accountChoice')).toBeHidden();
+  expect(await page.evaluate(() => localStorage.getItem('songvale-backup-restore-pending-v1'))).toBeNull();
+});
+
+test('replacing the cloud needs confirmation and a failed write stays pending', async ({ page }) => {
+  const { cloud, writes } = await accountWithCloud(page, { failFirstWrite: true });
+  await restoreFullBackup(page, [TRACKS.soundcloud[1]]);
+  page.once('dialog', dialog => dialog.dismiss());
+  await page.locator('#accountReplaceCloud').click();
+  expect(writes()).toBe(0);
+  page.once('dialog', dialog => dialog.accept());
+  await page.locator('#accountReplaceCloud').click();
+  await expect.poll(writes).toBe(1);
+  await expect(page.locator('#accountChoice')).toBeVisible();
+  expect(cloud.library.map(track => track.id)).toEqual([TRACKS.audius[0].id]);
+  await page.reload();
+  await page.locator('#themeButton').click();
+  await expect(page.locator('#accountChoice')).toBeVisible();
+  expect(writes()).toBe(1);
+  page.once('dialog', dialog => dialog.accept());
+  await page.locator('#accountReplaceCloud').click();
+  await expect.poll(() => cloud.revision).toBe(2);
+  expect(cloud.library.map(track => track.id)).toEqual([TRACKS.soundcloud[1].id]);
+  await expect(page.locator('#accountChoice')).toBeHidden();
+  expect(await page.evaluate(() => localStorage.getItem('songvale-backup-restore-pending-v1'))).toBeNull();
+});
+
+async function accountWithCloud(page, { failFirstWrite = false } = {}) {
+  const cloud = { revision: 1, library: [TRACKS.audius[0]], playlists: [] };
+  let writeCount = 0;
+  await page.route('**/api/v1/account/**', route => {
+    const operation = new URL(route.request().url()).pathname.split('/').pop();
+    if (operation === 'config') return route.fulfill({ json: { enabled: true } });
+    if (operation === 'session') return route.fulfill({ json: { id: 'backup-owner', email: 'listener@example.com' } });
+    if (operation === 'library' && route.request().method() === 'GET') return route.fulfill({ json: cloud });
+    if (operation === 'library' && route.request().method() === 'PUT') {
+      const body = route.request().postDataJSON();
+      writeCount += 1;
+      if (failFirstWrite && writeCount === 1) return route.fulfill({ status: 502, json: {} });
+      if (body.revision !== cloud.revision) return route.fulfill({ status: 409, json: {} });
+      Object.assign(cloud, { revision: cloud.revision + 1, library: body.library, playlists: body.playlists });
+      return route.fulfill({ json: { revision: cloud.revision } });
+    }
+    return route.fulfill({ status: 404, json: {} });
+  });
+  await openAwun(page);
+  await expect.poll(() => page.evaluate(() => window.awunApp.state.saved.map(track => track.id))).toEqual([TRACKS.audius[0].id]);
+  return { cloud, writes: () => writeCount };
+}
+
+async function restoreFullBackup(page, library) {
+  const load = page.waitForEvent('load');
+  page.once('dialog', dialog => dialog.accept());
+  await page.locator('#storageImportFile').setInputFiles({
+    name: 'SONGVALE-backup.json', mimeType: 'application/json',
+    buffer: Buffer.from(JSON.stringify({ app: 'SONGVALE', schema: 2, data: {
+      'awun-library': JSON.stringify(library), 'awun-playlists-v1': '[]',
+    } })),
+  });
+  await load;
+  await page.locator('#themeButton').click();
+}
+
 async function searchAndSave(page) {
   await page.locator('#searchInput').fill('forest echo');
   await page.locator('#searchForm').evaluate(form => form.requestSubmit());

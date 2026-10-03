@@ -190,7 +190,7 @@ const ui={
   themeButton:$('themeButton'),themeLabel:$('themeLabel'),themePanel:$('themePanel'),themeClose:$('themeClose'),themeBackdrop:$('themeBackdrop'),themeColor:$('themeColor'),motionToggle:$('motionToggle'),motionValue:$('motionValue'),decorToggle:$('decorToggle'),decorValue:$('decorValue'),densityToggle:$('densityToggle'),densityValue:$('densityValue'),soundEngineToggle:$('soundEngineToggle'),soundEngineValue:$('soundEngineValue'),soundEngineStatus:$('soundEngineStatus'),diagnosticsButton:$('diagnosticsButton'),diagnosticsPanel:$('diagnosticsPanel'),diagnosticsClose:$('diagnosticsClose'),diagnosticsRefresh:$('diagnosticsRefresh'),diagnosticsCopy:$('diagnosticsCopy'),diagnosticsList:$('diagnosticsList'),diagnosticsEndpoint:$('diagnosticsEndpoint'),diagnosticsChecked:$('diagnosticsChecked'),diagnosticsCopyStatus:$('diagnosticsCopyStatus'),diagnosticsToolsStatus:$('diagnosticsToolsStatus'),diagnosticsLog:$('diagnosticsLog'),storageExport:$('storageExport'),storageImport:$('storageImport'),storageImportFile:$('storageImportFile'),updateCheck:$('updateCheck'),updateLink:$('updateLink'),
   importButton:$('importButton'),importPanel:$('importPanel'),importClose:$('importClose'),importBackdrop:$('importBackdrop'),libraryFile:$('libraryFile'),importFileButton:$('importFileButton'),importFileName:$('importFileName'),importText:$('importText'),importStatus:$('importStatus'),importSubmit:$('importSubmit'),importUrl:$('importUrl'),importUrlSubmit:$('importUrlSubmit'),importPlaylistName:$('importPlaylistName'),importProgress:$('importProgress'),importReportTitle:$('importReportTitle'),importTotal:$('importTotal'),importProcessed:$('importProcessed'),importAdded:$('importAdded'),importReviewCount:$('importReviewCount'),importMissed:$('importMissed'),importPercent:$('importPercent'),importCancel:$('importCancel'),importResume:$('importResume'),importRetryMissed:$('importRetryMissed'),importDownloadReport:$('importDownloadReport'),importOpenLibrary:$('importOpenLibrary'),importReviewPanel:$('importReviewPanel'),importReviewTitle:$('importReviewTitle'),importReviewPosition:$('importReviewPosition'),importReviewOriginal:$('importReviewOriginal'),importReviewCandidates:$('importReviewCandidates'),importReviewSearchInput:$('importReviewSearchInput'),importReviewSearchButton:$('importReviewSearchButton'),importReviewSkip:$('importReviewSkip')
 };
-Object.assign(ui,Object.fromEntries(['accountBadge','accountStatus','accountForm','accountEmail','accountPassword','accountLogin','accountSignup','accountForgot','accountRecoveryForm','accountNewPassword','accountConnected','accountIdentity','accountAvatar','accountEmailDisplay','accountTrackCount','accountPlaylistCount','accountProfileForm','accountDisplayName','accountSaveProfile','accountSync','accountLogout','accountDeletePassword','accountDeleteConfirm','accountChoice','accountChoiceText','accountMerge','accountUseCloud','portableExport','portableImport','portableFile','portablePreview','portablePreviewText','portableMerge','portableReplace','portableCancel','portableStatus'].map(id=>[id,$(id)])));
+Object.assign(ui,Object.fromEntries(['accountBadge','accountStatus','accountForm','accountEmail','accountPassword','accountLogin','accountSignup','accountForgot','accountRecoveryForm','accountNewPassword','accountConnected','accountIdentity','accountAvatar','accountEmailDisplay','accountTrackCount','accountPlaylistCount','accountProfileForm','accountDisplayName','accountSaveProfile','accountSync','accountLogout','accountDeletePassword','accountDeleteConfirm','accountChoice','accountChoiceText','accountMerge','accountUseCloud','accountReplaceCloud','portableExport','portableImport','portableFile','portablePreview','portablePreviewText','portableMerge','portableReplace','portableCancel','portableStatus'].map(id=>[id,$(id)])));
 const sourceButtonElements=[...ui.sources.querySelectorAll('button[data-source]')];
 const sourceChoiceKey='awun-selected-sources-v1';
 const knownSearchSources=sourceButtonElements.map(button=>button.dataset.source);
@@ -244,10 +244,13 @@ let importController=null,importPreviewTimer=null;
 let latestImportReport=loadImportSession();
 const accountOwnerKey='songvale-account-owner-v1';
 const accountSyncKey=id=>`songvale-account-sync-${id}`;
+const backupRestoreKey='songvale-backup-restore-pending-v1';
 let accountUser=null,accountAvailable=false,accountStatusKey='accountChecking',accountChoice=null,accountRevision=0,accountDirty=false,accountGeneration=0,accountTimer=null,accountBusy=false,accountRetryMs=2000,accountSyncedSignature='',accountEpoch=0;
 let lastAccountRefresh=0;
 let portablePending=null,portableStatusKey='';
 function accountStatus(key){accountStatusKey=key;ui.accountStatus.textContent=t(key)}
+function restorePending(){return Boolean(accountUser&&readStoredText(backupRestoreKey,'')===accountUser.id)}
+function clearRestorePending(){if(restorePending())removeStored(backupRestoreKey)}
 function renderAccountStatus(){
   state.accountConnected=Boolean(accountUser);
   ui.accountBadge.textContent=t(accountUser?'accountConnectedBadge':'accountGuest');
@@ -264,7 +267,7 @@ function renderAccountStatus(){
   if(accountUser&&ui.accountDisplayName.dataset.userId!==accountUser.id){ui.accountDisplayName.value=accountUser.display_name||'';ui.accountDisplayName.dataset.userId=accountUser.id}
   if(!accountUser)delete ui.accountDisplayName.dataset.userId;
   ui.accountChoice.hidden=!accountChoice;
-  if(accountChoice){ui.accountChoiceText.textContent=t(accountChoice==='other'?'accountOtherChoice':accountChoice==='guest'?'accountGuestChoice':'accountConflict');ui.accountMerge.hidden=accountChoice==='other'}
+  if(accountChoice){ui.accountChoiceText.textContent=t(accountChoice==='other'?'accountOtherChoice':accountChoice==='guest'?'accountGuestChoice':accountChoice==='restore'?'accountRestoreChoice':'accountConflict');ui.accountMerge.hidden=accountChoice==='other';ui.accountReplaceCloud.hidden=accountChoice!=='restore'}
   ui.accountStatus.textContent=t(accountStatusKey);
   homeHub?.render();
 }
@@ -324,8 +327,9 @@ function markAccountDirty(){
   renderAccountStatus();
   if(!accountChoice)scheduleAccountSync(800);
 }
-async function syncAccount(){
+async function syncAccount(restoreApproved=false){
   if(!accountUser||accountChoice||accountBusy)return;
+  if(restorePending()&&!restoreApproved){accountChoice='restore';accountStatus('accountRestoreChoice');renderAccountStatus();return}
   const epoch=accountEpoch;
   accountBusy=true;lastAccountRefresh=Date.now();accountStatus('accountSyncing');
   try{
@@ -346,6 +350,7 @@ async function syncAccount(){
       if(epoch!==accountEpoch)return;
       accountRevision=result.revision;accountDirty=generation!==accountGeneration;saveAccountMetadata();
       accountSyncedSignature=librarySignature(copy);saveAccountMetadata();
+      if(!accountDirty)clearRestorePending();
       if(accountDirty)scheduleAccountSync(100);
     }
     accountRetryMs=2000;
@@ -357,8 +362,8 @@ async function syncAccount(){
         const remote=await accountRequest('library');
         if(epoch!==accountEpoch)return;
         if(sameAccountCopy(remote,accountCopy())){
-          accountRevision=remote.revision;accountDirty=false;accountSyncedSignature=librarySignature(accountCopy());saveAccountMetadata();accountRetryMs=2000;accountStatus('accountSignedIn');
-        }else{accountChoice='conflict';accountStatus('accountConflict');renderAccountStatus()}
+          accountRevision=remote.revision;accountDirty=false;accountSyncedSignature=librarySignature(accountCopy());saveAccountMetadata();clearRestorePending();accountRetryMs=2000;accountStatus('accountSignedIn');
+        }else{accountChoice=restorePending()?'restore':'conflict';accountStatus(accountChoice==='restore'?'accountRestoreChoice':'accountConflict');renderAccountStatus()}
       }catch{if(epoch!==accountEpoch)return;accountStatus('accountSyncFailed');scheduleAccountSync(accountRetryMs);accountRetryMs=Math.min(accountRetryMs*2,60000)}
     }
     else if(error.status===401){
@@ -368,7 +373,8 @@ async function syncAccount(){
     }else if(error.status===413||error.status===422){accountStatus(error.status===413?'accountLimit':'accountSyncInvalid')}
     else{
       accountStatus('accountSyncFailed');
-      if(accountDirty&&!accountChoice){scheduleAccountSync(accountRetryMs);accountRetryMs=Math.min(accountRetryMs*2,60000)}
+      if(restorePending()){accountChoice='restore';renderAccountStatus()}
+      else if(accountDirty&&!accountChoice){scheduleAccountSync(accountRetryMs);accountRetryMs=Math.min(accountRetryMs*2,60000)}
     }
   }finally{if(epoch===accountEpoch)accountBusy=false}
 }
@@ -387,6 +393,7 @@ async function connectAccount(user){
     accountRevision=remote.revision;accountSyncedSignature=typeof metadata.signature==='string'?metadata.signature:'';
     accountDirty=Boolean(metadata.dirty||owner===user.id&&metadata.signature&&metadata.signature!==librarySignature(local)||owner===user.id&&generation!==accountGeneration);
     if(owner&&owner!==user.id&&copyHasMusic(local))accountChoice='other';
+    else if(restorePending())accountChoice='restore';
     else if(!owner&&copyHasMusic(local))accountChoice='guest';
     else if(owner===user.id&&accountDirty){
       accountRevision=Number.isInteger(metadata.revision)?metadata.revision:0;
@@ -398,7 +405,7 @@ async function connectAccount(user){
       writeStoredText(accountOwnerKey,user.id,{backup:false});
       accountSyncedSignature=librarySignature(accountCopy());saveAccountMetadata();accountStatus('accountSignedIn');
     }
-    if(accountChoice)accountStatus(accountChoice==='conflict'?'accountConflict':accountChoice==='other'?'accountOtherChoice':'accountGuestChoice');
+    if(accountChoice)accountStatus(accountChoice==='restore'?'accountRestoreChoice':accountChoice==='conflict'?'accountConflict':accountChoice==='other'?'accountOtherChoice':'accountGuestChoice');
   }catch{if(epoch!==accountEpoch)return;accountStatus('accountOffline')}
   finally{if(epoch===accountEpoch)accountBusy=false}
   if(epoch!==accountEpoch)return;
@@ -454,7 +461,8 @@ ui.accountMerge.addEventListener('click',async()=>{
     if(epoch!==accountEpoch)return;
     if(!applyAccountCopy(mergeAccountCopies(remote,localAccountCopy())))return;
     accountRevision=remote.revision;accountChoice=null;writeStoredText(accountOwnerKey,accountUser.id,{backup:false});
-    accountDirty=true;accountGeneration++;saveAccountMetadata();renderAccountStatus();await syncAccount();
+    accountDirty=true;accountGeneration++;saveAccountMetadata();renderAccountStatus();await syncAccount(prior==='restore');
+    if(prior==='restore'&&restorePending()&&!accountChoice){accountChoice='restore';accountStatus('accountRestoreChoice');renderAccountStatus()}
   }catch(error){if(epoch!==accountEpoch)return;accountChoice=prior;accountStatus(error.message==='accountLimit'?'accountLimit':'accountSyncFailed');renderAccountStatus()}
 });
 ui.accountUseCloud.addEventListener('click',async()=>{
@@ -466,8 +474,20 @@ ui.accountUseCloud.addEventListener('click',async()=>{
     if(!applyAccountCopy(remote))return;
     accountRevision=remote.revision;accountDirty=false;accountChoice=null;
     accountSyncedSignature=librarySignature(accountCopy());
-    writeStoredText(accountOwnerKey,accountUser.id,{backup:false});saveAccountMetadata();accountStatus('accountSignedIn');renderAccountStatus();
+    writeStoredText(accountOwnerKey,accountUser.id,{backup:false});saveAccountMetadata();clearRestorePending();accountStatus('accountSignedIn');renderAccountStatus();
   }catch{if(epoch===accountEpoch)accountStatus('accountSyncFailed')}
+});
+ui.accountReplaceCloud.addEventListener('click',async()=>{
+  if(!accountUser||accountChoice!=='restore'||accountBusy||!confirm(t('accountReplaceCloudPrompt')))return;
+  const epoch=accountEpoch;
+  try{
+    const remote=await accountRequest('library');
+    if(epoch!==accountEpoch)return;
+    accountRevision=remote.revision;accountDirty=true;accountGeneration++;
+    accountChoice=null;saveAccountMetadata();renderAccountStatus();
+    await syncAccount(true);
+    if(restorePending()&&!accountChoice){accountChoice='restore';accountStatus('accountRestoreChoice');renderAccountStatus()}
+  }catch{if(epoch===accountEpoch){accountChoice='restore';accountStatus('accountSyncFailed');renderAccountStatus()}}
 });
 async function leaveAccount(deleteAccount=false){
   if(!accountUser)return;
@@ -1135,10 +1155,15 @@ function exportLocalData(){
 async function importLocalData(){
   const file=ui.storageImportFile.files?.[0];if(!file)return;
   try{
+    if(accountUser&&accountBusy){ui.diagnosticsToolsStatus.textContent=t('accountRestoreWait');return}
     if(file.size>4*1024*1024)throw new Error('backup too large');
     const raw=await file.text(),preview=storage.previewImport(raw);
     if(!window.confirm(t('confirmRestoreData',{library:preview.library_tracks,queue:preview.queue_tracks})))return;
     ui.storageImport.disabled=true;
+    if(accountUser){
+      if(!writeStoredText(backupRestoreKey,accountUser.id,{backup:false}))throw new Error('restore marker unavailable');
+      clearTimeout(accountTimer);accountChoice='restore';accountStatus('accountRestoreChoice');renderAccountStatus();
+    }
     await storage.importState(raw);ui.diagnosticsToolsStatus.textContent=t('dataRestored');runtimeLog?.log?.('storage.restored');setTimeout(()=>location.reload(),350);
   }catch(error){ui.diagnosticsToolsStatus.textContent=t('dataRestoreFailed');runtimeLog?.log?.('storage.restore-failed',{error:error?.message||error},'error')}
   finally{ui.storageImportFile.value='';ui.storageImport.disabled=false}

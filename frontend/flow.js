@@ -7,7 +7,7 @@
   const moodTerms={any:'',calm:'calm mellow',energy:'energetic',focus:'focus instrumental',happy:'happy upbeat',sad:'melancholic',night:'night'};
   const activityTerms={any:'',work:'work focus',drive:'driving',training:'workout',relax:'relax'};
   const languageTerms={any:'',ru:'русская музыка',foreign:'international music',instrumental:'instrumental'};
-  const eraTerms={any:'',fresh:'new release 2026','2010s':'2010s','2000s':'2000s',classics:'classic'};
+  const eraTerms={any:'',fresh:'new music','2010s':'2010s','2000s':'2000s',classics:'classic'};
   const ids=['flowButton','flowBadge','flowPanel','flowClose','flowStart','flowSeed','flowStats','flowReset','flowMood','flowActivity','flowLanguage','flowEra','flowDiscovery','flowLike','flowDislike','flowBlockArtist'];
   const flow=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
   if(ids.some(id=>!flow[id]))return;
@@ -66,27 +66,38 @@
     while(sorted.length){const recent=result.slice(-2).map(track=>matchText(track.artist));let index=sorted.findIndex(track=>!recent.includes(matchText(track.artist)));if(index<0)index=0;result.push(sorted.splice(index,1)[0])}
     return result;
   }
-  function contextTerms(){return[moodTerms[profile.mood],activityTerms[profile.activity],languageTerms[profile.language],eraTerms[profile.era]].filter(Boolean).join(' ')}
   function revealFlowResults(){
     state.collection='';state.library=false;state.hasSearched=true;ui.libraryButton.classList.remove('active');ui.libraryButton.setAttribute('aria-pressed','false');ui.searchNavButton.classList.add('active');ui.searchNavButton.setAttribute('aria-pressed','true');
   }
   function buildQueries(){
-    const seeds=positiveSeeds(),base=state.flow.baseQuery||ui.searchInput.value.trim(),context=contextTerms(),queries=[];
-    if(base)queries.push([base,context].filter(Boolean).join(' '));
-    for(const seed of seeds.slice(0,5)){
-      const artist=seed.artist&&seed.artist!=='Yandex Music'?seed.artist:'';
-      if(profile.discovery==='familiar'&&artist)queries.push(`${artist} ${context}`.trim());
-      else if(profile.discovery==='new')queries.push(`${seed.title} ${context}`.trim());
-      else queries.push(`${artist} ${seed.title} ${context}`.trim());
+    const seeds=positiveSeeds(),base=state.flow.baseQuery||ui.searchInput.value.trim(),queries=[];
+    const mood=moodTerms[profile.mood],activity=activityTerms[profile.activity],language=languageTerms[profile.language],era=eraTerms[profile.era];
+    const add=(...parts)=>{const query=parts.filter(Boolean).join(' ').trim();if(query&&!queries.includes(query))queries.push(query)};
+    if(profile.discovery==='new'){
+      add(mood||activity,language,era||'new music');
+      add(activity,language);
+      add(language,era||'new music');
+      add(language||'music');
+      add(seeds[0]?.artist&&seeds[0].artist!=='Yandex Music'?seeds[0].artist:'',mood);
+    }else{
+      add(base,mood);
+      for(const seed of seeds.slice(0,2)){
+        const artist=seed.artist&&seed.artist!=='Yandex Music'?seed.artist:'';
+        add(artist,mood,language);
+        if(profile.discovery==='familiar')add(artist);
+        else add(artist,seed.title);
+      }
+      add(mood||activity,language,era);
+      add(language||era||'new music');
     }
-    if(!queries.length&&context)queries.push(context);if(!queries.length)queries.push(document.documentElement.lang==='ru'?'новая музыка':'new music');return[...new Set(queries.filter(Boolean))].slice(0,4);
+    add(document.documentElement.lang==='ru'?'новая музыка':'new music');
+    return queries.slice(0,5);
   }
   async function requestCandidates(query,signal){
     const sources=[...state.sources].filter(source=>!state.available.size||state.available.has(source));
     if(!sources.length)throw new Error(t('flowSearchFailed'));
-    const {data}=await requestSearch({query,limit:30,sources,region:state.region,locale:navigator.language||null,fast:true},{signal});
-    if(!data.tracks?.length)throw new Error(t('flowNoRecommendations'));
-    return data.tracks;
+    const {data}=await requestSearch({query,limit:30,sources,region:state.region,locale:navigator.language||null,fast:true},{signal,waitForFallback:true});
+    return data.tracks||[];
   }
   async function primeLocalFlow(){
     const ranked=rankCandidates([state.active,...state.tracks,...state.saved].filter(Boolean));if(!ranked.length)return false;
@@ -94,19 +105,25 @@
     setMessage(t('flowLive',{count:state.queue.length}),'notice');if(!state.active)void playTrack(state.tracks[0],{preserveQueue:true});return true;
   }
   async function fillFlow(initial=false){
-    if(state.flow.fetching||!state.flow.active)return;const generation=state.flow.generation;state.flow.fetching=true;if(initial)revealFlowResults();setMessage(t('building'),'loading');updateFlowUi();render();
+    if(state.flow.fetching||!state.flow.active)return;const generation=state.flow.generation;state.flow.fetching=true;if(initial)revealFlowResults();if(initial||!state.tracks.length)setMessage(t('building'),'loading');updateFlowUi();render();
     let timeoutId=null,controller=null;
     try{
       if(!state.sources.size)await refreshStatus();if(!state.sources.size)throw new Error(t('flowSearchFailed'));
       if(generation!==state.flow.generation||!state.flow.active)return;
       const queries=buildQueries();if(!queries.length)throw new Error(t('flowNeedsSeed'));
-      const query=queries[state.flow.queryCursor%queries.length];state.flow.queryCursor+=1;controller=new AbortController();state.flow.controller=controller;timeoutId=setTimeout(()=>controller.abort(),10000);
-      const remote=await requestCandidates(query,controller.signal);if(controller.signal.aborted||generation!==state.flow.generation||!state.flow.active)return;const current=initial?state.tracks:[];
-      const ranked=rankCandidates([...current,...remote]);if(!ranked.length)throw new Error(t('flowNoRecommendations'));
-      if(initial){state.tracks=ranked.slice(0,80)}else{const existing=new Set(state.tracks.map(track=>track.id));state.tracks.push(...ranked.filter(track=>!existing.has(track.id)).slice(0,40))}
+      const start=state.flow.queryCursor++%queries.length;controller=new AbortController();state.flow.controller=controller;timeoutId=setTimeout(()=>controller.abort(),12000);
+      const existing=new Set(state.tracks.map(track=>track.id));let ranked=[];
+      for(let attempt=0;attempt<queries.length;attempt++){
+        const remote=await requestCandidates(queries[(start+attempt)%queries.length],controller.signal);
+        if(controller.signal.aborted||generation!==state.flow.generation||!state.flow.active)return;
+        ranked=rankCandidates(remote).filter(track=>initial||!existing.has(track.id));
+        if(ranked.length)break;
+      }
+      if(!ranked.length)throw new Error(t('flowNoRecommendations'));
+      if(initial){state.tracks=ranked.slice(0,80)}else state.tracks.push(...ranked.slice(0,40));
       if(initial)revealFlowResults();if(initial)replaceQueue(state.tracks,'context');else appendQueue(ranked,'context');render();
       if(initial&&!state.active)await playTrack(state.tracks[0],{preserveQueue:true});setMessage(t('flowLive',{count:state.queue.length}),'notice');
-    }catch(error){if(generation!==state.flow.generation)return;if(error.name==='AbortError'&&(!state.flow.active||state.tracks.length))return;setMessage(error.message||t('flowUnavailable'),'error');if(initial)stopFlow(true)}
+    }catch(error){if(generation!==state.flow.generation||!state.flow.active)return;if(state.tracks.length){setMessage(t('flowLocalOnly'),'notice');return}setMessage(error.message||t('flowUnavailable'),'error');if(initial)stopFlow(true)}
     finally{if(timeoutId)clearTimeout(timeoutId);controller?.abort();if(generation===state.flow.generation){state.flow.controller=null;state.flow.fetching=false;updateFlowUi()}}
   }
   async function startFlow(){
