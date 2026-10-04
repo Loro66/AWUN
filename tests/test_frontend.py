@@ -105,6 +105,7 @@ def test_identity_minimal_mode_and_track_stories_are_wired() -> None:
     script = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
     styles = (ROOT / "frontend" / "styles.css").read_text(encoding="utf-8")
     mark = (ROOT / "frontend" / "brand" / "songvale-mark.svg").read_text(encoding="utf-8")
+    wordmark = (ROOT / "frontend" / "brand" / "songvale-wordmark.svg").read_text(encoding="utf-8")
     release = (ROOT / "frontend" / "redesign.css").read_text(encoding="utf-8")
 
     assert '/static/brand/songvale-mark.svg' in html and '<strong>SONGVALE</strong>' in html
@@ -112,8 +113,10 @@ def test_identity_minimal_mode_and_track_stories_are_wired() -> None:
     assert '/static/brand/songvale-glyph.svg' in html and 'data-i18n="brandLine"' not in html
     assert 'data-i18n="interface"' in html and "state.decor==='minimal'" in script
     assert 'viewBox="0 0 128 128"' in mark
-    assert mark.count("<rect") == 1 and '<path d="M21 30' in mark and '<text' not in mark
-    assert 'Iowan Old Style,"Palatino Linotype",Georgia,serif' in release
+    assert mark.count("<rect") == 1 and 'fill="#dbe2db"' in mark
+    assert 'fill="url(#river)"' in mark and '<text' not in mark
+    assert 'fill-rule="evenodd"' in wordmark and '<text' not in wordmark
+    assert 'songvale-wordmark.svg' in release
     assert "/api/v1/track-details" in script
     assert "awun-line-comments-v1" in script
     assert "t('trackStory')" in script

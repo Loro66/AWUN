@@ -1,15 +1,14 @@
-SONGVALE 2.5.11
-Release date: 2026-10-03
+SONGVALE 2.5.12
+Release date: 2026-10-04
 
-This release protects cloud libraries when restoring or transferring backups.
+This release unifies the SONGVALE identity across the site and apps.
 
 What changed:
-- A library file can replace a guest library, but an account-linked library
-  can only be combined with the file. This remains true when the account
-  service is temporarily unavailable.
-- A restored full backup offers Combine or Use account copy. Cloud-only music
-  survives a backup merge, including after a failed sync and retry.
-- The account screens explain what will happen before importing a library.
+- The generic V has been replaced by a forest silhouette over a winding orange
+  river. The matching angular wordmark remains clear without a tiny tagline.
+- The new mark appears in the website header, PWA and browser icons, iPhone,
+  Android and Windows icons, and Google Play artwork.
+- Backup and cloud safety from 2.5.11 remain in place.
 - Accounts are available after the host has configured a persistent
   Supabase project, the SQL schema and custom email delivery, then enabled
   the feature flag. Until then the app remains in guest mode.

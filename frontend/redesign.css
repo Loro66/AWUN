@@ -107,8 +107,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
     background:var(--sidebar-bg);box-shadow:none;backdrop-filter:none;
   }
   .site-header .logo{width:100%;height:104px;padding:4px 0 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border-bottom:1px solid rgba(var(--paper-rgb),.1)}
-  .site-header .logo img{width:42px;height:42px;filter:grayscale(1) sepia(.08) brightness(1.34)}
-  .site-header .logo strong{display:block;color:var(--paper);font-family:Iowan Old Style,"Palatino Linotype",Georgia,serif;font-size:21px;font-weight:400;letter-spacing:4px}
+  .site-header .logo img{width:42px;height:42px}
   .site-header .logo>i{display:none}
   .site-header .top-actions,
   html[data-decor="minimal"] .site-header .top-actions{width:100%;min-height:0;margin:22px 0 0;flex:1;display:flex;flex-direction:column;align-items:stretch;gap:6px;overflow:visible}
@@ -304,7 +303,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   html[data-density="airy"] .track-waveform{height:42px}
 
   html[data-theme="white"] .ambient{opacity:.09;filter:grayscale(1) saturate(.35) contrast(.9) brightness(1.22)}
-  html[data-theme="white"] .site-header .logo img{filter:invert(1) brightness(.24)}
   html[data-theme="white"] body:before{opacity:.035;mix-blend-mode:multiply}
   html[data-theme="white"] .theme-panel-head strong,
   html[data-theme="white"] .flow-panel h2,
@@ -816,7 +814,6 @@ html[data-theme="white"] .diagnostics-entry,html[data-theme="white"] .diagnostic
   .site-header,html[data-decor="minimal"] .site-header{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;height:72px;min-height:72px;margin:0;padding:10px 0;border:0;border-bottom:1px solid var(--line);border-radius:0;background:var(--sidebar-bg);box-shadow:0 -12px 0 var(--forest-0);backdrop-filter:none;overflow:visible}
   .site-header .logo{display:flex;flex-direction:row;align-items:center;gap:8px;width:auto;height:auto;padding:0;border:0}
   .site-header .logo img{width:28px;height:28px}
-  .site-header .logo strong{display:block;font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-size:20px;letter-spacing:1px;color:var(--paper)}
   .site-header .logo>i{display:none}
   .site-header .top-actions,html[data-decor="minimal"] .site-header .top-actions{position:static;display:flex;flex-direction:row;align-items:center;gap:4px;flex:none;width:auto;margin:0;overflow:visible}
   .site-header .library,.site-header .theme-button,html[data-decor="minimal"] .site-header .library,html[data-decor="minimal"] .site-header .theme-button{display:flex;align-items:center;justify-content:center;gap:6px;width:auto;height:40px;min-height:40px;margin:0;padding:0 10px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--paper);box-shadow:none;transform:none}
@@ -858,7 +855,6 @@ html[data-theme="white"] .diagnostics-entry,html[data-theme="white"] .diagnostic
 @media (max-width:760px){
   .app-shell,html[data-decor="minimal"] .app-shell{padding-right:12px;padding-left:12px}
   .site-header .logo img{display:none}
-  .site-header .logo strong{font-size:18px}
   .site-header .library,.site-header .theme-button,html[data-decor="minimal"] .site-header .library,html[data-decor="minimal"] .site-header .theme-button{width:34px;padding:0}
   .site-header .library>span,.site-header .theme-button>span,.site-header .install-button{display:none}
   .results-heading{align-items:center;gap:10px}
@@ -877,29 +873,31 @@ html[data-theme="white"] .diagnostics-entry,html[data-theme="white"] .diagnostic
 }
 @media (prefers-reduced-motion:reduce){.track,.search-feedback button{transition:none}}
 
-/* SONGVALE identity: one valley mark and a restrained editorial wordmark. */
+/* SONGVALE identity: the forest and winding river with its custom wordmark. */
 .site-header .logo img,
 html[data-theme="white"] .site-header .logo img{
-  display:block;width:38px;height:38px;filter:none;transform:none;
+  display:block;width:38px;height:38px;object-fit:contain;filter:none;transform:none;
 }
 .site-header .logo:hover img{transform:translateY(-1px)}
 .site-header .logo-copy{display:grid;justify-items:center;min-width:0}
 .site-header .logo strong{
-  color:var(--paper);font-family:Iowan Old Style,"Palatino Linotype",Georgia,serif;
-  font-size:18px;font-weight:400;font-style:normal;line-height:1.1;letter-spacing:.20em;white-space:nowrap;
+  display:block;width:150px;height:22px;overflow:hidden;
+  background:url('/static/brand/songvale-wordmark.svg') center / contain no-repeat;
+  color:transparent;font-size:0;line-height:0;letter-spacing:0;white-space:nowrap;
 }
 html[data-theme="white"] .site-header .logo img{filter:brightness(0) opacity(.85)}
+html[data-theme="white"] .site-header .logo strong{filter:brightness(0) opacity(.85)}
 @media (min-width:1100px){
   .site-header .logo{gap:7px}
 }
 @media (max-width:1099px){
   .site-header .logo img,html[data-theme="white"] .site-header .logo img{width:32px;height:32px}
   .site-header .logo-copy{justify-items:start}
-  .site-header .logo strong{font-size:16px;letter-spacing:.16em}
+  .site-header .logo strong{width:132px;height:19px}
 }
 @media (max-width:760px){
   .site-header .logo img,html[data-theme="white"] .site-header .logo img{width:27px;height:27px}
-  .site-header .logo strong{font-size:14px;letter-spacing:.12em}
+  .site-header .logo strong{width:112px;height:16px}
 }
 
 /* SONGVALE 2.1 release experience: the first screen and import workspace make
@@ -1110,7 +1108,6 @@ html[data-theme="black"]{
 
 @media (max-width:760px){
   html[data-theme="black"] .ambient{display:block;opacity:.38}
-  .site-header .logo strong{font-size:15px;letter-spacing:.18em}
   .welcome-panel{min-height:500px;padding:30px 22px;align-items:flex-end;border-radius:5px;background:linear-gradient(180deg,rgba(3,8,5,.24) 0%,rgba(3,8,5,.48) 36%,rgba(3,8,5,.96) 76%),url('/static/brand/black-forest-michiel-annaert.webp') 63% center / cover no-repeat}
   .welcome-copy{justify-content:flex-end}
   .welcome-copy h1{margin:14px 0 14px;font-size:43px;line-height:1.02;letter-spacing:-1.3px}
