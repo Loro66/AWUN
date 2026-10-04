@@ -6,7 +6,7 @@ All notable user-visible changes are documented here. SONGVALE follows semantic 
 
 ### Improved
 
-- Replaced the generic V with a compact SONGVALE mark: five sound bars and a warm valley line. The restrained wordmark stays free of a tiny tagline.
+- Replaced the generic V with a forest silhouette over a winding orange river and a custom angular SONGVALE wordmark, based on the supplied reference. The tiny tagline is gone.
 - Applied the same mark to the website, PWA, Windows executable, iPhone and Android icons, and Play Store artwork.
 
 ### Testing
