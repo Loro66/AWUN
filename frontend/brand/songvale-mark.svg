@@ -1,6 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc" fill="none">
   <title id="title">SONGVALE</title>
-  <desc id="desc">A broad V narrows into a rounded valley.</desc>
+  <desc id="desc">Five sound bars crossed by a warm valley line.</desc>
   <rect width="128" height="128" fill="#071009"/>
-  <path d="M21 30h18l25 57 25-57h18l-33.5 73c-4 9-15 9-19 0L21 30Z" fill="#e8e4d8"/>
+  <g stroke="#e8e4d8" stroke-width="11" stroke-linecap="round">
+    <path d="M28 48v38M46 38v55M64 29v70M82 38v55M100 48v38"/>
+  </g>
+  <path d="M18 58C37 67 51 83 64 83S91 67 110 58" stroke="#ff6b1a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

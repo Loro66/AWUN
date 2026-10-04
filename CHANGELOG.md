@@ -2,6 +2,17 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.5.12] - 2026-10-04
+
+### Improved
+
+- Replaced the generic V with a compact SONGVALE mark: five sound bars and a warm valley line. The restrained wordmark stays free of a tiny tagline.
+- Applied the same mark to the website, PWA, Windows executable, iPhone and Android icons, and Play Store artwork.
+
+### Testing
+
+- Checked the mark in desktop and phone headers, icon sizes, and both themes.
+
 ## [2.5.11] - 2026-10-03
 
 ### Fixed

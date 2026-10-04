@@ -12,7 +12,13 @@
   <rect width="1024" height="500" fill="url(#glow)"/>
   <rect width="1024" height="500" fill="url(#grid)" opacity=".48"/>
   <rect x="760" y="34" width="184" height="184" rx="32" fill="#071009"/>
-  <path d="M21 30h18l25 57 25-57h18l-33.5 73c-4 9-15 9-19 0L21 30Z" fill="#e8e4d8" transform="translate(760 34) scale(1.4375)"/>
+  <rect x="762.5" y="36.5" width="179" height="179" rx="30" fill="none" stroke="#33433b" stroke-width="5"/>
+  <g fill="none" transform="translate(760 34) scale(1.4375)">
+    <g stroke="#e8e4d8" stroke-width="11" stroke-linecap="round">
+      <path d="M28 48v38M46 38v55M64 29v70M82 38v55M100 48v38"/>
+    </g>
+    <path d="M18 58C37 67 51 83 64 83S91 67 110 58" stroke="#ff6b1a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
   <text x="66" y="105" fill="#ff6b1a" font-family="Avenir Next,Helvetica Neue,Arial,Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="4">МУЗЫКАЛЬНЫЙ НАВИГАТОР</text>
   <text x="58" y="270" fill="#f1f0e8" font-family="Avenir Next,Helvetica Neue,Arial,sans-serif" font-size="104" font-weight="600" letter-spacing="9">SONGVALE</text>
   <text x="66" y="330" fill="#c8c9c2" font-family="Avenir Next,Helvetica Neue,Arial,Arial,sans-serif" font-size="25" font-weight="500">Один поиск. Разные каталоги.</text>
