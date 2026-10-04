@@ -33,6 +33,23 @@ def test_structured_item_list_is_supported() -> None:
     assert tracks[0].artist == "Band"
 
 
+def test_playlist_limit_counts_unique_tracks_and_keeps_duplicate_metadata() -> None:
+    repeated = {"@type": "MusicRecording", "name": "Song", "byArtist": "Artist"}
+    documents = [{"@type": "MusicPlaylist", "track": [
+        repeated,
+        *[repeated.copy() for _ in range(120)],
+        {**repeated, "url": "https://example.com/song", "image": "https://example.com/cover.jpg"},
+        {"@type": "MusicRecording", "name": "Second", "byArtist": "Other"},
+        {"@type": "MusicRecording", "name": "Third", "byArtist": "Other"},
+    ]}]
+
+    tracks = structured_tracks(documents, 2)
+
+    assert [(track.artist, track.title) for track in tracks] == [("Artist", "Song"), ("Other", "Second")]
+    assert tracks[0].external_url == "https://example.com/song"
+    assert tracks[0].thumbnail == "https://example.com/cover.jpg"
+
+
 def test_playlist_dns_rejects_mixed_public_and_private_answers(monkeypatch) -> None:
     def addresses(*args, **kwargs):
         return [

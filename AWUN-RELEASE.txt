@@ -1,9 +1,12 @@
-SONGVALE 2.5.12
+SONGVALE 2.5.13
 Release date: 2026-10-04
 
-This release unifies the SONGVALE identity across the site and apps.
+This release improves public playlist transfer and carries forward the new SONGVALE identity.
 
 What changed:
+- Public playlist import now counts distinct tracks toward its limit. Repeated
+  entries no longer hide later songs, and available links and cover art survive
+  deduplication.
 - The generic V has been replaced by a forest silhouette over a winding orange
   river. The matching angular wordmark remains clear without a tiny tagline.
 - The new mark appears in the website header, PWA and browser icons, iPhone,

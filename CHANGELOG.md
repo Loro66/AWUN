@@ -2,6 +2,16 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.5.13] - 2026-10-04
+
+### Fixed
+
+- Importing a public playlist counts unique songs toward the track limit. Repeated entries no longer crowd out later music; missing links and cover art can be filled from a duplicate.
+
+### Testing
+
+- Covered 120 duplicate entries before the next song and ran the full Python suite.
+
 ## [2.5.12] - 2026-10-04
 
 ### Improved

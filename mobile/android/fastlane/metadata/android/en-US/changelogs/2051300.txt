@@ -1,0 +1,1 @@
+Public playlist transfer now keeps more distinct songs when the source repeats tracks, and retains available links and cover art.

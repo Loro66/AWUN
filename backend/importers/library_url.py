@@ -62,10 +62,10 @@ def _artist(value: Any) -> str:
 
 
 def structured_tracks(documents: list[Any], limit: int) -> list[LibraryImportEntry]:
-    found: list[LibraryImportEntry] = []
+    unique: dict[tuple[str, str], LibraryImportEntry] = {}
 
     def visit(value: Any) -> None:
-        if len(found) >= limit:
+        if len(unique) >= limit:
             return
         if isinstance(value, list):
             for item in value:
@@ -84,7 +84,14 @@ def structured_tracks(documents: list[Any], limit: int) -> list[LibraryImportEnt
                 image = item.get("image")
                 if isinstance(image, dict):
                     image = image.get("url")
-                found.append(LibraryImportEntry(artist=artist, title=title, external_url=url, thumbnail=image))
+                key = (artist.casefold(), title.casefold())
+                entry = LibraryImportEntry(artist=artist, title=title, external_url=url, thumbnail=image)
+                existing = unique.get(key)
+                if existing is None:
+                    unique[key] = entry
+                else:
+                    existing.external_url = existing.external_url or entry.external_url
+                    existing.thumbnail = existing.thumbnail or entry.thumbnail
                 return
         for key in ("track", "tracks", "itemListElement", "hasPart", "mainEntity", "@graph"):
             if key in value:
@@ -92,10 +99,7 @@ def structured_tracks(documents: list[Any], limit: int) -> list[LibraryImportEnt
 
     for document in documents:
         visit(document)
-    unique: dict[tuple[str, str], LibraryImportEntry] = {}
-    for track in found:
-        unique[(track.artist.casefold(), track.title.casefold())] = track
-    return list(unique.values())[:limit]
+    return list(unique.values())
 
 
 async def _public_addresses(hostname: str, port: int = 443) -> list[str]:
