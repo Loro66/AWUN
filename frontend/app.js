@@ -616,7 +616,7 @@ window.addEventListener('focus',()=>{
   if(accountUser&&!accountChoice&&!accountBusy&&Date.now()-lastAccountRefresh>60000)void syncAccount();
   else if(!accountUser&&accountStatusKey==='accountOffline')void initializeAccount();
 });
-function applyLanguage(){language=i18n.language;i18n.apply();applyVisual(false);applyRepeatMode(false);updateAudioEngineUi();ui.playPause.setAttribute('aria-label',t(state.isPlaying?'pauseAria':'playAria'));render();renderDiagnostics();if(latestImportReport)updateImportReport(latestImportReport)}
+function applyLanguage(){language=i18n.language;i18n.apply();applyVisual(false);applyRepeatMode(false);updateAudioEngineUi();syncVolumeButton();ui.playPause.setAttribute('aria-label',t(state.isPlaying?'pauseAria':'playAria'));render();renderDiagnostics();if(latestImportReport)updateImportReport(latestImportReport)}
 
 function emitAwun(type,detail={}){document.dispatchEvent(new CustomEvent(`awun:${type}`,{detail}))}
 
@@ -1817,15 +1817,26 @@ async function matchAndSaveImported(tracks,{playlistId=null,playlistName=''}={})
   clearTimeout(importPreviewTimer);importPreviewTimer=null;
   if(!tracks.length)throw new Error(t('noTracksInLibrary'));
   if(!state.sources.size){ui.importStatus.textContent=t('noSourcesError');return}
-  const queue=validateLibraryCapacity(validateImportCapacity(uniqueImportedTracks(tracks))),staged=[],missed=[],failed=[],review=[],completed=new Set();let cursor=0,done=0,found=0,added=0,storageFailure=false;
+  const queue=validateLibraryCapacity(validateImportCapacity(uniqueImportedTracks(tracks))),staged=[],completed=new Set();
+  const previous=playlistId&&latestImportReport?.playlistId===playlistId?latestImportReport:null;
+  const incoming=new Set(queue.map(importIdentity));
+  const retain=entries=>uniqueImportedTracks(entries||[]).filter(track=>!incoming.has(importIdentity(track)));
+  const missed=retain(previous?.missed),failed=retain(previous?.failed),carriedPending=retain(previous?.pendingTracks);
+  const review=uniqueImportReview(previous?.review).filter(item=>!incoming.has(importIdentity(item.imported)));
+  // Rechecking a processed failure replaces its result. Resuming an unfinished
+  // track adds progress; neither operation may erase the other queues.
+  const rechecked=new Set([...(previous?.missed||[]),...(previous?.failed||[]),...(previous?.review||[]).map(item=>item.imported)].map(importIdentity).filter(key=>incoming.has(key)));
+  const baseProcessed=Math.max(0,(Number(previous?.processed)||0)-rechecked.size);
+  const total=Math.max(Number(previous?.total)||0,baseProcessed+queue.length+carriedPending.length);
+  let cursor=0,done=baseProcessed,added=Number(previous?.added)||0,found=added,storageFailure=false;
   let playlist=state.playlists.find(list=>list.id===playlistId);
   if(!playlist){playlist=createPlaylist(playlistName||t('importedPlaylist'),{activate:false,importKeys:queue.map(track=>importKey(track.artist,track.title))});if(!playlist)throw new Error(t(state.playlists.length>=25?'playlistLimit':'storageSaveFailed'))}
   playlistId=playlist.id;playlistName=playlist.name;
   const controller=new AbortController();importController?.abort();importController=controller;setImportRunning(true);
-  updateImportReport({playlistId,playlistName,total:queue.length,processed:0,added:0,review:[],missed:[],pendingTracks:[...queue],pending:queue.length,running:true,titleKey:'transferInProgress',statusKey:'matchingProgress',statusValues:{done:0,total:queue.length,found:0}});
+  updateImportReport({playlistId,playlistName,total,processed:done,added,review:[...review],missed:[...missed],failed:[...failed],pendingTracks:[...carriedPending,...queue],pending:carriedPending.length+queue.length,running:true,titleKey:'transferInProgress',statusKey:'matchingProgress',statusValues:{done,total,found}});
   const flush=()=>{if(!staged.length||storageFailure)return;try{added+=commitImportedMatches(staged.map(entry=>entry.match));if(!addImportedToPlaylist(playlistId,staged))throw new Error(t('storageSaveFailed'));staged.length=0}catch(error){storageFailure=true;controller.abort();ui.importStatus.textContent=error.message||t('storageSaveFailed')}};
-  const pendingTracks=()=>queue.filter(track=>!completed.has(importKey(track.artist,track.title)));
-  const refresh=()=>updateImportReport({playlistId,playlistName,total:queue.length,processed:done,added,review:[...review],missed:[...missed],failed:[...failed],pendingTracks:pendingTracks(),pending:queue.length-done,running:true,titleKey:'transferInProgress',statusKey:'matchingProgress',statusValues:{done,total:queue.length,found}});
+  const pendingTracks=()=>[...carriedPending,...queue.filter(track=>!completed.has(importKey(track.artist,track.title)))];
+  const refresh=()=>{const pending=pendingTracks();updateImportReport({playlistId,playlistName,total,processed:done,added,review:[...review],missed:[...missed],failed:[...failed],pendingTracks:pending,pending:pending.length,running:true,titleKey:'transferInProgress',statusKey:'matchingProgress',statusValues:{done,total,found}})};
   let lastRefresh=performance.now();
   const worker=async()=>{
     while(!controller.signal.aborted&&cursor<queue.length){
@@ -1855,9 +1866,9 @@ async function matchAndSaveImported(tracks,{playlistId=null,playlistName=''}={})
   };
   try{
     await Promise.all(Array.from({length:Math.min(3,queue.length)},worker));flush();
-    if(storageFailure){staged.forEach(entry=>completed.delete(importKey(entry.imported.artist,entry.imported.title)));done=completed.size}
-    const stopped=controller.signal.aborted;state.library=state.saved.length>0||Boolean(activePlaylist());ui.libraryButton.classList.toggle('active',state.library);ui.libraryButton.setAttribute('aria-pressed',String(state.library));ui.searchNavButton.classList.toggle('active',!state.library);ui.searchNavButton.setAttribute('aria-pressed',String(!state.library));render();
-    const pending=pendingTracks(),report={playlistId,playlistName,total:queue.length,processed:done,added,review,missed,failed,pendingTracks:pending,pending:pending.length,running:false,stopped,titleKey:stopped?'transferStopped':'transferComplete',statusKey:review.length?'reviewQueueStatus':stopped?'importStopped':'importDone',statusValues:review.length?{count:review.length}:{added,missed:missed.length,processed:done,total:queue.length}};updateImportReport(report);setMessage(storageFailure?t('storageSaveFailed'):failed.length?t('importSourceFailures',{count:failed.length,review:review.length}):t(review.length?'reviewQueueStatus':stopped?'importStoppedSummary':'importSummary',review.length?{count:review.length}:{added,missed:missed.length,processed:done,total:queue.length}),storageFailure?'error':'notice');if(storageFailure)ui.importStatus.textContent=t('storageSaveFailed');runtimeLog?.log?.('library.import',{total:queue.length,processed:done,added,review:review.length,missed:missed.length,failed:failed.length,pending:pending.length,stopped});
+    if(storageFailure){staged.forEach(entry=>completed.delete(importKey(entry.imported.artist,entry.imported.title)));done=baseProcessed+completed.size}
+    const pending=pendingTracks(),stopped=controller.signal.aborted||pending.length>0;state.library=state.saved.length>0||Boolean(activePlaylist());ui.libraryButton.classList.toggle('active',state.library);ui.libraryButton.setAttribute('aria-pressed',String(state.library));ui.searchNavButton.classList.toggle('active',!state.library);ui.searchNavButton.setAttribute('aria-pressed',String(!state.library));render();
+    const report={playlistId,playlistName,total,processed:done,added,review,missed,failed,pendingTracks:pending,pending:pending.length,running:false,stopped,titleKey:stopped?'transferStopped':'transferComplete',statusKey:review.length?'reviewQueueStatus':stopped?'importStopped':'importDone',statusValues:review.length?{count:review.length}:{added,missed:missed.length,processed:done,total}};updateImportReport(report);setMessage(storageFailure?t('storageSaveFailed'):failed.length?t('importSourceFailures',{count:failed.length,review:review.length}):t(review.length?'reviewQueueStatus':stopped?'importStoppedSummary':'importSummary',review.length?{count:review.length}:{added,missed:missed.length,processed:done,total}),storageFailure?'error':'notice');if(storageFailure)ui.importStatus.textContent=t('storageSaveFailed');runtimeLog?.log?.('library.import',{total,processed:done,added,review:review.length,missed:missed.length,failed:failed.length,pending:pending.length,stopped});
   }finally{if(importController===controller)importController=null;setImportRunning(false)}
 }
 async function importLibraryUrl(){
@@ -2094,7 +2105,8 @@ ui.clearQueue?.addEventListener('click',()=>{state.queue=[];state.queueMode='man
 ui.minimizeVideo.addEventListener('click',()=>{ui.youtubeDock.classList.toggle('minimized');ui.minimizeVideo.textContent=ui.youtubeDock.classList.contains('minimized')?'□':'—'});
 ui.progress.addEventListener('change',()=>{state.seeking=false;const duration=state.active?.source==='youtube'?state.youtube?.getDuration?.():ui.audio.duration;seekTo((Number(ui.progress.value)/1000)*(duration||0),true)});ui.progress.addEventListener('pointercancel',()=>{state.seeking=false});
 ui.progress.addEventListener('pointerdown',()=>{state.seeking=true});ui.progress.addEventListener('pointerup',()=>{state.seeking=false;const duration=state.active?.source==='youtube'?state.youtube?.getDuration?.():ui.audio.duration;seekTo((Number(ui.progress.value)/1000)*(duration||0),true)});ui.progress.addEventListener('input',()=>{setRange(ui.progress,ui.progress.value);const duration=state.active?.source==='youtube'?state.youtube?.getDuration?.():ui.audio.duration;ui.elapsed.textContent=formatTime((Number(ui.progress.value)/1000)*(duration||0))});
-ui.volume.addEventListener('input',()=>{setRange(ui.volume,ui.volume.value);const value=Number(ui.volume.value);if(state.audioEngine?.available){ui.audio.volume=1;state.audioEngine.setOutputLevel(value/100)}else ui.audio.volume=value/100;try{state.youtube?.setVolume(value)}catch{}ui.muteButton.textContent=t(value?'volume':'mute')});
+function syncVolumeButton(){const muted=Number(ui.volume.value)===0,label=t(muted?'unmuteAria':'muteAria');ui.muteButton.setAttribute('aria-label',label);ui.muteButton.setAttribute('aria-pressed',String(muted));ui.muteButton.title=label}
+ui.volume.addEventListener('input',()=>{setRange(ui.volume,ui.volume.value);const value=Number(ui.volume.value);if(value>0)state.lastVolume=value/100;if(state.audioEngine?.available){ui.audio.volume=1;state.audioEngine.setOutputLevel(value/100)}else ui.audio.volume=value/100;try{state.youtube?.setVolume(value)}catch{}syncVolumeButton()});
 ui.muteButton.addEventListener('click',()=>{const muted=Number(ui.volume.value)===0;if(muted)setRange(ui.volume,Math.round(state.lastVolume*100)||82);else{state.lastVolume=Number(ui.volume.value)/100;setRange(ui.volume,0)}ui.volume.dispatchEvent(new Event('input'))});
 ui.audio.addEventListener('timeupdate',()=>updateTimeline(ui.audio.currentTime,ui.audio.duration));ui.audio.addEventListener('loadedmetadata',()=>updateTimeline(ui.audio.currentTime,ui.audio.duration));ui.audio.addEventListener('play',()=>{setPlaying(true);startWaveformCapture(state.active)});ui.audio.addEventListener('pause',()=>{stopWaveformCapture();setPlaying(false)});ui.audio.addEventListener('ended',()=>{stopWaveformCapture();handleTrackEnded()});ui.audio.addEventListener('error',()=>{stopWaveformCapture();if(state.active?.id===state.audioTrackId)recoverPlayback()});
 window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();installPrompt=event;ui.installButton.hidden=false});window.addEventListener('appinstalled',()=>{installPrompt=null;ui.installButton.hidden=true;setMessage(t('installed'),'notice')});ui.installButton.addEventListener('click',async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;ui.installButton.hidden=true});
@@ -2112,5 +2124,5 @@ async function bootstrap(){
 }
 window.awunApp={state,ui,playTrack,render,search,toggleSave,currentList,setMessage,sourceLabels,decodeText,matchText,loadingRows,awunFetch,requestSearch,pausePlayback,playStoreMode,apiBase,fallbackApiBase,apiUrl,refreshStatus,replaceQueue,appendQueue,cancelSearch};
 window.songvaleApp=window.awunApp;
-document.addEventListener('awun:language',event=>{language=event.detail.language;applyVisual(false);applyRepeatMode(false);render();renderAccountStatus();portableStatus(portableStatusKey);if(portablePending)ui.portablePreviewText.textContent=t('portablePreview',{tracks:portablePending.library.length,playlists:portablePending.playlists.length});renderDiagnostics();if(latestImportReport)updateImportReport(latestImportReport);refreshStatus()});
+document.addEventListener('awun:language',event=>{language=event.detail.language;applyVisual(false);applyRepeatMode(false);syncVolumeButton();render();renderAccountStatus();portableStatus(portableStatusKey);if(portablePending)ui.portablePreviewText.textContent=t('portablePreview',{tracks:portablePending.library.length,playlists:portablePending.playlists.length});renderDiagnostics();if(latestImportReport)updateImportReport(latestImportReport);refreshStatus()});
 bootstrap();

@@ -296,7 +296,13 @@
         <span id="nowSource" class="now-source">—</span>
         <button id="playerSave" type="button" aria-label="Добавить в медиатеку" data-i18n-aria-label="addLibrary" title="Добавить в медиатеку" aria-pressed="false" disabled>♡</button>
         <button id="queueToggle" type="button" aria-label="Открыть очередь" data-i18n-aria-label="openQueueAria" title="Очередь" aria-expanded="false">☷</button>
-        <button id="muteButton" type="button" aria-label="Выключить звук" data-i18n-aria-label="muteAria" title="Громкость">ЗВУК</button>
+        <button id="muteButton" type="button" aria-label="Выключить звук" aria-pressed="false" title="Выключить звук">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4 6 8H3v8h3l5 4V4Z"/>
+            <g class="volume-on"><path d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/></g>
+            <g class="volume-off"><path d="m16 9 5 6m0-6-5 6"/></g>
+          </svg>
+        </button>
         <input id="volume" class="range volume" type="range" min="0" max="100" value="82" aria-label="Громкость" data-i18n-aria-label="volumeAria">
         <button id="expandPlayer" type="button" aria-label="Развернуть плеер" data-i18n-aria-label="expandPlayerAria" title="Развернуть" aria-expanded="false">↗</button>
         <button id="closePlayer" class="close" type="button" aria-label="Закрыть плеер" data-i18n-aria-label="closePlayerAria">×</button>

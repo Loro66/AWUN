@@ -8,6 +8,72 @@ function searchResponse(body, tracks = [], errors = {}) {
 
 const indila = { ...TRACKS.youtube[0], id:'yt_indila-test', artist:'Indila', title:'Indila - Dernière Danse (Clip Officiel)', duration:215 };
 
+async function restoreMixedImport(page) {
+  await openAwun(page);
+  await page.evaluate(({ saved,candidate })=>{
+    const imported=title=>({ artist:'AWUN Artist',title,duration:214,source:'yandex_music',stream_url:'',catalog_links:{} });
+    localStorage.setItem('awun-library',JSON.stringify([saved]));
+    localStorage.setItem('awun-playlists-v1',JSON.stringify([{ id:'mixed-import',name:'Перенос',items:[{ track:saved,position:0 }],importKeys:[] }]));
+    localStorage.setItem('songvale-import-session-v1',JSON.stringify({ version:1,playlistId:'mixed-import',playlistName:'Перенос',total:5,processed:4,added:1,
+      review:[{ imported:imported('Choose Recording'),candidates:[{ candidate,confidence:.78 }] }],
+      missed:[imported('Missing Recording')],failed:[{ ...imported('Failed Recording'),source_errors:{ youtube:'Unavailable' } }],
+      pendingTracks:[imported('Midnight Signal')],pending:1,running:false,stopped:true,titleKey:'transferStopped' }));
+  },{ saved:TRACKS.jamendo[0],candidate:{ ...TRACKS.youtube[0],id:'yt_choose',title:'Choose Recording' } });
+  await page.reload();
+  await page.locator('#welcomeImport').click();
+  await page.route('**/api/v1/search',route=>{
+    const body=route.request().postDataJSON();
+    const title=body.query.includes('Missing Recording')?'Missing Recording':body.query.includes('Failed Recording')?'Failed Recording':'Midnight Signal';
+    const candidate={ ...TRACKS.youtube[0],id:`yt_${title.replaceAll(' ','_')}`,title };
+    return route.fulfill({ json:searchResponse(body,[candidate]) });
+  });
+}
+
+test('resume and retry preserve every unresolved track and cumulative import progress',async({ page })=>{
+  await restoreMixedImport(page);
+  await page.locator('#importResume').click();
+  await expect(page.locator('#importProcessed')).toHaveText('5');
+  await expect(page.locator('#importTotal')).toHaveText('5');
+  await expect(page.locator('#importAdded')).toHaveText('2');
+  await expect(page.locator('#importReviewCount')).toHaveText('1');
+  await expect(page.locator('#importMissed')).toHaveText('1');
+  await expect(page.locator('#importFailed')).toHaveText('1');
+  await page.reload();
+  await page.locator('#welcomeImport').click();
+  await page.locator('#importRetryMissed').click();
+  await expect(page.locator('#importAdded')).toHaveText('4');
+  await expect(page.locator('#importProcessed')).toHaveText('5');
+  await expect(page.locator('#importTotal')).toHaveText('5');
+  await expect(page.locator('#importReviewCount')).toHaveText('1');
+  await expect(page.locator('#importMissed')).toHaveText('0');
+  await expect(page.locator('#importFailed')).toHaveText('0');
+  await page.locator('#importReviewCandidates button').first().click();
+  await expect(page.locator('#importAdded')).toHaveText('5');
+  await expect(page.locator('#importReviewCount')).toHaveText('0');
+  await page.reload();
+  await page.locator('#welcomeImport').click();
+  await expect(page.locator('#importReviewCount')).toHaveText('0');
+  expect(await page.evaluate(()=>window.awunApp.state.playlists.find(list=>list.id==='mixed-import').items.length)).toBe(5);
+});
+
+test('retrying failed searches keeps unfinished tracks available to resume',async({ page })=>{
+  await restoreMixedImport(page);
+  await page.locator('#importRetryMissed').click();
+  await expect(page.locator('#importAdded')).toHaveText('3');
+  await expect(page.locator('#importProcessed')).toHaveText('4');
+  await expect(page.locator('#importTotal')).toHaveText('5');
+  await expect(page.locator('#importReviewCount')).toHaveText('1');
+  await expect(page.locator('#importResume')).toBeVisible();
+  await page.reload();
+  await page.locator('#welcomeImport').click();
+  await expect(page.locator('#importResume')).toBeVisible();
+  await page.locator('#importResume').click();
+  await expect(page.locator('#importAdded')).toHaveText('4');
+  await expect(page.locator('#importProcessed')).toHaveText('5');
+  await expect(page.locator('#importResume')).toBeHidden();
+  await expect(page.locator('#importReviewCount')).toHaveText('1');
+});
+
 test('Yandex import saves the exact popular recording without waiting for another source', async ({ page }) => {
   await openAwun(page);
   const searched=[];
