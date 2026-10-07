@@ -10,6 +10,21 @@ from backend.sources.youtube import YouTubeAdapter, _looks_like_track
 
 
 class ProviderAdapterTests(unittest.TestCase):
+    def test_soundcloud_preserves_audio_transport_and_actual_cdn_expiry(self) -> None:
+        from unittest.mock import MagicMock, patch
+
+        downloader = MagicMock()
+        downloader.extract_info.return_value = {"entries": [
+            {"id": "audio", "title": "Redline", "url": "https://cdn.example/audio.mp3?expires=1791414669", "protocol": "http"},
+            {"id": "hls", "title": "LMFAOTEKK", "url": "https://cdn.example/playlist.m3u8?expires=1791414700", "protocol": "m3u8_native"},
+        ]}
+        with patch("backend.sources.soundcloud.YoutubeDL") as factory:
+            factory.return_value.__enter__.return_value = downloader
+            tracks = SoundCloudAdapter()._search_legacy("song", 2)
+        self.assertEqual([track.stream_type for track in tracks], ["audio", "hls"])
+        self.assertEqual([track.stream_expires_at for track in tracks], [1791414669000, 1791414700000])
+        self.assertTrue(all(track.download_url is None for track in tracks))
+
     def test_soundcloud_accepts_only_http_waveform_assets(self) -> None:
         self.assertEqual(
             SoundCloudAdapter._safe_waveform_url("https://wave.sndcdn.com/real.png"),
@@ -29,6 +44,24 @@ class ProviderAdapterTests(unittest.TestCase):
     def test_youtube_api_is_scoped_to_music_category(self) -> None:
         params = YouTubeAdapter(api_key="key")._api_params("track", 10, None)
         self.assertEqual(params["videoCategoryId"], "10")
+
+    def test_youtube_fallback_preserves_an_exact_cyrillic_catalog_query(self) -> None:
+        from unittest.mock import MagicMock, patch
+
+        downloader = MagicMock()
+        downloader.extract_info.return_value = {"entries": [{
+            "id": "KF5y5wJAMSk", "title": "Я что-то посмотрел",
+            "channel": "Locked23", "duration": 112,
+        }]}
+        with patch("backend.sources.youtube.YoutubeDL") as factory:
+            factory.return_value.__enter__.return_value = downloader
+            tracks = YouTubeAdapter()._search_flat("Locked23 Я что-то посмотрел", 5)
+        downloader.extract_info.assert_called_once_with(
+            "ytsearch10:Locked23 Я что-то посмотрел", download=False,
+        )
+        self.assertEqual(len(tracks), 1)
+        self.assertEqual(tracks[0].artist, "Locked23")
+        self.assertEqual(tracks[0].duration, 112)
 
     def test_audius_maps_stream_and_authorized_download(self) -> None:
         track = AudiusAdapter(app_name="AWUN Test")._track_from_item(

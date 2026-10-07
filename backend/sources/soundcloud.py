@@ -3,7 +3,7 @@ import base64
 import hashlib
 from time import monotonic
 from typing import Any
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 
 import aiohttp
 from yt_dlp import YoutubeDL
@@ -22,6 +22,11 @@ def _is_progressive_audio(url: str, protocol: str | None = None) -> bool:
         return False
     path = urlparse(url).path.lower()
     return not path.endswith((".m3u8", ".mpd")) and "playlist.m3u8" not in path
+
+
+def _stream_expiry(url: str) -> int | None:
+    value = parse_qs(urlparse(url).query).get("expires", [""])[0]
+    return int(value) * 1000 if value.isdecimal() else None
 
 
 class SoundCloudAdapter(BaseAdapter):
@@ -150,6 +155,8 @@ class SoundCloudAdapter(BaseAdapter):
                     quality="128",
                     source=self.source,
                     stream_url=direct_url,
+                    stream_type="audio" if _is_progressive_audio(direct_url) else "hls",
+                    stream_expires_at=_stream_expiry(direct_url),
                     download_url=official_download,
                     score=76.0,
                     thumbnail=item.get("artwork_url") or (item.get("user") or {}).get("avatar_url"),
@@ -260,6 +267,8 @@ class SoundCloudAdapter(BaseAdapter):
                     quality=quality,
                     source=self.source,
                     stream_url=info["url"],
+                    stream_type="audio" if _is_progressive_audio(info["url"], info.get("protocol")) else "hls",
+                    stream_expires_at=_stream_expiry(info["url"]),
                     # Unauthenticated search does not prove that the uploader
                     # enabled downloads. Keep it playable, but do not expose a
                     # misleading HLS/token "download" button.

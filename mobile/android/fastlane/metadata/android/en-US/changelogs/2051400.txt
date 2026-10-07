@@ -1,0 +1,1 @@
+Improved library transfer with exact YouTube queries, artist-prefixed video titles and official video labels. Slow providers no longer hold up an exact match. Failed searches are shown separately and can be retried. Manual review opens after the transfer finishes processing tracks.

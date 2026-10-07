@@ -290,10 +290,11 @@ class YouTubeAdapter(BaseAdapter):
         YouTube iframe player and no protected YouTube media URL is exposed.
         """
         with YoutubeDL(self._flat_options) as ydl:
-            # Bias the unauthenticated fallback toward songs. The official API
-            # already enforces videoCategoryId=10; yt-dlp search does not.
+            # Preserve the artist/title query. Appending "official audio music"
+            # can exclude exact catalog recordings, especially Cyrillic songs.
+            # Song-sized and non-music checks below still filter broad results.
             payload = ydl.extract_info(
-                f"ytsearch{min(max(limit * 2, limit), 100)}:{query} official audio music",
+                f"ytsearch{min(max(limit * 2, limit), 100)}:{query}",
                 download=False,
             )
 

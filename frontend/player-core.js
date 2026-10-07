@@ -101,10 +101,13 @@
 
   function shouldRefreshStream(track, now = Date.now(), freshnessMs = STREAM_FRESHNESS_MS) {
     if (!track || track.source === 'youtube' || track.source === 'yandex_music') return false;
+    const expiresAt = Number(track.stream_expires_at);
+    if (Number.isFinite(expiresAt) && expiresAt > 0) return Number(now) >= expiresAt - 10000;
     const resolvedAt = Number(track.stream_resolved_at);
     if (!Number.isFinite(resolvedAt) || resolvedAt <= 0) return true;
     const age = Number(now) - resolvedAt;
-    return age < -60000 || age >= Math.max(0, Number(freshnessMs) || 0);
+    const windowMs = track.source === 'soundcloud' ? Math.min(Number(freshnessMs) || 0, 60000) : Number(freshnessMs) || 0;
+    return age < -60000 || age >= Math.max(0, windowMs);
   }
 
   function enqueue(queue, track, position) {
