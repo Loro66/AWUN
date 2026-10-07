@@ -12,6 +12,39 @@ test.afterEach(async ({ page }) => {
   expect(pageErrors.get(page) || []).toEqual([]);
 });
 
+test('speaker control shows mute state, restores volume and follows the interface language',async({ page })=>{
+  await openAwun(page);
+  await searchFor(page,'midnight signal');
+  await page.locator('#trackList .track[data-source="audius"]').first().locator('.play').click();
+  const mute=page.locator('#muteButton'),volume=page.locator('#volume');
+  await expect(mute).toHaveAccessibleName('Выключить звук');
+  await expect(mute.locator('.volume-on')).toBeVisible();
+  await expect(mute.locator('.volume-off')).toBeHidden();
+  await mute.click();
+  await expect(volume).toHaveValue('0');
+  await expect(mute).toHaveAccessibleName('Включить звук');
+  await expect(mute).toHaveAttribute('aria-pressed','true');
+  await expect(mute.locator('.volume-off')).toBeVisible();
+  await expect(mute.locator('.volume-on')).toBeHidden();
+  await mute.click();
+  await expect(volume).toHaveValue('82');
+  await volume.evaluate(input=>{input.value='30';input.dispatchEvent(new Event('input',{ bubbles:true }))});
+  await volume.evaluate(input=>{input.value='0';input.dispatchEvent(new Event('input',{ bubbles:true }))});
+  await mute.click();
+  await expect(volume).toHaveValue('30');
+  await page.locator('#trackList .track[data-source="youtube"]').first().locator('.play').click();
+  await expect(page.locator('#nowSource')).toHaveText('YouTube');
+  await page.evaluate(()=>{window.__videoVolumes=[];window.awunApp.state.youtube.setVolume=value=>window.__videoVolumes.push(value)});
+  await mute.click();
+  await page.evaluate(()=>window.awunI18n.setLanguage('en'));
+  await expect(mute).toHaveAccessibleName('Unmute');
+  await expect(mute).toHaveAttribute('title','Unmute');
+  await mute.click();
+  await expect(volume).toHaveValue('30');
+  await expect(mute).toHaveAccessibleName('Mute');
+  expect(await page.evaluate(()=>window.__videoVolumes)).toEqual([0,30]);
+});
+
 test('progressive search renders the first provider before the slowest provider', async ({ page }) => {
   await openAwun(page, { delays: { youtube: 20, soundcloud: 450, audius: 700, jamendo: 900, internet_archive: 1_100 } });
   await page.locator('#searchInput').fill('midnight signal');

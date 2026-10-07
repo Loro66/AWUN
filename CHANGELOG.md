@@ -2,6 +2,18 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.5.15] - 2026-10-07
+
+### Fixed
+
+- Resuming a library transfer preserves manual review, missing tracks, failed searches and cumulative progress. Retrying failures preserves unfinished tracks and replaces earlier results without counting them twice.
+- Transfer queues remain available after reload and after subsequent retry/resume operations.
+- The volume button uses a recognizable speaker with sound waves or a mute mark. Its label and tooltip reflect the current state in both interface languages; unmuting restores the previous volume, including after moving the slider to zero.
+
+### Testing
+
+- Added browser regressions for mixed import queues across resume, retry, manual selection and reload, and for volume controls in direct audio and YouTube playback.
+
 ## [2.5.14] - 2026-10-07
 
 ### Fixed

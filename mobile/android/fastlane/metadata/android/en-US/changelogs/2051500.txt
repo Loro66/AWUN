@@ -1,0 +1,1 @@
+Resuming library transfer and retrying searches preserve manual review, unresolved tracks and cumulative progress. The volume button now shows a recognizable speaker and mute state, and restores the previous volume.
