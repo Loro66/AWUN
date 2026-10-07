@@ -17,6 +17,7 @@ test('speaker control shows mute state, restores volume and follows the interfac
   await searchFor(page,'midnight signal');
   await page.locator('#trackList .track[data-source="audius"]').first().locator('.play').click();
   const mute=page.locator('#muteButton'),volume=page.locator('#volume');
+  expect(await mute.evaluate(button=>getComputedStyle(button,'::before').content)).toBe('none');
   await expect(mute).toHaveAccessibleName('Выключить звук');
   await expect(mute.locator('.volume-on')).toBeVisible();
   await expect(mute.locator('.volume-off')).toBeHidden();
