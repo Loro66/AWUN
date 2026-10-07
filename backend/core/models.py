@@ -18,6 +18,8 @@ class Track(BaseModel):
     quality: str
     source: SourceName
     stream_url: str
+    stream_type: Literal["audio", "hls"] = "audio"
+    stream_expires_at: int | None = Field(default=None, ge=0, description="Upstream stream expiry as Unix milliseconds")
     download_url: str | None = None
     score: float = Field(ge=0, le=100)
     thumbnail: str | None = None
@@ -37,6 +39,7 @@ class SearchRequest(BaseModel):
     region: RegionName = "AUTO"
     locale: str | None = Field(default=None, max_length=35, pattern=r"^[A-Za-z]{2,3}(?:[-_][A-Za-z]{2,4})?$")
     fast: bool = False
+    refresh: bool = False
 
     @field_validator("sources")
     @classmethod

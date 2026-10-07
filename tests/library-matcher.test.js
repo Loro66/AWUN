@@ -44,6 +44,41 @@ test('retry queries remove presentation labels without losing the raw query',()=
   );
 });
 
+test('matches the real Indila video returned during the Yandex import failure',()=>{
+  const result=matcher.bestMatch([
+    track('Dernière danse','Internet Archive',215,'uncredited'),
+    track('Indila - Dernière Danse (Clip Officiel)','Indila',215,'official'),
+    track('Indila - Dernière Danse (Version Réorchestrée) [Audio HQ]','GoldenMusic',218,'other'),
+  ],{title:'Dernière danse',artist:'Indila'});
+  assert.equal(result?.candidate.id,'official');
+  assert.ok(result.confidence>.95);
+});
+
+test('recognizes artist credits in video titles and Topic channel names',()=>{
+  assert.equal(matcher.bestMatch([
+    track("Die Antwoord - Baby’s On Fire (Official Video)",'Music channel',273,'video'),
+  ],{title:"Baby's On Fire",artist:'Die Antwoord',duration:273})?.candidate.id,'video');
+  assert.equal(matcher.bestMatch([
+    track('Я что-то посмотрел','Locked23 - Topic',111,'topic'),
+  ],{title:'Я что-то посмотрел',artist:'Locked23',duration:111})?.candidate.id,'topic');
+});
+
+test('artist-prefixed decorations still reject alternate versions and unrelated artists',()=>{
+  const imported={title:'Dernière danse',artist:'Indila',duration:215};
+  for(const version of ['Remix','Live','Cover','Slowed']){
+    assert.equal(matcher.bestMatch([track(`Indila - Dernière danse (${version}) [Official Video]`,'Uploader',215,version)],imported),null);
+  }
+  assert.equal(matcher.bestMatch([track('Dernière danse','Other Artist',215,'other')],imported),null);
+});
+
+test('an ineligible top score does not hide a valid lower ranked artist match',()=>{
+  const result=matcher.bestMatch([
+    track('Some Very Long Original Song','Unrelated Uploader',214,'uncredited'),
+    track('Some Very Long Original Songs','AWUN Artist',214,'correct'),
+  ],{title:'Some Very Long Original Song',artist:'AWUN Artist'});
+  assert.equal(result?.candidate.id,'correct');
+});
+
 test('200-record anonymized benchmark reports no false matches', t=>{
   const benchmark=[];
   for(let index=0;index<100;index+=1){

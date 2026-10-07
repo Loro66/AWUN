@@ -77,7 +77,7 @@ class SearchEngine:
     async def search(self, request: SearchRequest) -> SearchResponse:
         started = perf_counter()
         cache_key = self._cache_key(request)
-        cached = self._cache.get(cache_key)
+        cached = None if request.refresh else self._cache.get(cache_key)
         if cached is not None:
             response = deepcopy(cached)
             response.elapsed_ms = round((perf_counter() - started) * 1000)

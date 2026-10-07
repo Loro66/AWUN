@@ -2,6 +2,24 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.5.14] - 2026-10-07
+
+### Fixed
+
+- Library transfer queries sources independently and allows a response within the backend's search budget. A slow SoundCloud request no longer discards an already available YouTube match.
+- YouTube's public metadata search preserves the requested artist/title instead of appending words that excluded catalog tracks such as Locked23's «Я что-то посмотрел».
+- Matching recognizes artist prefixes, Topic channels and French official-video labels such as Indila's «Dernière Danse (Clip Officiel)», while retaining alternate-version checks.
+- Provider failures appear as unchecked tracks with retry controls and source errors in the export report. They are no longer counted as missing recordings.
+- Manual review waits until automatic processing ends; it cannot change a running transfer to «Complete». Interrupted transfers restore their stopped status.
+- Repeated artist/title entries appear only once in manual review, including restored queues; alternate versions remain separate.
+- SoundCloud links refresh before their actual CDN expiry, including tracks found earlier in the same tab. Refresh bypasses the provider cache instead of returning the expired URL again.
+- The player distinguishes direct audio from HLS, preserves the transport in playlists and permits the bundled HLS worker to run.
+
+### Testing
+
+- Regression cases use metadata from the reported Yandex transfer, a response past the old 14-second deadline, provider failures with retry after reload, and manual review during an unfinished transfer.
+- Playback checks cover expired SoundCloud links in an active session, fresh provider lookup, and direct audio without HLS.
+
 ## [2.5.13] - 2026-10-04
 
 ### Fixed

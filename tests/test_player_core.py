@@ -131,3 +131,15 @@ def test_app_wires_persistent_queue_and_cross_source_recovery() -> None:
     assert "resumeAt" in app and "sourceSwitched" in app
     assert "refreshTrackLink" in app and "sameSourceRefreshGeneration" in app
     assert 'src="/static/player-core.js?v=__AWUN_VERSION__"' in html
+
+
+def test_soundcloud_refreshes_before_cdn_expiry_and_ages_legacy_links() -> None:
+    result = run_core(
+        "(()=>{const now=1700000000000;return {"
+        "valid:core.shouldRefreshStream({source:'soundcloud',stream_expires_at:now+30000},now),"
+        "expiring:core.shouldRefreshStream({source:'soundcloud',stream_expires_at:now+5000,stream_resolved_at:now},now),"
+        "expired:core.shouldRefreshStream({source:'soundcloud',stream_expires_at:now-1,stream_resolved_at:now},now),"
+        "legacy:core.shouldRefreshStream({source:'soundcloud',stream_resolved_at:now-60000},now)"
+        "}})()"
+    )
+    assert result == {"valid": False, "expiring": True, "expired": True, "legacy": True}

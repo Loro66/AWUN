@@ -40,6 +40,7 @@ document.documentElement.dataset.platform=runtimePlatform;
 const remoteRetryStatuses=new Set([502,503,504]);
 const remoteFallbackTimeoutMs=12000;
 const searchTimeoutMs=14000;
+const importSearchTimeoutMs=40000;
 const playbackLookupTimeoutMs=7000;
 async function withDeadline(signal, timeoutMs, operation) {
   const controller=new AbortController();
@@ -151,31 +152,32 @@ function mergeSearchData(primary,fallback,requestedSources=[]){
   requestedSources.forEach(source=>{if(fallback.errors?.[source])errors[source]=fallback.errors[source];else delete errors[source]});
   return{...primary,tracks,total:tracks.length,searched_sources:[...new Set([...(primary.searched_sources||[]),...(fallback.searched_sources||[])])],query_variants:[...new Set([...(primary.query_variants||[]),...(fallback.query_variants||[])])],errors,elapsed_ms:Math.max(Number(primary.elapsed_ms)||0,Number(fallback.elapsed_ms)||0)};
 }
-function fallbackSearch(payload,signal){
+function fallbackSearch(payload,signal,timeoutMs=remoteFallbackTimeoutMs){
   const controller=new AbortController();
   const relayAbort=()=>controller.abort(signal?.reason);
   if(signal?.aborted)relayAbort();else signal?.addEventListener('abort',relayAbort,{once:true});
-  const timer=setTimeout(()=>controller.abort(),remoteFallbackTimeoutMs);
+  const timer=setTimeout(()=>controller.abort(),timeoutMs);
   const options=requestOptions({method:'POST',headers:{'Content-Type':'application/json'},signal:controller.signal,body:JSON.stringify(payload)});
   return fetch(fallbackApiUrl('/api/v1/search'),options).then(readSearchData).catch(error=>{
     if(error?.name==='AbortError'&&!signal?.aborted)throw new Error(t('searchUnavailable'));
     throw error;
   }).finally(()=>{clearTimeout(timer);signal?.removeEventListener('abort',relayAbort)});
 }
-function requestSearch(payload,{signal,waitForFallback=false}={}){
-  return withDeadline(signal,payload.fast?playbackLookupTimeoutMs:searchTimeoutMs,
-    boundedSignal=>requestSearchWithinDeadline(payload,{signal:boundedSignal,waitForFallback}));
+function requestSearch(payload,{signal,waitForFallback=false,timeoutMs}={}){
+  const budget=(timeoutMs||(payload.fast?playbackLookupTimeoutMs:searchTimeoutMs))+(timeoutMs&&fallbackApiBase&&!apiBase?8000:0);
+  return withDeadline(signal,budget,
+    boundedSignal=>requestSearchWithinDeadline(payload,{signal:boundedSignal,waitForFallback,timeoutMs}));
 }
-async function requestSearchWithinDeadline(payload,{signal,waitForFallback=false}={}){
+async function requestSearchWithinDeadline(payload,{signal,waitForFallback=false,timeoutMs}={}){
   const options=requestOptions({method:'POST',headers:{'Content-Type':'application/json'},signal,body:JSON.stringify(payload)});
   if(!fallbackApiBase||apiBase){return{data:await readSearchData(await awunFetch('/api/v1/search',options)),supplement:null}}
   let local;
   try{local=await withDeadline(signal,payload.fast?3500:8000,localSignal=>fetch('/api/v1/search',{...options,signal:localSignal}).then(readSearchData))}
-  catch(error){if(error?.name==='AbortError')throw error;return{data:await fallbackSearch(payload,signal),supplement:null}}
+  catch(error){if(error?.name==='AbortError')throw error;return{data:await fallbackSearch(payload,signal,timeoutMs),supplement:null}}
   const requested=Array.isArray(payload.sources)?payload.sources:[];
   const failed=requested.filter(source=>Object.prototype.hasOwnProperty.call(local.errors||{},source));
   if(!failed.length)return{data:local,supplement:null};
-  const remote=fallbackSearch({...payload,sources:failed},signal).then(data=>mergeSearchData(local,data,failed));
+  const remote=fallbackSearch({...payload,sources:failed},signal,timeoutMs).then(data=>mergeSearchData(local,data,failed));
   if(waitForFallback){
     try{return{data:(await remote)||local,supplement:null}}
     catch(error){if(error?.name==='AbortError'&&signal?.aborted)throw error;return{data:local,supplement:null}}
@@ -222,7 +224,8 @@ function loadLineComments(){const value=readStoredJson('awun-line-comments-v1',{
 function loadImportSession(){
   const value=readStoredJson('songvale-import-session-v1',null);
   if(!value||value.version!==1||!Number.isFinite(Number(value.total)))return null;
-  return{...value,running:false,stopped:Boolean(value.stopped||(value.pendingTracks||[]).length)};
+  const stopped=Boolean(value.stopped||(value.pendingTracks||[]).length);
+  return{...value,running:false,stopped,titleKey:stopped?'transferStopped':value.titleKey,statusKey:stopped?'importStopped':value.statusKey,statusValues:stopped?{processed:value.processed,total:value.total,added:value.added}:value.statusValues};
 }
 const playbackSessionKey='awun-playback-session-v1';
 const playbackSessionTtlMs=30*24*60*60*1000;
@@ -242,6 +245,7 @@ let language=i18n.language;
 let homeHub=null;
 let importController=null,importPreviewTimer=null;
 let latestImportReport=loadImportSession();
+ui.importFailed=$('importFailed');
 const accountOwnerKey='songvale-account-owner-v1';
 const accountSyncKey=id=>`songvale-account-sync-${id}`;
 const backupRestoreKey='songvale-backup-restore-pending-v1';
@@ -775,7 +779,7 @@ function createPlaylist(name,{activate=true,importKeys=[]}={}){
   return playlist;
 }
 function playlistTrack(track){
-  const keys=['source','id','title','artist','duration','quality','stream_url','download_url','thumbnail','external_url','catalog_links','import_origin','stream_resolved_at'];
+  const keys=['source','id','title','artist','duration','quality','stream_url','stream_type','stream_expires_at','download_url','thumbnail','external_url','catalog_links','import_origin','stream_resolved_at'];
   return Object.fromEntries(keys.filter(key=>track[key]!=null).map(key=>[key,track[key]]));
 }
 function updatePlaylist(id,mutate){
@@ -886,6 +890,16 @@ function setPlayerExpanded(open){
 }
 function yandexCatalogLink(artist,title){return `https://music.yandex.ru/search?text=${encodeURIComponent(`${artist||''} ${title||''}`.trim())}`}
 function importKey(artist,title){return `${String(artist||'').trim().toLocaleLowerCase()}\u0000${String(title||'').trim().toLocaleLowerCase()}`}
+function importIdentity(track){
+  const normalize=window.SongvaleLibraryMatcher?.normalize||matchText;
+  return `${normalize(track?.artist==='Yandex Music'?'':track?.artist)}\u0000${normalize(track?.title)}`;
+}
+function uniqueImportedTracks(tracks){
+  const unique=new Map();for(const track of tracks){const key=importIdentity(track);if(!unique.has(key))unique.set(key,track)}return [...unique.values()];
+}
+function uniqueImportReview(review){
+  const seen=new Set();return (review||[]).filter(item=>{const key=importIdentity(item.imported);if(seen.has(key))return false;seen.add(key);return true});
+}
 function importId(artist,title){let hash=2166136261;for(const character of importKey(artist,title)){hash^=character.charCodeAt(0);hash=Math.imul(hash,16777619)}return `ym_${(hash>>>0).toString(36)}`}
 function splitImportedName(value){
   const clean=String(value||'').replace(/^\s*\d+[.)]\s*/,'').trim();
@@ -962,7 +976,7 @@ function parseImportedLibrary(raw,fileName=''){
   if(!tracks.length&&(extension==='m3u'||extension==='m3u8'||/#EXTINF:/i.test(raw)))tracks=parseM3uLibrary(raw);
   if(!tracks.length&&(extension==='csv'||/[;,\t]/.test(raw.split(/\r?\n/,1)[0]||'')&&/\b(?:artist|performer|title|track)\b|исполнитель|название/i.test(raw.split(/\r?\n/,1)[0]||'')))tracks=parseCsvLibrary(raw);
   if(!tracks.length)tracks=parseTextLibrary(raw);
-  const unique=new Map();tracks.forEach(track=>unique.set(importKey(track.artist==='Yandex Music'?'':track.artist,track.title),track));return [...unique.values()];
+  return uniqueImportedTracks(tracks);
 }
 function validateImportCapacity(tracks){if(tracks.length>importTrackLimit)throw new Error(t('tooManyTracks',{count:tracks.length,limit:importTrackLimit}));return tracks}
 function validateLibraryCapacity(tracks){
@@ -971,20 +985,24 @@ function validateLibraryCapacity(tracks){
 }
 
 function updateImportReport(report){
+  report={...report,review:uniqueImportReview(report.review)};
   latestImportReport=report;
   const missed=Array.isArray(report.missed)?report.missed.length:Number(report.missed)||0;
-  const review=Array.isArray(report.review)?report.review.length:0,pending=Array.isArray(report.pendingTracks)?report.pendingTracks.length:0;
+  const review=Array.isArray(report.review)?report.review.length:0,pending=Array.isArray(report.pendingTracks)?report.pendingTracks.length:0,failed=Array.isArray(report.failed)?report.failed.length:0;
   const total=Math.max(0,Number(report.total)||0),processed=Math.max(0,Number(report.processed)||0),added=Math.max(0,Number(report.added)||0);
   const percent=total?Math.min(100,Math.round((processed/total)*100)):0;
   ui.importTotal.textContent=String(total);ui.importProcessed.textContent=String(processed);ui.importAdded.textContent=String(added);ui.importReviewCount.textContent=String(review);ui.importMissed.textContent=String(missed);
+  ui.importFailed.textContent=String(failed);
   ui.importProgress.max=Math.max(1,total);ui.importProgress.value=processed;ui.importPercent.textContent=`${percent}%`;
-  ui.importReportTitle.textContent=t(report.titleKey||'readyForLibrary',report.titleValues||{});
+  const titleKey=report.running?(report.titleKey==='readingPlaylistTitle'?'readingPlaylistTitle':'transferInProgress'):pending?'transferStopped':failed?'transferIncomplete':report.titleKey||'readyForLibrary';
+  ui.importReportTitle.textContent=t(titleKey,report.titleValues||{});
   if(report.statusKey)ui.importStatus.textContent=t(report.statusKey,report.statusValues||{});
   if(review&&!report.running)ui.importStatus.textContent=t('reviewQueueStatus',{count:review});
+  if(failed&&!report.running)ui.importStatus.textContent=t('importSourceFailures',{count:failed,review});
   ui.importDownloadReport.hidden=Boolean(report.running)||processed===0;
   ui.importOpenLibrary.hidden=Boolean(report.running)||state.saved.length===0;
   ui.importResume.hidden=Boolean(report.running)||pending===0;
-  ui.importRetryMissed.hidden=Boolean(report.running)||missed===0;
+  ui.importRetryMissed.hidden=Boolean(report.running)||(missed+failed)===0;
   renderImportReview();
   writeStoredJson('songvale-import-session-v1',{...report,version:1,running:false,updatedAt:new Date().toISOString()});
 }
@@ -1015,40 +1033,46 @@ function commitImportedMatches(tracks){
 
 function renderImportReview(){
   if(!ui.importReviewPanel)return;
-  const review=latestImportReport?.review||[],item=review[0];ui.importReviewPanel.hidden=!item;ui.importReviewCandidates.replaceChildren();
-  if(!item)return;
+  const review=latestImportReport?.review||[],item=review[0];ui.importReviewPanel.hidden=Boolean(latestImportReport?.running)||!item;ui.importReviewCandidates.replaceChildren();
+  if(!item||latestImportReport?.running)return;
   const imported=item.imported||{};ui.importReviewTitle.textContent=decodeText(imported.title||t('manualReview'));ui.importReviewOriginal.textContent=[decodeText(imported.artist),decodeText(imported.title),imported.duration?formatTime(imported.duration):''].filter(Boolean).join(' · ');ui.importReviewPosition.textContent='1 / '+review.length;
   const key=importKey(imported.artist,imported.title);if(ui.importReviewSearchInput.dataset.trackKey!==key){ui.importReviewSearchInput.dataset.trackKey=key;ui.importReviewSearchInput.value=((imported.artist==='Yandex Music'?'':imported.artist)+' '+imported.title).trim()}
   (item.candidates||[]).forEach((result,index)=>{
     const candidate=result.candidate||result,row=document.createElement('li'),copy=document.createElement('span'),title=document.createElement('strong'),meta=document.createElement('small'),choose=document.createElement('button');
-    title.textContent=decodeText(candidate.artist)+' — '+decodeText(candidate.title);meta.textContent=t('reviewCandidateMeta',{source:sourceLabels[candidate.source]||candidate.source,duration:formatTime(candidate.duration),confidence:Math.round((Number(result.confidence)||0)*100)});choose.type='button';choose.textContent=t('chooseMatch');choose.addEventListener('click',()=>chooseImportCandidate(index));copy.append(title,meta);row.append(copy,choose);ui.importReviewCandidates.append(row);
+    title.textContent=decodeText(candidate.artist)+' — '+decodeText(candidate.title);meta.textContent=t('reviewCandidateMeta',{source:sourceLabels[candidate.source]||candidate.source,duration:formatTime(candidate.duration),confidence:Math.round((Number(result.confidence)||0)*100)});choose.type='button';choose.textContent=t('chooseMatch');choose.addEventListener('click',()=>chooseImportCandidate(index,item));copy.append(title,meta);row.append(copy,choose);ui.importReviewCandidates.append(row);
   });
 }
 
-function chooseImportCandidate(index){
+function chooseImportCandidate(index,expectedItem){
+  if(latestImportReport?.running||latestImportReport?.review?.[0]!==expectedItem)return;
   const review=[...(latestImportReport?.review||[])],item=review.shift(),result=item?.candidates?.[index],candidate=result?.candidate||result;if(!item||!candidate)return;
   candidate.catalog_links={...candidate.catalog_links,...item.imported?.catalog_links};candidate.import_origin='library_transfer_manual';
   let inserted;
   try{inserted=commitImportedMatches([candidate]);if(!addImportedToPlaylist(latestImportReport.playlistId,[{imported:item.imported,match:candidate}]))throw new Error(t('storageSaveFailed'))}
   catch(error){ui.importStatus.textContent=error.message||t('storageSaveFailed');return}
   const added=(Number(latestImportReport.added)||0)+inserted;
-  updateImportReport({...latestImportReport,added,review,titleKey:'transferComplete',statusKey:review.length?'reviewQueueStatus':'importDone',statusValues:review.length?{count:review.length}:{added,missed:(latestImportReport.missed||[]).length}});
+  const remaining=review.filter(entry=>importIdentity(entry.imported)!==importIdentity(item.imported));
+  updateImportReport({...latestImportReport,added,review:remaining,titleKey:'transferComplete',statusKey:remaining.length?'reviewQueueStatus':'importDone',statusValues:remaining.length?{count:remaining.length}:{added,missed:(latestImportReport.missed||[]).length}});
 }
 
 function skipImportReview(){
-  const review=[...(latestImportReport?.review||[])],item=review.shift();if(!item)return;
+  if(latestImportReport?.running)return;
+  const item=latestImportReport?.review?.[0];if(!item)return;
+  const review=latestImportReport.review.filter(entry=>importIdentity(entry.imported)!==importIdentity(item.imported));
   const missed=[...(latestImportReport.missed||[]),{...item.imported,skip_reason:'manual'}];
   updateImportReport({...latestImportReport,review,missed,titleKey:'transferComplete',statusKey:review.length?'reviewQueueStatus':'importDone',statusValues:review.length?{count:review.length}:{added:latestImportReport.added||0,missed:missed.length}});
 }
 
 async function searchImportReview(){
+  if(latestImportReport?.running)return;
   const item=latestImportReport?.review?.[0],query=ui.importReviewSearchInput.value.trim();if(!item||!query)return;
   if(!state.sources.size){ui.importStatus.textContent=t('noSourcesError');return}
   ui.importReviewSearchButton.disabled=true;
   try{
-    const {data}=await requestSearch({query,limit:18,sources:[...state.sources],region:state.region,locale:navigator.language||null},{waitForFallback:true});
-    const candidates=window.SongvaleLibraryMatcher?.reviewCandidates(data.tracks,item.imported,3)||[];
-    if(!candidates.length){ui.importStatus.textContent=t('reviewSearchEmpty');return}
+    const resolution=await searchImportedResolution(item.imported,null,18,[query]);
+    if(latestImportReport?.running||latestImportReport?.review?.[0]!==item)return;
+    const candidates=resolution.match?window.SongvaleLibraryMatcher?.reviewCandidates([resolution.match],item.imported,3)||[]:resolution.candidates;
+    if(!candidates.length){ui.importStatus.textContent=Object.keys(resolution.sourceErrors||{}).length?t('importSourceFailures',{count:1,review:latestImportReport.review.length}):t('reviewSearchEmpty');return}
     const review=[...latestImportReport.review];review[0]={...item,candidates,query};updateImportReport({...latestImportReport,review});
   }catch(error){ui.importStatus.textContent=error.message||t('reviewSearchEmpty')}finally{ui.importReviewSearchButton.disabled=false}
 }
@@ -1056,7 +1080,7 @@ async function searchImportReview(){
 function downloadImportReport(){
   if(!latestImportReport)return;
   const concise=track=>({artist:track.artist||'',title:track.title||'',duration:track.duration||0});
-  const payload={app:'SONGVALE',version:staticAssetVersion||null,created_at:new Date().toISOString(),playlist:latestImportReport.playlistName||null,total:latestImportReport.total,processed:latestImportReport.processed,added:latestImportReport.added,stopped:Boolean(latestImportReport.stopped),needs_review:(latestImportReport.review||[]).map(item=>concise(item.imported||{})),not_found:(latestImportReport.missed||[]).map(concise),pending:(latestImportReport.pendingTracks||[]).map(concise)};
+  const payload={app:'SONGVALE',version:staticAssetVersion||null,created_at:new Date().toISOString(),playlist:latestImportReport.playlistName||null,total:latestImportReport.total,processed:latestImportReport.processed,added:latestImportReport.added,stopped:Boolean(latestImportReport.stopped),needs_review:(latestImportReport.review||[]).map(item=>concise(item.imported||{})),not_found:(latestImportReport.missed||[]).map(concise),search_failed:(latestImportReport.failed||[]).map(item=>({...concise(item),source_errors:item.source_errors||{}})),pending:(latestImportReport.pendingTracks||[]).map(concise)};
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');
   link.href=url;link.download=`SONGVALE-import-${new Date().toISOString().slice(0,10)}.json`;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),0);
 }
@@ -1710,7 +1734,8 @@ async function playAudio(track,startAt=0){
   const processed=await ensureAudioEngine();ui.audio.volume=processed?1:Number(ui.volume.value)/100;
   state.audioEngine?.setOutputLevel(0);state.audioTrackId=track.id;
   const nativeHls=Boolean(ui.audio.canPlayType('application/vnd.apple.mpegurl'));
-  const Hls=track.source==='soundcloud'&&!nativeHls?await ensureHlsApi():null;
+  const hlsStream=track.stream_type?track.stream_type==='hls':track.source==='soundcloud'||/\.m3u8(?:[?#]|$)/i.test(track.stream_url);
+  const Hls=hlsStream&&!nativeHls?await ensureHlsApi():null;
   if(!current()||signal?.aborted)throw new DOMException('Playback superseded','AbortError');
   if(Hls?.isSupported?.()){
     const hls=new Hls({enableWorker:true});state.hls=hls;
@@ -1746,18 +1771,28 @@ function matchText(value){return decodeText(value).toLocaleLowerCase().normalize
 function bestImportedMatch(candidates,imported){
   return window.SongvaleLibraryMatcher?.bestMatch(candidates,imported)?.candidate||null;
 }
-async function searchImportedResolution(track,signal,limit=14){
-  const sources=[...state.sources],matcher=window.SongvaleLibraryMatcher;
+async function searchImportedResolution(track,signal,limit=14,overrideQueries=null){
+  const sources=['youtube','audius','soundcloud','jamendo','internet_archive'].filter(source=>state.sources.has(source)),matcher=window.SongvaleLibraryMatcher;
   if(!sources.length)throw new Error(t('noSourcesError'));
   const fallbackQuery=((track.artist==='Yandex Music'?'':track.artist)+' '+track.title).trim();
-  const queries=matcher?.searchQueries(track)||[fallbackQuery],candidates=[],seen=new Set();
-  for(const query of queries){
-    const {data}=await requestSearch({query,limit,sources,region:state.region,locale:navigator.language||null},{signal,waitForFallback:true});
-    for(const candidate of data.tracks||[]){if(candidate?.id&&!seen.has(candidate.id)){seen.add(candidate.id);candidates.push(candidate)}}
-    const match=bestImportedMatch(candidates,track);if(match)return{match,candidates:[]};
-    if(signal?.aborted)throw new DOMException('Import matching aborted','AbortError');
+  const queries=overrideQueries||matcher?.searchQueries(track)||[fallbackQuery],candidates=[],seen=new Set(),errors={};
+  // Check providers independently. A slow source must not discard a completed
+  // YouTube match, and the bounded import workers must not flood slow sources.
+  for(const source of sources){
+    for(const query of queries){
+      if(signal?.aborted)throw new DOMException('Import matching aborted','AbortError');
+      try{
+        const {data}=await requestSearch({query,limit,sources:[source],region:state.region,locale:navigator.language||null},{signal,waitForFallback:true,timeoutMs:importSearchTimeoutMs});
+        for(const candidate of data.tracks||[]){const key=trackSessionKey(candidate);if(candidate?.id&&!seen.has(key)){seen.add(key);candidates.push(candidate)}}
+        const match=bestImportedMatch(candidates,track);if(match)return{match,candidates:[]};
+        if(Object.keys(data.errors||{}).length){errors[source]=data.errors[source]||Object.values(data.errors).join('; ');break}
+      }catch(error){
+        if(signal?.aborted||error?.name==='AbortError')throw error;
+        errors[source]=error.message||t('searchFailed');break;
+      }
+    }
   }
-  return{match:null,candidates:matcher?.reviewCandidates(candidates,track,3)||[]};
+  return{match:null,candidates:matcher?.reviewCandidates(candidates,track,3)||[],sourceErrors:errors};
 }
 async function searchImportedMatch(track,signal,limit=14){return(await searchImportedResolution(track,signal,limit)).match}
 async function matchImportedTrack(track,expectedGeneration=state.playbackGeneration,signal){
@@ -1779,9 +1814,10 @@ async function findImportedResolution(track,signal){
   return searchImportedResolution(track,signal);
 }
 async function matchAndSaveImported(tracks,{playlistId=null,playlistName=''}={}){
+  clearTimeout(importPreviewTimer);importPreviewTimer=null;
   if(!tracks.length)throw new Error(t('noTracksInLibrary'));
   if(!state.sources.size){ui.importStatus.textContent=t('noSourcesError');return}
-  const queue=validateLibraryCapacity(validateImportCapacity(tracks)),staged=[],missed=[],review=[],completed=new Set();let cursor=0,done=0,found=0,added=0,storageFailure=false;
+  const queue=validateLibraryCapacity(validateImportCapacity(uniqueImportedTracks(tracks))),staged=[],missed=[],failed=[],review=[],completed=new Set();let cursor=0,done=0,found=0,added=0,storageFailure=false;
   let playlist=state.playlists.find(list=>list.id===playlistId);
   if(!playlist){playlist=createPlaylist(playlistName||t('importedPlaylist'),{activate:false,importKeys:queue.map(track=>importKey(track.artist,track.title))});if(!playlist)throw new Error(t(state.playlists.length>=25?'playlistLimit':'storageSaveFailed'))}
   playlistId=playlist.id;playlistName=playlist.name;
@@ -1789,14 +1825,39 @@ async function matchAndSaveImported(tracks,{playlistId=null,playlistName=''}={})
   updateImportReport({playlistId,playlistName,total:queue.length,processed:0,added:0,review:[],missed:[],pendingTracks:[...queue],pending:queue.length,running:true,titleKey:'transferInProgress',statusKey:'matchingProgress',statusValues:{done:0,total:queue.length,found:0}});
   const flush=()=>{if(!staged.length||storageFailure)return;try{added+=commitImportedMatches(staged.map(entry=>entry.match));if(!addImportedToPlaylist(playlistId,staged))throw new Error(t('storageSaveFailed'));staged.length=0}catch(error){storageFailure=true;controller.abort();ui.importStatus.textContent=error.message||t('storageSaveFailed')}};
   const pendingTracks=()=>queue.filter(track=>!completed.has(importKey(track.artist,track.title)));
-  const refresh=()=>updateImportReport({playlistId,playlistName,total:queue.length,processed:done,added,review:[...review],missed:[...missed],pendingTracks:pendingTracks(),pending:queue.length-done,running:true,titleKey:'transferInProgress',statusKey:'matchingProgress',statusValues:{done,total:queue.length,found}});
+  const refresh=()=>updateImportReport({playlistId,playlistName,total:queue.length,processed:done,added,review:[...review],missed:[...missed],failed:[...failed],pendingTracks:pendingTracks(),pending:queue.length-done,running:true,titleKey:'transferInProgress',statusKey:'matchingProgress',statusValues:{done,total:queue.length,found}});
   let lastRefresh=performance.now();
-  const worker=async()=>{while(!controller.signal.aborted&&cursor<queue.length){const track=queue[cursor++];let processed=false;try{const resolution=await findImportedResolution(track,controller.signal);if(controller.signal.aborted)break;if(resolution.match){resolution.match.import_origin='library_transfer';staged.push({imported:track,match:resolution.match});found+=1}else if(resolution.candidates?.length)review.push({imported:track,candidates:resolution.candidates});else missed.push(track);processed=true}catch(error){if(controller.signal.aborted||error?.name==='AbortError')break;missed.push(track);processed=true}finally{if(processed){completed.add(importKey(track.artist,track.title));done+=1;if(done%12===0)flush();if(done%12===0||performance.now()-lastRefresh>1000){refresh();lastRefresh=performance.now()}}}}};
+  const worker=async()=>{
+    while(!controller.signal.aborted&&cursor<queue.length){
+      const track=queue[cursor++];let processed=false;
+      try{
+        const resolution=await findImportedResolution(track,controller.signal);
+        if(controller.signal.aborted)break;
+        if(resolution.match){resolution.match.import_origin='library_transfer';staged.push({imported:track,match:resolution.match});found+=1}
+        else if(resolution.candidates?.length)review.push({imported:track,candidates:resolution.candidates});
+        else if(Object.keys(resolution.sourceErrors||{}).length)failed.push({...track,source_errors:resolution.sourceErrors});
+        else missed.push(track);
+        processed=true;
+      }catch(error){
+        if(controller.signal.aborted||error?.name==='AbortError')break;
+        failed.push({...track,source_errors:{request:error.message||t('searchFailed')}});processed=true;
+      }finally{
+        if(processed){
+          completed.add(importKey(track.artist,track.title));done+=1;
+          if(done%12===0||performance.now()-lastRefresh>1000){
+            // Persist matched tracks before recording them as completed in the
+            // resumable session. Reloading must not lose staged matches.
+            flush();refresh();lastRefresh=performance.now();
+          }
+        }
+      }
+    }
+  };
   try{
     await Promise.all(Array.from({length:Math.min(3,queue.length)},worker));flush();
     if(storageFailure){staged.forEach(entry=>completed.delete(importKey(entry.imported.artist,entry.imported.title)));done=completed.size}
     const stopped=controller.signal.aborted;state.library=state.saved.length>0||Boolean(activePlaylist());ui.libraryButton.classList.toggle('active',state.library);ui.libraryButton.setAttribute('aria-pressed',String(state.library));ui.searchNavButton.classList.toggle('active',!state.library);ui.searchNavButton.setAttribute('aria-pressed',String(!state.library));render();
-    const pending=pendingTracks(),report={playlistId,playlistName,total:queue.length,processed:done,added,review,missed,pendingTracks:pending,pending:pending.length,running:false,stopped,titleKey:stopped?'transferStopped':'transferComplete',statusKey:review.length?'reviewQueueStatus':stopped?'importStopped':'importDone',statusValues:review.length?{count:review.length}:{added,missed:missed.length,processed:done,total:queue.length}};updateImportReport(report);setMessage(storageFailure?t('storageSaveFailed'):t(review.length?'reviewQueueStatus':stopped?'importStoppedSummary':'importSummary',review.length?{count:review.length}:{added,missed:missed.length,processed:done,total:queue.length}),storageFailure?'error':'notice');if(storageFailure)ui.importStatus.textContent=t('storageSaveFailed');runtimeLog?.log?.('library.import',{total:queue.length,processed:done,added,review:review.length,missed:missed.length,pending:pending.length,stopped});
+    const pending=pendingTracks(),report={playlistId,playlistName,total:queue.length,processed:done,added,review,missed,failed,pendingTracks:pending,pending:pending.length,running:false,stopped,titleKey:stopped?'transferStopped':'transferComplete',statusKey:review.length?'reviewQueueStatus':stopped?'importStopped':'importDone',statusValues:review.length?{count:review.length}:{added,missed:missed.length,processed:done,total:queue.length}};updateImportReport(report);setMessage(storageFailure?t('storageSaveFailed'):failed.length?t('importSourceFailures',{count:failed.length,review:review.length}):t(review.length?'reviewQueueStatus':stopped?'importStoppedSummary':'importSummary',review.length?{count:review.length}:{added,missed:missed.length,processed:done,total:queue.length}),storageFailure?'error':'notice');if(storageFailure)ui.importStatus.textContent=t('storageSaveFailed');runtimeLog?.log?.('library.import',{total:queue.length,processed:done,added,review:review.length,missed:missed.length,failed:failed.length,pending:pending.length,stopped});
   }finally{if(importController===controller)importController=null;setImportRunning(false)}
 }
 async function importLibraryUrl(){
@@ -1890,14 +1951,15 @@ function currentPlaybackTime(){
 }
 
 function shouldRefreshBeforePlayback(track){
-  return Boolean(track?.id&&!freshTracksByKey.has(trackSessionKey(track))&&playerCore.shouldRefreshStream(track));
+  return Boolean(track?.id&&playerCore.shouldRefreshStream(track));
 }
 
 async function refreshTrackLink(track,signal){
   if(!track?.id||!track.source||track.source==='yandex_music')return null;
   const query=`${decodeText(track.artist)} ${decodeText(track.title)}`.trim();
   if(!query)return null;
-  const {data}=await requestSearch({query,limit:12,sources:[track.source],region:state.region,locale:navigator.language||null,fast:true},{signal,waitForFallback:true});
+  const soundcloud=track.source==='soundcloud';
+  const {data}=await requestSearch({query,limit:12,sources:[track.source],region:state.region,locale:navigator.language||null,fast:!soundcloud,refresh:true},{signal,waitForFallback:true,timeoutMs:soundcloud?importSearchTimeoutMs:undefined});
   const candidates=(data.tracks||[]).filter(candidate=>candidate.source===track.source);
   return candidates.find(candidate=>candidate.id===track.id)||playerCore.rankAlternatives(track,candidates,new Set())[0]||null;
 }
@@ -1977,7 +2039,7 @@ ui.themeButton.addEventListener('click',()=>ui.themePanel.hidden?openThemePanel(
 ui.diagnosticsLog.addEventListener('click',()=>runtimeLog?.download?.(`SONGVALE-log-${new Date().toISOString().slice(0,10)}.json`));ui.storageExport.addEventListener('click',exportLocalData);ui.storageImport.addEventListener('click',()=>ui.storageImportFile.click());ui.storageImportFile.addEventListener('change',importLocalData);ui.updateCheck.addEventListener('click',checkForUpdates);
 ui.importButton.addEventListener('click',()=>ui.importPanel.hidden?openImportPanel():closeImportPanel());ui.importClose.addEventListener('click',closeImportPanel);ui.importBackdrop.addEventListener('click',closeImportPanel);ui.importFileButton.addEventListener('click',()=>ui.libraryFile.click());ui.importSubmit.addEventListener('click',importLibrary);ui.importUrlSubmit.addEventListener('click',importLibraryUrl);ui.importCancel.addEventListener('click',()=>importController?.abort());ui.importDownloadReport.addEventListener('click',downloadImportReport);ui.importOpenLibrary.addEventListener('click',()=>{const id=latestImportReport?.playlistId;state.activePlaylistId=state.playlists.some(list=>list.id===id)?id:null;closeImportPanel();setLibraryView(true)});
 ui.importResume.addEventListener('click',()=>{const report=latestImportReport,tracks=report?.pendingTracks||[];if(tracks.length)void matchAndSaveImported(tracks,{playlistId:report.playlistId,playlistName:report.playlistName}).catch(error=>{ui.importStatus.textContent=error.message||t('importFailed')})});
-ui.importRetryMissed.addEventListener('click',()=>{const report=latestImportReport,tracks=report?.missed||[];if(tracks.length)void matchAndSaveImported(tracks,{playlistId:report.playlistId,playlistName:report.playlistName}).catch(error=>{ui.importStatus.textContent=error.message||t('importFailed')})});
+ui.importRetryMissed.addEventListener('click',()=>{const report=latestImportReport,tracks=[...(report?.missed||[]),...(report?.failed||[])];if(tracks.length)void matchAndSaveImported(tracks,{playlistId:report.playlistId,playlistName:report.playlistName}).catch(error=>{ui.importStatus.textContent=error.message||t('importFailed')})});
 ui.importReviewSkip.addEventListener('click',skipImportReview);ui.importReviewSearchButton.addEventListener('click',()=>void searchImportReview());ui.importReviewSearchInput.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();void searchImportReview()}});
 function previewImportedLibrary(fileName=''){
   try{

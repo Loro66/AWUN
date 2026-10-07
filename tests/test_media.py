@@ -56,6 +56,7 @@ class MediaSignerTests(unittest.TestCase):
         self.assertEqual(response.headers["x-content-type-options"], "nosniff")
         self.assertEqual(response.headers["x-frame-options"], "DENY")
         self.assertIn("frame-ancestors 'none'", response.headers["content-security-policy"])
+        self.assertIn("worker-src 'self' blob:", response.headers["content-security-policy"])
         self.assertIn("camera=()", response.headers["permissions-policy"])
 
     def test_download_filename_is_safe_and_uses_media_type(self) -> None:

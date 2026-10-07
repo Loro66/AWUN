@@ -233,6 +233,22 @@ class SearchEngineTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(adapter.queries, ["song"])
         await engine.close()
 
+    async def test_stream_refresh_bypasses_and_replaces_cached_provider_urls(self) -> None:
+        adapter = FakeAdapter("soundcloud", [make_track("soundcloud", title="Song", score=80)])
+        engine = SearchEngine([adapter], cache_ttl_seconds=30)
+        request = SearchRequest(query="song", limit=2, sources=["soundcloud"])
+        first = await engine.search(request)
+        adapter.tracks[0].stream_url = "https://cdn.example/fresh.mp3"
+        cached = await engine.search(request)
+        refreshed = await engine.search(request.model_copy(update={"refresh": True}))
+        later = await engine.search(request)
+
+        self.assertEqual(cached.tracks[0].stream_url, first.tracks[0].stream_url)
+        self.assertEqual(refreshed.tracks[0].stream_url, "https://cdn.example/fresh.mp3")
+        self.assertEqual(later.tracks[0].stream_url, refreshed.tracks[0].stream_url)
+        self.assertEqual(adapter.queries, ["song", "song"])
+        await engine.close()
+
     def test_unknown_source_is_rejected(self) -> None:
         with self.assertRaises(ValidationError):
             SearchRequest(query="song", sources=["spotify"])

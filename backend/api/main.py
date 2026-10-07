@@ -176,7 +176,7 @@ def _apply_security_headers(response: Response) -> Response:
         "style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; "
         "media-src 'self' blob:; connect-src 'self' https:; "
         "frame-src https://www.youtube.com https://www.youtube-nocookie.com; "
-        "font-src 'self' data:; worker-src 'self'",
+        "font-src 'self' data:; worker-src 'self' blob:",
     )
     return response
 
