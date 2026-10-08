@@ -43,3 +43,10 @@ jobs:
             playwright-report
             test-results
           if-no-files-found: ignore
+      - name: Upload feature layout review images
+        if: always()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: songvale-feature-layouts
+          path: test-results/feature-qa
+          if-no-files-found: ignore

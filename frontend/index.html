@@ -185,6 +185,7 @@
           <form id="playlistCreate" class="playlist-create"><label for="playlistName" data-i18n="newPlaylist">НОВЫЙ ПЛЕЙЛИСТ</label><div><input id="playlistName" type="text" maxlength="60" required data-i18n-placeholder="playlistNamePlaceholder" placeholder="Название плейлиста"><button type="submit" data-i18n="createPlaylist">СОЗДАТЬ</button></div></form>
         </div>
         <div id="playlistTabs" class="playlist-tabs" role="group" aria-label="Выбор плейлиста" data-i18n-aria-label="playlistTabsAria"></div>
+        <div class="smart-playlists"><strong data-i18n="smartPlaylists">Умные плейлисты</strong><div id="smartPlaylistTabs" class="playlist-tabs" role="group" aria-label="Умные плейлисты" data-i18n-aria-label="smartPlaylists"></div><p id="smartPlaylistHint" hidden></p></div>
         <div id="playlistActions" class="playlist-actions" hidden><span id="playlistDescription"></span><button id="deletePlaylist" type="button" data-i18n="deletePlaylist">УДАЛИТЬ ПЛЕЙЛИСТ</button></div>
         <p id="libraryEmptyState" class="library-empty-state" hidden></p>
       </section>
@@ -253,6 +254,7 @@
   </main>
 
   <aside id="player" class="player" hidden aria-label="Музыкальный плеер" data-i18n-aria-label="playerAria">
+    <div class="desktop-mini-head"><span>SONGVALE</span><button id="desktopMiniRestore" type="button" hidden data-i18n="desktopRestore">Полное окно ↗</button></div>
     <header class="player-panel-head"><div><span class="section-kicker" data-i18n="nowPlayingKicker">СЕЙЧАС</span><h2 data-i18n="nowPlaying">Сейчас играет</h2></div><button id="collapsePlayer" type="button" aria-label="Свернуть плеер" data-i18n-aria-label="collapsePlayerAria">×</button></header>
     <div id="youtubeDock" class="youtube-dock" hidden>
       <div class="dock-head"><span data-i18n="youtubePlayer">ОФИЦИАЛЬНЫЙ ПЛЕЕР YOUTUBE</span><button id="minimizeVideo" type="button">—</button></div>
@@ -294,6 +296,8 @@
 
       <div class="player-tools">
         <span id="nowSource" class="now-source">—</span>
+        <button id="desktopMini" type="button" hidden aria-pressed="false" data-i18n-aria-label="desktopMini" data-i18n-title="desktopMini" title="Мини-плеер">▣</button>
+        <button id="desktopTray" type="button" hidden data-i18n-aria-label="desktopHide" data-i18n-title="desktopHide" title="Свернуть в трей">↓</button>
         <button id="playerSave" type="button" aria-label="Добавить в медиатеку" data-i18n-aria-label="addLibrary" title="Добавить в медиатеку" aria-pressed="false" disabled>♡</button>
         <button id="queueToggle" type="button" aria-label="Открыть очередь" data-i18n-aria-label="openQueueAria" title="Очередь" aria-expanded="false">☷</button>
         <button id="muteButton" type="button" aria-label="Выключить звук" aria-pressed="false" title="Выключить звук">
@@ -323,6 +327,15 @@
       <button id="themeClose" type="button" aria-label="Закрыть настройки" data-i18n-aria-label="closeVisualAria">×</button>
     </div>
     <p data-i18n="visualDescription">Выбери цветовую тему и настрой музыкальное пространство. Параметры внешнего вида хранятся на этом устройстве.</p>
+    <section id="desktopSettings" class="desktop-settings" hidden aria-labelledby="desktopTitle">
+      <h2 id="desktopTitle" data-i18n="desktopTitle">Управление Windows</h2>
+      <label><input id="desktopHotkeys" type="checkbox"><span data-i18n="desktopHotkeys">Глобальные горячие клавиши</span></label>
+      <label><input id="desktopCloseToTray" type="checkbox"><span data-i18n="desktopCloseToTray">При закрытии оставлять музыку в трее</span></label>
+      <p data-i18n="desktopShortcuts">Ctrl+Alt+Space — пауза · ← / → — треки · ↑ / ↓ — громкость · M — мини-плеер · S — показать окно</p>
+      <p id="desktopStatus" role="status" aria-live="polite"></p>
+      <div class="account-actions"><button id="desktopUpdate" type="button" data-i18n="desktopUpdate">ОБНОВИТЬ В ОДИН КЛИК</button><button id="desktopQuit" type="button" data-i18n="desktopQuit">ВЫЙТИ ИЗ SONGVALE</button></div>
+      <p id="desktopUpdateStatus" role="status" aria-live="polite"></p><progress id="desktopUpdateProgress" max="100" value="0" hidden></progress>
+    </section>
     <div class="settings-language-row">
       <span data-i18n="language">ЯЗЫК</span>
       <button id="languageButton" class="settings-language" type="button" aria-label="Сменить язык" data-i18n-aria-label="switchLanguageAria"><span data-i18n="switchLanguageHint">Переключить язык интерфейса</span><b id="languageLabel">RU</b></button>
@@ -483,9 +496,11 @@
   <script src="/static/i18n.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/player-core.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/library-matcher.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/smart-playlists.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/audio-engine.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/home-hub.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/app.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/flow.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/desktop-player.js?v=__AWUN_VERSION__" defer></script>
 </body>
 </html>

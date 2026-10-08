@@ -1,26 +1,21 @@
-SONGVALE 2.5.14
-Release date: 2026-10-07
+SONGVALE 2.6.0
+Release date: 2026-10-08
 
-This release fixes library matching, repeated manual review and expired SoundCloud playback links.
+Windows:
+- Mini player above other windows, preserving the current track and position.
+- Tray menu, optional close-to-tray, and global Ctrl+Alt shortcuts.
+- One-click update in Settings with official release and SHA-256 verification.
+  The library and position are saved before installation; the app relaunches.
 
-What changed:
-- Library transfer finds popular recordings without waiting for a slow source.
-- Artist credits, Topic channels and official-video labels no longer hide matches.
-- Provider failures have their own status and can be retried after a reload.
-- Manual review cannot resurrect a selected track while a transfer is running.
-  Repeated entries are reviewed once; alternate recordings stay separate.
-- SoundCloud playback checks the real CDN expiry and refreshes stale links
-  without reusing expired search-cache results. Direct audio and HLS use their
-  appropriate player paths.
-- Backup and cloud safety from 2.5.11 remain in place.
-- Accounts are available after the host has configured a persistent
-  Supabase project, the SQL schema and custom email delivery, then enabled
-  the feature flag. Until then the app remains in guest mode.
+All platforms:
+- Smart playlists: Recently added, Most played, and Rediscover.
+  They update from your library and qualified listening on this device.
 
-Windows package:
-- SONGVALE-Setup-x64.exe — per-user installer.
-- SONGVALE.exe — portable executable.
-- Separate SHA-256 checksum files, LICENSE.md and EULA.md.
+Shortcuts: Ctrl+Alt+Space (play/pause), Left/Right (tracks), Up/Down (volume),
+M (mini player), S (show window). Conflicts and toggles are shown in Settings.
 
-The release is published only after Python, frontend and browser tests pass on
-GitHub Actions.
+Windows downloads:
+- SONGVALE-Setup-x64.exe: per-user installer.
+- SONGVALE.exe: portable app.
+
+Install this version once to enable one-click updates for future releases.

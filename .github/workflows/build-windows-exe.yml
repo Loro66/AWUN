@@ -12,10 +12,32 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: windows-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: windows-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: write # Cancel older builds of this same pull request.
     steps:
+      - name: Cancel superseded pull request builds
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $runs = gh api --method GET "repos/$env:GITHUB_REPOSITORY/actions/workflows/build-windows-exe.yml/runs" -f event=pull_request -f status=in_progress -f "branch=$env:GITHUB_HEAD_REF" -f per_page=50 | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          foreach ($old in $runs.workflow_runs) {
+            if ($old.id -lt [long]$env:GITHUB_RUN_ID -and $old.head_sha -ne $env:GITHUB_SHA -and $old.head_repository.full_name -eq $env:GITHUB_REPOSITORY) {
+              gh api --method POST "repos/$env:GITHUB_REPOSITORY/actions/runs/$($old.id)/cancel" | Out-Null
+            }
+          }
+          exit 0
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
@@ -27,7 +49,9 @@ jobs:
       - name: Install desktop dependencies
         run: |
           python -m pip install --require-hashes -r requirements.lock
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m pip install -r requirements-desktop.txt pytest==9.1.1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Run release tests
         run: python -m pytest -q
       - name: Build SONGVALE.exe
@@ -74,6 +98,40 @@ jobs:
           }
           Copy-Item LICENSE.md dist/LICENSE.md
           Copy-Item EULA.md dist/EULA.md
+      - name: Verify silent upgrade and automatic app relaunch
+        shell: pwsh
+        timeout-minutes: 5
+        run: |
+          $installDir = Join-Path $env:RUNNER_TEMP "songvale-update-smoke"
+          $installer = Join-Path $PWD "dist\SONGVALE-Setup-x64.exe"
+          $arguments = @("/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/CLOSEAPPLICATIONS", ('/DIR="{0}"' -f $installDir))
+          $running = @()
+          try {
+            $first = Start-Process -FilePath $installer -ArgumentList $arguments -PassThru
+            if (-not $first.WaitForExit(120000)) { throw "Silent initial installation timed out" }
+            if ($first.ExitCode -ne 0) { throw "Silent initial installation failed: $($first.ExitCode)" }
+            $sentinel = Join-Path $installDir "preserve-user-data.json"
+            Set-Content $sentinel '{"playlist":"saved","position":41}'
+            $upgrade = Start-Process -FilePath $installer -ArgumentList ($arguments + "/SONGVALEUPDATE=1") -PassThru
+            if (-not $upgrade.WaitForExit(120000)) { throw "Silent upgrade timed out" }
+            if ($upgrade.ExitCode -ne 0) { throw "Silent upgrade failed: $($upgrade.ExitCode)" }
+            $installed = Join-Path $installDir "SONGVALE.exe"
+            if ((Get-FileHash $installed).Hash -ne (Get-FileHash "dist/SONGVALE.exe").Hash) { throw "Installed executable does not match the release" }
+            if ((Get-Content $sentinel -Raw).Trim() -ne '{"playlist":"saved","position":41}') { throw "Upgrade replaced user data" }
+            $deadline = (Get-Date).AddSeconds(60)
+            do {
+              $running = @(Get-Process -Name SONGVALE -ErrorAction SilentlyContinue | Where-Object { $_.Path -eq $installed })
+              $window = @($running | Where-Object { $_.MainWindowHandle -ne 0 })
+              if ($window.Count -gt 0) { break }
+              Start-Sleep -Seconds 2
+            } while ((Get-Date) -lt $deadline)
+            if ($window.Count -eq 0) { throw "Updated application did not relaunch with a window" }
+            Write-Host "Silent upgrade preserved user data and relaunched SONGVALE."
+          } finally {
+            $running = @(Get-Process -Name SONGVALE -ErrorAction SilentlyContinue | Where-Object { $_.Path -eq (Join-Path $installDir "SONGVALE.exe") })
+            $running | Stop-Process -Force -ErrorAction SilentlyContinue
+            Remove-Item $installDir -Recurse -Force -ErrorAction SilentlyContinue
+          }
       - name: Upload Windows artifact
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:

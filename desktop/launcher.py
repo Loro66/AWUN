@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import secrets
 import socket
+import sys
 import threading
 import time
 from urllib.parse import quote
@@ -19,6 +20,8 @@ import webview
 from backend.api.main import create_app
 from backend.core.config import Settings
 from backend.core.version import APP_VERSION
+from desktop.controls import DesktopControls
+from desktop.updater import DesktopUpdater
 
 
 HOST = "127.0.0.1"
@@ -80,6 +83,32 @@ class DesktopStateBridge:
             )
         self.state_path = state_path
         self._lock = threading.Lock()
+        self._controls = None
+        self._updater = None
+
+    def desktop_status(self) -> dict:
+        return self._controls.status() if self._controls else {"supported": False}
+
+    def desktop_mini(self, enabled: bool, video: bool = False) -> bool:
+        return bool(self._controls and self._controls.set_mini(enabled, video))
+
+    def desktop_preferences(self, hotkeys: bool, close_to_tray: bool) -> bool:
+        return bool(self._controls and self._controls.configure(hotkeys, close_to_tray))
+
+    def desktop_command(self, action: str) -> bool:
+        return bool(isinstance(action, str) and self._controls and self._controls.enqueue(action))
+
+    def desktop_update(self) -> bool:
+        return bool(self._updater and self._updater.start())
+
+    def desktop_update_status(self) -> dict:
+        return self._updater.status() if self._updater else {"stage": "error"}
+
+    def desktop_update_install(self) -> bool:
+        if not self._updater or not self._controls or not self._updater.install():
+            return False
+        self._controls.enqueue("quit")
+        return True
 
     def load_state(self) -> str:
         with self._lock:
@@ -265,14 +294,23 @@ def main() -> None:
         html=SPLASH,
         width=1440,
         height=900,
-        min_size=(960, 640),
+        min_size=(440, 300),
         background_color="#09120c",
         confirm_close=False,
         js_api=state_bridge,
     )
+    bundle_root = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parents[1]))
+    controls = DesktopControls(window, state_bridge.state_path.with_name("desktop-controls.json"), bundle_root / "desktop" / "assets" / "songvale.ico")
+    state_bridge._controls = controls
+    updater = DesktopUpdater(APP_VERSION)
+    state_bridge._updater = updater
+    window.events.shown += controls.start
+    window.events.closing += controls.closing
     try:
         webview.start(open_local_app, (window, runtime), private_mode=False)
     finally:
+        controls.stop()
+        updater.close()
         runtime.stop()
 
 

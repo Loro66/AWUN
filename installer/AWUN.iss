@@ -41,3 +41,10 @@ Name: "desktopicon"; Description: "Создать ярлык на рабочем
 
 [Run]
 Filename: "{app}\SONGVALE.exe"; Description: "Запустить SONGVALE"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\SONGVALE.exe"; Flags: nowait runasoriginaluser; Check: IsSongvaleUpdate
+
+[Code]
+function IsSongvaleUpdate(): Boolean;
+begin
+  Result := ExpandConstant('{param:SONGVALEUPDATE|0}') = '1';
+end;

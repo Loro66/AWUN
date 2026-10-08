@@ -2,6 +2,20 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.6.0] - 2026-10-08
+
+### Added
+
+- Windows mini player stays above other windows and uses the current playback session. Full-window geometry is restored on exit; YouTube keeps its visible official player.
+- A native Windows tray menu controls playback, opens the mini player and quits the app. Closing to the tray is optional and only used when the icon is available.
+- Registered Ctrl+Alt shortcuts control playback, tracks, volume, the mini player and window visibility. Settings show conflicts with other apps and allow disabling the shortcuts.
+- Three smart playlists update from device-library additions and qualified listening: Recently added (30 days), Most played (top 50), and Rediscover (not played for 30 days). Plays count after 30 seconds or half of a short track; pausing and seeking do not create extra plays.
+- Windows updates can be installed with one click in Settings. The official installer and its SHA-256 are downloaded from GitHub Releases, verified before execution, and launched after saving the library and playback position. Download/verification failures leave the running version available; successful installation relaunches SONGVALE.
+
+### Testing
+
+- Added smart-playlist rules, browser scenarios for compact playback, native commands, update persistence/failure and account history isolation, plus Windows message-loop smoke coverage.
+
 ## [2.5.16] - 2026-10-08
 
 ### Fixed
