@@ -138,7 +138,16 @@ test('new controls fit desktop and phone layouts, with compact audio/video QA im
   await openDesktop(page);
   await searchFor(page,'midnight signal');
   await page.locator('#trackList .track[data-source="audius"]').first().locator('.play').click();
-  await page.screenshot({path:'test-results/feature-qa/desktop-controls.png'});
+  for(const width of [1280,1000]) {
+    await page.setViewportSize({width,height:900});
+    for(const id of ['desktopMini','desktopTray','muteButton','volume']) {
+      await expect(page.locator(`#${id}`)).toBeVisible();
+      const box=await page.locator(`#${id}`).boundingBox();
+      expect(box.x+box.width).toBeLessThanOrEqual(width);
+    }
+    await page.screenshot({path:`test-results/feature-qa/desktop-controls-${width}.png`,animations:'disabled'});
+  }
+  await page.setViewportSize({width:1280,height:900});
   await page.locator('#desktopMini').click();
   await page.setViewportSize({width:460,height:265});
   await expect(page.locator('#muteButton')).toBeVisible();

@@ -76,6 +76,37 @@ jobs:
           }
           Copy-Item LICENSE.md dist/LICENSE.md
           Copy-Item EULA.md dist/EULA.md
+      - name: Verify silent upgrade and automatic app relaunch
+        shell: pwsh
+        run: |
+          $installDir = Join-Path $env:RUNNER_TEMP "songvale-update-smoke"
+          $installer = Join-Path $PWD "dist\SONGVALE-Setup-x64.exe"
+          $arguments = @("/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/CLOSEAPPLICATIONS", ('/DIR="{0}"' -f $installDir))
+          $running = @()
+          try {
+            $first = Start-Process -FilePath $installer -ArgumentList $arguments -Wait -PassThru
+            if ($first.ExitCode -ne 0) { throw "Silent initial installation failed: $($first.ExitCode)" }
+            $sentinel = Join-Path $installDir "preserve-user-data.json"
+            Set-Content $sentinel '{"playlist":"saved","position":41}'
+            $upgrade = Start-Process -FilePath $installer -ArgumentList ($arguments + "/SONGVALEUPDATE=1") -Wait -PassThru
+            if ($upgrade.ExitCode -ne 0) { throw "Silent upgrade failed: $($upgrade.ExitCode)" }
+            $installed = Join-Path $installDir "SONGVALE.exe"
+            if ((Get-FileHash $installed).Hash -ne (Get-FileHash "dist/SONGVALE.exe").Hash) { throw "Installed executable does not match the release" }
+            if ((Get-Content $sentinel -Raw).Trim() -ne '{"playlist":"saved","position":41}') { throw "Upgrade replaced user data" }
+            $deadline = (Get-Date).AddSeconds(60)
+            do {
+              $running = @(Get-Process -Name SONGVALE -ErrorAction SilentlyContinue | Where-Object { $_.Path -eq $installed })
+              $window = @($running | Where-Object { $_.MainWindowHandle -ne 0 })
+              if ($window.Count -gt 0) { break }
+              Start-Sleep -Seconds 2
+            } while ((Get-Date) -lt $deadline)
+            if ($window.Count -eq 0) { throw "Updated application did not relaunch with a window" }
+            Write-Host "Silent upgrade preserved user data and relaunched SONGVALE."
+          } finally {
+            $running = @(Get-Process -Name SONGVALE -ErrorAction SilentlyContinue | Where-Object { $_.Path -eq (Join-Path $installDir "SONGVALE.exe") })
+            $running | Stop-Process -Force -ErrorAction SilentlyContinue
+            Remove-Item $installDir -Recurse -Force -ErrorAction SilentlyContinue
+          }
       - name: Upload Windows artifact
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:

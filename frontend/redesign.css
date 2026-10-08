@@ -1381,6 +1381,8 @@ html[data-theme="white"] .player .now .player-status[data-tone="error"],html[dat
 .smart-playlists>strong{font-size:12px;color:var(--paper-muted);font-weight:600}
 .smart-playlists p{margin:0;color:var(--paper-muted);font-size:12px;line-height:1.6}
 .smart-playlist-tab{border-style:dashed}
+#smartPlaylistTabs{flex-wrap:wrap;overflow:visible}
+#smartPlaylistTabs .smart-playlist-tab{max-width:100%;white-space:normal}
 .desktop-settings{padding:20px 0;border-bottom:1px solid var(--line);margin-bottom:20px}
 .desktop-settings[hidden],.desktop-mini-head{display:none}
 .player #desktopMini[hidden],.player #desktopTray[hidden],.player #desktopMiniRestore[hidden],.desktop-settings progress[hidden]{display:none!important}
@@ -1407,6 +1409,7 @@ body.desktop-mini .player .transport-buttons .play-pause{width:38px;height:38px;
 body.desktop-mini .player .timeline{display:grid;grid-template-columns:32px minmax(0,1fr) 32px;gap:8px;font-size:9px}
 body.desktop-mini .player .player-tools{grid-column:1/-1;grid-row:4;display:flex!important;align-items:center;justify-content:flex-end;gap:10px;max-width:none!important;margin:0!important;padding:0!important;position:static!important}
 body.desktop-mini .player .player-tools button{width:30px;height:30px;padding:0;border:0;background:transparent;color:var(--paper)}
+body.desktop-mini .player #muteButton,body.desktop-mini .player #desktopTray{display:grid!important;place-items:center}
 body.desktop-mini .player #nowSource{display:block!important;margin-right:auto;font-size:10px;color:var(--paper-muted)}
 body.desktop-mini .player #volume{display:block!important;width:86px!important;min-width:0}
 body.desktop-mini .player .now-kicker,body.desktop-mini .player .mini-eq,body.desktop-mini .player .player-panel-head,body.desktop-mini .player #repeatMode,body.desktop-mini .player #flowLike,body.desktop-mini .player #flowDislike,body.desktop-mini .player #queueToggle,body.desktop-mini .player #expandPlayer,body.desktop-mini .player #closePlayer,body.desktop-mini .player #desktopMini,body.desktop-mini .player .up-next{display:none!important}
@@ -1416,4 +1419,5 @@ body.desktop-mini .player #minimizeVideo{display:none}
 body.desktop-mini .player .player-status{font-size:10px;max-height:28px;overflow:hidden}
 body.desktop-mini .player .dock-head{display:flex;font-size:8px;padding-bottom:6px}
 
-body.desktop-controls:not(.desktop-mini) .player .player-tools{max-width:250px!important;grid-template-columns:28px 28px 28px 28px minmax(70px,100px)!important}
+@media (min-width:761px){body.desktop-controls:not(.desktop-mini) .player .player-tools{max-width:320px!important;grid-template-columns:28px 28px 30px 28px 28px minmax(64px,96px) 28px!important}}
+@media (max-width:760px){body.desktop-controls:not(.desktop-mini) .player .player-tools{width:98px!important;grid-template-columns:28px 28px 28px!important;gap:7px!important}body.desktop-controls:not(.desktop-mini) .player #desktopMini,body.desktop-controls:not(.desktop-mini) .player #desktopTray{display:grid!important}}
