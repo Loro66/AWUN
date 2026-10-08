@@ -58,6 +58,20 @@ def test_library_payload_strips_ephemeral_stream_credentials():
     assert clean["playlists"][0]["items"][0]["track"] == clean["library"][0]
 
 
+def test_library_sync_preserves_preview_metadata_and_rejects_non_boolean_flags():
+    track = {"source": "soundcloud", "id": "preview", "title": "Song", "artist": "Artist", "duration": 30, "is_preview": True}
+    clean = _library_payload({"library": [track], "playlists": [{"id": "p", "name": "Music", "items": [{"position": 0, "track": track}]}]})
+    assert clean["library"][0]["is_preview"] is True
+    assert clean["playlists"][0]["items"][0]["track"]["is_preview"] is True
+    for invalid in ("false", 0, 1, []):
+        try:
+            _library_payload({"library": [{**track, "is_preview": invalid}], "playlists": []})
+        except HTTPException as exc:
+            assert exc.status_code == 422
+        else:
+            raise AssertionError("Invalid preview flag was accepted")
+
+
 def test_cross_origin_mutations_are_blocked():
     for origin in (None, "https://attacker.example", "http://songvale.example"):
         try:

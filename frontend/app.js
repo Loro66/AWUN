@@ -525,7 +525,7 @@ ui.accountProfileForm.addEventListener('submit',async event=>{
   finally{ui.accountSaveProfile.disabled=false}
 });
 
-const portableTrackFields=['source','id','title','artist','duration','quality','thumbnail','external_url','catalog_links','import_origin'];
+const portableTrackFields=['source','id','title','artist','duration','quality','thumbnail','external_url','catalog_links','import_origin','is_preview'];
 function portableTrack(track){
   if(!track||typeof track!=='object'||Array.isArray(track))throw new Error('invalid track');
   for(const [key,limit] of [['source',40],['id',200],['title',300],['artist',300]]){
@@ -536,6 +536,7 @@ function portableTrack(track){
     if(key in result&&(typeof result[key]!=='string'||result[key].length>1000))throw new Error('invalid track');
   }
   if('duration'in result&&(!Number.isFinite(result.duration)||result.duration<0||result.duration>86400))throw new Error('invalid duration');
+  if('is_preview'in result&&typeof result.is_preview!=='boolean')throw new Error('invalid preview flag');
   if('catalog_links'in result){
     const links=result.catalog_links;
     if(!links||typeof links!=='object'||Array.isArray(links)||Object.keys(links).length>10||Object.entries(links).some(([key,value])=>key.length>40||typeof value!=='string'||value.length>1000))throw new Error('invalid links');
@@ -779,7 +780,7 @@ function createPlaylist(name,{activate=true,importKeys=[]}={}){
   return playlist;
 }
 function playlistTrack(track){
-  const keys=['source','id','title','artist','duration','quality','stream_url','stream_type','stream_expires_at','download_url','thumbnail','external_url','catalog_links','import_origin','stream_resolved_at'];
+  const keys=['source','id','title','artist','duration','quality','stream_url','stream_type','stream_expires_at','is_preview','download_url','thumbnail','external_url','catalog_links','import_origin','stream_resolved_at'];
   return Object.fromEntries(keys.filter(key=>track[key]!=null).map(key=>[key,track[key]]));
 }
 function updatePlaylist(id,mutate){
@@ -1433,7 +1434,7 @@ function createTrackRow(track,index,saved=selectedIds()){
       event.preventDefault();const position=event.key==='Home'?0:event.key==='End'?track.duration:state.playbackPosition+(event.key==='ArrowRight'?5:-5);seekTo(Math.max(0,Math.min(track.duration,position)),true);
     };
     const source=document.createElement('span');source.className=`tag ${track.source}`;source.textContent=sourceLabels[track.source]||track.source;
-    const quality=document.createElement('span');quality.className='quality';quality.textContent=track.quality||'—';
+    const quality=document.createElement('span');quality.className='quality';quality.textContent=track.is_preview?t('previewLabel'):track.quality||'—';
     const duration=document.createElement('span');duration.className='duration';duration.textContent=formatTime(track.duration);
     const actions=document.createElement('div');actions.className='actions';
     const story=document.createElement('button');story.className='story-button';story.type='button';story.textContent=t(state.expanded===track.id?'close':'story');story.setAttribute('aria-expanded',String(state.expanded===track.id));story.onclick=event=>{event.stopPropagation();toggleStory(track)};actions.append(story);
@@ -1673,6 +1674,7 @@ function clearPlaybackSession(){removeStored(playbackSessionKey);state.restoredP
 
 function presentPlayerTrack(track){
   ui.player.classList.remove('player-empty');ui.idleStage.setAttribute('aria-hidden','true');document.body.classList.add('has-player');ui.nowTitle.textContent=decodeText(track.title);ui.nowArtist.textContent=`${decodeText(track.artist)} · ${sourceLabels[track.source]||track.source}`;ui.nowSource.textContent=sourceLabels[track.source]||track.source;
+  if(track.is_preview)ui.nowSource.textContent+=` · ${t('previewLabel')}`;
   const image=safeImage(track.thumbnail),monogram=ui.playerArtwork.querySelector('.vinyl-monogram');
   ui.playerArtwork.style.setProperty('--vinyl-cover',image?`url("${image}")`:'none');ui.playerArtwork.classList.toggle('has-artwork',Boolean(image));applyWaveform(ui.waveProgress,track,132);
   if(monogram)monogram.textContent=image?'':(decodeText(track.title)||'AW').slice(0,2).toUpperCase();
@@ -1735,7 +1737,10 @@ async function playAudio(track,startAt=0){
   state.audioEngine?.setOutputLevel(0);state.audioTrackId=track.id;
   const nativeHls=Boolean(ui.audio.canPlayType('application/vnd.apple.mpegurl'));
   const hlsStream=track.stream_type?track.stream_type==='hls':track.source==='soundcloud'||/\.m3u8(?:[?#]|$)/i.test(track.stream_url);
-  const Hls=hlsStream&&!nativeHls?await ensureHlsApi():null;
+  // Chrome/Opera may report native HLS support without playing this stream.
+  // Prefer the bundled player; retain native playback for devices without MSE.
+  let Hls=null;
+  if(hlsStream){try{Hls=await ensureHlsApi()}catch(error){if(!nativeHls)throw error}}
   if(!current()||signal?.aborted)throw new DOMException('Playback superseded','AbortError');
   if(Hls?.isSupported?.()){
     const hls=new Hls({enableWorker:true});state.hls=hls;
@@ -1756,6 +1761,7 @@ async function playAudio(track,startAt=0){
     });
     return;
   }
+  if(hlsStream&&!nativeHls)throw new Error(t('playbackFailed'));
   ui.audio.src=track.stream_url;
   applyAudioStart(startAt);await ui.audio.play();state.audioEngine?.fadeTo(Number(ui.volume.value)/100,.16);setPlaying(true);
 }
@@ -1894,7 +1900,7 @@ async function playTrack(track,options={}){
   if(track.source==='yandex_music'){await matchImportedTrack(track,playbackGeneration,signal);return false}
   let refreshAttempted=false,refreshSucceeded=false;
   const sessionFresh=!recovered?freshTracksByKey.get(trackSessionKey(track)):null;
-  if(sessionFresh&&sessionFresh.stream_url!==track.stream_url)track=replaceStoredTrack(track,sessionFresh);
+  if(sessionFresh&&(sessionFresh.stream_url!==track.stream_url||sessionFresh.is_preview!==track.is_preview))track=replaceStoredTrack(track,sessionFresh);
   if(!recovered&&options.refreshStored!==false&&shouldRefreshBeforePlayback(track)){
     refreshAttempted=true;state.sameSourceRefreshGeneration=playbackGeneration;setMessage(t('refreshingLink'),'loading');
     try{
@@ -1916,7 +1922,7 @@ async function playTrack(track,options={}){
     if(track.source==='youtube')await playYouTube(track,resumeAt);else await playAudio(track,resumeAt);
     if(signal?.aborted||playbackGeneration!==state.playbackGeneration)return false;
     runtimeLog?.log?.('playback.started',{source:track.source,elapsed_ms:Math.round(performance.now()-requestedAt)});
-    setPlaybackStatus();if(ui.message.textContent===loadingText)setMessage('');
+    setPlaybackStatus(track.is_preview?t('previewPlaybackStatus'):undefined,track.is_preview?'notice':undefined);if(ui.message.textContent===loadingText)setMessage('');
     if(refreshAttempted&&!refreshSucceeded)setMessage('');
     return true;
   }catch(error){
@@ -2030,7 +2036,7 @@ async function recoverPlayback(_error,expectedGeneration=state.playbackGeneratio
       state.failedTrackIds.add(candidate.id);state.failedSources.add(candidate.source);
     }
     throw new Error();
-  }catch{if(expectedGeneration!==state.playbackGeneration)return false;setPlaying(false);setPlaybackStatus(t('trackUnavailableStatus'),'error');setMessage(t('allSourcesFailed'),'error');runtimeLog?.log?.('playback.recovery-failed',{source:failed.source,id:failed.id},'error');return false}
+  }catch{if(expectedGeneration!==state.playbackGeneration)return false;setPlaying(false);setPlaybackStatus(t(origin.is_preview?'previewUnavailableStatus':'trackUnavailableStatus'),'error');setMessage(t('allSourcesFailed'),'error');runtimeLog?.log?.('playback.recovery-failed',{source:failed.source,id:failed.id},'error');return false}
   finally{if(state.recoveringGeneration===expectedGeneration)state.recoveringGeneration=null}
 }
 

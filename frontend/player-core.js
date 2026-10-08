@@ -1,8 +1,10 @@
 (function attachPlayerCore(root, factory) {
-  const api = factory();
+  const api = factory(typeof module === 'object' && module.exports
+    ? () => require('./library-matcher.js')
+    : () => root.SongvaleLibraryMatcher);
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.awunPlayerCore = api;
-})(typeof globalThis === 'object' ? globalThis : this, function createPlayerCore() {
+})(typeof globalThis === 'object' ? globalThis : this, function createPlayerCore(getMatcher) {
   const MAX_QUEUE_LENGTH = 250;
   const STREAM_FRESHNESS_MS = 20 * 60 * 1000;
   const NOISE_WORDS = new Set([
@@ -14,6 +16,7 @@
   function normalizeText(value) {
     return String(value || '')
       .normalize('NFKD')
+      .replace(/\p{M}/gu, '')
       .toLocaleLowerCase()
       .replace(/[^\p{L}\p{N}]+/gu, ' ')
       .trim();
@@ -59,7 +62,8 @@
   }
 
   function alternativeScore(origin, candidate) {
-    if (!origin || !candidate || !candidate.stream_url) return 0;
+    if (!origin || !candidate || !candidate.stream_url || candidate.is_preview) return 0;
+    if (getMatcher()?.versionCompatible(origin.title, candidate.title) === false) return 0;
     const combinedOrigin = `${origin.artist || ''} ${origin.title || ''}`;
     const combinedCandidate = `${candidate.artist || ''} ${candidate.title || ''}`;
     const title = Math.max(
@@ -72,7 +76,8 @@
       tokenCoverage(origin.artist, combinedCandidate)
     );
     const combined = tokenSimilarity(combinedOrigin, combinedCandidate);
-    const duration = durationSimilarity(origin.duration, candidate.duration);
+    // A provider preview measures the excerpt, not the recording being sought.
+    const duration = durationSimilarity(origin.is_preview ? 0 : origin.duration, candidate.duration);
     if (title < 0.78 || (artist < 0.55 && combined < 0.78) || duration < 0.45) return 0;
     return Math.round((title * 50 + artist * 25 + combined * 15 + duration * 10) * 1000) / 1000;
   }

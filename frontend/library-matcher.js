@@ -67,7 +67,7 @@
   }
   function rankMatches(candidates,imported){
     return (Array.isArray(candidates)?candidates:[]).map(candidate=>score(imported,candidate))
-      .filter(result=>result.candidate?.stream_url)
+      .filter(result=>result.candidate?.stream_url&&!result.candidate.is_preview)
       .sort((left,right)=>right.confidence-left.confidence||Number(right.candidate.score||0)-Number(left.candidate.score||0));
   }
   function bestMatch(candidates,imported){

@@ -2,6 +2,18 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.5.16] - 2026-10-08
+
+### Fixed
+
+- SoundCloud HLS playback prefers the bundled HLS.js player even when Chrome or Opera advertises native HLS support. Native playback remains available on devices without MediaSource and when the bundle cannot load.
+- SoundCloud excerpts are explicitly labelled in search results and the player. Provider preview markers are preserved in playlists and account sync; complete short songs are not classified by their duration.
+- Recovery from a failed preview can match a full recording without comparing its duration to the excerpt. Recovery rejects other versions and new preview results, and library transfer does not count excerpts as complete matches.
+
+### Testing
+
+- Added regressions for advertised but unusable native HLS, native fallback, preview labels, preview-to-full recovery, alternate-version rejection and preview metadata across device sync.
+
 ## [2.5.15] - 2026-10-07
 
 ### Fixed

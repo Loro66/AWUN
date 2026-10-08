@@ -79,6 +79,15 @@ test('an ineligible top score does not hide a valid lower ranked artist match',(
   assert.equal(result?.candidate.id,'correct');
 });
 
+test('library transfer keeps excerpts out of automatic matches and manual review',()=>{
+  const imported={title:'Ceux qui rêvent',artist:'Pomme'};
+  const preview={...track(imported.title,imported.artist,30,'preview'),is_preview:true};
+  const full=track(imported.title,imported.artist,170,'full');
+  assert.equal(matcher.bestMatch([preview],imported),null);
+  assert.deepEqual(matcher.reviewCandidates([preview],imported),[]);
+  assert.equal(matcher.bestMatch([preview,full],imported)?.candidate.id,'full');
+});
+
 test('200-record anonymized benchmark reports no false matches', t=>{
   const benchmark=[];
   for(let index=0;index<100;index+=1){
