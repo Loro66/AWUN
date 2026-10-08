@@ -16,6 +16,7 @@ data_files = [
     (str(ROOT / "VERSION"), "."),
     (str(ROOT / "LICENSE.md"), "."),
     (str(ROOT / "EULA.md"), "."),
+    (str(ROOT / "desktop" / "assets" / "songvale.ico"), "desktop/assets"),
     *collect_data_files("certifi"),
 ]
 

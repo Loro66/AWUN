@@ -7,6 +7,7 @@ const playerCore=window.awunPlayerCore;
 const storage=window.awunStorage;
 const runtimeLog=window.awunRuntimeLog;
 const updateChecker=window.awunUpdateChecker;
+const smartPlaylists=window.songvaleSmartPlaylists;
 const t=(key,values={})=>i18n.t(key,values);
 const $=id=>document.getElementById(id);
 const readStoredJson=(key,fallback)=>storage?.readJSON?.(key,fallback)??fallback;
@@ -635,7 +636,7 @@ const activePlaylist=()=>state.playlists.find(list=>list.id===state.activePlayli
 const currentList=()=>{
   if(!state.library)return state.tracks;
   const playlist=activePlaylist();
-  const tracks=playlist?playlist.items.map(item=>item.track):state.saved;
+  const tracks=state.activeSmartPlaylist?smartTracks(state.activeSmartPlaylist):playlist?playlist.items.map(item=>item.track):state.saved;
   const query=matchText(state.libraryQuery);
   return query?tracks.filter(track=>matchText(`${decodeText(track.artist)} ${decodeText(track.title)}`).includes(query)):tracks;
 };
@@ -764,10 +765,22 @@ function updateLibraryCount(){
   ui.welcomePanel?.classList.toggle('has-library',Boolean(state.saved.length));
 }
 
-function persistLibrary(){const saved=writeStoredJson('awun-library',state.saved);if(saved){updateLibraryCount();markAccountDirty()}return saved}
+const listeningKey='awun-listening-v1';
+const smartTitles={recent:'smartRecent',frequent:'smartFrequent',forgotten:'smartForgotten'};
+function listeningMetadata(){const value=readStoredJson(listeningKey,{});return value?.owner===(readStoredText(accountOwnerKey,'')||'guest')?smartPlaylists.sanitize(value.tracks):{}}
+function saveListeningMetadata(tracks){return writeStoredJson(listeningKey,{version:1,owner:readStoredText(accountOwnerKey,'')||'guest',tracks})}
+function noteLibraryAdditions(before,after){saveListeningMetadata(smartPlaylists.noteAdditions(before,after,listeningMetadata()))}
+function smartTracks(preset){return smartPlaylists.select(preset,smartPlaylists.inventory(state.saved,state.playlists),listeningMetadata())}
+function renderSmartPlaylists(){
+  const tabs=$('smartPlaylistTabs');tabs.replaceChildren();
+  smartPlaylists.presets.forEach(preset=>{const button=document.createElement('button');button.type='button';button.className='playlist-tab smart-playlist-tab';button.dataset.smartPlaylist=preset;button.textContent=`${t(smartTitles[preset])} · ${smartTracks(preset).length}`;button.setAttribute('aria-pressed',String(state.activeSmartPlaylist===preset));button.onclick=()=>{state.activeSmartPlaylist=preset;state.activePlaylistId=null;state.visibleTrackLimit=60;render();tabs.querySelector('[aria-pressed="true"]')?.focus()};tabs.append(button)});
+  const hint=$('smartPlaylistHint');hint.hidden=!state.activeSmartPlaylist;if(state.activeSmartPlaylist)hint.textContent=t(`${smartTitles[state.activeSmartPlaylist]}Hint`);
+}
+function persistLibrary(){const before=smartPlaylists.inventory(loadLibrary(),state.playlists),saved=writeStoredJson('awun-library',state.saved);if(saved){noteLibraryAdditions(before,smartPlaylists.inventory(state.saved,state.playlists));updateLibraryCount();markAccountDirty()}return saved}
 function storePlaylists(next){
+  const before=smartPlaylists.inventory(state.saved,state.playlists);
   if(!writeStoredJson(playlistsKey,next)){setMessage(t('storageSaveFailed'),'error');return false}
-  state.playlists=next;markAccountDirty();return true;
+  state.playlists=next;noteLibraryAdditions(before,smartPlaylists.inventory(state.saved,state.playlists));markAccountDirty();return true;
 }
 function createPlaylist(name,{activate=true,importKeys=[]}={}){
   const base=String(name||'').trim().slice(0,60);if(!base)return null;
@@ -776,7 +789,7 @@ function createPlaylist(name,{activate=true,importKeys=[]}={}){
   while(state.playlists.some(list=>list.name.toLocaleLowerCase()===title.toLocaleLowerCase()))title=`${base.slice(0,54)} (${suffix++})`;
   const playlist={id:globalThis.crypto?.randomUUID?.()||`list_${Date.now()}_${Math.random().toString(36).slice(2)}`,name:title,items:[],importKeys};
   if(!storePlaylists([...state.playlists,playlist]))return null;
-  if(activate){state.activePlaylistId=playlist.id;state.libraryQuery='';ui.libraryFilter.value='';setLibraryView(true)}
+  if(activate){state.activeSmartPlaylist=null;state.activePlaylistId=playlist.id;state.libraryQuery='';ui.libraryFilter.value='';setLibraryView(true)}
   return playlist;
 }
 function playlistTrack(track){
@@ -813,18 +826,19 @@ function addImportedToPlaylist(id,entries){
 function renderPlaylists(){
   ui.libraryWorkspace.hidden=!state.library;
   if(!state.library)return;
+  renderSmartPlaylists();
   const selected=activePlaylist();
-  const signature=JSON.stringify([language,selected?.id,state.playlists.map(list=>[list.id,list.name,list.items.length])]);
+  const signature=JSON.stringify([language,selected?.id,state.activeSmartPlaylist,state.playlists.map(list=>[list.id,list.name,list.items.length])]);
   if(ui.playlistTabs.dataset.rendered!==signature){
     ui.playlistTabs.replaceChildren();
-    const all=document.createElement('button');all.type='button';all.textContent=t('allSaved');all.className='playlist-tab';all.setAttribute('aria-pressed',String(!selected));all.addEventListener('click',()=>{state.activePlaylistId=null;state.visibleTrackLimit=60;render();ui.playlistTabs.querySelector('[aria-pressed="true"]')?.focus()});ui.playlistTabs.append(all);
-    state.playlists.forEach(list=>{const button=document.createElement('button');button.type='button';button.className='playlist-tab';button.textContent=`${list.name} · ${list.items.length}`;button.setAttribute('aria-pressed',String(list.id===selected?.id));button.addEventListener('click',()=>{state.activePlaylistId=list.id;state.visibleTrackLimit=60;render();ui.playlistTabs.querySelector('[aria-pressed="true"]')?.focus()});ui.playlistTabs.append(button)});
+    const all=document.createElement('button');all.type='button';all.textContent=t('allSaved');all.className='playlist-tab';all.setAttribute('aria-pressed',String(!selected&&!state.activeSmartPlaylist));all.addEventListener('click',()=>{state.activeSmartPlaylist=null;state.activePlaylistId=null;state.visibleTrackLimit=60;render();ui.playlistTabs.querySelector('[aria-pressed="true"]')?.focus()});ui.playlistTabs.append(all);
+    state.playlists.forEach(list=>{const button=document.createElement('button');button.type='button';button.className='playlist-tab';button.textContent=`${list.name} · ${list.items.length}`;button.setAttribute('aria-pressed',String(list.id===selected?.id));button.addEventListener('click',()=>{state.activeSmartPlaylist=null;state.activePlaylistId=list.id;state.visibleTrackLimit=60;render();ui.playlistTabs.querySelector('[aria-pressed="true"]')?.focus()});ui.playlistTabs.append(button)});
     ui.playlistTabs.dataset.rendered=signature;
   }
   ui.playlistActions.hidden=!selected;
   if(selected)ui.playlistDescription.textContent=t('playlistTrackCount',{count:selected.items.length});
   const empty=!currentList().length;ui.libraryEmptyState.hidden=!empty;
-  if(empty)ui.libraryEmptyState.textContent=t(state.libraryQuery?'libraryNoMatches':selected?'playlistEmpty':'libraryEmpty');
+  if(empty)ui.libraryEmptyState.textContent=t(state.libraryQuery?'libraryNoMatches':state.activeSmartPlaylist?'smartEmpty':selected?'playlistEmpty':'libraryEmpty');
 }
 function persistRecents(){writeStoredJson('awun-recent',state.recents.slice(0,12))}
 
@@ -1369,7 +1383,7 @@ function render(){
   if(showHome)renderHome();
   if(ui.player.classList.contains('queue-open'))renderQueue();
   ui.emptyGuide.hidden=Boolean(list.length)||state.library;
-  ui.resultTitle.textContent=state.library?(activePlaylist()?.name||t('yourLibrary')):t(state.collection==='recent'?'hubRecent':state.flow?.active?'wave':state.tracks.length?'searchResults':'discover');
+  ui.resultTitle.textContent=state.library?(state.activeSmartPlaylist?t(smartTitles[state.activeSmartPlaylist]):activePlaylist()?.name||t('yourLibrary')):t(state.collection==='recent'?'hubRecent':state.flow?.active?'wave':state.tracks.length?'searchResults':'discover');
   ui.resultCount.textContent=t(state.library?'savedCount':state.collection==='recent'?'hubHistoryCount':'foundCount',{count:list.length});
 
   const visible=list.slice(0,state.visibleTrackLimit||60);
@@ -1656,6 +1670,18 @@ function setPlaying(playing){
   const next=Boolean(playing);if(state.isPlaying===next)return;state.isPlaying=next;
   ui.playPause.querySelector('span').textContent=next?'Ⅱ':'▶';ui.playPause.setAttribute('aria-label',t(next?'pauseAria':'playAria'));document.body.classList.toggle('is-playing',next);ui.player.classList.toggle('is-playing',next);syncTrackPlayback();
 }
+
+let listeningSession={generation:-1,seconds:0,counted:false,at:performance.now()};
+setInterval(()=>{
+  const now=performance.now(),elapsed=Math.min(5,Math.max(0,(now-listeningSession.at)/1000));listeningSession.at=now;
+  if(listeningSession.generation!==state.playbackGeneration)listeningSession={generation:state.playbackGeneration,seconds:0,counted:false,at:now};
+  if(!state.active||!state.isPlaying||state.restoredPlayback)return;
+  listeningSession.seconds+=elapsed;
+  const duration=Number(state.active.duration)||60,threshold=Math.min(30,Math.max(1,duration/2));
+  if(!listeningSession.counted&&listeningSession.seconds>=threshold){
+    if(saveListeningMetadata(smartPlaylists.record(listeningMetadata(),state.active))){listeningSession.counted=true;if(state.library)render()}
+  }
+},1000);
 
 function applyRepeatMode(save=true){
   const labels={off:'repeatOff',all:'repeatAll',one:'repeatOne'},descriptions={off:'repeatOffAria',all:'repeatAllAria',one:'repeatOneAria'};
@@ -2128,7 +2154,7 @@ async function bootstrap(){
   const query=url.get('q');if(query){ui.searchInput.value=query;void search(query)}
   void status.then(()=>runtimeLog?.log?.('app.ready',{sources:[...state.available]}));
 }
-window.awunApp={state,ui,playTrack,render,search,toggleSave,currentList,setMessage,sourceLabels,decodeText,matchText,loadingRows,awunFetch,requestSearch,pausePlayback,playStoreMode,apiBase,fallbackApiBase,apiUrl,refreshStatus,replaceQueue,appendQueue,cancelSearch};
+window.awunApp={state,ui,playTrack,render,search,toggleSave,currentList,setMessage,sourceLabels,decodeText,matchText,loadingRows,awunFetch,requestSearch,pausePlayback,playStoreMode,apiBase,fallbackApiBase,apiUrl,refreshStatus,replaceQueue,appendQueue,cancelSearch,persistPlaybackSession};
 window.songvaleApp=window.awunApp;
 document.addEventListener('awun:language',event=>{language=event.detail.language;applyVisual(false);applyRepeatMode(false);syncVolumeButton();render();renderAccountStatus();portableStatus(portableStatusKey);if(portablePending)ui.portablePreviewText.textContent=t('portablePreview',{tracks:portablePending.library.length,playlists:portablePending.playlists.length});renderDiagnostics();if(latestImportReport)updateImportReport(latestImportReport);refreshStatus()});
 bootstrap();

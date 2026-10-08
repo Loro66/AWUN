@@ -18,6 +18,11 @@
     }
     return state;
   }
+  window.awunDesktopFlush = async () => {
+    clearTimeout(syncTimer);
+    if (!window.pywebview?.api?.save_state) return false;
+    return window.pywebview.api.save_state(JSON.stringify(snapshot()));
+  };
 
   function scheduleSync() {
     if (!bridgeReady || restoring) return;

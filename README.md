@@ -84,6 +84,11 @@ Search results are normalized into a shared track model, deduplicated and ranked
 
 ## Install or run
 
+Windows includes an always-on-top mini player, tray controls, optional global
+Ctrl+Alt shortcuts and one-click updates in Settings. Your library also offers
+Recently added, Most played and Rediscover smart playlists based on additions
+and qualified listening on this device.
+
 ### Windows
 
 Download the [per-user installer](https://github.com/Loro66/AWUN/releases/latest/download/SONGVALE-Setup-x64.exe) or the [portable executable](https://github.com/Loro66/AWUN/releases/latest/download/SONGVALE.exe). SHA-256 files are published beside both binaries in every release.
@@ -117,7 +122,7 @@ Open `http://127.0.0.1:8000`. Optional provider credentials and deployment setti
 
 ## Verified release quality
 
-Release `v2.5.16` is built from `main` by GitHub Actions.
+Release `v2.6.0` is built from `main` by GitHub Actions.
 
 - Python tests cover search, ranking, matching, policy, reliability, security, visual identity and desktop packaging.
 - Playwright scenarios exercise progressive search, playback recovery, library transfer, responsive layouts, offline shell launch and account merge, conflict, sign-out and recovery flows.
