@@ -12,10 +12,32 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: windows-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: windows-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: write # Cancel older builds of this same pull request.
     steps:
+      - name: Cancel superseded pull request builds
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $runs = gh api --method GET "repos/$env:GITHUB_REPOSITORY/actions/workflows/build-windows-exe.yml/runs" -f event=pull_request -f status=in_progress -f "branch=$env:GITHUB_HEAD_REF" -f per_page=50 | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          foreach ($old in $runs.workflow_runs) {
+            if ($old.id -lt [long]$env:GITHUB_RUN_ID -and $old.head_sha -ne $env:GITHUB_SHA -and $old.head_repository.full_name -eq $env:GITHUB_REPOSITORY) {
+              gh api --method POST "repos/$env:GITHUB_REPOSITORY/actions/runs/$($old.id)/cancel" | Out-Null
+            }
+          }
+          exit 0
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:

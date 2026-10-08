@@ -64,6 +64,8 @@ test('YouTube remains visible with a 200px player in compact mode', async ({ pag
   await expect(page.locator('#youtubeDock')).toBeVisible();
   expect((await page.locator('#youtubePlayer').boundingBox()).height).toBeGreaterThanOrEqual(200);
   expect(await page.evaluate(() => window.desktopCalls.some(call=>call[0]==='mini'&&call[2]===true))).toBe(true);
+  mkdirSync('test-results/feature-qa',{recursive:true});
+  await page.screenshot({path:'test-results/feature-qa/mini-video.png',animations:'disabled'});
 });
 
 test('one-click update saves current state before launching the verified installer', async ({ page }) => {

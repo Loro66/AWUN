@@ -1407,11 +1407,11 @@ body.desktop-mini .player .transport-buttons{display:flex;justify-content:center
 body.desktop-mini .player .transport-buttons>button{width:32px;height:32px;font-size:19px}
 body.desktop-mini .player .transport-buttons .play-pause{width:38px;height:38px;font-size:13px}
 body.desktop-mini .player .timeline{display:grid;grid-template-columns:32px minmax(0,1fr) 32px;gap:8px;font-size:9px}
-body.desktop-mini .player .player-tools{grid-column:1/-1;grid-row:4;display:flex!important;align-items:center;justify-content:flex-end;gap:10px;max-width:none!important;margin:0!important;padding:0!important;position:static!important}
-body.desktop-mini .player .player-tools button{width:30px;height:30px;padding:0;border:0;background:transparent;color:var(--paper)}
-body.desktop-mini .player #muteButton,body.desktop-mini .player #desktopTray{display:grid!important;place-items:center}
+body.desktop-mini .player .player-tools{grid-column:1/-1;grid-row:4;display:flex!important;align-items:center;justify-content:flex-end;gap:10px;width:100%!important;min-width:0;max-width:none!important;margin:0!important;padding:0!important;position:static!important}
+body.desktop-mini .player .player-tools button{flex:none;width:30px;height:30px;padding:0;border:0;background:transparent;color:var(--paper)}
+body.desktop-mini .player #muteButton,body.desktop-mini .player #desktopTray,body.desktop-mini .player #playerSave{display:grid!important;place-items:center}
 body.desktop-mini .player #nowSource{display:block!important;margin-right:auto;font-size:10px;color:var(--paper-muted)}
-body.desktop-mini .player #volume{display:block!important;width:86px!important;min-width:0}
+body.desktop-mini .player #volume{display:block!important;flex:none;width:86px!important;min-width:0}
 body.desktop-mini .player .now-kicker,body.desktop-mini .player .mini-eq,body.desktop-mini .player .player-panel-head,body.desktop-mini .player #repeatMode,body.desktop-mini .player #flowLike,body.desktop-mini .player #flowDislike,body.desktop-mini .player #queueToggle,body.desktop-mini .player #expandPlayer,body.desktop-mini .player #closePlayer,body.desktop-mini .player #desktopMini,body.desktop-mini .player .up-next{display:none!important}
 body.desktop-mini .player .youtube-dock:not([hidden]){position:static!important;grid-column:1/-1;grid-row:5;width:100%!important;max-width:none;margin:0!important;padding:6px!important;border-radius:8px;box-shadow:none!important}
 body.desktop-mini .player .youtube-player,body.desktop-mini .player .youtube-player iframe{width:100%;height:200px!important;min-height:200px;aspect-ratio:auto!important}
