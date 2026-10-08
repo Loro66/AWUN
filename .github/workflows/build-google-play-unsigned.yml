@@ -66,7 +66,7 @@ jobs:
           cp -R mobile/android/fastlane/metadata dist/google-play-unsigned/store-listing
           cp LICENSE.md EULA.md dist/google-play-unsigned/
           sha256sum dist/google-play-unsigned/*.aab > dist/google-play-unsigned/SHA256SUMS.txt
-      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: SONGVALE-unsigned-Google-Play-${{ env.AWUN_VERSION_NAME }}-${{ env.AWUN_VERSION_CODE }}
           path: dist/google-play-unsigned
