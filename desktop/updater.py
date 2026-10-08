@@ -16,9 +16,6 @@ import time
 from urllib.parse import urlsplit
 from urllib.request import build_opener, HTTPSHandler, HTTPRedirectHandler, Request
 
-import certifi
-
-
 RELEASE_API = "https://api.github.com/repos/Loro66/AWUN/releases/latest"
 RELEASE_PREFIX = "https://github.com/Loro66/AWUN/releases/download/"
 INSTALLER_NAME = "SONGVALE-Setup-x64.exe"
@@ -47,7 +44,7 @@ class SafeRedirects(HTTPRedirectHandler):
 
 def official_request(url):
     validate_url(url)
-    opener = build_opener(SafeRedirects(), HTTPSHandler(context=ssl.create_default_context(cafile=certifi.where())))
+    opener = build_opener(SafeRedirects(), HTTPSHandler(context=ssl.create_default_context()))
     return opener.open(Request(url, headers={"User-Agent": "SONGVALE-Updater", "Accept": "application/vnd.github+json"}), timeout=20)
 
 

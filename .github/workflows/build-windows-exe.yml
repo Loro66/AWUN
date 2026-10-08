@@ -27,7 +27,9 @@ jobs:
       - name: Install desktop dependencies
         run: |
           python -m pip install --require-hashes -r requirements.lock
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m pip install -r requirements-desktop.txt pytest==9.1.1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Run release tests
         run: python -m pytest -q
       - name: Build SONGVALE.exe

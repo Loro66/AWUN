@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import secrets
 import socket
+import sys
 import threading
 import time
 from urllib.parse import quote
@@ -298,7 +299,8 @@ def main() -> None:
         confirm_close=False,
         js_api=state_bridge,
     )
-    controls = DesktopControls(window, state_bridge.state_path.with_name("desktop-controls.json"), Path(__file__).parent / "assets" / "songvale.ico")
+    bundle_root = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parents[1]))
+    controls = DesktopControls(window, state_bridge.state_path.with_name("desktop-controls.json"), bundle_root / "desktop" / "assets" / "songvale.ico")
     state_bridge._controls = controls
     updater = DesktopUpdater(APP_VERSION)
     state_bridge._updater = updater
