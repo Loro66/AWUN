@@ -1,0 +1,1 @@
+Fixed SoundCloud playback in browsers that incorrectly advertise native HLS support. Excerpts are labelled, full-track recovery ignores excerpt duration, and library transfer excludes previews.

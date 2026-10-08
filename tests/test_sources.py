@@ -32,6 +32,22 @@ class ProviderAdapterTests(unittest.TestCase):
         )
         self.assertIsNone(SoundCloudAdapter._safe_waveform_url("file:///tmp/fake.png"))
 
+    def test_soundcloud_marks_provider_previews_without_guessing_by_duration(self) -> None:
+        from unittest.mock import MagicMock, patch
+
+        downloader = MagicMock()
+        downloader.extract_info.return_value = {"entries": [
+            {"id": "cdn", "title": "Ceux qui rêvent", "duration": 30, "url": "https://cf-preview-media.sndcdn.com/clip.mp3"},
+            {"id": "format", "title": "Preview format", "duration": 30, "url": "https://cdn.example/clip.mp3", "format_id": "http_mp3_128_preview"},
+            {"id": "path", "title": "Preview playlist", "url": "https://cdn.example/playlist/0/30/clip.m3u8"},
+            {"id": "short", "title": "Complete short song", "duration": 30, "url": "https://cdn.example/full.mp3", "format_id": "http_mp3_128"},
+        ]}
+        with patch("backend.sources.soundcloud.YoutubeDL") as factory:
+            factory.return_value.__enter__.return_value = downloader
+            tracks = SoundCloudAdapter()._search_legacy("song", 4)
+        self.assertEqual([track.is_preview for track in tracks], [True, True, True, False])
+        self.assertTrue(tracks[0].model_dump()["is_preview"])
+
     def test_youtube_filters_long_form_mixes_but_keeps_normal_tracks(self) -> None:
         self.assertTrue(_looks_like_track("Artist — Track (Official Audio)", 248))
         self.assertTrue(_looks_like_track("Long classical movement", 1199))

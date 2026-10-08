@@ -121,6 +121,23 @@ def test_stream_links_refresh_only_after_freshness_window() -> None:
     assert result == {"fresh": False, "stale": True, "legacy": True, "youtube": False}
 
 
+def test_preview_failover_finds_full_recording_without_accepting_covers_or_other_artists() -> None:
+    result = run_core(
+        "(()=>{const origin={title:'Ceux qui rêvent',artist:'Pomme',duration:30,is_preview:true};"
+        "const full={id:'full',title:'Pomme - Ceux qui revent (Official Audio)',artist:'Pomme - Topic',duration:170,source:'youtube',stream_url:'x'};"
+        "const candidates=[full,"
+        "{...full,id:'cover',title:'Pomme - Ceux qui rêvent (cover)'},"
+        "{...full,id:'live',title:'Pomme - Ceux qui rêvent (live)'},"
+        "{...full,id:'remix',title:'Pomme - Ceux qui rêvent (remix)'},"
+        "{...full,id:'sped',title:'Pomme - Ceux qui rêvent (sped up)'},"
+        "{...full,id:'other',title:origin.title,artist:'Unrelated Artist'},"
+        "{...full,id:'preview',duration:30,is_preview:true}];"
+        "return {preview:core.rankAlternatives(origin,candidates,[]).map(track=>track.id),"
+        "shortSong:core.rankAlternatives({...origin,is_preview:false},[full],[]).length}})()"
+    )
+    assert result == {"preview": ["full"], "shortSong": 0}
+
+
 def test_app_wires_persistent_queue_and_cross_source_recovery() -> None:
     app = (ROOT / "frontend" / "app.js").read_text(encoding="utf-8")
     html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")

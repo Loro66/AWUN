@@ -19,6 +19,7 @@ class Track(BaseModel):
     source: SourceName
     stream_url: str
     stream_type: Literal["audio", "hls"] = "audio"
+    is_preview: bool = False
     stream_expires_at: int | None = Field(default=None, ge=0, description="Upstream stream expiry as Unix milliseconds")
     download_url: str | None = None
     score: float = Field(ge=0, le=100)

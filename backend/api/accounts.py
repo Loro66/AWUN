@@ -14,7 +14,7 @@ from backend.core.config import Settings
 ACCESS_COOKIE = "songvale_access"
 REFRESH_COOKIE = "songvale_refresh"
 MAX_STATE_BYTES = 4 * 1024 * 1024
-TRACK_FIELDS = ("source", "id", "title", "artist", "duration", "quality", "thumbnail", "external_url", "catalog_links", "import_origin")
+TRACK_FIELDS = ("source", "id", "title", "artist", "duration", "quality", "thumbnail", "external_url", "catalog_links", "import_origin", "is_preview")
 
 
 class Credentials(BaseModel):
@@ -96,6 +96,8 @@ def _track(value: object) -> dict:
             raise HTTPException(422, "Invalid track metadata")
     if "duration" in result and (not isinstance(result["duration"], (int, float)) or not 0 <= result["duration"] <= 86400):
         raise HTTPException(422, "Invalid track duration")
+    if "is_preview" in result and not isinstance(result["is_preview"], bool):
+        raise HTTPException(422, "Invalid preview flag")
     if "catalog_links" in result:
         links = result["catalog_links"]
         if not isinstance(links, dict) or len(links) > 10 or any(not isinstance(k, str) or not isinstance(v, str) or len(k) > 40 or len(v) > 1000 for k, v in links.items()):

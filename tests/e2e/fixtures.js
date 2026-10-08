@@ -39,6 +39,7 @@ function track(source, id, title, artist = 'AWUN Artist', duration = 214) {
     duration,
     quality: youtube ? 'VIDEO' : '320',
     source,
+    stream_type: 'audio',
     stream_url: youtube
       ? `https://www.youtube.com/watch?v=${id}`
       : `http://127.0.0.1:4173/__fixture__/audio/${source}/${id}.mp3`,
