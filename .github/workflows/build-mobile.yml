@@ -39,7 +39,7 @@ jobs:
           cp mobile/android/app/build/outputs/apk/debug/app-debug.apk dist/android/SONGVALE-Android-internal-test.apk
           sha256sum dist/android/SONGVALE-Android-internal-test.apk > dist/android/SONGVALE-Android-internal-test.apk.sha256
           cp LICENSE.md EULA.md dist/android/
-      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: SONGVALE-Android-internal-test
           path: dist/android
@@ -76,7 +76,7 @@ jobs:
           shasum -a 256 dist/ios/SONGVALE-iOS-unsigned.ipa dist/ios/SONGVALE-iOS-Simulator.zip > dist/ios/SHA256SUMS.txt
           cp LICENSE.md EULA.md dist/ios/
           rm -rf dist/ios/Payload
-      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: SONGVALE-iOS-beta
           path: dist/ios
