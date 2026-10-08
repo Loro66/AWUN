@@ -78,17 +78,20 @@ jobs:
           Copy-Item EULA.md dist/EULA.md
       - name: Verify silent upgrade and automatic app relaunch
         shell: pwsh
+        timeout-minutes: 5
         run: |
           $installDir = Join-Path $env:RUNNER_TEMP "songvale-update-smoke"
           $installer = Join-Path $PWD "dist\SONGVALE-Setup-x64.exe"
           $arguments = @("/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/CLOSEAPPLICATIONS", ('/DIR="{0}"' -f $installDir))
           $running = @()
           try {
-            $first = Start-Process -FilePath $installer -ArgumentList $arguments -Wait -PassThru
+            $first = Start-Process -FilePath $installer -ArgumentList $arguments -PassThru
+            if (-not $first.WaitForExit(120000)) { throw "Silent initial installation timed out" }
             if ($first.ExitCode -ne 0) { throw "Silent initial installation failed: $($first.ExitCode)" }
             $sentinel = Join-Path $installDir "preserve-user-data.json"
             Set-Content $sentinel '{"playlist":"saved","position":41}'
-            $upgrade = Start-Process -FilePath $installer -ArgumentList ($arguments + "/SONGVALEUPDATE=1") -Wait -PassThru
+            $upgrade = Start-Process -FilePath $installer -ArgumentList ($arguments + "/SONGVALEUPDATE=1") -PassThru
+            if (-not $upgrade.WaitForExit(120000)) { throw "Silent upgrade timed out" }
             if ($upgrade.ExitCode -ne 0) { throw "Silent upgrade failed: $($upgrade.ExitCode)" }
             $installed = Join-Path $installDir "SONGVALE.exe"
             if ((Get-FileHash $installed).Hash -ne (Get-FileHash "dist/SONGVALE.exe").Hash) { throw "Installed executable does not match the release" }
