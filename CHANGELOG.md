@@ -2,6 +2,19 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.6.1] - 2026-10-09
+
+### Fixed
+
+- The native Windows WebView supplies the registered SONGVALE application identity to official YouTube embed requests, as required by YouTube. The process and installer shortcuts use the same stable AppUserModelID.
+- YouTube connection, player and identification failures no longer blacklist videos for 24 hours or hide them from search. Obsolete cached connection failures are ignored; unavailable videos and disabled embedding retain their separate cache.
+- Failed YouTube API loads can retry without restarting. An iframe that never becomes ready now has a bounded startup timeout. Autoplay blocking preserves the official player for a manual start.
+- Client-wide YouTube errors skip repeated attempts on other YouTube uploads. If other sources cannot play the recording, the player shows the actual error code and a link to the original video on YouTube.
+
+### Testing
+
+- Added native request-header and registered-identity checks, plus browser regressions for legacy failure caches, source recovery, error diagnostics, autoplay, API retry and missing iframe readiness.
+
 ## [2.6.0] - 2026-10-08
 
 ### Added
