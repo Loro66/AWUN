@@ -33,8 +33,8 @@ Source: "..\LICENSE.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\EULA.md"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
-Name: "{autoprograms}\SONGVALE"; Filename: "{app}\SONGVALE.exe"
-Name: "{autodesktop}\SONGVALE"; Filename: "{app}\SONGVALE.exe"; Tasks: desktopicon
+Name: "{autoprograms}\SONGVALE"; Filename: "{app}\SONGVALE.exe"; AppUserModelID: "com.loro66.songvale"
+Name: "{autodesktop}\SONGVALE"; Filename: "{app}\SONGVALE.exe"; Tasks: desktopicon; AppUserModelID: "com.loro66.songvale"
 
 [Tasks]
 Name: "desktopicon"; Description: "Создать ярлык на рабочем столе"; GroupDescription: "Дополнительные ярлыки:"; Flags: unchecked

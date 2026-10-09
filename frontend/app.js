@@ -109,15 +109,18 @@ function markFreshTracks(tracks){
 }
 const youtubeFailureKey='awun-youtube-failures-v1';
 const youtubeFailureTtlMs=24*60*60*1000;
+const youtubeVideoFailureCodes=new Set(['100','101','150']);
+const youtubeClientFailureCodes=new Set(['5','153','timeout','api-load','api-timeout']);
 function loadYoutubeFailures(){
   const value=readStoredJson(youtubeFailureKey,{}),now=Date.now(),active={};
-  if(value&&typeof value==='object'&&!Array.isArray(value))Object.entries(value).forEach(([id,entry])=>{if(id&&entry&&now-(Number(entry.at)||0)<youtubeFailureTtlMs)active[id]=entry});
+  if(value&&typeof value==='object'&&!Array.isArray(value))Object.entries(value).forEach(([id,entry])=>{if(id&&entry&&youtubeVideoFailureCodes.has(String(entry.code))&&now-(Number(entry.at)||0)<youtubeFailureTtlMs)active[id]=entry});
   return active;
 }
 const youtubeFailures=loadYoutubeFailures();
 function youtubeVideoId(track){if(track?.id?.startsWith('yt_'))return track.id.slice(3);try{return new URL(track?.stream_url).searchParams.get('v')||''}catch{return''}}
 function youtubeRecentlyFailed(track){const id=youtubeVideoId(track),entry=youtubeFailures[id];return Boolean(entry&&Date.now()-(Number(entry.at)||0)<youtubeFailureTtlMs)}
-function markYoutubeFailed(track,code){const id=youtubeVideoId(track);if(!id)return;youtubeFailures[id]={at:Date.now(),code:String(code??'unknown').slice(0,24)};writeStoredJson(youtubeFailureKey,youtubeFailures);runtimeLog?.log?.('youtube.video-unavailable',{id,code},'warning')}
+function markYoutubeFailed(track,code){const id=youtubeVideoId(track);if(!id)return;if(youtubeVideoFailureCodes.has(String(code))){youtubeFailures[id]={at:Date.now(),code:String(code)};writeStoredJson(youtubeFailureKey,youtubeFailures)}runtimeLog?.log?.('youtube.playback-failed',{id,code,scope:youtubeVideoFailureCodes.has(String(code))?'video':'player'},'warning')}
+function youtubePlaybackError(code){const error=new Error(`${t('youtubeEmbedError')} (${code})`);error.youtubeCode=String(code);return error}
 function clearYoutubeFailure(track){const id=youtubeVideoId(track);if(!id||!youtubeFailures[id])return;delete youtubeFailures[id];writeStoredJson(youtubeFailureKey,youtubeFailures)}
 function playableSearchTracks(tracks){return(Array.isArray(tracks)?tracks:[]).filter(track=>track?.source!=='youtube'||!youtubeRecentlyFailed(track))}
 const searchCacheKey='awun-search-cache-v1';
@@ -188,7 +191,7 @@ async function requestSearchWithinDeadline(payload,{signal,waitForFallback=false
 const ui={
   searchNavButton:$('searchNavButton'),libraryButton:$('libraryButton'),allSourcesButton:$('allSourcesButton'),installButton:$('installButton'),iosInstallGuide:$('iosInstallGuide'),iosInstallDismiss:$('iosInstallDismiss'),languageButton:$('languageButton'),languageLabel:$('languageLabel'),emptyGuide:$('emptyGuide'),idleStage:$('idleStage'),idleSearchButton:$('idleSearchButton'),idleWaveButton:$('idleWaveButton'),guideSearch:$('guideSearch'),guideWave:$('guideWave'),guideImport:$('guideImport'),welcomePanel:$('welcomePanel'),welcomeImport:$('welcomeImport'),welcomeSearch:$('welcomeSearch'),welcomeLibraryCount:$('welcomeLibraryCount'),searchForm:$('searchForm'),searchInput:$('searchInput'),searchButton:$('searchButton'),homeSections:$('homeSections'),recentList:$('recentList'),recommendationGrid:$('recommendationGrid'),queueList:$('queueList'),queueEmpty:$('queueEmpty'),clearQueue:$('clearQueue'),sidebarQueue:$('sidebarQueue'),sidebarRecent:$('sidebarRecent'),sidebarQueueAll:$('sidebarQueueAll'),sidebarRecentAll:$('sidebarRecentAll'),
   sources:$('sources'),regionSelect:$('regionSelect'),limitSelect:$('limitSelect'),results:$('results'),trackList:$('trackList'),message:$('message'),resultTitle:$('resultTitle'),resultCount:$('resultCount'),resultTime:$('resultTime'),searchMeta:$('searchMeta'),libraryWorkspace:$('libraryWorkspace'),libraryFilter:$('libraryFilter'),playlistCreate:$('playlistCreate'),playlistName:$('playlistName'),playlistTabs:$('playlistTabs'),playlistActions:$('playlistActions'),playlistDescription:$('playlistDescription'),libraryEmptyState:$('libraryEmptyState'),deletePlaylist:$('deletePlaylist'),
-  player:$('player'),playerArtwork:$('playerArtwork'),nowTitle:$('nowTitle'),nowArtist:$('nowArtist'),playerStatus:$('playerStatus'),nowSource:$('nowSource'),audio:$('audio'),youtubeDock:$('youtubeDock'),youtubePlayer:$('youtubePlayer'),
+  player:$('player'),playerArtwork:$('playerArtwork'),nowTitle:$('nowTitle'),nowArtist:$('nowArtist'),playerStatus:$('playerStatus'),youtubeExternal:$('youtubeExternal'),nowSource:$('nowSource'),audio:$('audio'),youtubeDock:$('youtubeDock'),youtubePlayer:$('youtubePlayer'),
   previousTrack:$('previousTrack'),playPause:$('playPause'),nextTrack:$('nextTrack'),repeatMode:$('repeatMode'),waveProgress:$('waveProgress'),progress:$('progress'),elapsed:$('elapsed'),totalTime:$('totalTime'),volume:$('volume'),muteButton:$('muteButton'),playerSave:$('playerSave'),closePlayer:$('closePlayer'),minimizeVideo:$('minimizeVideo'),queueToggle:$('queueToggle'),queueClose:$('queueClose'),expandPlayer:$('expandPlayer'),collapsePlayer:$('collapsePlayer'),
   themeButton:$('themeButton'),themeLabel:$('themeLabel'),themePanel:$('themePanel'),themeClose:$('themeClose'),themeBackdrop:$('themeBackdrop'),themeColor:$('themeColor'),motionToggle:$('motionToggle'),motionValue:$('motionValue'),decorToggle:$('decorToggle'),decorValue:$('decorValue'),densityToggle:$('densityToggle'),densityValue:$('densityValue'),soundEngineToggle:$('soundEngineToggle'),soundEngineValue:$('soundEngineValue'),soundEngineStatus:$('soundEngineStatus'),diagnosticsButton:$('diagnosticsButton'),diagnosticsPanel:$('diagnosticsPanel'),diagnosticsClose:$('diagnosticsClose'),diagnosticsRefresh:$('diagnosticsRefresh'),diagnosticsCopy:$('diagnosticsCopy'),diagnosticsList:$('diagnosticsList'),diagnosticsEndpoint:$('diagnosticsEndpoint'),diagnosticsChecked:$('diagnosticsChecked'),diagnosticsCopyStatus:$('diagnosticsCopyStatus'),diagnosticsToolsStatus:$('diagnosticsToolsStatus'),diagnosticsLog:$('diagnosticsLog'),storageExport:$('storageExport'),storageImport:$('storageImport'),storageImportFile:$('storageImportFile'),updateCheck:$('updateCheck'),updateLink:$('updateLink'),
   importButton:$('importButton'),importPanel:$('importPanel'),importClose:$('importClose'),importBackdrop:$('importBackdrop'),libraryFile:$('libraryFile'),importFileButton:$('importFileButton'),importFileName:$('importFileName'),importText:$('importText'),importStatus:$('importStatus'),importSubmit:$('importSubmit'),importUrl:$('importUrl'),importUrlSubmit:$('importUrlSubmit'),importPlaylistName:$('importPlaylistName'),importProgress:$('importProgress'),importReportTitle:$('importReportTitle'),importTotal:$('importTotal'),importProcessed:$('importProcessed'),importAdded:$('importAdded'),importReviewCount:$('importReviewCount'),importMissed:$('importMissed'),importPercent:$('importPercent'),importCancel:$('importCancel'),importResume:$('importResume'),importRetryMissed:$('importRetryMissed'),importDownloadReport:$('importDownloadReport'),importOpenLibrary:$('importOpenLibrary'),importReviewPanel:$('importReviewPanel'),importReviewTitle:$('importReviewTitle'),importReviewPosition:$('importReviewPosition'),importReviewOriginal:$('importReviewOriginal'),importReviewCandidates:$('importReviewCandidates'),importReviewSearchInput:$('importReviewSearchInput'),importReviewSearchButton:$('importReviewSearchButton'),importReviewSkip:$('importReviewSkip')
@@ -856,7 +859,9 @@ function setMessage(text='',kind=''){
 function setPlaybackStatus(message='',kind='loading'){
   ui.playerStatus.textContent=message;ui.playerStatus.hidden=!message;
   ui.playerStatus.dataset.tone=message?kind:'';
+  ui.youtubeExternal.hidden=true;
 }
+function showYoutubeExternal(track){const id=youtubeId(track);if(!id)return;ui.youtubeExternal.href=`https://www.youtube.com/watch?v=${encodeURIComponent(id)}`;ui.youtubeExternal.hidden=false}
 
 function applyVisual(save=true){
   const theme=visualThemes[state.theme]||visualThemes.acid;
@@ -1619,10 +1624,13 @@ function ensureYouTubeApi(){
   if(state.youtubeApi)return state.youtubeApi;
   state.youtubeApi=new Promise((resolve,reject)=>{
     const previous=window.onYouTubeIframeAPIReady;
-    window.onYouTubeIframeAPIReady=()=>{if(typeof previous==='function')previous();resolve(window.YT)};
-    const script=document.createElement('script');script.src='https://www.youtube.com/iframe_api';script.async=true;script.onerror=()=>reject(new Error(t('youtubePlayerLoadFailed')));document.head.append(script);
-    setTimeout(()=>{if(!window.YT?.Player)reject(new Error(t('youtubePlayerTimeout')))},15000);
-  });
+    const script=document.createElement('script');let settled=false;
+    const finish=(callback,value)=>{if(settled)return;settled=true;clearTimeout(timer);if(window.onYouTubeIframeAPIReady===ready)window.onYouTubeIframeAPIReady=previous;if(callback===reject)script.remove();callback(value)};
+    const ready=()=>{try{if(typeof previous==='function')previous()}finally{if(window.YT?.Player)finish(resolve,window.YT)}};
+    const timer=setTimeout(()=>finish(reject,youtubePlaybackError('api-timeout')),15000);
+    window.onYouTubeIframeAPIReady=ready;
+    script.src='https://www.youtube.com/iframe_api';script.async=true;script.onerror=()=>finish(reject,youtubePlaybackError('api-load'));document.head.append(script);
+  }).catch(error=>{state.youtubeApi=null;throw error});
   return state.youtubeApi;
 }
 
@@ -1723,24 +1731,29 @@ function updateTimeline(current,duration){
 
 async function playYouTube(track,startAt=0){
   const expectedGeneration=state.playbackGeneration;
+  const signal=state.playbackController?.signal;
   state.audioTrackId=null;ui.audio.pause();ui.audio.removeAttribute('src');stopHls();stopYouTube();ui.youtubeDock.hidden=false;ui.youtubeDock.classList.remove('minimized');
   const YT=await ensureYouTubeApi(),videoId=youtubeId(track);if(!videoId)throw new Error(t('invalidYoutubeResult'));
   if(expectedGeneration!==state.playbackGeneration)throw new DOMException('Playback superseded','AbortError');
   const startedAt=performance.now();
   const target=document.createElement('div');ui.youtubePlayer.replaceChildren(target);
   await new Promise((resolve,reject)=>{
-    let settled=false,successRecorded=false;
+    let settled=false,successRecorded=false,autoplayBlocked=false;
     const current=()=>expectedGeneration===state.playbackGeneration&&state.active?.id===track.id;
-    const finish=(callback,value)=>{if(settled)return false;settled=true;callback(value);return true};
+    const abort=()=>finish(reject,new DOMException('Playback superseded','AbortError'));
+    const finish=(callback,value)=>{if(settled)return false;settled=true;signal?.removeEventListener('abort',abort);callback(value);return true};
+    signal?.addEventListener('abort',abort,{once:true});if(signal?.aborted){abort();return}
     const fail=code=>{
       if(!current()){finish(reject,new DOMException('Playback superseded','AbortError'));return}
-      const suffix=code==='timeout'?'start timeout':`code ${code??'unknown'}`,error=new Error(`${t('youtubeEmbedError')} (${suffix})`);
+      const error=youtubePlaybackError(code??'unknown');
       markYoutubeFailed(track,code);state.failedTrackIds.add(track.id);recordPlaybackHealth('youtube',{success:false,error:error.message});stopYouTube();setPlaying(false);
       if(!finish(reject,error))void recoverPlayback(error,expectedGeneration);
     };
+    state.youtubeStartTimer=setTimeout(()=>fail('timeout'),15000);
     state.youtube=new YT.Player(target,{width:'100%',height:'100%',videoId,playerVars:{autoplay:1,controls:1,playsinline:1,rel:0,origin:location.origin},events:{
-      onReady:event=>{if(!current()){try{event.target.destroy()}catch{}finish(reject,new DOMException('Playback superseded','AbortError'));return}event.target.setVolume(Number(ui.volume.value));if(startAt>0)event.target.seekTo(startAt,true);event.target.playVideo();state.youtubeStartTimer=setTimeout(()=>{if(state.youtube?.getPlayerState?.()!==YT.PlayerState.PLAYING)fail('timeout')},12000)},
-      onStateChange:event=>{if(!current())return;if(event.data===YT.PlayerState.PLAYING){clearTimeout(state.youtubeStartTimer);state.youtubeStartTimer=null;startYouTubeTicker();clearYoutubeFailure(track);if(!successRecorded){successRecorded=true;recordPlaybackHealth('youtube',{success:true,latencyMs:performance.now()-startedAt})}setPlaying(true);finish(resolve)}else{stopYouTubeTicker();if(event.data===YT.PlayerState.PAUSED)setPlaying(false);if(event.data===YT.PlayerState.ENDED)handleTrackEnded()}},
+      onReady:event=>{if(!current()){try{event.target.destroy()}catch{}finish(reject,new DOMException('Playback superseded','AbortError'));return}event.target.getIframe?.()?.setAttribute('referrerpolicy','strict-origin-when-cross-origin');event.target.setVolume(Number(ui.volume.value));if(startAt>0)event.target.seekTo(startAt,true);if(autoplayBlocked)return;clearTimeout(state.youtubeStartTimer);state.youtubeStartTimer=setTimeout(()=>{if(state.youtube?.getPlayerState?.()!==YT.PlayerState.PLAYING)fail('timeout')},12000);event.target.playVideo()},
+      onStateChange:event=>{if(!current())return;if(event.data===YT.PlayerState.PLAYING){clearTimeout(state.youtubeStartTimer);state.youtubeStartTimer=null;startYouTubeTicker();clearYoutubeFailure(track);if(!successRecorded){successRecorded=true;recordPlaybackHealth('youtube',{success:true,latencyMs:performance.now()-startedAt})}setPlaying(true);if(autoplayBlocked){autoplayBlocked=false;setPlaybackStatus();if(ui.message.textContent===t('youtubeAutoplayBlocked'))setMessage('')}finish(resolve)}else{stopYouTubeTicker();if(event.data===YT.PlayerState.PAUSED)setPlaying(false);if(event.data===YT.PlayerState.ENDED)handleTrackEnded()}},
+      onAutoplayBlocked:()=>{if(!current())return;autoplayBlocked=true;clearTimeout(state.youtubeStartTimer);state.youtubeStartTimer=null;setPlaying(false);const error=new DOMException(t('youtubeAutoplayBlocked'),'NotAllowedError');error.youtubeCode='autoplay-blocked';finish(reject,error)},
       onError:event=>fail(event?.data)
     }});
   });
@@ -1953,8 +1966,9 @@ async function playTrack(track,options={}){
     return true;
   }catch(error){
     if(signal?.aborted||playbackGeneration!==state.playbackGeneration)return false;
-    stopHls();setPlaying(false);
+    stopHls();if(track.source==='youtube'&&error?.youtubeCode!=='autoplay-blocked')stopYouTube();setPlaying(false);
     runtimeLog?.log?.('playback.start-failed',{source:track.source,id:track.id,error:error?.message||error},'error');
+    if(error?.youtubeCode==='autoplay-blocked'){setPlaybackStatus(t('youtubeAutoplayBlocked'),'notice');setMessage(t('youtubeAutoplayBlocked'),'notice');return false}
     if(error?.name==='NotAllowedError'){setPlaybackStatus(t('playbackFailed'),'error');setMessage(t('playbackFailed'),'error');return false}
     if(error?.name==='AbortError'){setPlaybackStatus();return false}
     if(options.recoverOnFailure===false)return false;
@@ -2025,7 +2039,7 @@ async function recoverPlayback(_error,expectedGeneration=state.playbackGeneratio
   setPlaybackStatus(t('trackFindingAlternative'));
   state.recoveringGeneration=expectedGeneration;
   try{
-    if(failed.source==='youtube'&&state.sameSourceRefreshGeneration!==expectedGeneration){
+    if(failed.source==='youtube'&&!youtubeClientFailureCodes.has(_error?.youtubeCode)&&state.sameSourceRefreshGeneration!==expectedGeneration){
       state.sameSourceRefreshGeneration=expectedGeneration;setMessage(t('findingYoutubeAlternative'),'loading');
       let youtubeTracks=[];
       try{
@@ -2062,7 +2076,7 @@ async function recoverPlayback(_error,expectedGeneration=state.playbackGeneratio
       state.failedTrackIds.add(candidate.id);state.failedSources.add(candidate.source);
     }
     throw new Error();
-  }catch{if(expectedGeneration!==state.playbackGeneration)return false;setPlaying(false);setPlaybackStatus(t(origin.is_preview?'previewUnavailableStatus':'trackUnavailableStatus'),'error');setMessage(t('allSourcesFailed'),'error');runtimeLog?.log?.('playback.recovery-failed',{source:failed.source,id:failed.id},'error');return false}
+  }catch{if(expectedGeneration!==state.playbackGeneration)return false;setPlaying(false);const message=origin.source==='youtube'&&_error?.youtubeCode?t('youtubePlayerFailed',{code:_error.youtubeCode}):t(origin.is_preview?'previewUnavailableStatus':'trackUnavailableStatus');setPlaybackStatus(message,'error');setMessage(t('allSourcesFailed'),'error');if(origin.source==='youtube')showYoutubeExternal(origin);runtimeLog?.log?.('playback.recovery-failed',{source:failed.source,id:failed.id},'error');return false}
   finally{if(state.recoveringGeneration===expectedGeneration)state.recoveringGeneration=null}
 }
 

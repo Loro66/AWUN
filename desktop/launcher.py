@@ -22,6 +22,7 @@ from backend.core.config import Settings
 from backend.core.version import APP_VERSION
 from desktop.controls import DesktopControls
 from desktop.updater import DesktopUpdater
+from desktop.player_identity import identify_youtube_embed, register_process_identity
 
 
 HOST = "127.0.0.1"
@@ -287,6 +288,7 @@ def open_local_app(window: webview.Window, runtime: LocalAwunServer) -> None:
 
 
 def main() -> None:
+    register_process_identity()
     runtime = LocalAwunServer()
     state_bridge = DesktopStateBridge()
     window = webview.create_window(
@@ -304,6 +306,7 @@ def main() -> None:
     state_bridge._controls = controls
     updater = DesktopUpdater(APP_VERSION)
     state_bridge._updater = updater
+    window.events.request_sent += identify_youtube_embed
     window.events.shown += controls.start
     window.events.closing += controls.closing
     try:

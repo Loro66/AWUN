@@ -1,0 +1,1 @@
+YouTube connection errors no longer hide working tracks for a day. Failed player loads can retry without restarting, and startup no longer hangs indefinitely. Autoplay blocking keeps the official player available for a manual start. Playback failures show their code and a link to the original video.

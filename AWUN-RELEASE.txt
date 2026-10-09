@@ -1,21 +1,22 @@
-SONGVALE 2.6.0
-Release date: 2026-10-08
+SONGVALE 2.6.1
+Release date: 2026-10-09
 
-Windows:
-- Mini player above other windows, preserving the current track and position.
-- Tray menu, optional close-to-tray, and global Ctrl+Alt shortcuts.
-- One-click update in Settings with official release and SHA-256 verification.
-  The library and position are saved before installation; the app relaunches.
+YouTube playback:
+- Windows identifies SONGVALE in official embedded-player requests.
+- Temporary connection and player errors no longer hide working videos for a day.
+- Failed API loads can retry without an app restart; startup has a timeout.
+- Autoplay blocking keeps the official player available for a manual start.
+- Player-wide errors switch to other sources without retrying many YouTube uploads.
+- If recovery fails, the player shows the error code and a link to the original video.
 
-All platforms:
-- Smart playlists: Recently added, Most played, and Rediscover.
-  They update from your library and qualified listening on this device.
+YouTube restrictions imposed by the video owner or the viewer's region still apply.
 
-Shortcuts: Ctrl+Alt+Space (play/pause), Left/Right (tracks), Up/Down (volume),
-M (mini player), S (show window). Conflicts and toggles are shown in Settings.
+Includes the 2.6.0 mini player, tray menu, global shortcuts, smart playlists,
+and one-click Windows updates with official release and SHA-256 verification.
 
 Windows downloads:
 - SONGVALE-Setup-x64.exe: per-user installer.
 - SONGVALE.exe: portable app.
 
-Install this version once to enable one-click updates for future releases.
+From 2.6.0, open Settings > Windows controls > Update in one click.
+From earlier versions, install SONGVALE-Setup-x64.exe to enable future updates.
