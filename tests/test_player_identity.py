@@ -44,5 +44,5 @@ def test_windows_registers_the_same_identity_as_installer_shortcuts():
     with patch("desktop.player_identity.sys.platform", "win32"), patch("desktop.player_identity.ctypes.windll", SimpleNamespace(shell32=SimpleNamespace(SetCurrentProcessExplicitAppUserModelID=setter)), create=True):
         register_process_identity()
     setter.assert_called_once_with(APP_USER_MODEL_ID)
-    installer = (Path(__file__).resolve().parents[1] / "installer" / "AWUN.iss").read_text()
+    installer = (Path(__file__).resolve().parents[1] / "installer" / "AWUN.iss").read_text(encoding="utf-8")
     assert installer.count(f'AppUserModelID: "{APP_USER_MODEL_ID}"') == 2
