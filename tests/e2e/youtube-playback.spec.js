@@ -37,7 +37,7 @@ test('client identity failure skips futile YouTube retries and switches sources'
   expect(await page.evaluate(()=>window.youtubeAttempts)).toHaveLength(1);
   expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('awun-youtube-failures-v1')||'{}')['working-video'])).toBeUndefined();
   await searchFor(page,'midnight signal');
-  await expect(page.locator('#trackList .track[data-source="youtube"]')).toHaveCount(1);
+  await expect(page.locator(`#trackList .track[data-id="${TRACKS.youtube[0].id}"]`)).toBeVisible();
 });
 
 test('YouTube failure shows its code and a link to the exact original video',async({page})=>{
