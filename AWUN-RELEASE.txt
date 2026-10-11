@@ -1,5 +1,20 @@
-SONGVALE 2.7.0
+SONGVALE 2.7.1
 Release date: 2026-10-11
+
+Smart automatic offline downloads:
+- A new like or three qualified listens queues a permitted full recording.
+- A listen counts after 30 seconds or half a short track. Pauses, buffering and
+  seeking do not count; repeat-one starts a fresh listen.
+- Settings > Smart downloads: switch, Wi-Fi restriction, storage limit,
+  progress, retry and clear. Default limit: 1 GiB.
+- Older unliked automatic copies can be removed when space is needed.
+  Imported files and active or pending playback are protected.
+- Downloaded copies play from My Music without internet after restart.
+- Only explicit Audius/Jamendo downloads and licensed Internet Archive audio
+  qualify. YouTube and SoundCloud stay online; Play Store builds disable
+  provider downloads. Own files remain available.
+- Website/PWA downloads require the app to stay open. Audio and download
+  state stay on this device; clearing website data removes browser copies.
 
 Artists, albums and your own offline audio:
 - Open an artist name in a track or the player to browse releases.

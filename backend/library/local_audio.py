@@ -114,6 +114,10 @@ def register_local_audio_routes(app: FastAPI, store: LocalAudioStore | None) -> 
             metadata = {key: str(supplied.get(key) or "")[:200] for key in ("title", "artist", "album", "filename")}
             metadata["duration"] = max(0, min(86400, int(supplied.get("duration") or 0)))
             metadata["track_number"] = max(0, min(1000, int(supplied.get("track_number") or 0)))
+            if supplied.get("managed_download") is True and supplied.get("origin_source") in {"audius", "jamendo", "internet_archive"}:
+                metadata["managed_download"] = True
+                metadata.update({key: str(supplied.get(key) or "")[:200] for key in ("origin_source", "origin_id")})
+                metadata.update({key: str(supplied.get(key) or "")[:1000] for key in ("origin_url", "license_url")})
         except (ValueError, TypeError, OverflowError) as error:
             raise HTTPException(400, "Invalid audio metadata") from error
         async with store.lock:

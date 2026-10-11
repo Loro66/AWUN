@@ -73,7 +73,7 @@
     });
   }
   class Store {
-    constructor(){this.tracks=[];this.database=null;this.config=null;this.activeURL=null;this.ready=this.load();}
+    constructor(){this.tracks=[];this.database=null;this.config=null;this.activeURL=null;this.writeTail=Promise.resolve();this.ready=this.load();}
     async nativeConfig(){
       if(new URLSearchParams(root.location?.search||'').get('desktop')!=='1'||!['127.0.0.1','localhost','[::1]'].includes(root.location?.hostname))return null;
       if(!root.pywebview?.api?.local_audio_config){
@@ -92,11 +92,12 @@
       this.database=await requestValue(request);this.database.onversionchange=()=>{this.database.close();this.database=null};return this.database;
     }
     async native(path='',init={}){
-      const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),60000);
+      const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),60000),relay=()=>controller.abort();
+      if(init.signal?.aborted)relay();else init.signal?.addEventListener('abort',relay,{once:true});
       try{
         const response=await fetch(`/api/v1/local-audio${path}`,{...init,signal:controller.signal,headers:{...init.headers,'X-Songvale-Local-Token':this.config.token}});
         const data=await response.json();if(!response.ok)throw new Error(response.status===413?'localTooLarge':response.status===507?'localStorageFull':'localStorageUnavailable');return data;
-      }finally{clearTimeout(timer)}
+      }finally{clearTimeout(timer);init.signal?.removeEventListener('abort',relay)}
     }
     async load(){
       try{
@@ -106,14 +107,26 @@
       }catch(error){this.loadError=error;this.tracks=[]}
       return this.tracks;
     }
-    async importFile(file){
+    write(operation){const result=this.writeTail.then(operation);this.writeTail=result.catch(()=>{});return result}
+    async inspectFile(file){
+      this.inspected||=new WeakMap();if(this.inspected.has(file))return this.inspected.get(file);
+      const inspection=(async()=>{
+        const mime=mimeFor(file.name);if(!mime)throw new Error('localUnsupported');
+        if(!file.size)throw new Error('localEmpty');if(file.size>MAX_FILE_BYTES)throw new Error('localTooLarge');
+        const tags=readTags(await file.slice(0,1024*1024).arrayBuffer(),file.name),duration=await durationFor(file);
+        return {mime,metadata:{...tags,duration:duration||tags.duration,filename:file.name}};
+      })();this.inspected.set(file,inspection);return inspection;
+    }
+    importFile(file,details={}){return this.write(()=>this.importUnlocked(file,details))}
+    async importUnlocked(file,details){
       await this.ready;if(this.loadError)throw this.loadError;
-      const mime=mimeFor(file.name);if(!mime)throw new Error('localUnsupported');
-      if(!file.size)throw new Error('localEmpty');if(file.size>MAX_FILE_BYTES)throw new Error('localTooLarge');
-      const tags=readTags(await file.slice(0,1024*1024).arrayBuffer(),file.name);
-      const duration=await durationFor(file);const metadata={...tags,duration:duration||tags.duration,filename:file.name};
+      if(details.signal?.aborted)throw new DOMException('Cancelled','AbortError');
+      const inspection=await this.inspectFile(file),mime=inspection.mime,metadata={...inspection.metadata};
+      for(const key of ['title','artist','album'])if(typeof details[key]==='string')metadata[key]=details[key].slice(0,200);
+      if(details.managed_download){metadata.managed_download=true;for(const key of ['origin_source','origin_id'])metadata[key]=String(details[key]||'').slice(0,200);for(const key of ['origin_url','license_url'])metadata[key]=String(details[key]||'').slice(0,1000)}
+      if(details.signal?.aborted)throw new DOMException('Cancelled','AbortError');
       let track,duplicate=false;
-      if(this.config){const data=await this.native('',{method:'POST',headers:{'Content-Type':mime,'X-Songvale-Local-Metadata':encodeURIComponent(JSON.stringify(metadata))},body:file});track=data.track;duplicate=data.duplicate}
+      if(this.config){const data=await this.native('',{method:'POST',headers:{'Content-Type':mime,'X-Songvale-Local-Metadata':encodeURIComponent(JSON.stringify(metadata))},signal:details.signal,body:file});track=data.track;duplicate=data.duplicate}
       else{
         const hash=await root.crypto.subtle.digest('SHA-256',await file.arrayBuffer());
         const file_id=[...new Uint8Array(hash)].map(v=>v.toString(16).padStart(2,'0')).join(''),id=`local_${file_id}`;
@@ -121,6 +134,7 @@
         if(!track){
           if(this.tracks.length>=MAX_FILES)throw new Error('localStorageFull');
           const estimate=await root.navigator?.storage?.estimate?.();if(estimate?.quota&&estimate.quota-estimate.usage<file.size)throw new Error('localStorageFull');
+          if(details.signal?.aborted)throw new DOMException('Cancelled','AbortError');
           track={...metadata,id,file_id,source:'local',quality:'LOCAL',stream_url:'',stream_type:'audio',mime,size:file.size,local_backend:'browser'};
           const db=await this.openDatabase(),tx=db.transaction(['tracks','files'],'readwrite'),done=completed(tx);
           tx.objectStore('tracks').put(track);tx.objectStore('files').put(file,id);
@@ -129,7 +143,8 @@
       }
       if(!duplicate)this.tracks.push(track);return {track,duplicate};
     }
-    async update(id,values){
+    update(id,values){return this.write(()=>this.updateUnlocked(id,values))}
+    async updateUnlocked(id,values){
       const index=this.tracks.findIndex(t=>t.id===id);if(index<0)throw new Error('localMissing');
       let track={...this.tracks[index],...Object.fromEntries(['title','artist','album'].map(key=>[key,String(values[key]||'').trim().slice(0,200)]))};
       if(!track.title)throw new Error('localTitleRequired');
@@ -137,7 +152,8 @@
       else{const db=await this.openDatabase(),tx=db.transaction('tracks','readwrite'),done=completed(tx);tx.objectStore('tracks').put(track);await done}
       this.tracks[index]=track;return track;
     }
-    async remove(id){
+    remove(id){return this.write(()=>this.removeUnlocked(id))}
+    async removeUnlocked(id){
       const track=this.tracks.find(t=>t.id===id);if(!track)return;
       if(this.config)await this.native(`/${track.file_id}`,{method:'DELETE'});
       else{const db=await this.openDatabase(),tx=db.transaction(['tracks','files'],'readwrite'),done=completed(tx);tx.objectStore('tracks').delete(id);tx.objectStore('files').delete(id);await done}

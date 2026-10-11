@@ -4,7 +4,7 @@ import re
 from difflib import SequenceMatcher
 from pathlib import PurePosixPath
 from typing import Any
-from urllib.parse import quote
+from urllib.parse import quote, urlparse
 
 import aiohttp
 
@@ -125,6 +125,9 @@ class InternetArchiveAdapter(BaseAdapter):
             return []
         item_title = _text(metadata.get("title"), "Аудио Internet Archive")
         artist = _text(metadata.get("creator"), "Internet Archive")
+        license_url = _text(metadata.get("licenseurl"))
+        license_parts = urlparse(license_url)
+        offline_grant = license_parts.scheme in {"http", "https"} and license_parts.hostname in {"creativecommons.org", "www.creativecommons.org"} and license_parts.path.startswith(("/licenses/", "/publicdomain/"))
         query_key = query.casefold()
         candidates: list[tuple[float, dict[str, Any]]] = []
         for file in payload.get("files") or []:
@@ -157,6 +160,8 @@ class InternetArchiveAdapter(BaseAdapter):
                     source="internet_archive",
                     stream_url=media_url,
                     download_url=media_url,
+                    offline_grant=offline_grant,
+                    license_url=license_url or None,
                     score=min(91.0, 76.0 + relevance * 12),
                     thumbnail=f"https://archive.org/services/img/{quote(identifier, safe='')}",
                     request_headers={"Referer": f"https://archive.org/details/{quote(identifier, safe='')}"},

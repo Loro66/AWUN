@@ -413,6 +413,18 @@
       <button id="soundEngineToggle" class="sound-engine-toggle" type="button" aria-pressed="true"><span data-i18n="soundProcessing">ОБРАБОТКА</span><b id="soundEngineValue" data-i18n="on">ВКЛ</b></button>
       <small id="soundEngineStatus" class="sound-engine-status" data-i18n="soundEngineDirectOnly">Работает для SoundCloud, Audius и других прямых потоков. YouTube ограничен возможностями официального плеера.</small>
     </section>
+    <section class="offline-settings" aria-labelledby="offlineTitle">
+      <strong id="offlineTitle" data-i18n="offlineTitle">УМНЫЕ ЗАГРУЗКИ</strong>
+      <p data-i18n="offlineDescription">Лайк или три прослушивания — и разрешённый трек сохранится на этом устройстве.</p>
+      <label><input id="offlineEnabled" type="checkbox"><span data-i18n="offlineEnabled">Загружать автоматически</span></label>
+      <label><input id="offlineWifiOnly" type="checkbox"><span data-i18n="offlineWifiOnly">Только Wi-Fi</span></label>
+      <small data-i18n="offlineWifiHint">Если браузер не определяет тип сети, режим «Только Wi-Fi» приостановит загрузки.</small>
+      <label><span data-i18n="offlineLimit">Место для автозагрузок</span><select id="offlineLimit"><option value="256">256 MiB</option><option value="1024">1 GiB</option><option value="3072">3 GiB</option><option value="5120">5 GiB</option></select></label>
+      <p id="offlineStatus" role="status" aria-live="polite"></p>
+      <div class="offline-actions"><button id="offlineFiles" type="button" data-i18n="offlineFiles">Открыть файлы</button><button id="offlineRetry" type="button" data-i18n="offlineRetry">Повторить загрузки</button><button id="offlineClear" type="button" data-i18n="offlineClear">Очистить автозагрузки</button></div>
+      <small data-i18n="offlineClearHint">При нехватке места удаляются старые автозагрузки без лайка. Свои файлы и текущий трек сохраняются. Очистка выключает автозагрузку.</small>
+      <ul id="offlineJobs" class="offline-jobs"></ul>
+    </section>
     <button id="diagnosticsButton" class="diagnostics-entry" type="button" aria-controls="diagnosticsPanel" aria-expanded="false">
       <span><small data-i18n="diagnosticsKicker">СОСТОЯНИЕ СЕТИ</small><strong data-i18n="sourceDiagnostics">ДИАГНОСТИКА ИСТОЧНИКОВ</strong></span>
       <b data-i18n="openDiagnostics">ОТКРЫТЬ</b>
@@ -522,6 +534,7 @@
   <script src="/static/home-hub.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/app.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/collections.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/offline.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/flow.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/desktop-player.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/desktop-network.js?v=__AWUN_VERSION__" defer></script>

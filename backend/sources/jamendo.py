@@ -81,6 +81,8 @@ class JamendoAdapter(BaseAdapter):
             source=self.source,
             stream_url=stream_url,
             download_url=download_url or None,
+            offline_grant=bool(download_url),
+            license_url=str(item.get("license_ccurl") or "") or None,
             score=82.0,
             thumbnail=item.get("image") or item.get("album_image") or None,
         )

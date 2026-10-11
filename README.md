@@ -130,7 +130,7 @@ Open `http://127.0.0.1:8000`. Optional provider credentials and deployment setti
 
 ## Verified release quality
 
-Release `v2.7.0` is built from `main` by GitHub Actions.
+Release builds are produced from `main` by GitHub Actions. Version `2.7.1` is currently a test preview in PR #64.
 
 - Python tests cover search, ranking, matching, policy, reliability, security, visual identity and desktop packaging.
 - Playwright scenarios exercise progressive search, playback recovery, library transfer, responsive layouts, offline shell launch and account merge, conflict, sign-out and recovery flows.
@@ -145,6 +145,16 @@ Release `v2.7.0` is built from `main` by GitHub Actions.
 [Testing strategy and limitations](docs/TESTING.md) · [CI runs](https://github.com/Loro66/AWUN/actions) · [Latest release](https://github.com/Loro66/AWUN/releases/latest)
 
 ## Current status
+
+Smart downloads can save an eligible track after a new like or three qualified
+listens (30 seconds or half of a short track). In Settings, choose a cache limit,
+restrict downloads to confirmed Wi-Fi, retry failures or clear automatic copies.
+Imported files and current playback are preserved; automatic eviction also
+protects liked copies. Only explicitly permitted Audius/Jamendo downloads and
+Creative Commons/public-domain Internet Archive recordings qualify. YouTube
+and SoundCloud remain online; Play Store builds disable provider downloads.
+On the website/PWA, keep the app open while it downloads. Clearing site data
+removes browser audio; account sync and metadata backups do not contain files.
 
 | Surface | Status | Distribution |
 | --- | --- | --- |

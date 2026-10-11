@@ -9,7 +9,7 @@
   const BACKUP_DATABASE = 'awun-local-backups';
   const BACKUP_STORE = 'snapshots';
   const MAX_IMPORT_BYTES = 4 * 1024 * 1024;
-  const EXCLUDED_BACKUP_KEYS = new Set(['awun-runtime-log-v1', 'awun-waveforms-v1', 'awun-search-cache-v1', 'awun-catalog-cache-v1']);
+  const EXCLUDED_BACKUP_KEYS = new Set(['awun-runtime-log-v1', 'awun-waveforms-v1', 'awun-search-cache-v1', 'awun-catalog-cache-v1', 'awun-offline-jobs-v1']);
   const ACCOUNT_OWNER_KEY = 'songvale-account-owner-v1';
   const RESTORE_PENDING_KEY = 'songvale-backup-restore-pending-v1';
   let lastError = null;

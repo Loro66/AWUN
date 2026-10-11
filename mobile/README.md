@@ -15,8 +15,8 @@ account sync and metadata backups do not include the audio copies.
 Google Play identity:
 
 - application ID: `com.loro66.awun`;
-- version: read from the repository `VERSION` file (`2.7.0` currently);
-- version code: derived from `VERSION` by Gradle (`2070000` currently);
+- version: read from the repository `VERSION` file (`2.7.1` currently);
+- version code: derived from `VERSION` by Gradle (`2070100` currently);
 - minimum Android: 7.0 / API 24;
 - compile and target SDK: Android 16 / API 36;
 - release format: signed Android App Bundle (`.aab`);

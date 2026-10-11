@@ -2,6 +2,14 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## 2.7.1 — preview
+
+- Smart downloads save eligible full recordings after a new like or three qualified plays. Actual playback counts after 30 seconds or half a short track; paused, stalled and sought time does not count, and repeat-one starts a new listen.
+- Settings offer an automatic download switch, Wi-Fi restriction, a 256 MiB–5 GiB budget, progress, retry and cache clearing. Older unliked automatic copies can be evicted; imported files, liked copies and active or pending playback are protected from automatic eviction.
+- Offline copies retain the original provider identity, favorites and statistics, survive restart and play from the library without a network. Duplicate content is stored once. Device file bindings and temporary download URLs stay outside cloud sync and backups.
+- Downloads require explicit Audius/Jamendo permission or an Internet Archive Creative Commons/public-domain license. SoundCloud and YouTube tracks remain online. Play Store distribution disables provider downloads. Browser downloads run while the app is open; iOS background downloading is not promised.
+- Signed offline permissions, full-file validation, expiry refresh, bounded queues and byte limits prevent ordinary stream tokens, HLS playlists, previews, corrupt files and unsupported source responses from becoming offline copies.
+
 ## 2.7.0 — preview
 
 - Artist links in tracks, the player and home screen open release pages. Identical artist names require an explicit choice.

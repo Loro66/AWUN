@@ -1475,3 +1475,10 @@ html[data-theme="white"] .site-header .logo img{filter:brightness(0) opacity(.87
 .player-artist-link{border:0!important;background:none!important;padding:0!important;text-align:left;font-family:inherit;cursor:pointer}
 @media(max-width:1099px){.collection-page{grid-column:1;padding:18px 14px;height:calc(100dvh - 158px)}}
 @media(max-width:480px){.collection-track{grid-template-columns:20px 34px minmax(0,1fr) 34px 32px;gap:7px;padding:12px 0}.collection-page .collection-play,.collection-page .collection-add{width:32px}.collection-albums{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.collection-heading{gap:12px}.collection-album-header .collection-cover{width:90px}}
+
+.offline-settings{margin:18px 0;padding:18px;border:1px solid var(--line);display:grid;gap:12px}
+.offline-settings>strong{font-size:14px}.offline-settings p,.offline-settings small{margin:0;font-size:12px;color:var(--paper-muted);line-height:1.55}
+.offline-settings>label{display:flex;align-items:center;gap:10px;font-size:12px}.offline-settings input{accent-color:var(--signal);width:18px;height:18px}.offline-settings select{margin-left:auto;min-height:38px;max-width:130px;background:var(--control-bg);color:var(--paper);border:1px solid var(--line);border-radius:0}
+.offline-actions{display:flex;flex-wrap:wrap;gap:8px}.offline-actions button{min-height:38px;padding:8px;border:1px solid var(--line);border-radius:0;background:var(--track-bg);color:var(--paper);font:inherit;font-size:11px;cursor:pointer}
+.offline-jobs{list-style:none;margin:0;padding:0;display:grid;gap:8px}.offline-jobs li{display:grid;gap:3px;border-top:1px solid var(--line);padding-top:8px;overflow-wrap:anywhere}.offline-jobs strong{font-size:12px}.offline-jobs span{font-size:11px;color:var(--paper-muted)}
+.track .cover{position:relative}.offline-mark{position:absolute;bottom:0;right:0;display:grid;place-items:center;min-width:15px;height:15px;background:var(--forest-1);color:var(--paper-muted);font-size:12px}.offline-mark[data-state="ready"]{color:var(--signal)}

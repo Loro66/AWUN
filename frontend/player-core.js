@@ -105,7 +105,7 @@
   }
 
   function shouldRefreshStream(track, now = Date.now(), freshnessMs = STREAM_FRESHNESS_MS) {
-    if (!track || track.source === 'youtube' || track.source === 'yandex_music' || track.source === 'local' || track.source === 'catalog') return false;
+    if (!track || track.offline_playback || track.source === 'youtube' || track.source === 'yandex_music' || track.source === 'local' || track.source === 'catalog') return false;
     const expiresAt = Number(track.stream_expires_at);
     if (Number.isFinite(expiresAt) && expiresAt > 0) return Number(now) >= expiresAt - 10000;
     const resolvedAt = Number(track.stream_resolved_at);
