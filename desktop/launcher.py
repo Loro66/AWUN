@@ -14,6 +14,14 @@ import threading
 import time
 from urllib.parse import quote
 
+# The elevated supervisor has no server, browser or account/session state.
+if __name__ == "__main__" and len(sys.argv) > 1 and sys.argv[1] == "--songvale-network-helper":
+    from desktop.network_windows import helper_main
+    raise SystemExit(helper_main(sys.argv[2:]))
+if __name__ == "__main__" and sys.argv[1:] == ["--songvale-network-check"]:
+    from desktop.network_runtime import check_packaged_runtime
+    raise SystemExit(check_packaged_runtime())
+
 import uvicorn
 import webview
 
@@ -23,6 +31,7 @@ from backend.core.version import APP_VERSION
 from desktop.controls import DesktopControls
 from desktop.updater import DesktopUpdater
 from desktop.player_identity import identify_youtube_embed, register_process_identity
+from desktop.network_access import DesktopNetworkAccess
 
 
 HOST = "127.0.0.1"
@@ -86,6 +95,7 @@ class DesktopStateBridge:
         self._lock = threading.Lock()
         self._controls = None
         self._updater = None
+        self._network = None
 
     def desktop_status(self) -> dict:
         return self._controls.status() if self._controls else {"supported": False}
@@ -110,6 +120,15 @@ class DesktopStateBridge:
             return False
         self._controls.enqueue("quit")
         return True
+
+    def desktop_network_status(self) -> dict:
+        return self._network.status() if self._network else {"supported": False, "stage": "off"}
+
+    def desktop_network_start(self, profile: str) -> bool:
+        return bool(self._network and self._network.start(profile))
+
+    def desktop_network_stop(self) -> bool:
+        return bool(self._network and self._network.stop())
 
     def load_state(self) -> str:
         with self._lock:
@@ -306,12 +325,15 @@ def main() -> None:
     state_bridge._controls = controls
     updater = DesktopUpdater(APP_VERSION)
     state_bridge._updater = updater
+    network = DesktopNetworkAccess()
+    state_bridge._network = network
     window.events.request_sent += identify_youtube_embed
     window.events.shown += controls.start
     window.events.closing += controls.closing
     try:
         webview.start(open_local_app, (window, runtime), private_mode=False)
     finally:
+        network.close()
         controls.stop()
         updater.close()
         runtime.stop()

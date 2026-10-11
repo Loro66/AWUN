@@ -1,0 +1,43 @@
+SONGVALE optional Windows YouTube access component
+
+Unmodified upstream binaries from Flowseal/zapret-discord-youtube 1.10.3.
+Archive: https://github.com/Flowseal/zapret-discord-youtube/releases/tag/1.10.3
+SHA-256: 244314ae1c24538a0d751601da8e0c925c843371eec4456eb15f14c4fd6b7058
+Individual binary/data hashes are in desktop/network_runtime.py in Songvale's
+repository: https://github.com/Loro66/AWUN
+
+The ALT13, ALT11 and general YouTube profiles are based on the corresponding
+official Flowseal 1.10.3 configurations. Songvale uses their YouTube-specific
+strategies, a restricted YouTube host list and TCP/UDP 443; general IP ranges,
+Discord, games, service.bat and other upstream batch scripts are not included.
+
+Components:
+
+1. zapret / winws v72.9, copyright 2016-2026 bol-van.
+   Flowseal configurations, copyright 2024-2026 Flowseal.
+   License: MIT. Full notice: /static/network-licenses/zapret.txt
+   Source: https://github.com/bol-van/zapret/tree/v72.9
+   Configurations: https://github.com/Flowseal/zapret-discord-youtube/tree/1.10.3
+
+2. WinDivert 2.2.2, copyright 2019 basil.
+   License: LGPLv3 (upstream also offers GPLv2).
+   Full license texts: /static/network-licenses/WinDivert.txt
+   Source and build instructions: https://github.com/basil00/WinDivert/tree/v2.2.2
+   WinDivert.dll and WinDivert64.sys match the official 2.2.2 x64 release.
+
+3. Cygwin 3.4.10, copyright its contributors.
+   License: LGPLv3 or later, with the Cygwin linking exception; individual
+   source files retain their applicable notices. Full notice:
+   /static/network-licenses/Cygwin.txt
+   Source: https://github.com/mirror/newlib-cygwin/tree/cygwin-3.4.10
+   Licensing: https://cygwin.com/licensing.html
+   LGPLv3 and GPLv3 texts are included in network-licenses/WinDivert.txt.
+
+The corresponding source archives, upstream build instructions and these
+licenses are also supplied as SONGVALE-Network-Sources.zip alongside each
+Songvale Windows release: https://github.com/Loro66/AWUN/releases
+
+The network helper launches winws as a separate process and does not modify
+the above libraries or their binaries. Third-party licenses continue to apply
+independently of Songvale's application license. No automatic antivirus
+exceptions, proxy/DNS changes or persistent zapret service are installed.

@@ -17,6 +17,7 @@ data_files = [
     (str(ROOT / "LICENSE.md"), "."),
     (str(ROOT / "EULA.md"), "."),
     (str(ROOT / "desktop" / "assets" / "songvale.ico"), "desktop/assets"),
+    (str(ROOT / "desktop" / "vendor" / "zapret"), "desktop/vendor/zapret"),
     *collect_data_files("certifi"),
 ]
 
@@ -46,6 +47,7 @@ exe = EXE(
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
+    upx_exclude=["winws.exe", "cygwin1.dll", "WinDivert.dll", "WinDivert64.sys"],
     console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,

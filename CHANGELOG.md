@@ -2,6 +2,18 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## [2.6.2] - 2026-10-11
+
+### Added
+
+- Optional built-in zapret for Windows YouTube access, with Settings controls for ALT13, ALT11 and Basic profiles, explicit administrator permission, startup/error status and a button to retry the current YouTube track while preserving its queue.
+- Profiles target YouTube domains only; they also affect YouTube connections from other Windows apps while enabled. The module starts only on request and stops when disabled or when Songvale exits. It detects external zapret/GoodbyeDPI instances instead of starting or stopping a conflicting process.
+- Fixed upstream runtime with archive and file SHA-256 verification at build time and before elevated execution. No upstream service/batch scripts, automatic service startup, DNS/proxy changes or antivirus exclusions. Unmodified third-party component licenses and corresponding source archives accompany the Windows release.
+
+### Testing
+
+- Added controller regressions for opt-in behavior, invalid profiles, external conflicts, damaged components, UAC cancellation, late approval and driver exits; Windows IPC/job cleanup and real winws dry-run checks; browser coverage for lifecycle, errors, playback retry, localization and narrow layouts.
+
 ## [2.6.1] - 2026-10-09
 
 ### Fixed

@@ -52,10 +52,20 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m pip install -r requirements-desktop.txt pytest==9.1.1
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Prepare pinned YouTube network component
+        run: python -m desktop.prepare_network_runtime
       - name: Run release tests
         run: python -m pytest -q
       - name: Build SONGVALE.exe
         run: pyinstaller --noconfirm --clean AWUN.spec
+      - name: Verify bundled runtime and all profiles without loading a driver
+        shell: pwsh
+        run: |
+          $check = Start-Process -FilePath "dist/SONGVALE.exe" -ArgumentList "--songvale-network-check" -PassThru
+          if (-not $check.WaitForExit(90000)) { $check.Kill(); throw "Bundled runtime check timed out" }
+          if ($check.ExitCode -ne 0) { throw "Bundled runtime check failed: $($check.ExitCode)" }
+      - name: Package corresponding third-party sources
+        run: python -m desktop.prepare_network_sources
       - name: Build per-user Windows installer
         shell: pwsh
         run: |
@@ -143,6 +153,7 @@ jobs:
             dist/SONGVALE-Setup-x64.exe.sha256
             dist/LICENSE.md
             dist/EULA.md
+            dist/SONGVALE-Network-Sources.zip
           if-no-files-found: error
   release:
     if: >-
@@ -188,6 +199,7 @@ jobs:
             dist/SONGVALE-Setup-x64.exe.sha256 `
             dist/LICENSE.md `
             dist/EULA.md `
+            dist/SONGVALE-Network-Sources.zip `
             --repo $env:GITHUB_REPOSITORY `
             --target $env:GITHUB_SHA `
             --title "SONGVALE $env:SONGVALE_RELEASE_TAG" `
