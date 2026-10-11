@@ -54,6 +54,9 @@ class DesktopNetworkAccess:
                     self._external_at = time.monotonic()
                 if self._external:
                     result["stage"], result["external"] = "external", self._external
+                elif result["stage"] == "external":
+                    self._state.update(stage="off", error="")
+                    result.update(stage="off", error="")
             return result
 
     def _set(self, stage: str, error: str = "") -> None:

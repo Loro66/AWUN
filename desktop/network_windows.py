@@ -69,6 +69,11 @@ class Windows:
         self.kernel = ctypes.WinDLL("kernel32", use_last_error=True)
         self.shell = ctypes.WinDLL("shell32", use_last_error=True)
         self.advapi = ctypes.WinDLL("advapi32", use_last_error=True)
+        self.ole = ctypes.WinDLL("ole32", use_last_error=True)
+        self.ole.CoInitializeEx.argtypes = [w.LPVOID, w.DWORD]
+        self.ole.CoInitializeEx.restype = ctypes.c_long
+        self.ole.CoUninitialize.argtypes = []
+        self.ole.CoUninitialize.restype = None
         signatures = {
             "CreateEventW": ([ctypes.POINTER(SecurityAttributes), w.BOOL, w.BOOL, w.LPCWSTR], w.HANDLE),
             "OpenEventW": ([w.DWORD, w.BOOL, w.LPCWSTR], w.HANDLE),
@@ -158,11 +163,17 @@ class Windows:
         info.lpParameters = subprocess.list2cmdline(arguments)
         info.lpDirectory = str(Path(__file__).resolve().parents[1])
         info.nShow = 0
-        if not self.shell.ShellExecuteExW(ctypes.byref(info)):
-            raise ctypes.WinError(ctypes.get_last_error())
-        if not info.hProcess:
-            raise OSError("Helper process handle unavailable")
-        return info.hProcess
+        # Shell verbs can use COM; this controller runs on its own worker thread.
+        if self.ole.CoInitializeEx(None, 0x2 | 0x4) < 0:
+            raise OSError("Shell apartment unavailable")
+        try:
+            if not self.shell.ShellExecuteExW(ctypes.byref(info)):
+                raise ctypes.WinError(ctypes.get_last_error())
+            if not info.hProcess:
+                raise OSError("Helper process handle unavailable")
+            return info.hProcess
+        finally:
+            self.ole.CoUninitialize()
 
     def exit_code(self, process) -> int:
         code = w.DWORD()

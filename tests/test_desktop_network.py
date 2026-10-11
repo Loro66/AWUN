@@ -98,6 +98,18 @@ def test_external_zapret_is_never_launched_or_stopped(controller):
     assert windows.calls == []
 
 
+def test_external_zapret_exit_unblocks_the_builtin_module(controller):
+    access, windows = controller
+    windows.external = "winws.exe"
+    assert not access.start("alt13")
+    assert access.status()["stage"] == "external"
+    windows.external = None
+    access._external_at = 0
+    assert access.status()["stage"] == "off"
+    assert access.start("alt13")
+    eventually(lambda: access.status()["stage"] == "running")
+
+
 def test_own_session_starts_stops_and_closes_all_handles(controller):
     access, windows = controller
     assert access.start("alt13")
@@ -209,17 +221,23 @@ def test_native_event_can_be_opened_by_a_child_and_signaled(tmp_path):
 def test_closing_the_job_handle_terminates_only_the_owned_child():
     windows = network_windows.Windows()
     child = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(60)"])
+    other = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(60)"])
     job = None
     try:
         job = windows.child_job(child)
+        assert child.poll() is None
         windows.close(job)
         job = None
-        assert child.wait(timeout=5) != 0
+        child.wait(timeout=5)  # Windows may use exit code 0 for job-close termination.
+        assert child.poll() is not None
+        assert other.poll() is None
     finally:
         windows.close(job)
         if child.poll() is None:
             child.kill()
             child.wait(timeout=5)
+        other.terminate()
+        other.wait(timeout=5)
 
 
 @pytest.mark.skipif(sys.platform != "win32", reason="Native upstream argument verification")
