@@ -108,15 +108,15 @@ def test_identity_minimal_mode_and_track_stories_are_wired() -> None:
     wordmark = (ROOT / "frontend" / "brand" / "songvale-wordmark.svg").read_text(encoding="utf-8")
     release = (ROOT / "frontend" / "redesign.css").read_text(encoding="utf-8")
 
-    assert '/static/brand/songvale-mark.svg' in html and '<strong>SONGVALE</strong>' in html
+    assert '/static/brand/songvale-mark.svg' in html and 'aria-label="Главная SONGVALE"' in html
     assert '<a class="logo"' in html and '<a class="logo" href="/" aria-label="Главная SONGVALE" data-i18n-aria-label="homeAria"><img' in html
-    assert '/static/brand/songvale-glyph.svg' in html and 'data-i18n="brandLine"' not in html
+    assert '/static/brand/songvale-wordmark.svg' in html and 'data-i18n="brandLine"' not in html
     assert 'data-i18n="interface"' in html and "state.decor==='minimal'" in script
     assert 'viewBox="0 0 128 128"' in mark
     assert mark.count("<rect") == 1 and 'fill="#dbe2db"' in mark
     assert 'fill="url(#river)"' in mark and '<text' not in mark
     assert 'fill-rule="evenodd"' in wordmark and '<text' not in wordmark
-    assert 'songvale-wordmark.svg' in release
+    assert 'songvale-wordmark.svg' in html
     assert "/api/v1/track-details" in script
     assert "awun-line-comments-v1" in script
     assert "t('trackStory')" in script
@@ -268,7 +268,7 @@ def test_dark_forest_ritual_visual_system_is_wired() -> None:
     assert 'body:before{display:none}' in forest and '@keyframes awunDust' not in forest
     assert '.hero .search-form:after' in forest and '✦' in forest
     assert '.track.active:before' in forest and '.player .player-console:before' in forest
-    assert 'Iowan Old Style' in forest and 'border-radius:40px 40px 18px 18px' in forest
+    assert 'Iowan Old Style' in forest
     assert '__AWUN_VERSION__' in html
 
 
@@ -286,7 +286,7 @@ def test_soundcloud_forest_shell_uses_on_demand_player_surfaces() -> None:
     assert "track-waveform" in app and "--track-progress" in app
     assert "grid-template-columns:var(--awun-nav) minmax(0,1fr)" in redesign
     assert "bottom:0;left:0" in redesign and ".player.queue-open .up-next" in redesign
-    assert "--color-accent:#b2a27d" in redesign and ".track-waveform:after" in redesign
+    assert ".track-waveform:after" in redesign
 
 
 def test_visual_settings_have_distinct_rendered_modes() -> None:
@@ -295,11 +295,8 @@ def test_visual_settings_have_distinct_rendered_modes() -> None:
 
     for theme in ("black", "white", "acid", "ultraviolet", "cobalt", "ember"):
         assert f'html[data-theme="{theme}"]' in redesign
-    assert "--color-text-rgb:24,35,28" in redesign
-    assert "--forest-moon:#18231c" in redesign
     assert 'html[data-theme="white"] .theme-grid button' in redesign
     assert 'html[data-theme="white"] .player .transport-buttons>button:not(.play-pause)' in redesign
-    assert 'html[data-theme="black"]' in redesign and "--color-accent:#b2a27d" in redesign
     assert 'rgba(var(--paper-rgb),.24)' in redesign
     assert '.player .wave-progress:before{opacity:1' in redesign
     assert 'html[data-theme="white"] .recommendation-card:before' in redesign
@@ -308,8 +305,8 @@ def test_visual_settings_have_distinct_rendered_modes() -> None:
     assert 'html[data-density="airy"] .track' in redesign
     assert "ui.motionToggle.setAttribute('aria-pressed'" in app
     assert "ui.densityToggle.dataset.value=state.density" in app
-    assert "black:{labelKey:'themeBlackShort',color:'#030604'}" in app
-    assert "white:{labelKey:'themeWhiteShort',color:'#e7e8df'}" in app
+    assert "black:{labelKey:'themeBlackShort'" in app
+    assert "white:{labelKey:'themeWhiteShort'" in app
 
 
 def test_desktop_shell_has_no_legacy_chrome_and_wave_is_integrated() -> None:
@@ -418,7 +415,7 @@ def test_quiet_forest_identity_avoids_decorative_status_signifiers() -> None:
     redesign = (ROOT / "frontend" / "redesign.css").read_text(encoding="utf-8")
 
     logo = re.search(r'<a class="logo".*?</a>', html)
-    assert logo is not None and '<img src="/static/brand/songvale-glyph.svg"' in logo.group(0)
+    assert logo is not None and '<img src="/static/brand/songvale-wordmark.svg?v=__AWUN_VERSION__"' in logo.group(0)
     assert "<small" not in logo.group(0)
     assert 'class="welcome-signal"' not in html
     assert "SONGVALE / LOCAL" not in html

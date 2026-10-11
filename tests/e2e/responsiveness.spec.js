@@ -18,7 +18,7 @@ for (const width of [1280, 390, 320]) {
       await expect(mark).toBeVisible();
       await expect.poll(() => mark.evaluate(image => image.naturalWidth)).toBeGreaterThan(0);
       await expect(logo.locator('small')).toHaveCount(0);
-      if (width >= 350) await expect(logo.locator('strong')).toBeVisible();
+      await expect(logo).toHaveAccessibleName('Главная SONGVALE');
       const bounds = await logo.boundingBox();
       expect(bounds.x).toBeGreaterThanOrEqual(0);
       expect(bounds.x + bounds.width).toBeLessThanOrEqual(width);

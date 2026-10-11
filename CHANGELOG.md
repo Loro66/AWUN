@@ -2,6 +2,14 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## 2.6.3 — 2026-10-11
+
+- Straight edges across search, library, hub, player and Settings; remove surface shadows and decorative glow.
+- Replace the sidebar forest emblem with a compact monochrome Songvale wordmark.
+- Use solid surfaces and muted theme accents; preserve readable forest photography on the home screen.
+- Remove decorative radio rings and simplify theme labels. Playback, accounts and the opt-in Windows zapret module remain available.
+- Keep favorites and queue controls within the compact phone player, without stacked buttons overflowing its top edge.
+
 ## [2.6.2] - 2026-10-11
 
 ### Added
