@@ -31,6 +31,23 @@ test('artists with the same name require an explicit choice',async({page})=>{
   await page.locator('.catalog-artist-choice').first().click();await expect(page.locator('.collection-album')).toHaveCount(1);
 });
 
+test('a slower artist response cannot overwrite a later artist choice',async({page})=>{
+  await catalogMocks(page,{ambiguous:true});
+  await page.route('**/api/v1/catalog/artists/*/albums?**',async route=>{const first=route.request().url().includes(ARTIST);await new Promise(resolve=>setTimeout(resolve,first?150:5));await route.fulfill({json:{artist:{name:first?'First choice':'Second choice'},albums:[],total:0}})});
+  await openAwun(page);await page.evaluate(()=>window.SongvaleCollections.openArtist('AWUN Artist'));await expect(page.locator('.catalog-artist-choice')).toHaveCount(2);
+  const older=page.waitForResponse(response=>response.url().includes(ARTIST)&&response.url().includes('/albums?'));
+  await page.evaluate(()=>document.querySelectorAll('.catalog-artist-choice').forEach(button=>button.click()));await older;
+  await expect(page.locator('#collectionTitle')).toHaveText('Second choice');
+});
+
+test('catalog failure tries the configured backup only once',async({page})=>{
+  const calls=[];await page.route('**/api/v1/catalog/artists?**',route=>{calls.push(new URL(route.request().url()).origin);return route.fulfill({status:503,headers:{'Access-Control-Allow-Origin':'*'},json:{detail:'unavailable'}})});
+  await installMediaMocks(page);await installApiMocks(page);await page.goto('/?lang=ru&fallback_api=https%3A%2F%2Fcatalog-mirror.example');
+  await page.evaluate(()=>window.SongvaleCollections.openArtist('Example'));
+  expect(calls).toEqual(['http://127.0.0.1:4173','https://catalog-mirror.example']);
+  await expect(page.locator('#collectionStatus')).not.toBeEmpty();
+});
+
 test('a missing recording stays saved and does not play an unrelated result',async({page})=>{
   await catalogMocks(page);await openAwun(page);await page.evaluate(album=>window.SongvaleCollections.openAlbum(album),album);
   await page.locator('.collection-track').nth(1).locator('.collection-play').click();await expect(page.locator('#collectionStatus')).toContainText('не найдена подходящая запись');

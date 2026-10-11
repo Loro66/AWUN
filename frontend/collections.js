@@ -3,7 +3,7 @@
   const app=window.awunApp,{state}=app,t=(key,values)=>window.awunI18n.t(key,values),$=id=>document.getElementById(id);
   const local=new window.SongvaleLocalMusic.Store(),page=$('collectionPage'),content=$('collectionContent'),status=$('collectionStatus');
   const albumKey='awun-albums-v1',cacheKey='awun-catalog-cache-v1';
-  let saved=window.awunStorage.readJSON(albumKey,[]),view=null,controller=null,importing=false,stopImport=false,editId=null;
+  let saved=window.awunStorage.readJSON(albumKey,[]),view=null,controller=null,importing=false,stopImport=false,editId=null,artistRequest=0;
   if(!Array.isArray(saved))saved=[];
   saved=saved.filter(a=>a?.id&&typeof a.title==='string'&&Array.isArray(a.tracks)&&a.tracks.length<=1000).slice(0,60);
   function node(tag,cls='',text=''){const el=document.createElement(tag);el.className=cls;el.textContent=text;return el}
@@ -26,8 +26,7 @@
     const timeout=new AbortController(),relay=()=>timeout.abort();signal?.addEventListener('abort',relay,{once:true});
     const timer=setTimeout(relay,18000);
     try{
-      let response=await app.awunFetch(path,{signal:timeout.signal});
-      if(!response.ok&&app.fallbackApiBase&&[502,503,504].includes(response.status))response=await fetch(`${app.fallbackApiBase}${path}`,{signal:timeout.signal,credentials:'omit'});
+      const response=await app.awunFetch(path,{signal:timeout.signal});
       if(!response.ok)throw new Error('catalogUnavailable');
       const data=await response.json();stored[path]={data,at:Date.now()};
       const entries=Object.entries(stored).sort((a,b)=>b[1].at-a[1].at).slice(0,30);
@@ -90,14 +89,15 @@
     }catch(error){if(!signal.aborted){status.textContent=errorText(error);status.dataset.tone='error'}}
   }
   async function showArtist(artist,target,signal,offset=0){
+    const request=++artistRequest;
     announce('catalogLoading');
     try{
-      const data=await catalog(`/api/v1/catalog/artists/${encodeURIComponent(artist.id)}/albums?offset=${offset}`,signal);if(signal.aborted)return;
+      const data=await catalog(`/api/v1/catalog/artists/${encodeURIComponent(artist.id)}/albums?offset=${offset}`,signal);if(signal.aborted||request!==artistRequest)return;
       if(offset===0){target.replaceChildren(node('h2','',t('catalogReleases')));$('collectionTitle').textContent=data.artist.name;if(data.artist.description)target.append(node('p','collection-note',data.artist.description))}
       target.querySelector('.catalog-more')?.remove();const grid=node('div','collection-albums');[...(data.albums||[])].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).forEach(a=>grid.append(albumCard(a)));target.append(grid);
       if(offset+(data.albums||[]).length<data.total)target.append(button(t('catalogMore'),()=>void showArtist(artist,target,signal,offset+data.albums.length),'catalog-more'));
       announce(data.albums?.length?'catalogListingNote':'catalogReleasesMissing');
-    }catch(error){if(!signal.aborted){status.textContent=errorText(error);status.dataset.tone='error'}}
+    }catch(error){if(!signal.aborted&&request===artistRequest){status.textContent=errorText(error);status.dataset.tone='error'}}
   }
   async function openAlbum(summary){
     const signal=open(summary.title,'album');announce('catalogLoading');
@@ -119,7 +119,7 @@
   function openSaved(){open(t('savedAlbums'),'albums');const albums=[...saved,...localAlbums()];if(!albums.length){content.append(node('p','collection-empty',t('catalogSavedEmpty')));return}const grid=node('div','collection-albums');albums.forEach(a=>grid.append(albumCard(a)));content.append(grid)}
   function edit(track){editId=track.id;$('localEditorTitle').value=track.title;$('localEditorArtist').value=track.artist;$('localEditorAlbum').value=track.album||'';$('localEditor').hidden=false;$('localEditorTitle').focus()}
   async function remove(track){
-    if(state.active?.id===track.id){app.pausePlayback();announce('localStopBeforeRemove',{},true);return}
+    if(state.active?.id===track.id||state.pendingTrackId===track.id){app.pausePlayback();announce('localStopBeforeRemove',{},true);return}
     try{await local.remove(track.id);state.queue=state.queue.filter(t=>t.id!==track.id);app.replaceQueue(state.queue);state.recents=state.recents.filter(t=>t.id!==track.id);window.awunStorage.writeJSON('awun-recent',state.recents.map(app.durableTrack));app.updateLibraryCount();app.render();renderFiles();announce('localRemoved')}
     catch(error){status.textContent=errorText(error);status.dataset.tone='error'}
   }
