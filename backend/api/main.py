@@ -26,6 +26,9 @@ from backend.core.models import (
 from backend.core.regions import REGION_NAMES, RegionName
 from backend.importers.library_url import LibraryImportError, LibraryUrlImporter
 from backend.metadata.lyrics import TrackDetailsService
+from backend.metadata.catalog import CatalogService, register_catalog_routes
+from backend.search.enrichment import MusicBrainzEnricher
+from backend.library.local_audio import LocalAudioStore, register_local_audio_routes
 from backend.policy.client_capabilities import capabilities_for
 from backend.policy.rights import SOURCE_RIGHTS
 from backend.search.engine import SearchCapacityError, SearchEngine
@@ -210,18 +213,20 @@ async def _open_safe_media(
     raise UnsafeUrl("Media redirect validation failed")
 
 
-def create_app(settings: Settings | None = None) -> FastAPI:
+def create_app(settings: Settings | None = None, *, local_audio_store: LocalAudioStore | None = None) -> FastAPI:
     settings = settings or get_settings()
     media_signer = MediaSigner(settings.media_secret, settings.media_token_ttl_seconds)
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
+        enricher = build_enricher(settings)
+        app.state.catalog = CatalogService(enricher if isinstance(enricher, MusicBrainzEnricher) else None)
         app.state.search_engine = SearchEngine(
             build_adapters(settings),
             timeout_seconds=settings.search_timeout_seconds,
             fast_timeout_seconds=settings.fast_search_timeout_seconds,
             max_limit=settings.max_limit,
-            enricher=build_enricher(settings),
+            enricher=enricher,
             cache_ttl_seconds=settings.search_cache_ttl_seconds,
             cache_max_size=settings.search_cache_max_size,
             enrichment_wait_seconds=settings.query_enrichment_wait_seconds,
@@ -248,6 +253,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             ),
         )
         yield
+        await app.state.catalog.close()
         await app.state.media_session.close()
         await app.state.search_engine.close()
         await app.state.track_details.close()
@@ -278,6 +284,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     Engine = Annotated[SearchEngine, Depends(engine)]
     register_account_routes(app, settings)
+    register_local_audio_routes(app, local_audio_store)
+    register_catalog_routes(app, settings.api_prefix)
 
     frontend_dir = Path(__file__).resolve().parents[2] / "frontend"
     project_dir = frontend_dir.parent

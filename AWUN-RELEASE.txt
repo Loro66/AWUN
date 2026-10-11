@@ -1,7 +1,17 @@
-SONGVALE 2.6.3
+SONGVALE 2.7.0
 Release date: 2026-10-11
 
-A quieter, cleaner Songvale interface:
+Artists, albums and your own offline audio:
+- Open an artist name in a track or the player to browse releases.
+- Open an album, keep its full track list and save it under My Music > Albums.
+- Recordings are matched through connected sources; unavailable tracks stay visible.
+- My Music > Add files imports supported audio into the main library and queue.
+- Device copies play offline, survive app restart and deduplicate by content.
+- Edit title, artist and album; local album tags group files together.
+- Audio stays on this device and is not included in account sync or library backups.
+- Limits: 100 MiB per file, 1,000 files, and 5 GiB for Windows copies.
+
+Includes the quieter Songvale interface from 2.6.3:
 - Straight edges across search, track cards, playlists, player and Settings.
 - Solid surfaces and restrained accents in every theme, without glow or glass effects.
 - Compact monochrome Songvale wordmark in the top-left corner.

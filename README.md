@@ -55,6 +55,14 @@ My Wave turns the current track, local library and on-device taste signals into 
 
 Bring an existing collection through a public playlist link, an exported CSV, JSON, M3U or TXT file, or a pasted `Artist — Track` list. SONGVALE resolves each item against connected sources, saves confident matches in a named local playlist in source order and produces a downloadable report for anything it could not match. Private account access and licensed offline downloads are not supported.
 
+### Artists, albums and your own audio
+
+Select an artist name in search results, the home screen or the player to browse their MusicBrainz releases. Open an album to see its full track list, save it under **My Music → Albums**, or play it through connected sources. Saving an album preserves all entries, including recordings that are currently unavailable; it does not download the audio. Artists with identical names require a choice.
+
+Use **My Music → Add files** to import MP3, M4A, FLAC, OGG, WAV, AAC or WebM supported by your device. Imported tracks join the main library and queue, and remain playable without internet. You can edit title, artist and album; album tags group local files into albums. Imports deduplicate by file content, with a 100 MiB limit per file and 1,000 files per device. Windows copies audio into `%APPDATA%\SONGVALE\local-music` (up to 5 GiB); the web app stores it in IndexedDB, subject to browser quota. Original files are never modified, and audio is never uploaded to the public backend or account cloud.
+
+Backups and portable library exports do not contain audio files. Clearing site data or removing app data deletes those device copies; keep your originals. Import the same files on another device to use them there. Browsers may reclaim device storage, so the app requests persistent storage after an import.
+
 To move a SONGVALE library to another device, open **Settings → Move between devices**. Download the portable library file, open it on the other device, review its contents and choose combine or replace. This works without an account. Optional email accounts can also sync favorites and playlists after [server setup](docs/ACCOUNTS.md).
 
 <p align="center">
@@ -99,7 +107,7 @@ Windows beta binaries are unsigned unless a signing certificate is configured; W
 
 Open [awun-1.onrender.com](https://awun-1.onrender.com). Chrome and Edge can install the site as a PWA from the browser menu.
 
-**iPhone:** open that link in Safari, tap Share → Add to Home Screen → Add (turn on “Open as Web App” if offered). SONGVALE gets a Home Screen icon. The cached shell opens during a server interruption, while search and playback still need internet. The first visit after the free server has slept can take longer. This is a web app installation; there is no signed IPA or App Store listing yet. Favorites and playlists stay on this device until the host [activates persistent accounts](docs/ACCOUNTS.md); export a backup from Settings before removing the app.
+**iPhone:** open that link in Safari, tap Share → Add to Home Screen → Add (turn on “Open as Web App” if offered). SONGVALE gets a Home Screen icon. The cached shell opens during a server interruption. Search and online sources need internet; audio files imported on this device play offline. The first visit after the free server has slept can take longer. This is a web app installation; there is no signed IPA or App Store listing yet. Favorites and playlists stay on this device until the host [activates persistent accounts](docs/ACCOUNTS.md); export a backup from Settings before removing the app.
 
 ### Development
 
@@ -122,7 +130,7 @@ Open `http://127.0.0.1:8000`. Optional provider credentials and deployment setti
 
 ## Verified release quality
 
-Release `v2.6.3` is built from `main` by GitHub Actions.
+Release `v2.7.0` is built from `main` by GitHub Actions.
 
 - Python tests cover search, ranking, matching, policy, reliability, security, visual identity and desktop packaging.
 - Playwright scenarios exercise progressive search, playback recovery, library transfer, responsive layouts, offline shell launch and account merge, conflict, sign-out and recovery flows.

@@ -168,6 +168,15 @@
       </section>
     </section>
 
+    <section id="collectionPage" class="collection-page" aria-labelledby="collectionTitle" hidden>
+      <header class="collection-heading"><button id="collectionBack" type="button" data-i18n="collectionBack">← Моя музыка</button><h1 id="collectionTitle" tabindex="-1"></h1></header>
+      <div class="collection-toolbar"><input id="collectionFilter" type="search" maxlength="200" data-i18n-placeholder="localFilter" data-i18n-aria-label="localFilter" placeholder="Трек, исполнитель или альбом" hidden><button id="collectionImport" type="button" data-i18n="localImport" hidden>Добавить аудиофайлы</button><button id="collectionCancelImport" type="button" data-i18n="cancel" hidden>Остановить</button></div>
+      <p id="collectionStatus" class="collection-status" role="status"></p>
+      <form id="localEditor" class="local-editor" hidden><h2 data-i18n="localEdit">Изменить описание</h2><label><span data-i18n="localTrackTitle">Название</span><input id="localEditorTitle" maxlength="200" required></label><label><span data-i18n="localArtist">Исполнитель</span><input id="localEditorArtist" maxlength="200"></label><label><span data-i18n="localAlbumTitle">Альбом</span><input id="localEditorAlbum" maxlength="200"></label><div><button type="submit" data-i18n="localSave">Сохранить</button><button id="localEditorCancel" type="button" data-i18n="cancel">Отмена</button></div></form>
+      <div id="collectionContent"></div>
+    </section>
+    <input id="localAudioInput" type="file" accept=".mp3,.m4a,.flac,.ogg,.oga,.wav,.aac,.webm,audio/*" multiple hidden>
+
     <section id="results" class="results" aria-live="polite" aria-busy="false">
       <div class="results-heading">
         <div>
@@ -180,6 +189,7 @@
       </div>
 
       <section id="libraryWorkspace" class="library-workspace" aria-label="Плейлисты и поиск по медиатеке" data-i18n-aria-label="libraryWorkspaceAria" hidden>
+        <div class="library-collections"><button id="localFilesButton" type="button"><span id="localFilesCount" data-i18n="localCollection">На устройстве</span></button><button id="savedAlbumsButton" type="button"><span id="savedAlbumsCount" data-i18n="savedAlbums">Альбомы</span></button><button id="localImportFiles" type="button" data-i18n="localImport">Добавить аудиофайлы</button></div>
         <div class="library-tools">
           <label class="library-filter" for="libraryFilter"><span data-i18n="filterLibrary">ПОИСК В МЕДИАТЕКЕ</span><input id="libraryFilter" type="search" autocomplete="off" data-i18n-placeholder="filterLibraryPlaceholder" placeholder="Трек или исполнитель"></label>
           <form id="playlistCreate" class="playlist-create"><label for="playlistName" data-i18n="newPlaylist">НОВЫЙ ПЛЕЙЛИСТ</label><div><input id="playlistName" type="text" maxlength="60" required data-i18n-placeholder="playlistNamePlaceholder" placeholder="Название плейлиста"><button type="submit" data-i18n="createPlaylist">СОЗДАТЬ</button></div></form>
@@ -270,7 +280,7 @@
       <div class="now">
         <small class="now-kicker" data-i18n="nowPlayingKicker">СЕЙЧАС</small>
         <strong id="nowTitle">НИЧЕГО НЕ ИГРАЕТ</strong>
-        <span id="nowArtist">SONGVALE</span>
+        <button id="nowArtist" class="player-artist-link" type="button">SONGVALE</button>
         <span id="playerStatus" class="player-status" role="status" aria-live="polite" hidden></span>
         <a id="youtubeExternal" class="player-source-link" target="_blank" rel="noopener" hidden data-i18n="openYoutube">Открыть на YouTube ↗</a>
         <div class="mini-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -508,8 +518,10 @@
   <script src="/static/library-matcher.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/smart-playlists.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/audio-engine.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/local-music.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/home-hub.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/app.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/collections.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/flow.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/desktop-player.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/desktop-network.js?v=__AWUN_VERSION__" defer></script>

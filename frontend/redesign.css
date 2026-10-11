@@ -1430,3 +1430,49 @@ html[data-theme="white"] .site-header .logo img{filter:brightness(0) opacity(.87
   body.desktop-controls:not(.desktop-mini) .player .player-console{grid-template-columns:minmax(0,1fr) 124px}
   body.desktop-controls:not(.desktop-mini) .player .player-tools{width:124px!important;grid-template-columns:repeat(4,28px)!important;gap:4px!important}
 }
+
+/* Artist, album and device-audio collections. */
+.collection-page[hidden]{display:none!important}
+.collection-open .hero,.collection-open .home-sections,.collection-open .results,.collection-open .idle-stage{display:none!important}
+.collection-page{grid-column:2;grid-row:1/span 3;min-width:0;height:calc(100dvh - 90px);overflow:auto;padding:28px 32px 42px;background:var(--forest-1)}
+.collection-heading{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-bottom:20px}
+.collection-heading h1{margin:0;font:600 clamp(24px,3vw,36px)/1.15 Inter,ui-sans-serif,sans-serif;overflow-wrap:anywhere}
+.collection-page button,.library-collections button{min-height:40px;border:1px solid var(--line);border-radius:0;background:var(--track-bg);color:var(--paper);padding:9px 12px;font:inherit;cursor:pointer}
+.collection-page button:hover,.library-collections button:hover{border-color:var(--line-strong);background:var(--track-active-bg)}
+.collection-page button:disabled{opacity:.55;cursor:default}
+.collection-page button:focus-visible,.collection-page input:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
+.collection-toolbar,.collection-actions,.library-collections{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px}
+.collection-toolbar input,.local-editor input{min-width:0;min-height:42px;padding:10px 12px;background:var(--control-bg);border:1px solid var(--line);border-radius:0;color:var(--paper);font:inherit}
+.collection-toolbar input{flex:1;max-width:480px}
+.collection-status{min-height:22px;color:var(--paper-muted);font-size:13px;margin:12px 0 18px}
+.collection-status[data-tone="error"]{color:var(--signal-hot)}
+.collection-note,.collection-empty{color:var(--paper-muted);line-height:1.6;font-size:13px;max-width:760px}
+.collection-empty{border:1px solid var(--line);padding:24px}
+.collection-tracks{list-style:none;margin:18px 0 28px;padding:0}
+.collection-track{display:grid;grid-template-columns:24px 38px minmax(0,1fr) 46px 36px;align-items:center;gap:10px;padding:12px 10px;border-bottom:1px solid var(--line)}
+.collection-number,.collection-duration{color:var(--paper-muted);font-size:11px}
+.collection-track-copy{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.collection-track-copy strong{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px}
+.collection-track-copy small{color:var(--paper-muted);font-size:11px}
+.collection-page .collection-artist-link{padding:0;border:0;background:none;min-height:24px;color:var(--paper-muted);text-align:left;overflow-wrap:anywhere;font-size:12px}
+.collection-page .collection-play,.collection-page .collection-add{padding:0;width:36px}
+.collection-file-actions{grid-column:3/-1;display:flex;gap:8px;flex-wrap:wrap}
+.collection-file-actions button{font-size:11px;min-height:32px}
+.collection-albums{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,160px),1fr));gap:14px;margin:18px 0 28px}
+.collection-page .collection-album{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:8px;padding:12px;min-width:0}
+.collection-album strong,.collection-album span{max-width:100%;overflow-wrap:anywhere}
+.collection-album small,.collection-album>span:not(.collection-cover){font-size:11px;color:var(--paper-muted)}
+.collection-cover{width:100%;aspect-ratio:1;display:grid;place-items:center;position:relative;background:var(--forest-2);font-size:36px;color:var(--paper-muted);overflow:hidden}
+.collection-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.collection-album-header{display:flex;gap:20px;align-items:center;margin:20px 0}.collection-album-header .collection-cover{width:120px;flex:none}
+.catalog-artist-choice{display:block;width:100%;text-align:left;margin:8px 0}
+.local-editor{display:grid;gap:12px;max-width:540px;padding:18px;border:1px solid var(--line);margin:16px 0}
+.local-editor[hidden]{display:none}
+.local-editor label{display:grid;gap:6px;font-size:12px}.local-editor>div{display:flex;gap:8px}
+.collection-import-errors{padding:12px 12px 12px 30px;border:1px solid var(--line);color:var(--paper-muted);font-size:12px;overflow-wrap:anywhere}
+.track .name>.track-title,.track .name>.artist-link{border:0;background:none;padding:0;text-align:left;color:inherit;font:inherit;max-width:100%;cursor:pointer}
+.track .name>.artist-link{font-size:11px;color:var(--paper-muted);line-height:1.4}
+.track .name>.artist-link:hover,.player-artist-link:hover{text-decoration:underline}
+.player-artist-link{border:0!important;background:none!important;padding:0!important;color:inherit;text-align:left;font:inherit;cursor:pointer}
+@media(max-width:1099px){.collection-page{grid-column:1;padding:18px 14px;height:calc(100dvh - 158px)}}
+@media(max-width:480px){.collection-track{grid-template-columns:20px 34px minmax(0,1fr) 34px 32px;gap:7px;padding:12px 0}.collection-page .collection-play,.collection-page .collection-add{width:32px}.collection-albums{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.collection-heading{gap:12px}.collection-album-header .collection-cover{width:90px}}

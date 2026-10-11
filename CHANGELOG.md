@@ -2,6 +2,15 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## 2.7.0 — preview
+
+- Artist links in tracks, the player and home screen open release pages. Identical artist names require an explicit choice.
+- Album pages preserve the full track list, save whole albums on this device, and resolve playback through existing sources. Unavailable recordings remain visible with an explicit status.
+- Import your own audio into the main library, edit its tags, group files into albums and play offline through the existing player and queue. Content hashes prevent duplicates.
+- Native Windows audio and its SQLite index persist across loopback-port changes; browser audio uses atomic IndexedDB transactions and the cached app shell. File access is authenticated and local audio endpoints are absent from the public server.
+- Local audio stays on this device and is excluded from cloud sync and metadata backups. Limits: 100 MiB per file, 1,000 files, and 5 GiB for Windows copies. Original files are unchanged.
+- Regression checks cover full album saves, missing and ambiguous matches, real offline WAV playback, file deletion, restart with a new access token, and rollback on storage failures.
+
 ## 2.6.3 — 2026-10-11
 
 - Straight edges across search, library, hub, player and Settings; remove surface shadows and decorative glow.
