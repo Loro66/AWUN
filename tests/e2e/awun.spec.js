@@ -457,6 +457,7 @@ test('failed local writes leave no misleading favorites or playlists in memory',
   await expect(page.locator('#playlistTabs .playlist-tab')).toHaveCount(1);
   await page.locator('#searchNavButton').click();
   await searchFor(page, 'midnight signal');
+  await expect(page.locator('#results')).toHaveAttribute('aria-busy', 'false');
   const save = page.locator('#trackList .track[data-source="audius"]').first().locator('.save');
   await save.click();
   await expect(page.locator('#message')).toContainText('Не удалось сохранить');
