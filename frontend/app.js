@@ -238,7 +238,7 @@ function loadPlaybackSession(){
   if(!value||value.version!==1||!track?.id||!track?.source||!track?.title||Date.now()-(Number(value.saved_at)||0)>playbackSessionTtlMs)return null;
   return{track,position:Math.max(0,Number(value.position)||0),duration:Math.max(0,Number(value.duration)||Number(track.duration)||0)};
 }
-const visualThemes={black:{labelKey:'themeBlackShort',color:'#030604'},white:{labelKey:'themeWhiteShort',color:'#e7e8df'},acid:{labelKey:'themeAcidShort',color:'#050a05'},ultraviolet:{labelKey:'themeUltravioletShort',color:'#07050c'},cobalt:{labelKey:'themeCobaltShort',color:'#040a0e'},ember:{labelKey:'themeEmberShort',color:'#080704'}};
+const visualThemes={black:{labelKey:'themeBlackShort',color:'#101410'},white:{labelKey:'themeWhiteShort',color:'#f4f4ed'},acid:{labelKey:'themeAcidShort',color:'#101410'},ultraviolet:{labelKey:'themeUltravioletShort',color:'#17131b'},cobalt:{labelKey:'themeCobaltShort',color:'#141b20'},ember:{labelKey:'themeEmberShort',color:'#1a1511'}};
 const restoredQueue=loadQueueState();
 const state={
   tracks:[],saved:loadLibrary(),playlists:loadPlaylists(),activePlaylistId:null,libraryQuery:'',recents:loadRecents(),queue:restoredQueue.items,queueMode:restoredQueue.mode,available:new Set(),preferredSources,sources:new Set(preferredSources),region:loadRegion(),resultLimit:loadResultLimit(),repeatMode:loadRepeatMode(),library:false,hasSearched:false,active:null,controller:null,

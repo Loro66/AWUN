@@ -155,6 +155,8 @@ test('My Wave shows search progress, stops after empty sources, and retries on r
   const recommendation = { ...TRACKS.jamendo[0], id: 'jamendo_wave-retry', title: 'Second Chance' };
   await page.route('**/api/v1/search', async route => {
     const body = route.request().postDataJSON();
+    // Playback may recover an unavailable queued video independently of radio discovery.
+    if (body.fast !== true) return route.fallback();
     calls += 1;
     if (calls === 1) await firstSearch;
     const tracks = allowNewTracks ? [recommendation] : [];

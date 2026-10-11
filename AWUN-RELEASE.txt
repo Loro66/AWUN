@@ -1,7 +1,14 @@
-SONGVALE 2.6.2
+SONGVALE 2.6.3
 Release date: 2026-10-11
 
-Built-in optional zapret for Windows YouTube access:
+A quieter, cleaner Songvale interface:
+- Straight edges across search, track cards, playlists, player and Settings.
+- Solid surfaces and restrained accents in every theme, without glow or glass effects.
+- Compact monochrome Songvale wordmark in the top-left corner.
+- Forest photography remains on the home screen; decorative radio rings are removed.
+- Keep favorites and queue controls within the compact phone player, without stacked buttons overflowing its top edge.
+
+Includes built-in optional zapret for Windows YouTube access:
 - Open Settings > YouTube access > Enable zapret and approve Windows UAC.
 - ALT13 is the default; ALT11 and Basic are also available.
 - Retry the current YouTube track from Settings without replacing its queue.
