@@ -79,8 +79,10 @@
       if(!root.pywebview?.api?.local_audio_config){
         await new Promise(resolve=>{const done=()=>{clearTimeout(timer);root.removeEventListener('pywebviewready',done);resolve()};const timer=setTimeout(done,3000);root.addEventListener('pywebviewready',done,{once:true})});
       }
-      if(!root.pywebview?.api?.local_audio_config)return null;
-      return root.pywebview.api.local_audio_config();
+      if(!root.pywebview?.api?.local_audio_config)throw new Error('localStorageUnavailable');
+      const config=await root.pywebview.api.local_audio_config();
+      if(!config||typeof config.token!=='string'||!config.token)throw new Error('localStorageUnavailable');
+      return config;
     }
     async openDatabase(){
       if(this.database)return this.database;

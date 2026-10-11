@@ -85,8 +85,17 @@ test('native import stays on loopback and playback uses the current launch token
 
 test('a cancelled file read cannot revoke the currently playing file URL',async({page})=>{
   await openAwun(page);await importWave(page);await page.locator('.collection-play').click();
+  await expect.poll(()=>page.evaluate(()=>window.awunApp.state.isPlaying)).toBe(true);
   const result=await page.evaluate(async()=>{const store=window.SongvaleCollections.local,url=store.activeURL,controller=new AbortController();controller.abort();let error='';try{await store.resolve(store.tracks[0],controller.signal)}catch(e){error=e.name}const audio=new Audio(url),exists=await new Promise(resolve=>{audio.onloadedmetadata=()=>resolve(true);audio.onerror=()=>resolve(false)});audio.removeAttribute('src');audio.load();return {error,unchanged:store.activeURL===url,exists}});
   expect(result).toEqual({error:'AbortError',unchanged:true,exists:true});
+});
+
+test('an unavailable native bridge cannot silently store audio under a temporary browser origin',async({page})=>{
+  await installMediaMocks(page);await installApiMocks(page);await page.goto('/?lang=ru&desktop=1');
+  await page.locator('#localAudioInput').setInputFiles({name:'Own Song.wav',mimeType:'audio/wav',buffer:wave()});
+  await expect(page.locator('#collectionStatus')).toContainText('Ошибок: 1');
+  await expect(page.locator('.collection-track')).toHaveCount(0);
+  expect(await page.evaluate(async()=>Boolean((await indexedDB.databases()).find(db=>db.name==='songvale-local-audio')))).toBe(false);
 });
 
 test('a corrupt file reports an error without creating a phantom track',async({page})=>{
