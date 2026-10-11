@@ -143,9 +143,9 @@ html[data-theme="white"] .logo img{content:normal}
 .play{width:34px;height:34px;padding:0;border:1px solid var(--line-strong);border-radius:0;background:transparent;font-size:9px;cursor:pointer;transition:.2s}
 .play:hover,.track.active .play{background:var(--acid);border-color:var(--acid);color:var(--accent-ink);transform:scale(1.06)}
 .name{min-width:0;padding:10px 0;border:0;background:transparent;color:var(--ink);text-align:left;cursor:pointer}
-.name strong,.name span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.name strong,.name :is(span,.artist-link){display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .name strong{font-size:13px;letter-spacing:-.15px}
-.name span{margin-top:6px;color:var(--muted);font-size:9px}
+.name :is(span,.artist-link){margin-top:6px;color:var(--muted);font-size:9px}
 .tag,.duration,.quality{color:var(--muted);font-size:7px;font-weight:900;letter-spacing:1px;text-transform:uppercase}
 .tag:before{content:"";display:inline-block;width:6px;height:6px;margin-right:8px;border-radius:0;background:#888}
 .tag.youtube:before{background:var(--youtube)}
@@ -184,9 +184,9 @@ html[data-theme="white"] .logo img{content:normal}
 .player-accent{align-self:stretch;width:2px;background:linear-gradient(transparent,var(--acid),transparent);box-shadow:none}
 .player-artwork{width:56px;height:56px;border-radius:0;background:#24261f center/cover;display:grid;place-items:center;color:var(--acid);font-size:12px;font-weight:950;letter-spacing:-1px}
 .now{min-width:0}
-.now strong,.now span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.now strong,.now :is(span,.player-artist-link){display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .now strong{font-size:12px}
-.now span{margin-top:7px;color:var(--muted);font-size:8px;letter-spacing:.4px}
+.now :is(span,.player-artist-link){margin-top:7px;color:var(--muted);font-size:8px;letter-spacing:.4px}
 .mini-eq{height:12px;display:flex;align-items:flex-end;gap:2px;margin-top:8px}.mini-eq i{width:2px;height:2px;background:var(--acid);opacity:.25;transform-origin:bottom;animation:eq .65s ease-in-out infinite alternate;animation-play-state:paused}.mini-eq i:nth-child(2n){animation-delay:-.2s}.mini-eq i:nth-child(3n){animation-delay:-.4s}.is-playing .mini-eq i{opacity:.8;animation-play-state:running}
 .transport{min-width:0}
 .transport-buttons{display:flex;align-items:center;justify-content:center;gap:13px;margin-bottom:9px}
