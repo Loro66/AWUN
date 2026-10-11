@@ -8,6 +8,10 @@ opens third-party catalog links in the user's browser, pauses playback whenever
 the activity goes to the background, and displays a localized offline/retry
 screen if every configured SONGVALE endpoint is unavailable.
 
+File imports use the system picker, with support for multiple selected files and
+no broad storage permission. Imported audio stays in the web app's device storage;
+account sync and metadata backups do not include the audio copies.
+
 Google Play identity:
 
 - application ID: `com.loro66.awun`;

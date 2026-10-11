@@ -9,6 +9,7 @@ All notable user-visible changes are documented here. SONGVALE follows semantic 
 - Import your own audio into the main library, edit its tags, group files into albums and play offline through the existing player and queue. Content hashes prevent duplicates.
 - Native Windows audio and its SQLite index persist across loopback-port changes; browser audio uses atomic IndexedDB transactions and the cached app shell. File access is authenticated and local audio endpoints are absent from the public server.
 - Local audio stays on this device and is excluded from cloud sync and metadata backups. Limits: 100 MiB per file, 1,000 files, and 5 GiB for Windows copies. Original files are unchanged.
+- Android opens the system file picker for imports, including multiple files. Only user-selected content is returned to the requesting page; no broad storage permission is added.
 - Regression checks cover full album saves, missing and ambiguous matches, real offline WAV playback, file deletion, restart with a new access token, and rollback on storage failures.
 
 ## 2.6.3 — 2026-10-11
