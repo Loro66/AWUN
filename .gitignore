@@ -16,5 +16,6 @@ dist/
 *.keystore
 keystore.properties
 local.properties
+desktop/vendor/
 mobile/android/.gradle/
 mobile/android/app/build/

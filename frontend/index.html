@@ -338,6 +338,15 @@
       <div class="account-actions"><button id="desktopUpdate" type="button" data-i18n="desktopUpdate">ОБНОВИТЬ В ОДИН КЛИК</button><button id="desktopQuit" type="button" data-i18n="desktopQuit">ВЫЙТИ ИЗ SONGVALE</button></div>
       <p id="desktopUpdateStatus" role="status" aria-live="polite"></p><progress id="desktopUpdateProgress" max="100" value="0" hidden></progress>
     </section>
+    <section id="desktopNetwork" class="desktop-settings desktop-network" hidden aria-labelledby="desktopNetworkTitle">
+      <div class="desktop-network-heading"><h2 id="desktopNetworkTitle" data-i18n="networkTitle">Доступ к YouTube</h2><span>zapret</span></div>
+      <p data-i18n="networkDescription">Если YouTube не запускается в твоей сети, включи встроенный zapret. Он работает, пока открыт Songvale, и требует разрешения администратора Windows.</p>
+      <label for="desktopNetworkProfile" data-i18n="networkProfile">Профиль подключения</label>
+      <select id="desktopNetworkProfile"><option value="alt13">ALT13</option><option value="alt11">ALT11</option><option value="general" data-i18n="networkGeneral">Базовый</option></select>
+      <p id="desktopNetworkStatus" role="status" aria-live="polite"></p>
+      <div class="account-actions"><button id="desktopNetworkEnable" type="button" data-i18n="networkEnable">ВКЛЮЧИТЬ ZAPRET</button><button id="desktopNetworkStop" type="button" hidden data-i18n="networkStop">ВЫКЛЮЧИТЬ</button><button id="desktopNetworkRetry" type="button" hidden data-i18n="networkRetry">ПОВТОРИТЬ ТРЕК</button></div>
+      <details><summary data-i18n="networkDetails">Как это работает</summary><p data-i18n="networkScope">Профили настроены для доменов YouTube. Пока модуль включён, он влияет и на YouTube в других приложениях Windows. Если видео не играет, выключи модуль и попробуй другой профиль. Запуск модуля не гарантирует доступ у конкретного провайдера.</p><a href="/static/network-notices.txt" target="_blank" rel="noopener" data-i18n="networkCredits">Компоненты, лицензии и исходники</a></details>
+    </section>
     <div class="settings-language-row">
       <span data-i18n="language">ЯЗЫК</span>
       <button id="languageButton" class="settings-language" type="button" aria-label="Сменить язык" data-i18n-aria-label="switchLanguageAria"><span data-i18n="switchLanguageHint">Переключить язык интерфейса</span><b id="languageLabel">RU</b></button>
@@ -504,5 +513,6 @@
   <script src="/static/app.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/flow.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/desktop-player.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/desktop-network.js?v=__AWUN_VERSION__" defer></script>
 </body>
 </html>

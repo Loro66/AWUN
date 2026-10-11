@@ -6,7 +6,11 @@ py -3.11 -m venv .venv-desktop
 call .venv-desktop\Scripts\activate.bat
 python -m pip install --upgrade pip
 python -m pip install -r requirements-desktop.txt
+python -m desktop.prepare_network_runtime
+if errorlevel 1 exit /b 1
 pyinstaller --noconfirm --clean AWUN.spec
+if errorlevel 1 exit /b 1
+python -m desktop.prepare_network_sources
 if errorlevel 1 exit /b 1
 
 powershell -NoProfile -Command "$hash=(Get-FileHash 'dist\SONGVALE.exe' -Algorithm SHA256).Hash.ToLower(); Set-Content -Encoding ascii 'dist\SONGVALE.exe.sha256' ($hash + ' *SONGVALE.exe')"

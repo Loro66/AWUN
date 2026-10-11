@@ -1,0 +1,1 @@
+Windows now includes optional zapret for YouTube access: enable in Settings, choose a profile and stop it on exit. Previous YouTube player fixes are retained. The network module is available only on Windows.

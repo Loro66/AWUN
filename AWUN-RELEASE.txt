@@ -1,22 +1,32 @@
-SONGVALE 2.6.1
-Release date: 2026-10-09
+SONGVALE 2.6.2
+Release date: 2026-10-11
 
-YouTube playback:
-- Windows identifies SONGVALE in official embedded-player requests.
-- Temporary connection and player errors no longer hide working videos for a day.
-- Failed API loads can retry without an app restart; startup has a timeout.
-- Autoplay blocking keeps the official player available for a manual start.
-- Player-wide errors switch to other sources without retrying many YouTube uploads.
-- If recovery fails, the player shows the error code and a link to the original video.
+Built-in optional zapret for Windows YouTube access:
+- Open Settings > YouTube access > Enable zapret and approve Windows UAC.
+- ALT13 is the default; ALT11 and Basic are also available.
+- Retry the current YouTube track from Settings without replacing its queue.
+- The module is off by default and does not start automatically.
+- It stops when disabled or when Songvale fully exits, including crash cleanup.
+- External zapret/GoodbyeDPI is detected; Songvale does not start a second copy
+  or stop external processes.
+- Verification, permission, startup, driver errors and timeout have separate
+  status messages. Running does not mean playback on an ISP has been verified.
 
-YouTube restrictions imposed by the video owner or the viewer's region still apply.
+Profiles target YouTube domains and affect their connections from other Windows
+apps while enabled. No persistent zapret service, DNS/proxy changes or antivirus
+exclusions. This module is Windows-only; it is not offered on the website or
+on iPhone/Android. A working profile depends on the user's network. Video-owner
+and licensing restrictions still apply.
 
-Includes the 2.6.0 mini player, tray menu, global shortcuts, smart playlists,
-and one-click Windows updates with official release and SHA-256 verification.
+The official Flowseal 1.10.3 runtime is bundled unmodified, with archive/file
+SHA-256 checks and a protected elevated runtime directory. The release includes
+SONGVALE-Network-Sources.zip and the original component licenses in Settings.
+
+Includes the YouTube fixes from 2.6.1, mini player, tray menu, global shortcuts,
+smart playlists and verified one-click Windows updates from 2.6.0.
 
 Windows downloads:
 - SONGVALE-Setup-x64.exe: per-user installer.
 - SONGVALE.exe: portable app.
 
-From 2.6.0, open Settings > Windows controls > Update in one click.
-From earlier versions, install SONGVALE-Setup-x64.exe to enable future updates.
+From 2.6.0+, use Settings > Windows controls > Update in one click.
