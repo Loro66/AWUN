@@ -1,10 +1,12 @@
 (function attachPlayerCore(root, factory) {
   const api = factory(typeof module === 'object' && module.exports
     ? () => require('./library-matcher.js')
-    : () => root.SongvaleLibraryMatcher);
+    : () => root.SongvaleLibraryMatcher, typeof module === 'object' && module.exports
+    ? () => require('./recordings.js')
+    : () => root.SongvaleRecordings);
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.awunPlayerCore = api;
-})(typeof globalThis === 'object' ? globalThis : this, function createPlayerCore(getMatcher) {
+})(typeof globalThis === 'object' ? globalThis : this, function createPlayerCore(getMatcher, getRecordings) {
   const MAX_QUEUE_LENGTH = 250;
   const STREAM_FRESHNESS_MS = 20 * 60 * 1000;
   const NOISE_WORDS = new Set([
@@ -101,7 +103,7 @@
       output.push(track);
       if (output.length >= MAX_QUEUE_LENGTH) break;
     }
-    return output;
+    return getRecordings()?.group(output,MAX_QUEUE_LENGTH)||output;
   }
 
   function shouldRefreshStream(track, now = Date.now(), freshnessMs = STREAM_FRESHNESS_MS) {
@@ -117,14 +119,14 @@
 
   function enqueue(queue, track, position) {
     if (!track || !track.id) return uniqueTracks(queue);
-    const items = uniqueTracks(queue).filter(item => item.id !== track.id);
+    const items = uniqueTracks(queue).filter(item => !getRecordings().same(item,track));
     if (position === 'next') items.unshift(track);
     else items.push(track);
     return items.slice(0, MAX_QUEUE_LENGTH);
   }
 
   function remove(queue, trackId) {
-    return uniqueTracks(queue).filter(track => track.id !== trackId);
+    return uniqueTracks(queue).filter(track => !getRecordings().variants(track).some(variant=>variant.id===trackId));
   }
 
   function move(queue, fromIndex, toIndex) {

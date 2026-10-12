@@ -7,10 +7,10 @@
   const MIB=1024*1024,MAX_BYTES=100*MIB,MAX_JOBS=256;
   const key=track=>`${track?.source||''}:${track?.id||''}`;
   const supported=track=>['audius','jamendo','internet_archive'].includes(track?.source);
-  function descriptor(track){const result={};for(const field of ['id','source','title','artist','album','duration','quality','offline_allowed','offline_reason','license_url','thumbnail'])if(track?.[field]!==undefined)result[field]=track[field];return result}
+  function descriptor(track){const result={};for(const field of ['id','source','title','artist','album','duration','quality','offline_allowed','offline_reason','license_url','thumbnail','recording_key','recording_duration'])if(track?.[field]!==undefined)result[field]=track[field];return result}
   function eligible(track,{liked=false,plays=0}={}){return supported(track)&&track?.offline_allowed!==false&&!track?.is_preview&&(liked||plays>=3)}
   function evictionOrder(files,jobs,{liked=new Set(),active=null}={}){
-    return files.filter(file=>file.managed_download&&file.id!==active&&!liked.has(`${file.origin_source}:${file.origin_id}`)&&!jobs.some(job=>job.file_id===file.id&&liked.has(key(job.track))))
+    return files.filter(file=>file.managed_download&&file.id!==active&&!liked.has(`${file.origin_source}:${file.origin_id}`)&&!jobs.some(job=>job.file_id===file.id&&(liked.has(key(job.track))||liked.has(job.track.recording_key))))
       .sort((a,b)=>Math.max(0,...jobs.filter(j=>j.file_id===a.id).map(j=>Number(j.used_at)||0))-Math.max(0,...jobs.filter(j=>j.file_id===b.id).map(j=>Number(j.used_at)||0)));
   }
   class Manager{
@@ -25,7 +25,7 @@
     }
     t(name,values){return root.awunI18n.t(name,values)}
     owner(){return root.awunStorage.readText('songvale-account-owner-v1','guest')||'guest'}
-    liked(){return new Set(this.app.state.saved.map(key))}
+    liked(){return new Set(this.app.state.saved.flatMap(track=>[...root.SongvaleRecordings.variants(track).map(key),root.SongvaleRecordings.key(track)]))}
     persist(){
       this.jobs=this.jobs.slice(-MAX_JOBS);
       const keys=new Set(this.jobs.map(j=>key(j.track)));for(const k of this.live.keys())if(!keys.has(k))this.live.delete(k);
@@ -40,14 +40,18 @@
       for(const job of this.jobs)if(job.state==='ready'&&!this.store.tracks.some(file=>file.id===job.file_id)){job.state='error';job.error='localMissing';job.file_id=null}
       this.persist();
     }
+    jobFor(track,readyOnly=false){
+      const keys=new Set(root.SongvaleRecordings.variants(track).map(key)),canonical=root.SongvaleRecordings.key(track);
+      return this.jobs.find(j=>(!readyOnly||j.state==='ready')&&(keys.has(key(j.track))||j.track.recording_key===canonical));
+    }
     fileFor(track){
-      const job=this.jobs.find(j=>key(j.track)===key(track)&&j.state==='ready');
+      const job=this.jobFor(track,true);
       const file=job&&this.store.tracks.find(f=>f.id===job.file_id);
       return file&&!this.invalid.has(file.id)?file:null;
     }
-    duplicateOfFavorite(file){return file.managed_download&&this.jobs.some(job=>job.file_id===file.id&&job.state==='ready'&&this.liked().has(key(job.track)))}
+    duplicateOfFavorite(file){const liked=this.liked();return file.managed_download&&this.jobs.some(job=>job.file_id===file.id&&job.state==='ready'&&(liked.has(key(job.track))||liked.has(job.track.recording_key)))}
     originalFor(file){const job=this.jobs.find(j=>j.file_id===file.id&&j.state==='ready');return job?{...job.track,stream_url:'',stream_type:'audio'}:file}
-    stateFor(track){if(track.source==='local')return 'ready';if(this.fileFor(track))return 'ready';const state=this.jobs.find(job=>key(job.track)===key(track))?.state;return state==='ready'?'error':state||''}
+    stateFor(track){if(track.source==='local')return 'ready';if(this.fileFor(track))return 'ready';const state=this.jobFor(track)?.state;return state==='ready'?'error':state||''}
     decorate(row,track){
       const cover=row.querySelector('.cover');if(!cover)return;
       let mark=cover.querySelector('.offline-mark');const state=this.stateFor(track);
@@ -57,6 +61,8 @@
     }
     async request(track,{liked=false,plays=0}={}){
       await this.ready;if(!this.settings.enabled||this.app.playStoreMode||track.source==='local')return;
+      const allowed=root.SongvaleRecordings.variants(track).find(variant=>supported(variant)&&variant.offline_allowed===true&&!variant.is_preview);
+      if(allowed)track={...allowed,recording_key:root.SongvaleRecordings.key(track),recording_duration:track.recording_duration||track.duration};
       const existing=this.jobs.find(j=>key(j.track)===key(track));
       if(existing&&['ready','queued','downloading'].includes(existing.state))return;
       if(!liked&&plays<3)return;
@@ -104,7 +110,7 @@
       const total=()=>this.store.tracks.filter(f=>f.managed_download).reduce((n,f)=>n+f.size,0);
       const limit=this.settings.limit*MIB;if(size>limit)throw new Error('localStorageFull');
       const active=this.app.state.active?.local_file_id||this.app.state.active?.id;
-      const protectedIds=new Set([this.app.state.pendingTrackId,this.app.state.pendingOfflineFileId]);
+      const protectedIds=new Set([this.app.state.pendingTrackId,this.app.state.pendingOfflineFileId,this.app.state.fadingFileId]);
       for(const file of evictionOrder(this.store.tracks.filter(f=>!protectedIds.has(f.id)),this.jobs,{liked:this.liked(),active})){
         if(total()+size<=limit)break;await this.store.remove(file.id);
         for(const job of this.jobs)if(job.file_id===file.id){job.state='evicted';job.file_id=null}
@@ -130,7 +136,7 @@
             catch(error){if(error.message!=='offlineLinkExpired')throw error;track=await this.refresh(job,signal,true);file=await this.readAudio(track,signal,value=>{job.progress=value;this.render()})}
             await this.store.inspectFile(file);if(signal.aborted)throw new DOMException('Cancelled','AbortError');
             const hash=await crypto.subtle.digest('SHA-256',await file.arrayBuffer()),id=`local_${[...new Uint8Array(hash)].map(v=>v.toString(16).padStart(2,'0')).join('')}`;
-            if(this.invalid.has(id)){const old=this.store.tracks.find(f=>f.id===id);if(old){const protectedIds=new Set([this.app.state.active?.id,this.app.state.active?.local_file_id,this.app.state.pendingTrackId,this.app.state.pendingOfflineFileId]);if(!old.managed_download||protectedIds.has(id))throw new Error('localStopBeforeRemove');await this.store.remove(id)}}
+            if(this.invalid.has(id)){const old=this.store.tracks.find(f=>f.id===id);if(old){const protectedIds=new Set([this.app.state.active?.id,this.app.state.active?.local_file_id,this.app.state.pendingTrackId,this.app.state.pendingOfflineFileId,this.app.state.fadingFileId]);if(!old.managed_download||protectedIds.has(id))throw new Error('localStopBeforeRemove');await this.store.remove(id)}}
             if(!this.store.tracks.some(f=>f.id===id))await this.reserve(file.size);
             if(signal.aborted)throw new DOMException('Cancelled','AbortError');
             const result=await this.store.importFile(file,{title:track.title,artist:track.artist,album:track.album||'',managed_download:true,origin_source:track.source,origin_id:track.id,origin_url:track.catalog_links?.[track.source]||track.rights_terms_url||'',license_url:track.license_url||'',signal});
@@ -144,12 +150,12 @@
       }finally{this.running=false;this.render();if(this.wake){this.wake=false;void this.pump()}}
     }
     async resolve(track,signal){
-      if(root.navigator.onLine&&!this.jobs.some(j=>key(j.track)===key(track)&&j.state==='ready'))return track;
+      if(root.navigator.onLine&&!this.jobFor(track,true))return track;
       await this.ready;const file=this.fileFor(track);if(!file){if(!root.navigator.onLine)throw new Error('offlineOnlineRequired');return track}
       this.app.state.pendingOfflineFileId=file.id;
       try{
-        const local=await this.store.resolve(file,signal),job=this.jobs.find(j=>key(j.track)===key(track));job.used_at=Date.now();this.persist();
-        return {...track,stream_url:local.stream_url,online_stream_url:track.stream_url||'',stream_type:'audio',duration:local.duration||track.duration,offline_playback:true,local_file_id:file.id};
+        const local=await this.store.resolve(file,signal),job=this.jobs.find(j=>j.file_id===file.id&&j.state==='ready');job.used_at=Date.now();this.persist();
+        return {...track,source:job.track.source,id:job.track.id,recording_key:root.SongvaleRecordings.key(track),recording_duration:track.recording_duration||track.duration,stream_url:local.stream_url,online_stream_url:track.stream_url||'',stream_type:'audio',duration:local.duration||track.duration,offline_playback:true,local_file_id:file.id};
       }catch(error){if(signal?.aborted)throw error;this.reject({...track,local_file_id:file.id});if(!root.navigator.onLine)throw error;return track}
       finally{if(this.app.state.pendingOfflineFileId===file.id)this.app.state.pendingOfflineFileId=null}
     }
@@ -159,7 +165,7 @@
       this.settings.enabled=false;this.saveSettings();this.controller?.abort();
       while(this.running)await new Promise(resolve=>setTimeout(resolve,50));
       const active=this.app.state.active?.local_file_id||this.app.state.active?.id;
-      const protectedIds=new Set([active,this.app.state.pendingTrackId,this.app.state.pendingOfflineFileId]);
+      const protectedIds=new Set([active,this.app.state.pendingTrackId,this.app.state.pendingOfflineFileId,this.app.state.fadingFileId]);
       for(const file of [...this.store.tracks])if(file.managed_download&&!protectedIds.has(file.id))await this.store.remove(file.id);
       this.jobs=this.jobs.filter(j=>this.store.tracks.some(f=>f.id===j.file_id));this.persist();this.app.updateLibraryCount();this.app.render();this.render();document.dispatchEvent(new CustomEvent('awun:local-files'));
     }

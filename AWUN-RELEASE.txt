@@ -1,5 +1,14 @@
-SONGVALE 2.7.1
-Release date: 2026-10-11
+SONGVALE 2.8.0
+Test preview: 2026-10-12
+
+Playback and interface:
+- Identical recordings share one card and a source selector. A working source
+  is remembered; favorites and position survive changing the source.
+- Queue preparation and optional 2/4/6-second crossfades for direct/local audio.
+  YouTube and HLS keep their own player transitions; Data Saver stops preload.
+- Wave distinguishes early skips, allows reversing dislikes and excludes
+  recently heard copies from other providers.
+- Compact SV sidebar logo, useful listening controls and circular Play/Pause.
 
 Smart automatic offline downloads:
 - A new like or three qualified listens queues a permitted full recording.

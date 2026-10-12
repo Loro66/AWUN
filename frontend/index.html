@@ -36,6 +36,12 @@
         <p id="sidebarWaveStatus" class="sidebar-wave-status" aria-hidden="true" hidden></p>
         <button id="importButton" class="library import-button" type="button" aria-expanded="false" aria-controls="importPanel" data-i18n-aria-label="import"><i aria-hidden="true">⇣</i><span data-i18n="import">ПЕРЕНОС</span><b aria-hidden="true">↗</b></button>
         <section class="sidebar-listening" aria-label="Продолжить слушать" data-i18n-aria-label="sidebarListening">
+          <div class="sidebar-start">
+            <h2 data-i18n="sidebarQuickStart">СЛУШАТЬ</h2>
+            <button id="sidebarContinue" class="sidebar-continue" type="button"><i aria-hidden="true">▶</i><span><strong data-i18n="sidebarResume">Продолжить</strong><small id="sidebarContinueTitle" data-i18n="sidebarStartHint">Выбери музыку для первого запуска</small></span></button>
+            <div class="sidebar-start-actions"><button id="sidebarShuffle" type="button" data-i18n="sidebarShuffle">Перемешать</button><button id="sidebarOffline" type="button"><span data-i18n="sidebarOffline">Скачанное</span><b id="sidebarOfflineCount">0</b></button></div>
+            <small id="sidebarPreparation" class="sidebar-preparation" role="status" hidden></small>
+          </div>
           <div class="sidebar-section">
             <div class="sidebar-section-heading"><h2 data-i18n="upNext">ДАЛЕЕ</h2><button id="sidebarQueueAll" type="button" data-i18n="queue" aria-label="Открыть очередь" data-i18n-aria-label="sidebarOpenQueue">ОЧЕРЕДЬ</button></div>
             <ol id="sidebarQueue" class="sidebar-track-list"></ol>
@@ -288,12 +294,12 @@
 
       <div class="transport">
         <div class="transport-buttons">
-          <button id="previousTrack" type="button" aria-label="Предыдущий трек" data-i18n-aria-label="previousAria">|‹</button>
+          <button id="previousTrack" type="button" aria-label="Предыдущий трек" data-i18n-aria-label="previousAria"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h2v14H5zm14 0v14L9 12z"/></svg></button>
           <button id="flowDislike" class="flow-feedback" type="button" aria-label="Не нравится" title="Меньше похожего" data-i18n-aria-label="dislikeAria" data-i18n-title="lessLikeTitle">−</button>
           <button id="playPause" class="play-pause" type="button" aria-label="Воспроизвести" data-i18n-aria-label="playAria"><span>▶</span></button>
           <button id="flowLike" class="flow-feedback" type="button" aria-label="Нравится" title="Больше похожего" data-i18n-aria-label="likeAria" data-i18n-title="moreLikeTitle">+</button>
           <button id="flowBlockArtist" class="flow-feedback flow-block" type="button" aria-label="Не рекомендовать этого исполнителя" title="Заблокировать исполнителя" data-i18n-aria-label="blockArtistAria" data-i18n-title="blockArtistTitle">ИСП−</button>
-          <button id="nextTrack" type="button" aria-label="Следующий трек" data-i18n-aria-label="nextAria">›|</button>
+          <button id="nextTrack" type="button" aria-label="Следующий трек" data-i18n-aria-label="nextAria"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 5h2v14h-2zM5 5l10 7-10 7z"/></svg></button>
           <button id="repeatMode" class="repeat-mode" type="button" aria-label="Повтор выключен" aria-pressed="false"><span>↻</span><small>ВЫКЛ</small></button>
         </div>
         <div class="timeline">
@@ -425,6 +431,12 @@
       <small data-i18n="offlineClearHint">При нехватке места удаляются старые автозагрузки без лайка. Свои файлы и текущий трек сохраняются. Очистка выключает автозагрузку.</small>
       <ul id="offlineJobs" class="offline-jobs"></ul>
     </section>
+    <section class="transition-settings" aria-labelledby="transitionTitle">
+      <strong id="transitionTitle" data-i18n="transitionTitle">ПЕРЕХОДЫ МЕЖДУ ТРЕКАМИ</strong>
+      <label><input id="preloadNext" type="checkbox" checked><span data-i18n="preloadNext">Подготавливать следующий трек</span></label>
+      <label><span data-i18n="crossfadeLabel">Плавный переход</span><select id="crossfadeSeconds"><option value="0" data-i18n="crossfadeOff">Без паузы</option><option value="2">2 с</option><option value="4">4 с</option><option value="6">6 с</option></select></label>
+      <small data-i18n="transitionHint">Плавные переходы работают для прямого аудио и файлов на устройстве. YouTube и HLS запускаются своим плеером.</small>
+    </section>
     <button id="diagnosticsButton" class="diagnostics-entry" type="button" aria-controls="diagnosticsPanel" aria-expanded="false">
       <span><small data-i18n="diagnosticsKicker">СОСТОЯНИЕ СЕТИ</small><strong data-i18n="sourceDiagnostics">ДИАГНОСТИКА ИСТОЧНИКОВ</strong></span>
       <b data-i18n="openDiagnostics">ОТКРЫТЬ</b>
@@ -528,6 +540,8 @@
   <script src="/static/i18n.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/player-core.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/library-matcher.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/recordings.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/flow-core.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/smart-playlists.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/audio-engine.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/local-music.js?v=__AWUN_VERSION__" defer></script>
@@ -535,6 +549,7 @@
   <script src="/static/app.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/collections.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/offline.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/continuous-player.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/flow.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/desktop-player.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/desktop-network.js?v=__AWUN_VERSION__" defer></script>

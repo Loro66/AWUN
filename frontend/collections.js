@@ -119,7 +119,7 @@
   function openSaved(){open(t('savedAlbums'),'albums');const albums=[...saved,...localAlbums()];if(!albums.length){content.append(node('p','collection-empty',t('catalogSavedEmpty')));return}const grid=node('div','collection-albums');albums.forEach(a=>grid.append(albumCard(a)));content.append(grid)}
   function edit(track){editId=track.id;$('localEditorTitle').value=track.title;$('localEditorArtist').value=track.artist;$('localEditorAlbum').value=track.album||'';$('localEditor').hidden=false;$('localEditorTitle').focus()}
   async function remove(track){
-    if(state.active?.id===track.id||state.active?.local_file_id===track.id||state.pendingTrackId===track.id||state.pendingOfflineFileId===track.id){app.pausePlayback();announce('localStopBeforeRemove',{},true);return}
+    if(state.active?.id===track.id||state.active?.local_file_id===track.id||state.pendingTrackId===track.id||state.pendingOfflineFileId===track.id||state.fadingFileId===track.id){app.pausePlayback();announce('localStopBeforeRemove',{},true);return}
     try{await local.remove(track.id);state.queue=state.queue.filter(t=>t.id!==track.id);app.replaceQueue(state.queue);state.recents=state.recents.filter(t=>t.id!==track.id);window.awunStorage.writeJSON('awun-recent',state.recents.map(app.durableTrack));app.updateLibraryCount();app.render();renderFiles();announce('localRemoved')}
     catch(error){status.textContent=errorText(error);status.dataset.tone='error'}
   }

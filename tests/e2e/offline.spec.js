@@ -43,7 +43,7 @@ test('three real qualified listens download once; a paused or stalled playhead a
 
 test('providers without an offline grant remain liked and never fetch a download',async({page})=>{
   const downloads=await setup(page);
-  for(const item of [TRACKS.soundcloud[0],TRACKS.youtube[0],{...track,id:'no-grant',offline_allowed:false},{...track,id:'preview',is_preview:true}])await like(page,item);
+  for(const item of [{...TRACKS.soundcloud[0],title:'Unsupported SoundCloud'},{...TRACKS.youtube[0],title:'Unsupported YouTube'},{...track,id:'no-grant',offline_allowed:false},{...track,id:'preview',is_preview:true}])await like(page,item);
   await expect.poll(()=>page.evaluate(()=>window.SongvaleOffline.jobs.filter(j=>j.state==='blocked').length)).toBe(4);
   expect(downloads()).toBe(0);expect(await page.evaluate(()=>window.awunApp.state.saved.length)).toBe(4);
 });

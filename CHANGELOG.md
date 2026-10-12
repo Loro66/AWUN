@@ -2,6 +2,14 @@
 
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
+## 2.8.0 — preview
+
+- Search groups confidently identical recordings into one card with a source selector. Covers, remixes, live versions and uncertain duration matches remain separate. A successful source choice is remembered locally; likes, position and listening history follow the recording.
+- Prepare the next queued track without interrupting the current media element. Optional 2/4/6-second crossfades apply to direct audio and device files; official YouTube and HLS use their existing player transitions. Data Saver stops preparation.
+- My Wave weighs early skips more strongly, accepts reversing a dislike, ignores seek time and avoids recent copies of the same recording from another provider.
+- Replace the oversized sidebar wordmark with a compact SV mark, add continue/shuffle/downloaded and preparation controls, and make Play/Pause circular.
+- Browser regressions cover source grouping and recovery, position preservation, queue changes, Wave feedback and real two-file audio crossfades.
+
 ## 2.7.1 — preview
 
 - Smart downloads save eligible full recordings after a new like or three qualified plays. Actual playback counts after 30 seconds or half a short track; paused, stalled and sought time does not count, and repeat-one starts a new listen.

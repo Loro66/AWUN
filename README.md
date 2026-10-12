@@ -130,7 +130,7 @@ Open `http://127.0.0.1:8000`. Optional provider credentials and deployment setti
 
 ## Verified release quality
 
-Release builds are produced from `main` by GitHub Actions. Version `2.7.1` is currently a test preview in PR #64.
+Release builds are produced from `main` by GitHub Actions. Version `2.8.0` is currently a test preview in PR #64.
 
 - Python tests cover search, ranking, matching, policy, reliability, security, visual identity and desktop packaging.
 - Playwright scenarios exercise progressive search, playback recovery, library transfer, responsive layouts, offline shell launch and account merge, conflict, sign-out and recovery flows.

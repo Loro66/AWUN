@@ -160,6 +160,14 @@
       this.tracks=this.tracks.filter(t=>t.id!==id);
     }
     release(){if(this.activeURL){URL.revokeObjectURL(this.activeURL);this.activeURL=null}}
+    async prepare(track,signal){
+      await this.ready;if(this.loadError)throw this.loadError;if(signal?.aborted)throw new DOMException('Cancelled','AbortError');
+      const stored=this.tracks.find(t=>t.id===track.id);if(!stored)throw new Error('localMissing');
+      if(this.config)return {track:{...stored,stream_url:`/api/v1/local-audio/${stored.file_id}?token=${encodeURIComponent(this.config.token)}`},release:()=>{}};
+      const db=await this.openDatabase(),file=await requestValue(db.transaction('files').objectStore('files').get(track.id));
+      if(signal?.aborted)throw new DOMException('Cancelled','AbortError');if(!file)throw new Error('localMissing');
+      const url=URL.createObjectURL(file);return {track:{...stored,stream_url:url},release:()=>URL.revokeObjectURL(url)};
+    }
     async resolve(track,signal){
       await this.ready;if(this.loadError)throw this.loadError;
       if(signal?.aborted)throw new DOMException('Cancelled','AbortError');

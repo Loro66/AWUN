@@ -1,5 +1,5 @@
 const { test,expect }=require('@playwright/test');
-const { openAwun,searchFor,TRACKS }=require('./fixtures');
+const { playSource, openAwun,searchFor,TRACKS }=require('./fixtures');
 
 async function onlyYouTube(page){
   await page.route('**/api/v1/search',route=>{
@@ -9,7 +9,7 @@ async function onlyYouTube(page){
 }
 async function startYouTube(page){
   await searchFor(page,'midnight signal');
-  await page.locator('#trackList .track[data-source="youtube"]').first().locator('.play').click();
+  await playSource(page,'youtube');
 }
 
 test('old connection errors no longer hide working YouTube search results',async({page})=>{
@@ -19,8 +19,9 @@ test('old connection errors no longer hide working YouTube search results',async
   })));
   await openAwun(page);
   await searchFor(page,'midnight signal');
-  await expect(page.locator('#trackList .track[data-source="youtube"]')).toHaveCount(1);
-  await page.locator('#trackList .track[data-source="youtube"] .play').click();
+  await expect(page.locator('#results')).toHaveAttribute('aria-busy','false');
+  await expect(page.locator('[data-variant-source="youtube"]')).toHaveCount(1);
+  await playSource(page,'youtube');
   await expect(page.locator('body')).toHaveClass(/is-playing/);
   expect(await page.evaluate(()=>window.awunApp.state.active.id)).toBe(TRACKS.youtube[0].id);
 });
@@ -32,12 +33,14 @@ test('client identity failure skips futile YouTube retries and switches sources'
     window.YT.Player=class extends Player{playVideo(){window.youtubeAttempts.push(this.videoId);queueMicrotask(()=>this.options.events.onError({data:153}))}};
   });
   await startYouTube(page);
-  await expect(page.locator('#nowSource')).toHaveText('SoundCloud');
+  await expect(page.locator('#nowSource')).toHaveText('Audius');
   await expect(page.locator('body')).toHaveClass(/is-playing/);
   expect(await page.evaluate(()=>window.youtubeAttempts)).toHaveLength(1);
   expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('awun-youtube-failures-v1')||'{}')['working-video'])).toBeUndefined();
   await searchFor(page,'midnight signal');
-  await expect(page.locator('#trackList .track[data-source="youtube"]').filter({hasText:TRACKS.youtube[0].title})).toBeVisible();
+  await expect(page.locator('#results')).toHaveAttribute('aria-busy','false');
+  await expect(page.locator('#trackList .track').filter({hasText:TRACKS.youtube[0].title})).toBeVisible();
+  expect(await page.evaluate(()=>window.awunApp.state.tracks.some(t=>(t.variants||[]).some(v=>v.id==='yt_working-video')))).toBe(true);
 });
 
 test('YouTube failure shows its code and a link to the exact original video',async({page})=>{

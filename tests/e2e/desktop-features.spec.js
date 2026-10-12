@@ -1,5 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { openAwun, searchFor, TRACKS, installApiMocks, installMediaMocks } = require('./fixtures');
+const { playSource, openAwun, searchFor, TRACKS, installApiMocks, installMediaMocks } = require('./fixtures');
 const { mkdirSync } = require('node:fs');
 
 async function openDesktop(page, options = {}) {
@@ -58,7 +58,7 @@ test('native commands use the existing player and volume is bounded', async ({ p
 test('YouTube remains visible with a 200px player in compact mode', async ({ page }) => {
   await openDesktop(page);
   await searchFor(page,'midnight signal');
-  await page.locator('#trackList .track[data-source="youtube"]').first().locator('.play').click();
+  await playSource(page,'youtube');
   await page.locator('#desktopMini').click();
   await page.setViewportSize({width:460,height:505});
   await expect(page.locator('#youtubeDock')).toBeVisible();

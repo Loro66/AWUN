@@ -195,4 +195,14 @@ async function searchFor(page, query) {
   await expect(page.locator('#trackList .track').first()).toBeVisible();
 }
 
-module.exports = { SOURCES, TRACKS, healthPayload, installApiMocks, installMediaMocks, openAwun, searchFor };
+async function playSource(page, source, title) {
+  await expect(page.locator('#results')).toHaveAttribute('aria-busy', 'false');
+  let rows=page.locator('#trackList .track');
+  if(title)rows=rows.filter({hasText:title});
+  const alternatives=rows.filter({has:page.locator(`[data-variant-source="${source}"]`)});
+  if(await alternatives.count()){
+    const row=alternatives.first();await row.locator('.recording-sources summary').click();await row.locator(`[data-variant-source="${source}"]`).click();
+  }else await rows.filter({has:page.locator(`.tag.${source}`)}).first().locator('.play').click();
+}
+
+module.exports = { playSource, SOURCES, TRACKS, healthPayload, installApiMocks, installMediaMocks, openAwun, searchFor };

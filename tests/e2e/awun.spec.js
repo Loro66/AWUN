@@ -1,5 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { openAwun, searchFor, TRACKS } = require('./fixtures');
+const { playSource, openAwun, searchFor, TRACKS } = require('./fixtures');
 const pageErrors = new WeakMap();
 
 test.beforeEach(async ({ page }) => {
@@ -33,7 +33,7 @@ test('speaker control shows mute state, restores volume and follows the interfac
   await volume.evaluate(input=>{input.value='0';input.dispatchEvent(new Event('input',{ bubbles:true }))});
   await mute.click();
   await expect(volume).toHaveValue('30');
-  await page.locator('#trackList .track[data-source="youtube"]').first().locator('.play').click();
+  await playSource(page,'youtube');
   await expect(page.locator('#nowSource')).toHaveText('YouTube');
   await page.evaluate(()=>{window.__videoVolumes=[];window.awunApp.state.youtube.setVolume=value=>window.__videoVolumes.push(value)});
   await mute.click();
@@ -54,7 +54,7 @@ test('progressive search renders the first provider before the slowest provider'
   await expect(page.locator('#trackList .track').first()).toBeVisible();
   await expect(page.locator('#results')).toHaveAttribute('aria-busy', 'true');
   await expect(page.locator('#results')).toHaveAttribute('aria-busy', 'false');
-  await expect(page.locator('#trackList .track')).toHaveCount(8);
+  await expect(page.locator('#trackList .track')).toHaveCount(5);
 });
 
 test('repeat search shows cached results immediately and refreshes them in background', async ({ page }) => {
@@ -260,7 +260,7 @@ test('the player shows loading and a clear unavailable-track result', async ({ p
     const body = route.request().postDataJSON();
     return route.fulfill({ json: { query: body.query, tracks: [], total: 0, searched_sources: body.sources, errors: {} } });
   });
-  await page.evaluate(() => { document.getElementById('audio').play = () => Promise.reject(new Error('audio unavailable')); });
+  await page.evaluate(() => { for(const audio of document.querySelectorAll('audio'))delete audio.play;HTMLMediaElement.prototype.play = () => Promise.reject(new Error('audio unavailable')); });
   await page.locator('#trackList .track[data-source="audius"]').nth(1).locator('.play').click();
   await expect(page.locator('#playerStatus')).toContainText('Трек не найден или недоступен');
   await expect(page.locator('#playerStatus')).toHaveAttribute('data-tone', 'error');
@@ -272,8 +272,7 @@ test('the player shows loading and a clear unavailable-track result', async ({ p
 test('an unavailable YouTube embed switches to the matching connected source', async ({ page }) => {
   await openAwun(page);
   await searchFor(page, 'unavailable signal');
-  const youtube = page.locator('#trackList .track[data-source="youtube"]');
-  await youtube.locator('.play').click();
+  await playSource(page,'youtube','Unavailable Signal');
 
   await expect(page.locator('#nowSource')).toHaveText('Audius');
   await expect(page.locator('#message')).toContainText('Audius');
@@ -283,8 +282,7 @@ test('an unavailable YouTube embed switches to the matching connected source', a
 test('an available YouTube track keeps the official player visible and minimizable', async ({ page }) => {
   await openAwun(page);
   await searchFor(page, 'midnight signal');
-  const youtube = page.locator('#trackList .track[data-source="youtube"]').first();
-  await youtube.locator('.play').click();
+  await playSource(page,'youtube','Midnight Signal');
 
   await expect(page.locator('#nowSource')).toHaveText('YouTube');
   await expect(page.locator('#youtubeDock')).toBeVisible();
@@ -300,11 +298,12 @@ test('an available YouTube track keeps the official player visible and minimizab
 test('manual queue survives a page reload and remains reorderable', async ({ page }) => {
   await openAwun(page);
   await searchFor(page, 'midnight signal');
+  await expect(page.locator('#results')).toHaveAttribute('aria-busy','false');
   const rows = page.locator('#trackList .track');
   await rows.nth(2).locator('.track-queue-menu summary').click();
-  await rows.nth(2).locator('.track-queue-menu button').last().click();
+  await rows.nth(2).locator('.track-queue-menu button').nth(1).click();
   await rows.nth(3).locator('.track-queue-menu summary').click();
-  await rows.nth(3).locator('.track-queue-menu button').last().click();
+  await rows.nth(3).locator('.track-queue-menu button').nth(1).click();
   await page.reload();
 
   await searchFor(page, 'midnight signal');
