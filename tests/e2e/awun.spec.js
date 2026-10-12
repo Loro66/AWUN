@@ -624,6 +624,7 @@ for (const viewport of [
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
     await openAwun(page);
     await searchFor(page, 'midnight signal');
+    await expect(page.locator('#results')).toHaveAttribute('aria-busy','false');
     await page.locator('#trackList .track[data-source="audius"]').first().locator('.play').click();
     await page.evaluate(() => {
       document.activeElement?.blur();
