@@ -631,6 +631,9 @@ for (const viewport of [
       window.scrollTo({ top: 0, behavior: 'instant' });
     });
     await expect(page.locator('#nowSource')).toHaveText('Audius');
+    await expect(page.locator('body')).toHaveClass(/is-playing/);
+    // Keep the phone feedback area in a fixed state across provider timings.
+    if(viewport.width===390)await page.evaluate(()=>window.awunApp.setMessage(window.awunI18n.t('selectTrack')));
     const layout = await page.evaluate(() => {
       const bounds = selector => {
         const element = document.querySelector(selector);
