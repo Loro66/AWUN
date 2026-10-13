@@ -1,183 +1,53 @@
-![SONGVALE — one search, every sound](docs/awun-github-banner.svg)
-
-<div align="center">
+![SongVale](docs/media/songvale-banner.svg)
 
 [English](README.md) · [Русский](README.ru.md)
 
-[![Open web app](https://img.shields.io/badge/OPEN_WEB_APP-FF6516?style=for-the-badge&logo=googlechrome&logoColor=11120F)](https://awun-1.onrender.com)
-[![Download for Windows](https://img.shields.io/badge/DOWNLOAD_WINDOWS-F3F2E9?style=for-the-badge&logo=windows&logoColor=11120F)](https://github.com/Loro66/AWUN/releases/latest/download/SONGVALE-Setup-x64.exe)
-[![Latest release](https://img.shields.io/github/v/release/Loro66/AWUN?style=for-the-badge&label=RELEASE&labelColor=11120F&color=6E875F)](https://github.com/Loro66/AWUN/releases/latest)
+# SongVale
 
-[![Windows build](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&style=flat-square&label=Windows%20build)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
-[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&style=flat-square&label=Browser%20tests)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
-[![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![License](https://img.shields.io/badge/license-source--visible%20freeware-5F665B?style=flat-square)](LICENSE.md)
+A music player with an on-device library, a personal listening queue and search across connected catalogs.
 
-**A local-first music discovery workspace for fragmented catalogs.**<br>
-Search across connected sources, keep your library on your device and continue listening when one provider fails.
+[**Download for Windows**](https://github.com/Loro66/AWUN/releases/latest/download/SONGVALE-Setup-x64.exe) · [**Open web app**](https://awun-1.onrender.com) · [All releases](https://github.com/Loro66/AWUN/releases)
 
-[Product](#the-product) · [Architecture](docs/ARCHITECTURE.md) · [Testing](docs/TESTING.md) · [Case study](docs/PROJECT_CASE_STUDY.md) · [Roadmap](ROADMAP.md)
+[![Windows build](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/build-windows-exe.yml?branch=main&label=Windows)](https://github.com/Loro66/AWUN/actions/workflows/build-windows-exe.yml)
+[![Browser tests](https://img.shields.io/github/actions/workflow/status/Loro66/AWUN/frontend-e2e.yml?branch=main&label=Browser%20tests)](https://github.com/Loro66/AWUN/actions/workflows/frontend-e2e.yml)
 
-</div>
+![SongVale home screen](docs/media/songvale-home.webp)
 
-<p align="center">
-  <img src="docs/media/songvale-home.webp" width="100%" alt="SONGVALE home screen and local library workspace" />
-</p>
+## What you can do
 
-## Why SONGVALE exists
+- Search connected YouTube, SoundCloud, Audius, Jamendo and Internet Archive sources. Availability depends on each provider and your region.
+- Keep favorites, named playlists and a persistent queue on your device.
+- Discover music with My Wave and smart playlists.
+- Import exported CSV, JSON, M3U or TXT collections and match their tracks.
+- On Windows, use an always-on-top mini player, tray controls and optional global hotkeys.
 
-Music discovery is split across services, regions, languages and scripts. A track may be easy to find on one platform and unavailable on another; saved stream URLs expire; one slow provider can hold up an otherwise useful search.
+## Install
 
-SONGVALE treats those failures as normal system conditions rather than exceptional cases.
-
-| Product problem | SONGVALE response |
+| Platform | Available version |
 | --- | --- |
-| Results are scattered across catalogs | Parallel search with progressive, source-by-source results |
-| One provider is slow or unavailable | Partial results, deadlines, retry and per-source diagnostics |
-| A saved stream URL has expired | Refresh on the same provider before playback |
-| The active source stops working | High-confidence cross-source match with position recovery |
-| Libraries are locked into accounts | Local CSV, JSON, M3U and TXT import with playable matching |
-| Names differ across languages and scripts | MusicBrainz aliases, transliteration, release names and ISRC expansion |
+| Windows | [Installer](https://github.com/Loro66/AWUN/releases/latest/download/SONGVALE-Setup-x64.exe) or [portable EXE](https://github.com/Loro66/AWUN/releases/latest/download/SONGVALE.exe). SHA-256 files are included in the release. |
+| Web / PWA | [Open SongVale](https://awun-1.onrender.com); install from Chrome or Edge if desired. |
+| iPhone | Open the web app in Safari and choose Share → Add to Home Screen. Native distribution requires Apple signing. |
+| Android | Test builds are produced by GitHub Actions; a public store release still requires signing and store review. |
 
-## The product
+Windows beta builds are unsigned unless a signing certificate is configured. Search and streaming need internet; external catalog availability is not guaranteed.
 
-| Discover | Listen | Keep | Understand |
-| --- | --- | --- | --- |
-| YouTube, SoundCloud, Audius, Jamendo and Internet Archive integrations | Official YouTube player, HLS playback, real or provider-derived waveforms | On-device library, named playlists, quick filter, persistent queue, backup and restore | Source health, latency, safe runtime report and explicit rights state |
-| AUTO and regional discovery modes | Play next, append, reorder, repeat and Media Session | No mandatory account and no advertising profile | Track Stories with LRCLIB lyrics and optional Genius annotations |
+## Release status
 
-### My Wave
+The published Windows release is **2.6.3**. Preview **2.8.0** is in [PR #64](https://github.com/Loro66/AWUN/pull/64) and has not been merged into the public release.
 
-My Wave turns the current track, local library and on-device taste signals into a continuous queue. Familiarity, mood, activity, language and era controls change each refill without uploading the taste profile.
+Preview features include artist and album pages, local audio, permitted offline copies, unified recording cards and continuous playback. Check the [changelog](CHANGELOG.md) and the relevant release before expecting a feature in your installed version.
 
-### Library transfer
+## Build and contribute
 
-Bring an existing collection through a public playlist link, an exported CSV, JSON, M3U or TXT file, or a pasted `Artist — Track` list. SONGVALE resolves each item against connected sources, saves confident matches in a named local playlist in source order and produces a downloadable report for anything it could not match. Private account access and licensed offline downloads are not supported.
+See the [development guide](docs/DEVELOPMENT.md) for local setup, tests and Windows packaging.
 
-To move a SONGVALE library to another device, open **Settings → Move between devices**. Download the portable library file, open it on the other device, review its contents and choose combine or replace. This works without an account. Optional email accounts can also sync favorites and playlists after [server setup](docs/ACCOUNTS.md).
+[Report a bug](https://github.com/Loro66/AWUN/issues/new?template=bug_report.yml) · [Contributing](CONTRIBUTING.md) · [Documentation](docs/README.md) · [Support](SUPPORT.md)
 
-<p align="center">
-  <img src="docs/media/songvale-transfer.webp" width="100%" alt="SONGVALE library transfer workspace with live progress and match report" />
-</p>
+## License and music sources
 
-<p align="center">
-  <img src="docs/media/songvale-mobile.webp" width="310" alt="SONGVALE responsive mobile home screen" />
-</p>
+The current release is **proprietary, source-visible freeware**, as defined in [LICENSE.md](LICENSE.md) and [EULA.md](EULA.md). Publishing source code does not grant reuse rights beyond that license.
 
-## How it works
+SongVale's code license does not grant rights to songs or provider services. YouTube uses the official visible player; provider permissions and download restrictions still apply.
 
-```mermaid
-flowchart LR
-    C["Web, PWA or Windows"] --> A["FastAPI gateway"]
-    A --> S["Search and matching engine"]
-    S --> P["Connected music providers"]
-    A --> R["Rights and media policy"]
-    C --> L["On-device library and taste profile"]
-```
-
-The Windows application packages the frontend and FastAPI backend into one executable. It starts on an ephemeral loopback port and searches locally first. The public SONGVALE backend is only a provider-level fallback, so a remote cold start does not block healthy local sources.
-
-Search results are normalized into a shared track model, deduplicated and ranked before the interface receives them. Playback recovery accepts an alternative only when title, artist and duration produce a sufficiently close match.
-
-[Read the architecture](docs/ARCHITECTURE.md) · [Open the API reference](https://awun-1.onrender.com/docs)
-
-## Install or run
-
-Windows includes an always-on-top mini player, tray controls, optional global
-Ctrl+Alt shortcuts and one-click updates in Settings. Your library also offers
-Recently added, Most played and Rediscover smart playlists based on additions
-and qualified listening on this device.
-
-### Windows
-
-Download the [per-user installer](https://github.com/Loro66/AWUN/releases/latest/download/SONGVALE-Setup-x64.exe) or the [portable executable](https://github.com/Loro66/AWUN/releases/latest/download/SONGVALE.exe). SHA-256 files are published beside both binaries in every release.
-
-Windows beta binaries are unsigned unless a signing certificate is configured; Windows SmartScreen may show a warning. The release workflow signs and verifies builds when the certificate is configured; verify the checksum too.
-
-### Web and PWA
-
-Open [awun-1.onrender.com](https://awun-1.onrender.com). Chrome and Edge can install the site as a PWA from the browser menu.
-
-**iPhone:** open that link in Safari, tap Share → Add to Home Screen → Add (turn on “Open as Web App” if offered). SONGVALE gets a Home Screen icon. The cached shell opens during a server interruption, while search and playback still need internet. The first visit after the free server has slept can take longer. This is a web app installation; there is no signed IPA or App Store listing yet. Favorites and playlists stay on this device until the host [activates persistent accounts](docs/ACCOUNTS.md); export a backup from Settings before removing the app.
-
-### Development
-
-```bash
-git clone https://github.com/Loro66/AWUN.git
-cd AWUN
-python -m venv .venv
-
-# Linux / macOS
-source .venv/bin/activate
-
-# Windows PowerShell
-# .venv\Scripts\Activate.ps1
-
-pip install -r requirements.txt
-uvicorn backend.api.main:app --reload
-```
-
-Open `http://127.0.0.1:8000`. Optional provider credentials and deployment settings are documented in the [technical reference](docs/TECHNICAL_REFERENCE.md).
-
-## Verified release quality
-
-Release `v2.6.3` is built from `main` by GitHub Actions.
-
-- Python tests cover search, ranking, matching, policy, reliability, security, visual identity and desktop packaging.
-- Playwright scenarios exercise progressive search, playback recovery, library transfer, responsive layouts, offline shell launch and account merge, conflict, sign-out and recovery flows.
-- Named playlists, local library filtering and home shortcuts make imported collections playable in their original order. Playlist membership remains after removing a favorite.
-- Repeat searches surface recent device-local results immediately while connected sources revalidate in the background; the last track and position return paused after restart.
-- Track Stories resolve noisy catalog titles through artist-aware LRCLIB and Genius matching, reject conflicting recording versions and can retry Genius with one distinctive lyric line.
-- A deterministic **200-record anonymized matcher benchmark** currently reports 100 correct matches, 100 correct rejections, zero false matches and zero unexpected misses.
-- **SONGVALE Sound** processes direct audio streams through conservative loudness leveling, tonal profiles, soft dynamics and a peak limiter. The official YouTube iframe remains outside the DSP path because it does not expose raw audio samples.
-- Visual and control-bound checks run at **1920, 1280, 1000 and 390 pixels**.
-- The release workflow builds both Windows executables, optionally Authenticode-signs and verifies them, generates SHA-256 checksums and publishes the versioned GitHub Release only after tests pass.
-
-[Testing strategy and limitations](docs/TESTING.md) · [CI runs](https://github.com/Loro66/AWUN/actions) · [Latest release](https://github.com/Loro66/AWUN/releases/latest)
-
-## Current status
-
-| Surface | Status | Distribution |
-| --- | --- | --- |
-| Web / PWA | Public beta | [Open application](https://awun-1.onrender.com) |
-| Windows | Unsigned beta unless signing is configured | [Latest release](https://github.com/Loro66/AWUN/releases/latest) |
-| Android | Reproducible Play bundle and store package | Release requires Play Console signing and testing |
-| iPhone | Installable web app | [Open in Safari and add to Home Screen](https://awun-1.onrender.com) |
-| iOS IPA | Reproducible unsigned beta | Native device distribution requires Apple signing |
-
-Public availability does not imply measured adoption. SONGVALE currently makes no claims about user count, retention or revenue. The [project case study](docs/PROJECT_CASE_STUDY.md) separates implemented work from planned user validation.
-
-## Documentation
-
-| Document | Purpose |
-| --- | --- |
-| [Architecture](docs/ARCHITECTURE.md) | Components, data flow, trust boundaries and engineering decisions |
-| [Testing](docs/TESTING.md) | Test layers, CI evidence, commands and known limitations |
-| [Technical reference](docs/TECHNICAL_REFERENCE.md) | API, configuration, provider behavior and deployment |
-| [Changelog](CHANGELOG.md) | User-visible release history |
-| [Project case study](docs/PROJECT_CASE_STUDY.md) | Verifiable development episodes, evidence and project ownership |
-| [Product roadmap](ROADMAP.md) | Evidence-driven next steps and explicit exit criteria |
-| [Security](SECURITY.md) | Private vulnerability reporting and supported version |
-| [Contributing](CONTRIBUTING.md) | Development and pull-request requirements |
-
-## Boundaries by design
-
-SONGVALE is not a VPN, does not remove DRM and does not open private libraries without official authorization. YouTube stays in the official embedded player. Download controls appear only when a provider supplies an authorized public file. Provider availability and geographic licensing still apply.
-
-The project has no mandatory account, ads or analytics SDK. Favorites and playlists can sync after the hosted account service is activated; the queue, preferences and My Wave profile remain on the device. See the [privacy notice](frontend/privacy.html) for the exact data flow.
-
-## Contributing and license
-
-Bug reports and focused pull requests are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), use the issue templates and include tests for behavior changes.
-
-SONGVALE is **proprietary, source-visible freeware**, not open-source software. Official unmodified builds are free to use under the [SONGVALE Proprietary Freeware License 1.0](LICENSE.md) and [EULA](EULA.md). Reuse of the source or publication of modified builds requires prior written permission.
-
----
-
-<div align="center">
-
-Built and maintained as an independent product project by [Loro66](https://github.com/Loro66).<br>
-[Release](https://github.com/Loro66/AWUN/releases/latest) · [Report a bug](https://github.com/Loro66/AWUN/issues/new?template=bug_report.yml) · [Support](SUPPORT.md)
-
-</div>
+Built by [Loro66](https://github.com/Loro66).

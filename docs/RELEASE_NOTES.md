@@ -1,4 +1,4 @@
-SONGVALE 2.6.3
+# SongVale 2.6.3
 Release date: 2026-10-11
 
 A quieter, cleaner Songvale interface:

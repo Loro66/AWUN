@@ -1,5 +1,6 @@
 @echo off
 setlocal
+cd /d "%~dp0.."
 
 where py >nul 2>nul || (echo Ne nayden Python Launcher. Ustanovite Python 3.11 ili novee.& exit /b 1)
 py -3.11 -m venv .venv-desktop
@@ -8,7 +9,7 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements-desktop.txt
 python -m desktop.prepare_network_runtime
 if errorlevel 1 exit /b 1
-pyinstaller --noconfirm --clean AWUN.spec
+pyinstaller --noconfirm --clean desktop/SONGVALE.spec
 if errorlevel 1 exit /b 1
 python -m desktop.prepare_network_sources
 if errorlevel 1 exit /b 1

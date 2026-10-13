@@ -1,6 +1,6 @@
 # SONGVALE testing strategy
 
-[Project overview](../README.md) · [Case study](PROJECT_CASE_STUDY.md) · [Architecture](ARCHITECTURE.md) · [Roadmap](../ROADMAP.md) · [GitHub Actions](https://github.com/Loro66/AWUN/actions)
+[Project overview](../README.md) · [Case study](PROJECT_CASE_STUDY.md) · [Architecture](ARCHITECTURE.md) · [Roadmap](ROADMAP.md) · [GitHub Actions](https://github.com/Loro66/AWUN/actions)
 
 SONGVALE combines deterministic unit and integration tests with browser-level behavior, geometry and screenshot checks. The objective is to test failure handling and user-visible state, not only the presence of implementation strings.
 

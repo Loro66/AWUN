@@ -1,6 +1,6 @@
 # AWUN technical reference
 
-[Project overview](../README.md) · [Architecture](ARCHITECTURE.md) · [Testing](TESTING.md) · [Roadmap](../ROADMAP.md) · [Release notes](../CHANGELOG.md)
+[Project overview](../README.md) · [Architecture](ARCHITECTURE.md) · [Testing](TESTING.md) · [Roadmap](ROADMAP.md) · [Release notes](../CHANGELOG.md)
 
 > A music discovery workspace that searches connected catalogs, keeps your library local and turns your taste into an endless personal station.
 
@@ -92,7 +92,7 @@ read-only search works without a secret; `AWUN_AUDIUS_API_KEY` is optional.
 MusicBrainz and Internet Archive work without secrets.
 LRCLIB lyrics also work without a secret; the Genius token only adds annotations.
 
-See [`RELEASE.md`](../RELEASE.md) for the production deployment and verification checklist.
+See [`RELEASE.md`](RELEASE.md) for the production deployment and verification checklist.
 
 ## Search API
 

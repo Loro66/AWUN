@@ -1,6 +1,6 @@
 # AWUN product roadmap
 
-[Project overview](README.md) · [Русская версия](ROADMAP.ru.md) · [Case study](docs/PROJECT_CASE_STUDY.md)
+[Project overview](../README.md) · [Русская версия](ROADMAP.ru.md) · [Case study](PROJECT_CASE_STUDY.md)
 
 This roadmap uses exit criteria instead of unsupported dates. Completed engineering work is separated from product validation that has not happened yet.
 

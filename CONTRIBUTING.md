@@ -1,14 +1,14 @@
-# Contributing to AWUN
+# Contributing to SongVale
 
 [Project overview](README.md) · [Architecture](docs/ARCHITECTURE.md) · [Testing](docs/TESTING.md)
 
-AWUN accepts focused bug reports and pull requests that improve verified product behavior. Start with the user problem, keep the change narrow and include evidence that it works.
+SongVale accepts focused bug reports and pull requests that improve verified product behavior. Start with the user problem, keep the change narrow and include evidence that it works.
 
 ## Report a problem
 
 Use the [bug report form](https://github.com/Loro66/AWUN/issues/new?template=bug_report.yml). Include:
 
-- AWUN version, platform and operating system;
+- SongVale version, platform and operating system;
 - the affected source, when relevant;
 - the shortest reproducible sequence;
 - expected and actual behavior;
@@ -52,7 +52,7 @@ The pull-request template contains the complete verification checklist.
 
 ## Contributor license
 
-AWUN is proprietary source-visible freeware. By submitting a pull request or other contribution, you agree to the [AWUN Contributor License Agreement](CONTRIBUTOR_LICENSE_AGREEMENT.md), including the project owner's right to use and relicense the contribution. Do not submit code if you cannot grant those rights.
+SongVale is proprietary source-visible freeware. By submitting a pull request or other contribution, you agree to the [AWUN Contributor License Agreement](CONTRIBUTOR_LICENSE_AGREEMENT.md), including the project owner's right to use and relicense the contribution. Do not submit code if you cannot grant those rights.
 
 ## Русский
 

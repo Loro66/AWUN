@@ -1,6 +1,6 @@
 # AWUN project case study
 
-[Project overview](../README.md) · [Русская версия](PROJECT_CASE_STUDY.ru.md) · [Architecture](ARCHITECTURE.md) · [Roadmap](../ROADMAP.md)
+[Project overview](../README.md) · [Русская версия](PROJECT_CASE_STUDY.ru.md) · [Architecture](ARCHITECTURE.md) · [Roadmap](ROADMAP.md)
 
 This case study documents the product and the development process. It is not an admissions essay and does not contain invented testimonials, audience figures or pilot results.
 
@@ -65,4 +65,4 @@ There are no confirmed measurements of audience size, retention, time saved or c
 
 The next validation step is deliberately small: ask three consenting participants to find a recording, build a queue, reopen the application and export the library. Record task completion, time and observed problems, preserve only feedback the participant allowed to be stored, and link resulting fixes to repository issues. This is a test plan, not a claimed result.
 
-Continue with the [product roadmap](../ROADMAP.md) or the [testing strategy](TESTING.md).
+Continue with the [product roadmap](ROADMAP.md) or the [testing strategy](TESTING.md).
