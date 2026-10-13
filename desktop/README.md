@@ -80,7 +80,7 @@ hosts или исключения антивируса. WinDivert загружа
 На Windows 10 или 11 запусти `build-windows.bat`. Готовые файлы появятся в
 `dist\\`: `SONGVALE.exe`, контрольная сумма SHA256, лицензия и пользовательское
 соглашение. Значок из `desktop\\assets\\songvale.ico` встраивается через
-`AWUN.spec`.
+`desktop/SONGVALE.spec`.
 
 GitHub Actions создаёт такую же сборку. Открой
 **Actions → Windows desktop build → Run workflow** или скачай артефакт

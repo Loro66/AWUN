@@ -5,7 +5,7 @@ from pathlib import Path
 from PyInstaller.utils.hooks import collect_data_files, collect_submodules
 
 
-ROOT = Path(SPECPATH)
+ROOT = Path(SPECPATH).resolve().parent
 hidden_imports = (
     collect_submodules("uvicorn")
     + collect_submodules("webview")

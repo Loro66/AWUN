@@ -8,14 +8,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_windows_builds_embed_the_songvale_icon() -> None:
-    batch = (ROOT / "build-windows.bat").read_text(encoding="utf-8")
+    batch = (ROOT / "scripts" / "build-windows.bat").read_text(encoding="utf-8")
     workflow = (ROOT / ".github" / "workflows" / "build-windows-exe.yml").read_text(encoding="utf-8")
-    spec = (ROOT / "AWUN.spec").read_text(encoding="utf-8")
+    spec = (ROOT / "desktop" / "SONGVALE.spec").read_text(encoding="utf-8")
     icon = ROOT / "desktop" / "assets" / "songvale.ico"
-    installer = (ROOT / "installer" / "AWUN.iss").read_text(encoding="utf-8")
+    installer = (ROOT / "installer" / "SONGVALE.iss").read_text(encoding="utf-8")
 
-    assert "AWUN.spec" in batch
-    assert "AWUN.spec" in workflow
+    assert "desktop/SONGVALE.spec" in batch
+    assert "desktop/SONGVALE.spec" in workflow
     assert '"desktop" / "assets" / "songvale.ico"' in spec
     assert 'name="SONGVALE"' in spec
     assert '"frontend"' in spec

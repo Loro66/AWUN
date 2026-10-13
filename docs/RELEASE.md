@@ -121,7 +121,7 @@ only together with a reviewed dependency update.
 
 The Render service uses `awun` as its root directory. Upload release files into
 `/awun`, never `/awun/awun`. A correct release contains
-`/awun/AWUN-RELEASE.txt`, `/awun/backend`, `/awun/frontend` and
+`/awun/docs/RELEASE_NOTES.md`, `/awun/backend`, `/awun/frontend` and
 `/awun/Dockerfile`. After the GitHub commit, choose **Manual Deploy → Deploy
 latest commit** in Render if auto-deploy does not start.
 
@@ -130,7 +130,7 @@ latest commit** in Render if auto-deploy does not start.
 The Android release is `com.loro66.awun`, version `2.5.1` / code `2050100`, and
 targets Android 16 API 36. Before building, the verified Play Console account
 owner must configure the four upload-key repository secrets documented in
-`mobile/android/play-store/RELEASE_CHECKLIST.md`.
+[Android release checklist](../mobile/android/play-store/RELEASE_CHECKLIST.md).
 
 Run **GitHub → Actions → Android Google Play release → Run workflow**. The
 artifact contains a signed `.aab`, SHA-256 checksum, R8 mapping file and the

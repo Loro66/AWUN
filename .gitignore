@@ -11,7 +11,7 @@ test-results/
 build/
 dist/
 *.spec
-!AWUN.spec
+!desktop/SONGVALE.spec
 *.jks
 *.keystore
 keystore.properties
