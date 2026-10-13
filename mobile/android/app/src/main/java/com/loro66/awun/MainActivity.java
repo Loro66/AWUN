@@ -17,6 +17,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -39,6 +40,9 @@ import java.util.List;
 import java.util.Locale;
 
 public final class MainActivity extends Activity {
+    private static final int SELECT_FILES = 806;
+    private ValueCallback<Uri[]> fileSelection;
+    private String fileSelectionPage;
     private FrameLayout root;
     private WebView webView;
     private ProgressBar progress;
@@ -115,12 +119,58 @@ public final class MainActivity extends Activity {
         view.setWebViewClient(new AwunWebViewClient());
         view.setWebChromeClient(new WebChromeClient() {
             @Override
+            public boolean onShowFileChooser(WebView current, ValueCallback<Uri[]> callback, FileChooserParams params) {
+                String url = current.getUrl();
+                if (fileSelection != null || url == null || !isTrusted(Uri.parse(url))) {
+                    callback.onReceiveValue(null);
+                    return true;
+                }
+                fileSelection = callback;
+                fileSelectionPage = url;
+                try {
+                    Intent intent = params.createIntent();
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, params.getMode() == FileChooserParams.MODE_OPEN_MULTIPLE);
+                    startActivityForResult(intent, SELECT_FILES);
+                } catch (ActivityNotFoundException | SecurityException error) {
+                    clearFileSelection();
+                    Toast.makeText(MainActivity.this, R.string.file_picker_error, Toast.LENGTH_LONG).show();
+                }
+                return true;
+            }
+
+            @Override
             public void onProgressChanged(WebView current, int value) {
                 progress.setProgress(value);
                 progress.setVisibility(value >= 100 ? View.GONE : View.VISIBLE);
             }
         });
         return view;
+    }
+
+    private void clearFileSelection() {
+        if (fileSelection != null) fileSelection.onReceiveValue(null);
+        fileSelection = null;
+        fileSelectionPage = null;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != SELECT_FILES || fileSelection == null) return;
+        Uri[] selected = WebChromeClient.FileChooserParams.parseResult(resultCode, data);
+        // Deliver only user-selected provider content to the page that requested it.
+        if (webView == null || !fileSelectionPage.equals(webView.getUrl())) selected = null;
+        if (selected != null) {
+            List<Uri> safe = new ArrayList<>();
+            for (Uri uri : selected) {
+                if (uri != null && "content".equalsIgnoreCase(uri.getScheme())) safe.add(uri);
+            }
+            selected = safe.isEmpty() ? null : safe.toArray(new Uri[0]);
+        }
+        ValueCallback<Uri[]> callback = fileSelection;
+        fileSelection = null;
+        fileSelectionPage = null;
+        callback.onReceiveValue(selected);
     }
 
     private ProgressBar createProgressBar() {
@@ -405,6 +455,7 @@ public final class MainActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+        clearFileSelection();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && backInvokedCallback != null) {
             getOnBackInvokedDispatcher().unregisterOnBackInvokedCallback(backInvokedCallback);
             backInvokedCallback = null;

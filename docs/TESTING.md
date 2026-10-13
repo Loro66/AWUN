@@ -4,7 +4,15 @@
 
 SONGVALE combines deterministic unit and integration tests with browser-level behavior, geometry and screenshot checks. The objective is to test failure handling and user-visible state, not only the presence of implementation strings.
 
-## Verified scope for v2.1.0
+## Product checks for the 2.8.0 preview
+
+- Recording grouping rejects covers, remixes, unknown durations and chained duration matches; source choices retain position, likes and qualified history.
+- Browser tests exercise recovery through an already known alternative, preparation cancellation after queue changes, real two-file WAV playback with a crossfade, and device-copy protection during a transition.
+- Wave tests cover reversing dislikes across providers, weighting early and late skips, repeated recordings and seeking without positive listening signals.
+- Layout review includes compact branding, circular playback, useful sidebar controls, phone source selection and keyboard focus while late providers update results.
+- Crossfades apply to direct audio and device files. Official YouTube/HLS transitions and real provider availability still require device/network testing.
+
+## Historical verified scope for v2.1.0
 
 | Layer | Current verified count | Examples |
 | --- | ---: | --- |

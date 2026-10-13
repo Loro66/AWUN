@@ -5,7 +5,7 @@
   let bridgeReady = false;
   let restoring = false;
   let syncTimer = null;
-  const transientKeys = new Set(['awun-waveforms-v1']);
+  const transientKeys = new Set(['awun-waveforms-v1', 'awun-catalog-cache-v1']);
   const originalSetItem = Storage.prototype.setItem;
   const originalRemoveItem = Storage.prototype.removeItem;
   const originalClear = Storage.prototype.clear;

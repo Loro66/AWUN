@@ -33,7 +33,7 @@ def test_desktop_uses_local_backend_before_the_free_remote_fallback() -> None:
 
     assert "LocalAwunServer" in launcher
     assert 'HOST = "127.0.0.1"' in launcher
-    assert "create_app(settings)" in launcher
+    assert "create_app(settings, local_audio_store=self.local_audio_store)" in launcher
     assert "listener.bind((self.host, 0))" in launcher
     assert "?desktop=1&lang=ru" in launcher
     assert "SONGVALE_REMOTE_API_URL" in launcher and "AWUN_REMOTE_API_URL" in launcher

@@ -1,0 +1,1 @@
+Smart download settings, validated offline copies and qualified listening. Provider downloads require explicit permission and are disabled in the Play Store build. Imported audio remains available offline. Artist/album pages and full album saves from 2.7.0 are included.

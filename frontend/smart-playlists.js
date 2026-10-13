@@ -5,7 +5,7 @@
 })(typeof globalThis === 'object' ? globalThis : this, function createSmartPlaylists() {
   const DAY = 86400000;
   const presets = ['recent', 'frequent', 'forgotten'];
-  const key = track => `${track?.source || ''}:${track?.id || ''}`;
+  const key = track => track?.recording_key || `${track?.source || ''}:${track?.id || ''}`;
   function inventory(saved = [], playlists = []) {
     const tracks = new Map();
     [...saved, ...playlists.flatMap(list => (list.items || []).map(item => item.track))].forEach(track => {

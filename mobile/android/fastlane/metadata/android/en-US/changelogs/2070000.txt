@@ -1,0 +1,1 @@
+Artist and album pages; save full albums and browse releases. Import your own audio into My Music, edit tags and play device copies offline. Duplicate files are detected by content. Audio stays on this device and is excluded from account sync and library backups.

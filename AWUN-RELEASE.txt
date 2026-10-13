@@ -1,7 +1,41 @@
-SONGVALE 2.6.3
-Release date: 2026-10-11
+SONGVALE 2.8.0
+Test preview: 2026-10-12
 
-A quieter, cleaner Songvale interface:
+Playback and interface:
+- Identical recordings share one card and a source selector. A working source
+  is remembered; favorites and position survive changing the source.
+- Queue preparation and optional 2/4/6-second crossfades for direct/local audio.
+  YouTube and HLS keep their own player transitions; Data Saver stops preload.
+- Wave distinguishes early skips, allows reversing dislikes and excludes
+  recently heard copies from other providers.
+- Compact SV sidebar logo, useful listening controls and circular Play/Pause.
+
+Smart automatic offline downloads:
+- A new like or three qualified listens queues a permitted full recording.
+- A listen counts after 30 seconds or half a short track. Pauses, buffering and
+  seeking do not count; repeat-one starts a fresh listen.
+- Settings > Smart downloads: switch, Wi-Fi restriction, storage limit,
+  progress, retry and clear. Default limit: 1 GiB.
+- Older unliked automatic copies can be removed when space is needed.
+  Imported files and active or pending playback are protected.
+- Downloaded copies play from My Music without internet after restart.
+- Only explicit Audius/Jamendo downloads and licensed Internet Archive audio
+  qualify. YouTube and SoundCloud stay online; Play Store builds disable
+  provider downloads. Own files remain available.
+- Website/PWA downloads require the app to stay open. Audio and download
+  state stay on this device; clearing website data removes browser copies.
+
+Artists, albums and your own offline audio:
+- Open an artist name in a track or the player to browse releases.
+- Open an album, keep its full track list and save it under My Music > Albums.
+- Recordings are matched through connected sources; unavailable tracks stay visible.
+- My Music > Add files imports supported audio into the main library and queue.
+- Device copies play offline, survive app restart and deduplicate by content.
+- Edit title, artist and album; local album tags group files together.
+- Audio stays on this device and is not included in account sync or library backups.
+- Limits: 100 MiB per file, 1,000 files, and 5 GiB for Windows copies.
+
+Includes the quieter Songvale interface from 2.6.3:
 - Straight edges across search, track cards, playlists, player and Settings.
 - Solid surfaces and restrained accents in every theme, without glow or glass effects.
 - Compact monochrome Songvale wordmark in the top-left corner.

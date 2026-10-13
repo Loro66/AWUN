@@ -89,6 +89,8 @@ class AudiusAdapter(BaseAdapter):
             source=self.source,
             stream_url=stream_url,
             download_url=download_url,
+            offline_grant=bool(download_url) and not item.get("download_conditions") and item.get("is_download_gated") is not True,
+            license_url="https://audius.org/open-music-license.pdf",
             score=round(score, 1),
             thumbnail=artwork.get("480x480") or artwork.get("1000x1000") or artwork.get("150x150"),
         )

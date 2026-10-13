@@ -55,10 +55,10 @@ test('search submitted before source status arrives completes without waiting fo
     await expect.poll(() => page.evaluate(() => Boolean(window.awunApp))).toBe(true);
     await page.locator('#searchInput').fill('midnight signal');
     await page.locator('#searchInput').press('Enter');
-    await expect(page.locator('#trackList .track')).toHaveCount(8);
+    await expect(page.locator('#trackList .track')).toHaveCount(5);
     expect(await page.evaluate(() => window.awunApp.state.diagnostics)).toBeNull();
   } finally { releaseHealth(); }
-  await expect(page.locator('#trackList .track')).toHaveCount(8);
+  await expect(page.locator('#trackList .track')).toHaveCount(5);
   await expect(page.locator('#results')).toHaveAttribute('aria-busy', 'false');
 });
 
@@ -69,7 +69,7 @@ test('a failed health check does not block a working search API', async ({ page 
   let searches = 0;
   page.on('request', request => { if (new URL(request.url()).pathname === '/api/v1/search') searches++; });
   await page.goto('/?lang=ru&q=midnight%20signal');
-  await expect(page.locator('#trackList .track')).toHaveCount(8);
+  await expect(page.locator('#trackList .track')).toHaveCount(5);
   expect(searches).toBeGreaterThan(0);
   await expect.poll(() => page.evaluate(() => window.awunApp.state.diagnostics?.origin)).toBe('unavailable');
   await expect(page.locator('#sources button[data-source]:not([disabled])')).toHaveCount(5);
@@ -86,7 +86,7 @@ test('a deep link searches while source health is still pending', async ({ page 
   });
   try {
     await page.goto('/?lang=ru&q=midnight%20signal');
-    await expect(page.locator('#trackList .track')).toHaveCount(8);
+    await expect(page.locator('#trackList .track')).toHaveCount(5);
     expect(await page.evaluate(() => window.awunApp.state.diagnostics)).toBeNull();
   } finally { releaseHealth(); }
   await expect(page.locator('#sources button[data-source]:not([disabled])')).toHaveCount(5);
@@ -133,7 +133,7 @@ test('cancel keeps partial results and permits another search', async ({ page })
   await page.locator('#retrySearch').click();
   await expect(page.locator('#results')).toHaveAttribute('aria-busy', 'true');
   await expect(page.locator('#results')).toHaveAttribute('aria-busy', 'false');
-  await expect(page.locator('#trackList .track')).toHaveCount(8);
+  await expect(page.locator('#trackList .track')).toHaveCount(5);
 });
 
 test('opening the library prevents a pending search from replacing its screen', async ({ page }) => {
@@ -192,7 +192,7 @@ test('a large library is rendered in pages without losing tracks', async ({ page
 });
 
 test('a stale saved-link lookup cannot replace a newer playback choice', async ({ page }) => {
-  await page.addInitScript(tracks => localStorage.setItem('awun-library', JSON.stringify(tracks)), [TRACKS.audius[0], TRACKS.youtube[0]]);
+  await page.addInitScript(tracks => localStorage.setItem('awun-library', JSON.stringify(tracks)), [TRACKS.audius[0], {...TRACKS.youtube[0],title:"Another Recording"}]);
   await openAwun(page);
   let release;
   const waiting = new Promise(resolve => { release = resolve; });

@@ -115,7 +115,7 @@ def test_identity_minimal_mode_and_track_stories_are_wired() -> None:
     assert 'viewBox="0 0 128 128"' in mark
     assert mark.count("<rect") == 1 and 'fill="#dbe2db"' in mark
     assert 'fill="url(#river)"' in mark and '<text' not in mark
-    assert 'fill-rule="evenodd"' in wordmark and '<text' not in wordmark
+    assert 'viewBox="0 0 193 44"' in wordmark and '<path' in wordmark and '<text' not in wordmark
     assert 'songvale-wordmark.svg' in html
     assert "/api/v1/track-details" in script
     assert "awun-line-comments-v1" in script
@@ -135,7 +135,7 @@ def test_repeat_modes_are_persistent_and_handle_track_endings() -> None:
     assert "['off','all','one']" in script
     assert "handleTrackEnded" in script
     assert "YT.PlayerState.ENDED)handleTrackEnded()" in script
-    assert "addEventListener('ended',()=>{stopWaveformCapture();handleTrackEnded()})" in script
+    assert "addEventListener('ended',()=>{if(current()){stopWaveformCapture();handleTrackEnded()}})" in script
 
 
 def test_flow_recommendations_are_local_persistent_and_feedback_driven() -> None:
