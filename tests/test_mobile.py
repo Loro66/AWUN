@@ -1,4 +1,5 @@
 from pathlib import Path
+import plistlib
 import struct
 import subprocess
 import sys
@@ -195,3 +196,12 @@ def test_regional_mirror_does_not_proxy_youtube_media() -> None:
     assert "awun-1.onrender.com" in config
     assert "youtube.com" not in config and "googlevideo.com" not in config
     assert "official embedded player" in readme
+
+
+def test_ios_bundle_uses_current_project_version() -> None:
+    info = plistlib.loads((ROOT / "mobile/ios/AWUN/Info.plist").read_bytes())
+    project = (ROOT / "mobile/ios/AWUN.xcodeproj/project.pbxproj").read_text(encoding="utf-8")
+    version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
+    assert info["CFBundleShortVersionString"] == "$(MARKETING_VERSION)"
+    assert info["CFBundleVersion"] == "$(CURRENT_PROJECT_VERSION)"
+    assert project.count(f"MARKETING_VERSION = {version};") == 2
