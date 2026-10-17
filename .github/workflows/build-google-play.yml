@@ -71,7 +71,7 @@ jobs:
           if test -f mobile/android/app/build/outputs/mapping/release/mapping.txt; then
             cp mobile/android/app/build/outputs/mapping/release/mapping.txt dist/google-play/mapping.txt
           fi
-          cp -R mobile/android/fastlane/metadata dist/google-play/store-listing
+          python3 scripts/package_play_listing.py dist/google-play/store-listing
           sha256sum dist/google-play/*.aab > dist/google-play/SHA256SUMS.txt
       - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:

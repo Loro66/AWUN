@@ -1,144 +1,43 @@
-# SONGVALE release deployment
+# SongVale releases
 
-## 1. Deploy the Python API
+[Development](DEVELOPMENT.md) · [Desktop](../desktop/README.md) · [Mobile](../mobile/README.md)
 
-The repository includes both `Dockerfile` and `render.yaml`. On Render, create a
-Blueprint from the repository. Render generates `AWUN_MEDIA_SECRET`
-automatically. Add these environment variables with real provider values:
+## Version and checks
 
-```text
-AWUN_YOUTUBE_API_KEY
-AWUN_SOUNDCLOUD_CLIENT_ID
-AWUN_SOUNDCLOUD_CLIENT_SECRET
-AWUN_JAMENDO_CLIENT_ID
-AWUN_GENIUS_ACCESS_TOKEN
-```
+`VERSION` is the canonical application version. Desktop, web and Android
+packaging derive their version from it. Record user-visible changes in
+[CHANGELOG.md](../CHANGELOG.md) and update [RELEASE_NOTES.md](RELEASE_NOTES.md)
+before a Windows release.
 
-Jamendo is optional and is activated only when its client ID is present. Audius
-search is enabled by default; `AWUN_AUDIUS_API_KEY` may be added for a registered
-Audius application.
-The Genius token is optional: LRCLIB lyrics and private on-device line notes
-continue to work without it.
+Run the Python, JavaScript and browser suites. Review changed screenshots and
+complete the platform-specific installation and playback checks before release.
 
-MusicBrainz and Internet Archive need no secret. Keep
-`AWUN_MUSICBRAINZ_CONTACT` set to the public project URL or a monitored contact
-address. The included Render configuration enables six query variants and up
-to eight Internet Archive items per provider query. It also enables at most two
-YouTube Search API pages so the 100-result UI option remains bounded.
+## Windows
 
-The deployed service is ready when this endpoint returns JSON:
+Run **Windows desktop build** in GitHub Actions. It produces the portable EXE,
+per-user installer and SHA-256 files. A version change on `main` can publish
+the tested files; existing tags are not silently replaced.
 
-```text
-https://YOUR-AWUN-API/health
-```
+Configure the signing certificate secrets described in the desktop guide for
+signed distribution. Without them, artifacts remain unsigned test builds.
 
-## 2. Open the web app
+## Web deployment
 
-The Docker image serves the web interface and API from the same Render domain.
-Open `https://YOUR-AWUN-API/` after deployment.
+Use the repository `Dockerfile` or `render.yaml`. The deployment serves the
+frontend and API together. Verify `/health`, `/`, `/privacy`, `/support`, `/license`
+and `/eula`, then check actual search and playback. Configuration and optional
+provider credentials are listed in the [technical reference](TECHNICAL_REFERENCE.md).
 
-## 3. Release checks
+## Android and iOS
 
-- `/health` reports every configured provider.
-- A search returns only real provider results.
-- SoundCloud, Audius, Jamendo and Internet Archive audio use the signed `/api/v1/media/`
-  route; YouTube uses its official embedded player.
-- Region controls cover AUTO, CIS, EUROPE, USA, LATAM, ASIA and GLOBAL.
-- `/health` reports MusicBrainz enrichment and Internet Archive availability.
-- Search responses include canonical/local/release/ISRC query variants.
-- The result selector requests 30, 60 or 100 balanced results.
-- Yandex CSV/JSON/M3U/TXT import stays local until an imported track is matched.
-- Apple Music, Spotify and Yandex Music buttons open official catalog searches and never
-  masquerade as downloadable or proxied audio.
-- Starting a track returns HTTP 200 or 206.
-- Seeking sends a Range request and playback resumes from the selected point.
-- Saved tracks reappear after a page reload.
-- A queued track can be placed next or last, removed and reordered; queue order survives a reload.
-- Breaking the active SoundCloud stream switches to a close YouTube/Audius match and resumes near the captured position.
-- A weak title/artist/duration match is rejected instead of playing an unrelated result.
-- The page loads one versioned `design-system.css` entrypoint; every theme keeps controls and waveform contrast usable.
-- FLOW opens its result surface immediately, starts from a search, active track or local library,
-  and keeps the persistent queue refilled while a remote API is waking up.
-- FLOW likes, dislikes and listening signals survive reload only on the same device.
-- Familiar/Balanced/New, mood and activity controls change recommendation ranking.
-- SoundCloud tracks use provider-native waveform data, lazily converted into cached peaks; sources
-  without waveform metadata initially use the deterministic fallback, then replace listened sections
-  with captured real peaks for same-origin audio. The player waveform remains a native click/drag
-  seek control on desktop and mobile.
-- Search results appear source by source instead of waiting for the slowest provider.
-- Settings opens source diagnostics with average latency, the latest provider error and a safe
-  copyable report.
-- Diagnostics can export/import local data, restore the latest on-device snapshot, download a
-  redacted rolling runtime log and manually check GitHub Releases for a newer version.
-- Source diagnostics stays online after results render and separates API failures from interface
-  update errors. Unavailable YouTube embeds are recorded locally and trigger cross-source recovery
-  after first trying another close YouTube upload instead of retrying the same permanent video URL.
-- Chromium interaction and screenshot tests cover 1920, 1280, 1000 and 390 pixel layouts.
-- At tablet and compact desktop widths, player volume and queue controls stay on one row without
-  clipping; result queue menus stack above adjacent cards and open upward near the scroll edge.
-- Disabled providers are visibly marked `NOT CONNECTED` and are not sent in a
-  search request.
-- Opening `/?q=artist%20track` runs a shareable search.
-- The header renders a versioned monochrome Songvale wordmark; the compact sidebar uses the initial S. The favicon and launch icons retain the forest-and-river mark.
-- Switching **INTERFACE → MINIMAL** removes telemetry and source chrome while keeping search, results and playback usable.
-- Clicking a result opens a Track Story without starting or interrupting playback.
-- A known LRCLIB song displays plain or synced lyrics from `/api/v1/track-details`.
-- A noisy title resolves against LRCLIB and Genius by title, artist, duration and recording version;
-  an unrelated artist or live/remix/cover variant is rejected.
-- If title search is inconclusive, Genius lookup may use one distinctive LRCLIB lyric line while
-  keeping the same artist/title confidence gate.
-- A timed lyric line seeks the active player; a lyric line opens its annotations and notes.
-- With `AWUN_GENIUS_ACCESS_TOKEN`, `/health` reports Genius annotations as connected.
-- Added lyric notes survive reload on the same device and can be deleted.
+**Mobile test builds** produces internal Android and unsigned iOS artifacts.
+The signed and unsigned Play workflows also package the current localized
+listing with shared images. The standard `store-listing/android/<locale>`
+layout is assembled by `scripts/package_play_listing.py`.
 
-Provider media links are short-lived. Before playing a saved or queued track,
-SONGVALE refreshes its link on the same provider; cross-provider recovery begins
-only when that refresh fails.
+For signing, app-content declarations and store submission, use the
+[Google Play checklist](../mobile/android/play-store/RELEASE_CHECKLIST.md).
+Only current localized changelog files are kept in the working tree; older
+notes remain in Git history and the main changelog.
 
-## 4. Build the Windows application
-
-Open **GitHub → Actions → Windows desktop build → Run workflow**. The completed
-run contains a `SONGVALE-Windows-x64` artifact with portable `SONGVALE.exe`,
-the per-user `SONGVALE-Setup-x64.exe` installer and SHA-256 checksums. A
-version change on `main` publishes the same files in GitHub Releases.
-
-The current desktop build bundles the FastAPI backend and frontend and starts a random
-loopback port. It queries the bundled local backend first and uses the configured
-public AWUN endpoint only as a provider-level fallback. The interface defaults
-to Russian in the desktop build.
-
-For Authenticode signing, add `WINDOWS_SIGNING_CERTIFICATE_BASE64` (a base64
-encoded PFX) and `WINDOWS_SIGNING_CERTIFICATE_PASSWORD` as GitHub Actions
-repository secrets. The workflow signs and verifies both executables before it
-calculates their checksums. Without those secrets it still produces an unsigned
-internal-test build; do not use that path for broad public distribution.
-
-Python versions are pinned in `requirements.txt`; the container and browser CI
-install the transitive, hash-verified `requirements.lock`. Regenerate that lock
-only together with a reviewed dependency update.
-
-## 5. Updating the existing Loro66/AWUN Render service
-
-The Render service uses `awun` as its root directory. Upload release files into
-`/awun`, never `/awun/awun`. A correct release contains
-`/awun/docs/RELEASE_NOTES.md`, `/awun/backend`, `/awun/frontend` and
-`/awun/Dockerfile`. After the GitHub commit, choose **Manual Deploy → Deploy
-latest commit** in Render if auto-deploy does not start.
-
-## 6. Build the Google Play Android release
-
-The Android release is `com.loro66.awun`, version `2.5.1` / code `2050100`, and
-targets Android 16 API 36. Before building, the verified Play Console account
-owner must configure the four upload-key repository secrets documented in
-[Android release checklist](../mobile/android/play-store/RELEASE_CHECKLIST.md).
-
-Run **GitHub → Actions → Android Google Play release → Run workflow**. The
-artifact contains a signed `.aab`, SHA-256 checksum, R8 mapping file and the
-localized store-listing package. This workflow deliberately does not upload or
-publish the app.
-
-Before any Play submission, verify the deployed `/privacy` and `/support`
-routes, run an internal Play install on a physical device, and complete the
-App content and Data safety declarations. The Play client disables downloading,
-uses only the visible official YouTube player and pauses playback in the
-background.
+Native iPhone distribution still requires Apple signing and device testing.

@@ -1,1 +1,0 @@
-Language controls moved to Settings. Optional accounts sync favorites and playlists after persistent storage and email delivery are configured on the server.

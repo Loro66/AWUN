@@ -11,8 +11,8 @@ screen if every configured SONGVALE endpoint is unavailable.
 Google Play identity:
 
 - application ID: `com.loro66.awun`;
-- version: read from the repository `VERSION` file (`2.6.3` currently);
-- version code: derived from `VERSION` by Gradle (`2060200` currently);
+- version: read from the repository `VERSION` file;
+- version code: derived from `VERSION` by Gradle;
 - minimum Android: 7.0 / API 24;
 - compile and target SDK: Android 16 / API 36;
 - release format: signed Android App Bundle (`.aab`);
@@ -29,7 +29,11 @@ Console account owner has configured the four upload-key secrets documented in
 [`android/play-store/RELEASE_CHECKLIST.md`](android/play-store/RELEASE_CHECKLIST.md).
 The workflow does not upload or publish anything to Google Play.
 
-Store text and images are under `android/fastlane/metadata/android`. Data safety,
+Localized store text and the current changelog are under `android/fastlane/metadata/android`.
+Shared images are stored once in `android/fastlane/images`. Both Play workflows use
+`scripts/package_play_listing.py` to assemble the usual per-locale store-listing
+artifact, including the common images. Historical release notes remain in Git
+history and the project changelog. Data safety,
 app-content answers and the release checklist are under `android/play-store`.
 
 ## Optional owned mirror

@@ -1,5 +1,7 @@
 from pathlib import Path
 import struct
+import subprocess
+import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -130,12 +132,14 @@ def test_render_blueprint_recreates_the_owned_release_url_without_secret_prompts
     assert "sync: false" not in blueprint
 
 
-def test_store_listing_text_and_assets_meet_play_dimensions() -> None:
+def test_store_listing_text_and_assets_meet_play_dimensions(tmp_path: Path) -> None:
+    package = tmp_path / 'store-listing'
+    subprocess.run([sys.executable, str(ROOT / 'scripts' / 'package_play_listing.py'), str(package)], check=True)
     version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
     major, minor, patch = (int(part) for part in version.split(".")[:3])
     version_code = major * 1_000_000 + minor * 10_000 + patch * 100
     for locale in ("ru-RU", "en-US"):
-        directory = METADATA / locale
+        directory = package / 'android' / locale
         title = (directory / "title.txt").read_text(encoding="utf-8").strip()
         short = (directory / "short_description.txt").read_text(encoding="utf-8").strip()
         full = (directory / "full_description.txt").read_text(encoding="utf-8").strip()
@@ -151,6 +155,21 @@ def test_store_listing_text_and_assets_meet_play_dimensions() -> None:
         screenshots = sorted((directory / "images" / "phoneScreenshots").glob("*.png"))
         assert 2 <= len(screenshots) <= 8
         assert all(png_size(path) == (1080, 1920) for path in screenshots)
+
+
+def test_store_listing_packager_preserves_an_existing_output(tmp_path: Path) -> None:
+    package = tmp_path / "store-listing"
+    package.mkdir()
+    marker = package / "existing.txt"
+    marker.write_text("keep", encoding="utf-8")
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "package_play_listing.py"), str(package)],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode != 0
+    assert "Output already exists" in result.stderr
+    assert marker.read_text(encoding="utf-8") == "keep"
 
 
 def test_privacy_support_and_play_declarations_are_present() -> None:
