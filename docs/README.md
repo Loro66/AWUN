@@ -12,8 +12,7 @@
 | [Mobile](../mobile/README.md) | Android, iPhone and native build status |
 | [Release guide](RELEASE.md) | Deployment and release checks |
 | [Release notes](RELEASE_NOTES.md) | Notes used by the Windows release workflow |
-| [Roadmap](ROADMAP.md) / [На русском](ROADMAP.ru.md) | Planned work and exit criteria |
-| [Project history](PROJECT_CASE_STUDY.md) / [На русском](PROJECT_CASE_STUDY.ru.md) | Historical development evidence |
+| [Roadmap / План](ROADMAP.md) | Current release conditions and product priorities |
 | [Optional accounts](ACCOUNTS.md) | Server setup for the optional account service |
 
 [Changelog](../CHANGELOG.md) · [Contributing](../CONTRIBUTING.md) ·

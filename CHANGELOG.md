@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased — repository maintenance
+
+- Remove disconnected backend prototypes and their isolated tests.
+- Keep one shared Google Play image set and only current store release notes; assemble localized artifacts during packaging.
+- Remove redundant CSS declarations and obsolete documentation; keep runtime behavior and existing screenshot references.
+
 All notable user-visible changes are documented here. SONGVALE follows semantic versioning through the root `VERSION` file.
 
 ## 2.6.3 — 2026-10-11

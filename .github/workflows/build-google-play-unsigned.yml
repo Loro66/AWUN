@@ -63,7 +63,7 @@ jobs:
           if test -f mobile/android/app/build/outputs/mapping/release/mapping.txt; then
             cp mobile/android/app/build/outputs/mapping/release/mapping.txt dist/google-play-unsigned/mapping.txt
           fi
-          cp -R mobile/android/fastlane/metadata dist/google-play-unsigned/store-listing
+          python3 scripts/package_play_listing.py dist/google-play-unsigned/store-listing
           cp LICENSE.md EULA.md dist/google-play-unsigned/
           sha256sum dist/google-play-unsigned/*.aab > dist/google-play-unsigned/SHA256SUMS.txt
       - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5

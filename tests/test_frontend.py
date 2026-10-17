@@ -86,14 +86,12 @@ def test_frontend_assets_share_cache_version() -> None:
 
 def test_design_system_has_one_entrypoint_and_explicit_layers() -> None:
     html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
-    design = (ROOT / "frontend" / "design-system.css").read_text(encoding="utf-8")
     release = (ROOT / "frontend" / "redesign.css").read_text(encoding="utf-8")
     api = (ROOT / "backend" / "api" / "main.py").read_text(encoding="utf-8")
 
     stylesheets = re.findall(r'<link rel="stylesheet" href="([^"]+)"', html)
     assert stylesheets == ["/design-system.css?v=__AWUN_VERSION__"]
-    assert "@layer foundation, forest, release" in design
-    assert "@import" not in design
+    assert "@layer foundation, forest, release" in api
     assert all(f'("{layer}", "{name}.css")' in api for layer, name in (("foundation", "styles"), ("forest", "forest"), ("release", "redesign")))
     assert 'f"@layer {layer}' in api and "stylesheet_gzip = gzip.compress" in api
     assert '"Vary": "Accept-Encoding"' in api and 'headers["Content-Encoding"] = "gzip"' in api

@@ -1,50 +1,30 @@
-# AWUN product roadmap
+# SongVale roadmap / План развития
 
-[Project overview](../README.md) · [Русская версия](ROADMAP.ru.md) · [Case study](PROJECT_CASE_STUDY.md)
+[Project](../README.md) · [Development](DEVELOPMENT.md) · [Changelog](../CHANGELOG.md)
 
-This roadmap uses exit criteria instead of unsupported dates. Completed engineering work is separated from product validation that has not happened yet.
+## Current release
 
-## Shipped foundation
+The published Windows version is 2.6.3. The 2.8.0 preview remains in
+[PR #64](https://github.com/Loro66/AWUN/pull/64). Its local audio, artist/release
+pages, recording grouping and continuous playback need final device validation
+before a public release.
 
-- Public web beta and a versioned Windows installer and portable executable.
-- Local-first desktop backend with provider-level remote fallback.
-- Progressive multi-source search, persistent queue and playback recovery.
-- On-device library, My Wave signals, backup and validated restore.
-- 233 Python tests and 26 Playwright scenarios in required CI workflows.
+## Next work
 
-## Now: validate the product with people
+- Validate the preview on real Windows, Android and iPhone devices.
+- Check playback recovery, library preservation, updates and offline behavior.
+- Arrange Windows signing and mobile distribution before wider release.
+- Resolve provider permissions and catalog reliability for the intended commercial use.
 
-Goal: replace assumptions about usability with traceable observations.
+These are release conditions, not promises of delivery dates. Accounts and
+social features are outside the current product priority.
 
-- Run the same five-task script with at least three consenting participants.
-- Record completion, time, blocking errors and requested clarification for each task.
-- Open one GitHub issue per reproducible problem and link the fixing commit.
-- Publish only aggregated results; do not expose personal searches or identity data.
+## На русском
 
-Exit criterion: every blocking finding is either fixed and verified or documented as an explicit limitation.
+Опубликована Windows-версия 2.6.3; тестовая 2.8.0 находится в PR #64.
+Перед её выпуском нужны проверки на реальных устройствах: воспроизведение,
+восстановление после ошибок, сохранность медиатеки, обновления и офлайн.
 
-## Next: make Windows distribution trustworthy
-
-- Add Authenticode signing so official builds have a verifiable publisher.
-- Document an update and rollback path for installed versions.
-- Add release smoke checks on a clean Windows environment.
-- Track public service uptime and provider-specific latency without collecting a personal listening history.
-
-Exit criterion: a clean Windows machine can verify, install, run, update and remove AWUN through a documented path.
-
-## Then: validate mobile distribution
-
-- Complete a closed Android test with Play signing and store disclosure review.
-- Verify the Play client never exposes disallowed download controls.
-- Test lifecycle, media controls and local-data recovery on physical devices.
-- Keep iOS distribution experimental until Apple signing and physical-device testing are available.
-
-Exit criterion: the Android package passes closed testing and every data-safety statement matches observed network and storage behavior.
-
-## Later, only if evidence supports it
-
-- Optional cross-device synchronization.
-- Public social features.
-- Broader provider integrations.
-
-These features require accounts, privacy controls, moderation or new provider agreements. They are not commitments and will not be simulated before those prerequisites exist.
+Следующие условия расширения: подпись Windows-сборок, мобильная публикация,
+согласованная модель использования источников и надёжный каталог.
+Аккаунты и социальные функции сейчас не являются приоритетом.

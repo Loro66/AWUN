@@ -1,1 +1,0 @@
-Move saved tracks and playlists between devices with a portable library file. Optional account profiles now have editable names, and sync recovers from interrupted saves. The installed web app handles slow hosting more reliably.

@@ -1,1 +1,0 @@
-The player is now a compact, focused listening dock with clearer controls, a calmer waveform and direct save-to-library access across desktop and mobile layouts.
