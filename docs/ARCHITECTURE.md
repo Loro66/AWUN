@@ -18,6 +18,7 @@ WebViews. The Python backend exposes the search, metadata and media APIs.
 | Media tokens, safe URLs, DNS and headers | `backend/core/media.py` and `backend/security/` |
 | Library matching | `frontend/library-matcher.js` |
 | My Wave and smart playlists | `frontend/flow.js` and `frontend/smart-playlists.js` |
+| Ratings and preference collection rules | `frontend/preferences.js` and `frontend/preferences-ui.js` |
 | Device storage and recovery | `frontend/storage.js` |
 | Desktop process, controls and updates | `desktop/launcher.py`, `controls.py` and `updater.py` |
 
@@ -58,3 +59,28 @@ Images shared by both locales live once in `mobile/android/fastlane/images`.
 in each build artifact.
 
 Configuration and endpoints are documented in the [technical reference](TECHNICAL_REFERENCE.md).
+
+## Preference collections and continuous discovery
+
+The preference engine normalizes recording identity by artist and full title,
+retaining live/remix/version words, and keys ratings by that identity across
+sources. Each owner has a local profile in `awun-preferences-v1`. Five optional
+1–5 dimensions form a weighted mean over the rated, enabled dimensions only.
+Collections are derived views of favorites plus named-playlist tracks; rules
+can overlap and never move/delete the underlying music.
+
+Inventory is cached by immutable library/playlist array references. Listening
+metadata is parsed only when the stored string/owner changes. Smart selections
+are cached by inventory, metadata and minute; preference selections by inventory
+and profile revision. Filter text is indexed per track in a WeakMap and input
+renders are debounced by 100ms. Tabs retain their DOM nodes until their displayed
+contents change, preserving keyboard focus.
+
+Wave scores each candidate once, then spaces artists across batch boundaries.
+It rotates queries derived from rated tracks, listening signals, the seed
+collection and newly discovered artists. A single generation-checked,
+cancelable batch has a 12-second deadline and at most eight attempts. Recent
+recordings (1500), queued tracks (80), results (160), progress entries (128),
+signals (800) and discovery seeds (24) are bounded. Exhaustion/network failures
+stop automatic requests and expose retry. Repeats can return after the recent
+identity window expires; the system does not promise an infinite catalog.

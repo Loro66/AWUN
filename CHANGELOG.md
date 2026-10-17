@@ -1,6 +1,15 @@
 # Changelog
 
-## Unreleased — repository maintenance
+## 2.7.0 — 2026-10-17
+
+- Five local rating dimensions (overall, melody, vocals, rhythm, atmosphere), adjustable importance and a weighted score that ignores unrated dimensions.
+- Automatic overlapping preference collections, with editable score, artist, source and unrated-track rules. Include playlist-only tracks without duplicating or moving the originals.
+- Continuous Wave discovery uses ratings and a selected collection, rotates seed queries, spaces artists across batches and avoids recent cross-provider recording repeats.
+- Bound radio state to 80 queued tracks, 160 visible results, 1500 recent recording identities and 128 progress entries. Use one cancelable request batch with a 12-second deadline and explicit exhaustion/retry.
+- Cache library inventory, listening metadata, smart selections and normalized filter text. Preserve tab nodes/focus and debounce library filtering; defer passive Wave profile writes.
+- Keep ratings and collection rules local to the account/device and include them in full device backups. Optional cloud library sync does not sync ratings.
+
+### Repository maintenance
 
 - Remove disconnected backend prototypes and their isolated tests.
 - Keep one shared Google Play image set and only current store release notes; assemble localized artifacts during packaging.

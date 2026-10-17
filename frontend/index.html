@@ -186,6 +186,26 @@
         </div>
         <div id="playlistTabs" class="playlist-tabs" role="group" aria-label="Выбор плейлиста" data-i18n-aria-label="playlistTabsAria"></div>
         <div class="smart-playlists"><strong data-i18n="smartPlaylists">Умные плейлисты</strong><div id="smartPlaylistTabs" class="playlist-tabs" role="group" aria-label="Умные плейлисты" data-i18n-aria-label="smartPlaylists"></div><p id="smartPlaylistHint" hidden></p></div>
+        <section class="preference-libraries" aria-labelledby="preferenceTitle">
+          <strong id="preferenceTitle" data-i18n="preferenceLibraries">По моему вкусу</strong>
+          <div id="preferenceTabs" class="playlist-tabs" role="group" data-i18n-aria-label="preferenceLibraries" aria-label="По моему вкусу"></div>
+          <details id="preferenceSettings" class="preference-settings">
+            <summary data-i18n="preferenceConfigure">НАСТРОИТЬ ПОДБОРКИ И ВАЖНОСТЬ ОЦЕНОК</summary>
+            <p data-i18n="preferenceHelp">Подборки обновляются автоматически из сохранённых треков и плейлистов. Трек может попасть в несколько подборок. Оценка доступна в меню «Очередь» у трека.</p>
+            <fieldset><legend data-i18n="preferenceWeights">Что важнее для тебя · 0 — не учитывать</legend><div id="preferenceWeights" class="preference-grid"></div></fieldset>
+            <form id="preferenceRuleForm" class="preference-grid">
+              <label><span data-i18n="preferenceEdit">Подборка</span><select id="preferenceRuleEditor"></select></label>
+              <label><span data-i18n="preferenceName">Название</span><input id="preferenceName" maxlength="60" required autocomplete="off"></label>
+              <label><span data-i18n="preferenceMetric">Оценивать по</span><select id="preferenceMetric"></select></label>
+              <label><span data-i18n="preferenceMinimum">Минимальная оценка · 0–5</span><input id="preferenceMinimum" type="number" min="0" max="5" step="0.5" value="4" required></label>
+              <label><span data-i18n="preferenceArtists">Исполнители через запятую · пусто — любые</span><input id="preferenceArtists" maxlength="1000" autocomplete="off"></label>
+              <label><span data-i18n="preferenceSource">Источник</span><select id="preferenceSource"><option value="" data-i18n="preferenceAnySource">Любой</option><option value="youtube">YouTube</option><option value="soundcloud">SoundCloud</option><option value="audius">Audius</option><option value="jamendo">Jamendo</option><option value="internet_archive">Internet Archive</option></select></label>
+              <label class="preference-check"><input id="preferenceUnrated" type="checkbox"><span data-i18n="preferenceIncludeUnrated">Включать треки без оценки</span></label>
+              <div class="preference-form-actions"><button type="submit" data-i18n="preferenceSaveRule">СОХРАНИТЬ ПРАВИЛО</button><button id="preferenceDelete" type="button" hidden data-i18n="preferenceDelete">УДАЛИТЬ ПОДБОРКУ</button></div>
+            </form>
+            <p id="preferenceStatus" role="status" aria-live="polite"></p>
+          </details>
+        </section>
         <div id="playlistActions" class="playlist-actions" hidden><span id="playlistDescription"></span><button id="deletePlaylist" type="button" data-i18n="deletePlaylist">УДАЛИТЬ ПЛЕЙЛИСТ</button></div>
         <p id="libraryEmptyState" class="library-empty-state" hidden></p>
       </section>
@@ -201,6 +221,7 @@
       </div>
       <ol id="trackList" class="track-list"></ol>
       <button id="loadMoreTracks" class="load-more-tracks" type="button" hidden></button>
+      <button id="flowMore" class="load-more-tracks" type="button" hidden data-i18n="flowMore">ЕЩЁ РЕКОМЕНДАЦИИ</button>
     </section>
 
     <section id="idleStage" class="idle-stage" aria-labelledby="idleStageTitle">
@@ -241,6 +262,11 @@
         <label><span data-i18n="language">ЯЗЫК</span><select id="flowLanguage"><option value="any" data-i18n="any">ЛЮБОЙ</option><option value="ru" data-i18n="russian">РУССКИЙ</option><option value="foreign" data-i18n="foreign">ЗАРУБЕЖНЫЙ</option><option value="instrumental" data-i18n="instrumental">ИНСТРУМЕНТАЛ</option></select></label>
         <label><span data-i18n="era">ЭПОХА</span><select id="flowEra"><option value="any" data-i18n="anyEra">ЛЮБАЯ ЭПОХА</option><option value="fresh" data-i18n="newReleases">НОВИНКИ</option><option value="2010s">2010-е</option><option value="2000s">2000-е</option><option value="classics" data-i18n="classics">КЛАССИКА</option></select></label>
       </div>
+      <details class="flow-tuning"><summary data-i18n="flowTuning">ТОЧНАЯ НАСТРОЙКА ВЫДАЧИ</summary><div class="preference-grid">
+        <label><span data-i18n="flowLibrary">Основа волны</span><select id="flowLibrary"></select></label>
+        <label><span data-i18n="flowArtistGap">Пауза между исполнителями · треков</span><input id="flowArtistGap" type="number" min="0" max="6" step="1" value="2"></label>
+        <label class="preference-check"><input id="flowContinuous" type="checkbox" checked><span data-i18n="flowContinuous">Непрерывная выдача · пополнять заранее</span></label>
+      </div><p data-i18n="flowContinuousHelp">Волна чередует запросы по твоим оценкам и предпочтениям, избегает недавних повторов. Если источники исчерпаны, появится кнопка повтора.</p><button id="flowRate" type="button" disabled data-i18n="rateTrack">ОЦЕНИТЬ ТРЕК</button></details>
       <div class="flow-start-row">
         <span id="flowSeed" data-i18n="flowSeedDefault">Основа: текущий поиск или твоя медиатека</span>
         <button id="flowStart" type="button" data-i18n="startWave">ЗАПУСТИТЬ МОЮ ВОЛНУ ↗</button>
@@ -321,6 +347,17 @@
     <audio id="audio" preload="metadata" crossorigin="anonymous"></audio>
   </aside>
 
+  <dialog id="ratingDialog" class="rating-dialog" aria-labelledby="ratingTitle" aria-describedby="ratingHelp">
+    <form id="ratingForm">
+      <header><h2 id="ratingTitle" data-i18n="rateTrack">ОЦЕНИТЬ ТРЕК</h2><button id="ratingClose" type="button" data-i18n-aria-label="close" aria-label="Закрыть">×</button></header>
+      <p id="ratingTrack"></p><p id="ratingHelp" data-i18n="ratingHelp">От 1 до 5. Можно оценить только важные для тебя параметры; пустые поля не снижают балл.</p>
+      <div id="ratingDimensions" class="preference-grid"></div>
+      <p id="ratingScore" role="status" aria-live="polite"></p>
+      <label class="preference-check"><input id="ratingSaveTrack" type="checkbox" checked><span data-i18n="ratingSaveTrack">Добавить трек в медиатеку</span></label>
+      <p id="ratingStatus" role="status" aria-live="polite"></p>
+      <footer><button type="submit" data-i18n="ratingSave">СОХРАНИТЬ ОЦЕНКИ</button><button id="ratingClear" type="button" data-i18n="ratingClear">СБРОСИТЬ ОЦЕНКИ</button></footer>
+    </form>
+  </dialog>
   <div id="themeBackdrop" class="theme-backdrop" hidden></div>
   <aside id="themePanel" class="theme-panel" hidden aria-label="Настройки" data-i18n-aria-label="visualSettingsAria">
     <div class="theme-panel-head">
@@ -509,7 +546,9 @@
   <script src="/static/smart-playlists.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/audio-engine.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/home-hub.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/preferences.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/app.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/preferences-ui.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/flow.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/desktop-player.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/desktop-network.js?v=__AWUN_VERSION__" defer></script>
