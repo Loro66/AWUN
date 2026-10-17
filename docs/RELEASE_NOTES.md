@@ -1,39 +1,17 @@
-# SongVale 2.6.3
-Release date: 2026-10-11
+# SongVale 2.7.0
+Release date: 2026-10-17
 
-A quieter, cleaner Songvale interface:
-- Straight edges across search, track cards, playlists, player and Settings.
-- Solid surfaces and restrained accents in every theme, without glow or glass effects.
-- Compact monochrome Songvale wordmark in the top-left corner.
-- Forest photography remains on the home screen; decorative radio rings are removed.
-- Keep favorites and queue controls within the compact phone player, without stacked buttons overflowing its top edge.
+- Rate tracks from 1 to 5 for overall impression, melody, vocals, rhythm and atmosphere. Open a track's Queue menu → Rate track, or use Rate track in Wave settings.
+- Adjust each rating's importance; missing ratings do not lower the weighted score.
+- Find My top picks, Rhythm and drive, and Atmosphere in My music. Create up to 20 automatic collections with rating thresholds, artist/source filters and optional unrated tracks. Collections also include tracks saved only in named playlists.
+- Choose a seed collection, artist separation and continuous discovery in Wave's fine tuning. It refills near the end of the queue and on scrolling, and provides a More recommendations button.
+- Wave rotates queries and suppresses recent recordings across providers while keeping live/remix versions distinct. It uses bounded queues and a 12-second search deadline. When no new tracks are found or a source fails, retry is explicit; a truly unlimited catalog is not guaranteed.
+- Faster library updates: cached inventory/history/rules, reusable tabs, indexed filtering and deferred passive taste-profile writes.
 
-Includes built-in optional zapret for Windows YouTube access:
-- Open Settings > YouTube access > Enable zapret and approve Windows UAC.
-- ALT13 is the default; ALT11 and Basic are also available.
-- Retry the current YouTube track from Settings without replacing its queue.
-- The module is off by default and does not start automatically.
-- It stops when disabled or when Songvale fully exits, including crash cleanup.
-- External zapret/GoodbyeDPI is detected; Songvale does not start a second copy
-  or stop external processes.
-- Verification, permission, startup, driver errors and timeout have separate
-  status messages. Running does not mean playback on an ISP has been verified.
+Ratings, weights and collection rules stay on this device, are separated by account,
+and are included in full device backups. They do not sync through the optional
+cloud library service or the library-only transfer file.
 
-Profiles target YouTube domains and affect their connections from other Windows
-apps while enabled. No persistent zapret service, DNS/proxy changes or antivirus
-exclusions. This module is Windows-only; it is not offered on the website or
-on iPhone/Android. A working profile depends on the user's network. Video-owner
-and licensing restrictions still apply.
-
-The official Flowseal 1.10.3 runtime is bundled unmodified, with archive/file
-SHA-256 checks and a protected elevated runtime directory. The release includes
-SONGVALE-Network-Sources.zip and the original component licenses in Settings.
-
-Includes the YouTube fixes from 2.6.1, mini player, tray menu, global shortcuts,
-smart playlists and verified one-click Windows updates from 2.6.0.
-
-Windows downloads:
-- SONGVALE-Setup-x64.exe: per-user installer.
-- SONGVALE.exe: portable app.
-
-From 2.6.0+, use Settings > Windows controls > Update in one click.
+Windows downloads: SONGVALE-Setup-x64.exe (installer) and SONGVALE.exe (portable).
+Existing Windows controls, themes, playback and the opt-in network helper remain included.
+The separate 2.8.0 local-audio/artist-page preview in PR #64 remains unmerged.

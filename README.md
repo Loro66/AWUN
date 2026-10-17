@@ -17,7 +17,9 @@ A music player with an on-device library, a personal listening queue and search 
 
 - Search connected YouTube, SoundCloud, Audius, Jamendo and Internet Archive sources. Availability depends on each provider and your region.
 - Keep favorites, named playlists and a persistent queue on your device.
-- Discover music with My Wave and smart playlists.
+- Rate overall impression, melody, vocals, rhythm and atmosphere from 1 to 5; adjust the weight of each dimension.
+- Build automatic preference collections with editable rating, artist and source rules.
+- Discover music with continuous My Wave: choose a seed collection, artist separation and familiar/new balance.
 - Import exported CSV, JSON, M3U or TXT collections and match their tracks.
 - On Windows, use an always-on-top mini player, tray controls and optional global hotkeys.
 
@@ -34,7 +36,7 @@ Windows beta builds are unsigned unless a signing certificate is configured. Sea
 
 ## Release status
 
-The published Windows release is **2.6.3**. Preview **2.8.0** is in [PR #64](https://github.com/Loro66/AWUN/pull/64) and has not been merged into the public release.
+The published Windows release is **2.7.0**. Preview **2.8.0** is in [PR #64](https://github.com/Loro66/AWUN/pull/64) and has not been merged into the public release.
 
 Preview features include artist and album pages, local audio, permitted offline copies, unified recording cards and continuous playback. Check the [changelog](CHANGELOG.md) and the relevant release before expecting a feature in your installed version.
 
