@@ -76,7 +76,7 @@ def test_desktop_round_trips_owner_and_restore_guards_but_not_session_tokens(tmp
     sys.modules.setdefault("webview", SimpleNamespace())
     from desktop.launcher import DesktopStateBridge
     bridge = DesktopStateBridge(tmp_path / "desktop-state.json")
-    expected = {"awun-library": "[]", "songvale-account-owner-v1": "account-a", "songvale-backup-restore-pending-v1": "account-a", "songvale-account-sync-account-a": '{"revision":12,"dirty":true}'}
+    expected = {"awun-library": "[]", "songvale-account-owner-v1": "account-a", "songvale-backup-restore-pending-v1": "account-a", "songvale-account-sync-account-a": '{"revision":12,"dirty":true}', "songvale-source-preferences-v1": "[]", "songvale-transitions-v1": '{"crossfade":2}'}
     assert bridge.save_state(json.dumps({**expected, "songvale_access": "do-not-persist", "songvale_refresh": "do-not-persist"}))
     assert json.loads(bridge.load_state()) == expected
 

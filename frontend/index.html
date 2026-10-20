@@ -36,6 +36,12 @@
         <p id="sidebarWaveStatus" class="sidebar-wave-status" aria-hidden="true" hidden></p>
         <button id="importButton" class="library import-button" type="button" aria-expanded="false" aria-controls="importPanel" data-i18n-aria-label="import"><i aria-hidden="true">⇣</i><span data-i18n="import">ПЕРЕНОС</span><b aria-hidden="true">↗</b></button>
         <section class="sidebar-listening" aria-label="Продолжить слушать" data-i18n-aria-label="sidebarListening">
+          <div class="sidebar-start">
+            <h2 data-i18n="sidebarQuickStart">СЛУШАТЬ</h2>
+            <button id="sidebarContinue" class="sidebar-continue" type="button"><i aria-hidden="true">▶</i><span><strong data-i18n="sidebarResume">Продолжить</strong><small id="sidebarContinueTitle" data-i18n="sidebarStartHint">Выбери музыку для первого запуска</small></span></button>
+            <div class="sidebar-start-actions"><button id="sidebarShuffle" type="button" data-i18n="sidebarShuffle">Перемешать</button><button id="sidebarOffline" type="button"><span data-i18n="sidebarOffline">Скачанное</span><b id="sidebarOfflineCount">0</b></button></div>
+            <small id="sidebarPreparation" class="sidebar-preparation" role="status" hidden></small>
+          </div>
           <div class="sidebar-section">
             <div class="sidebar-section-heading"><h2 data-i18n="upNext">ДАЛЕЕ</h2><button id="sidebarQueueAll" type="button" data-i18n="queue" aria-label="Открыть очередь" data-i18n-aria-label="sidebarOpenQueue">ОЧЕРЕДЬ</button></div>
             <ol id="sidebarQueue" class="sidebar-track-list"></ol>
@@ -168,6 +174,15 @@
       </section>
     </section>
 
+    <section id="collectionPage" class="collection-page" aria-labelledby="collectionTitle" hidden>
+      <header class="collection-heading"><button id="collectionBack" type="button" data-i18n="collectionBack">← Моя музыка</button><h1 id="collectionTitle" tabindex="-1"></h1></header>
+      <div class="collection-toolbar"><input id="collectionFilter" type="search" maxlength="200" data-i18n-placeholder="localFilter" data-i18n-aria-label="localFilter" placeholder="Трек, исполнитель или альбом" hidden><button id="collectionImport" type="button" data-i18n="localImport" hidden>Добавить аудиофайлы</button><button id="collectionCancelImport" type="button" data-i18n="cancel" hidden>Остановить</button></div>
+      <p id="collectionStatus" class="collection-status" role="status"></p>
+      <form id="localEditor" class="local-editor" hidden><h2 data-i18n="localEdit">Изменить описание</h2><label><span data-i18n="localTrackTitle">Название</span><input id="localEditorTitle" maxlength="200" required></label><label><span data-i18n="localArtist">Исполнитель</span><input id="localEditorArtist" maxlength="200"></label><label><span data-i18n="localAlbumTitle">Альбом</span><input id="localEditorAlbum" maxlength="200"></label><div><button type="submit" data-i18n="localSave">Сохранить</button><button id="localEditorCancel" type="button" data-i18n="cancel">Отмена</button></div></form>
+      <div id="collectionContent"></div>
+    </section>
+    <input id="localAudioInput" type="file" accept=".mp3,.m4a,.flac,.ogg,.oga,.wav,.aac,.webm,audio/*" multiple hidden>
+
     <section id="results" class="results" aria-live="polite" aria-busy="false">
       <div class="results-heading">
         <div>
@@ -180,6 +195,7 @@
       </div>
 
       <section id="libraryWorkspace" class="library-workspace" aria-label="Плейлисты и поиск по медиатеке" data-i18n-aria-label="libraryWorkspaceAria" hidden>
+        <div class="library-collections"><button id="localFilesButton" type="button"><span id="localFilesCount" data-i18n="localCollection">На устройстве</span></button><button id="savedAlbumsButton" type="button"><span id="savedAlbumsCount" data-i18n="savedAlbums">Альбомы</span></button><button id="localImportFiles" type="button" data-i18n="localImport">Добавить аудиофайлы</button></div>
         <div class="library-tools">
           <label class="library-filter" for="libraryFilter"><span data-i18n="filterLibrary">ПОИСК В МЕДИАТЕКЕ</span><input id="libraryFilter" type="search" autocomplete="off" data-i18n-placeholder="filterLibraryPlaceholder" placeholder="Трек или исполнитель"></label>
           <form id="playlistCreate" class="playlist-create"><label for="playlistName" data-i18n="newPlaylist">НОВЫЙ ПЛЕЙЛИСТ</label><div><input id="playlistName" type="text" maxlength="60" required data-i18n-placeholder="playlistNamePlaceholder" placeholder="Название плейлиста"><button type="submit" data-i18n="createPlaylist">СОЗДАТЬ</button></div></form>
@@ -296,7 +312,7 @@
       <div class="now">
         <small class="now-kicker" data-i18n="nowPlayingKicker">СЕЙЧАС</small>
         <strong id="nowTitle">НИЧЕГО НЕ ИГРАЕТ</strong>
-        <span id="nowArtist">SONGVALE</span>
+        <button id="nowArtist" class="player-artist-link" type="button">SONGVALE</button>
         <span id="playerStatus" class="player-status" role="status" aria-live="polite" hidden></span>
         <a id="youtubeExternal" class="player-source-link" target="_blank" rel="noopener" hidden data-i18n="openYoutube">Открыть на YouTube ↗</a>
         <div class="mini-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -304,12 +320,12 @@
 
       <div class="transport">
         <div class="transport-buttons">
-          <button id="previousTrack" type="button" aria-label="Предыдущий трек" data-i18n-aria-label="previousAria">|‹</button>
+          <button id="previousTrack" type="button" aria-label="Предыдущий трек" data-i18n-aria-label="previousAria"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h2v14H5zm14 0v14L9 12z"/></svg></button>
           <button id="flowDislike" class="flow-feedback" type="button" aria-label="Не нравится" title="Меньше похожего" data-i18n-aria-label="dislikeAria" data-i18n-title="lessLikeTitle">−</button>
           <button id="playPause" class="play-pause" type="button" aria-label="Воспроизвести" data-i18n-aria-label="playAria"><span>▶</span></button>
           <button id="flowLike" class="flow-feedback" type="button" aria-label="Нравится" title="Больше похожего" data-i18n-aria-label="likeAria" data-i18n-title="moreLikeTitle">+</button>
           <button id="flowBlockArtist" class="flow-feedback flow-block" type="button" aria-label="Не рекомендовать этого исполнителя" title="Заблокировать исполнителя" data-i18n-aria-label="blockArtistAria" data-i18n-title="blockArtistTitle">ИСП−</button>
-          <button id="nextTrack" type="button" aria-label="Следующий трек" data-i18n-aria-label="nextAria">›|</button>
+          <button id="nextTrack" type="button" aria-label="Следующий трек" data-i18n-aria-label="nextAria"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 5h2v14h-2zM5 5l10 7-10 7z"/></svg></button>
           <button id="repeatMode" class="repeat-mode" type="button" aria-label="Повтор выключен" aria-pressed="false"><span>↻</span><small>ВЫКЛ</small></button>
         </div>
         <div class="timeline">
@@ -440,6 +456,24 @@
       <button id="soundEngineToggle" class="sound-engine-toggle" type="button" aria-pressed="true"><span data-i18n="soundProcessing">ОБРАБОТКА</span><b id="soundEngineValue" data-i18n="on">ВКЛ</b></button>
       <small id="soundEngineStatus" class="sound-engine-status" data-i18n="soundEngineDirectOnly">Работает для SoundCloud, Audius и других прямых потоков. YouTube ограничен возможностями официального плеера.</small>
     </section>
+    <section class="offline-settings" aria-labelledby="offlineTitle">
+      <strong id="offlineTitle" data-i18n="offlineTitle">УМНЫЕ ЗАГРУЗКИ</strong>
+      <p data-i18n="offlineDescription">Лайк или три прослушивания — и разрешённый трек сохранится на этом устройстве.</p>
+      <label><input id="offlineEnabled" type="checkbox"><span data-i18n="offlineEnabled">Загружать автоматически</span></label>
+      <label><input id="offlineWifiOnly" type="checkbox"><span data-i18n="offlineWifiOnly">Только Wi-Fi</span></label>
+      <small data-i18n="offlineWifiHint">Если браузер не определяет тип сети, режим «Только Wi-Fi» приостановит загрузки.</small>
+      <label><span data-i18n="offlineLimit">Место для автозагрузок</span><select id="offlineLimit"><option value="256">256 MiB</option><option value="1024">1 GiB</option><option value="3072">3 GiB</option><option value="5120">5 GiB</option></select></label>
+      <p id="offlineStatus" role="status" aria-live="polite"></p>
+      <div class="offline-actions"><button id="offlineFiles" type="button" data-i18n="offlineFiles">Открыть файлы</button><button id="offlineRetry" type="button" data-i18n="offlineRetry">Повторить загрузки</button><button id="offlineClear" type="button" data-i18n="offlineClear">Очистить автозагрузки</button></div>
+      <small data-i18n="offlineClearHint">При нехватке места удаляются старые автозагрузки без лайка. Свои файлы и текущий трек сохраняются. Очистка выключает автозагрузку.</small>
+      <ul id="offlineJobs" class="offline-jobs"></ul>
+    </section>
+    <section class="transition-settings" aria-labelledby="transitionTitle">
+      <strong id="transitionTitle" data-i18n="transitionTitle">ПЕРЕХОДЫ МЕЖДУ ТРЕКАМИ</strong>
+      <label><input id="preloadNext" type="checkbox" checked><span data-i18n="preloadNext">Подготавливать следующий трек</span></label>
+      <label><span data-i18n="crossfadeLabel">Плавный переход</span><select id="crossfadeSeconds"><option value="0" data-i18n="crossfadeOff">Без паузы</option><option value="2">2 с</option><option value="4">4 с</option><option value="6">6 с</option></select></label>
+      <small data-i18n="transitionHint">Плавные переходы работают для прямого аудио и файлов на устройстве. YouTube и HLS запускаются своим плеером.</small>
+    </section>
     <button id="diagnosticsButton" class="diagnostics-entry" type="button" aria-controls="diagnosticsPanel" aria-expanded="false">
       <span><small data-i18n="diagnosticsKicker">СОСТОЯНИЕ СЕТИ</small><strong data-i18n="sourceDiagnostics">ДИАГНОСТИКА ИСТОЧНИКОВ</strong></span>
       <b data-i18n="openDiagnostics">ОТКРЫТЬ</b>
@@ -543,13 +577,19 @@
   <script src="/static/i18n.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/player-core.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/library-matcher.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/recordings.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/flow-core.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/smart-playlists.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/audio-engine.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/local-music.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/home-hub.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/preferences.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/app.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/preferences-ui.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/wave-profile.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/collections.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/offline.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/continuous-player.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/flow.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/desktop-player.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/desktop-network.js?v=__AWUN_VERSION__" defer></script>

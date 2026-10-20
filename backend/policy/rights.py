@@ -47,6 +47,18 @@ SOURCE_RIGHTS: dict[str, SourceRights] = {
 }
 
 
+def offline_decision(source: str, *, provider_grant: bool, preview: bool = False, play_store_client: bool = False) -> RightsDecision:
+    policy = SOURCE_RIGHTS.get(source)
+    terms = policy.terms_url if policy else None
+    if source not in {"audius", "jamendo", "internet_archive"}:
+        return RightsDecision(False, "provider_disallows_offline", terms_url=terms)
+    if play_store_client:
+        return RightsDecision(False, "downloads_disabled_in_play_build", terms_url=terms)
+    if preview:
+        return RightsDecision(False, "preview_not_full_recording", terms_url=terms)
+    return RightsDecision(provider_grant, "explicit_provider_grant" if provider_grant else "provider_did_not_supply_download", True, terms)
+
+
 def decide_media_action(
     source: str,
     action: MediaAction,

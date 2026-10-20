@@ -10,6 +10,7 @@
   const profileStore=waveProfile.createStore({read:storage.readJSON,write:storage.writeJSON});
   const currentOwner=()=>storage.readText('songvale-account-owner-v1','')||'guest';
   let profileOwner=currentOwner();
+  const recordings=window.SongvaleRecordings,core=window.SongvaleFlowCore;
   const moodTerms={any:'',calm:'calm mellow',energy:'energetic',focus:'focus instrumental',happy:'happy upbeat',sad:'melancholic',night:'night'};
   const activityTerms={any:'',work:'work focus',drive:'driving',training:'workout',relax:'relax'};
   const languageTerms={any:'',ru:'русская музыка',foreign:'international music',instrumental:'instrumental'};
@@ -35,7 +36,7 @@
   }
   function saveProfile(defer=false){if(defer){if(!profileSaveTimer)profileSaveTimer=setTimeout(flushProfile,180)}else flushProfile();updateFlowUi()}
   window.addEventListener('pagehide',flushProfile);
-  function trackSnapshot(track){return{id:String(track?.id||''),title:decodeText(track?.title||''),artist:decodeText(track?.artist||''),source:String(track?.source||''),at:Date.now()}}
+  function trackSnapshot(track){return{id:String(track?.id||''),title:decodeText(track?.title||''),artist:decodeText(track?.artist||''),source:String(track?.source||''),duration:Number(track?.recording_duration||track?.duration)||0,recording_key:recordings.key(track),at:Date.now()}}
   function record(type,track,extra={}){
     syncProfileOwner();if(!track?.id)return;
     const last=profile.signals.at(-1);if(last&&last.type===type&&last.id===track.id&&Date.now()-last.at<1500)return;
@@ -57,13 +58,13 @@
     return [...unique.values()].slice(0,16);
   }
   function artistAffinity(){
-    const map=new Map();for(const signal of profile.signals){const key=matchText(signal.artist);if(!key)continue;const weight={like:18,complete:9,listen30:4,play:1,skip:-7,dislike:-28}[signal.type]||0;map.set(key,(map.get(key)||0)+weight)}
+    const map=new Map();for(const signal of core.effective(profile.signals)){const key=matchText(signal.artist);if(!key)continue;const weight=core.weight(signal);map.set(key,(map.get(key)||0)+weight)}
     for(const track of state.saved){const key=matchText(track.artist);if(key)map.set(key,(map.get(key)||0)+12)}
     for(const entry of Object.values(taste.profile().ratings)){const value=engine.score(entry.values,settings().weights),key=matchText(entry.track.artist);if(key&&value!==null)map.set(key,(map.get(key)||0)+(value-3)*15)}
     return map;
   }
   function sourceAffinity(){
-    const map=new Map();for(const signal of profile.signals){if(!signal.source)continue;const weight={like:4,complete:3,listen30:1,skip:-2,dislike:-4}[signal.type]||0;map.set(signal.source,(map.get(signal.source)||0)+weight)}return map;
+    const map=new Map();for(const signal of core.effective(profile.signals)){if(!signal.source)continue;const weight=signal.type==='skip'?core.weight(signal)/4:({like:4,complete:3,listen30:1,dislike:-4}[signal.type]||0);map.set(signal.source,(map.get(signal.source)||0)+weight)}return map;
   }
   function stableNoise(track){let hash=2166136261;for(const char of `${track.id}:${profile.signals.length}`){hash^=char.charCodeAt(0);hash=Math.imul(hash,16777619)}return((hash>>>0)%1000)/100}
   function scoringContext(){
@@ -83,9 +84,9 @@
   }
   function rankCandidates(candidates,{allowIssued=false}={}){
     const blocked=dislikedRecordings(),blockedArtistKeys=blockedArtists(),context=scoringContext(),unique=new Map();
-    for(const track of candidates){
+    for(const track of recordings.group(candidates,MAX_RESULTS)){
       if(!track?.id||!track.stream_url||blocked.has(engine.recordingKey(track))||blockedArtistKeys.has(matchText(track.artist))||track.source==='yandex_music'||taste.values(track).overall===1)continue;
-      if(!allowIssued&&issued.has(track))continue;
+      if(!allowIssued&&(issued.has(track)||core.repeated(track,state.flow.recent||[])))continue;
       const key=engine.recordingKey(track);if(!unique.has(key))unique.set(key,track);
     }
     const sorted=[...unique.values()].map(track=>({track,score:candidateScore(track,context)})).sort((a,b)=>b.score-a.score).map(entry=>entry.track);
@@ -197,7 +198,7 @@
     const reaction=state.active?latestReaction(state.active):'';flow.flowLike.classList.toggle('active',reaction==='like');flow.flowDislike.classList.toggle('active',reaction==='dislike');
     for(const id of ['flowLikeAction','flowDislikeAction','flowBlockAction'])document.getElementById(id).disabled=!state.active;document.getElementById('flowLikeAction').setAttribute('aria-pressed',String(reaction==='like'));document.getElementById('flowDislikeAction').setAttribute('aria-pressed',String(reaction==='dislike'));
   }
-  function likeCurrent(){if(!state.active)return;record('like',state.active);if(!state.saved.some(track=>track.id===state.active.id))toggleSave(state.active);updateFlowUi();setMessage(t('liked'),'notice')}
+  function likeCurrent(){if(!state.active)return;record('like',state.active);if(!state.saved.some(track=>recordings.same(track,state.active)))toggleSave(state.active);updateFlowUi();setMessage(t('liked'),'notice')}
   function dislikeCurrent(){
     if(!state.active)return;const rejected=state.active;record('dislike',rejected);state.tracks=state.tracks.filter(track=>engine.recordingKey(track)!==engine.recordingKey(rejected));
     replaceQueue(rankCandidates(state.queue.filter(track=>engine.recordingKey(track)!==engine.recordingKey(rejected)),{allowIssued:true}),'context');const next=state.queue[0];render();if(next)void playTrack(next,{preserveQueue:true});else{app.pausePlayback();if(state.flow.active)state.flow.queueEnded=true}if(state.flow.active&&settings().continuous){state.flow.exhausted=false;void fillFlow(false)}setMessage(t('disliked'),'notice')
@@ -206,9 +207,9 @@
     if(!state.active?.artist)return;const artist=decodeText(state.active.artist),key=matchText(artist);if(!key||profile.blockedArtists.some(value=>matchText(value)===key))return;
     profile.blockedArtists.push(artist);saveProfile();state.tracks=state.tracks.filter(track=>matchText(track.artist)!==key);replaceQueue(rankCandidates(state.queue,{allowIssued:true}),'context');const next=state.queue[0];render();if(next)void playTrack(next,{preserveQueue:true});else{app.pausePlayback();if(state.flow.active)state.flow.queueEnded=true}if(state.flow.active&&settings().continuous){state.flow.exhausted=false;void fillFlow(false)}setMessage(t('artistBlocked',{artist}),'notice');
   }
-  function trackProgress({track=state.active,current,duration}={}){
+  function trackProgress({track=state.active,current,duration,listened_seconds=0}={}){
     if(!track||!duration||!Number.isFinite(current))return;
-    state.flow.progress.set(track.id,Math.max(0,Math.min(1,current/duration)));
+    state.flow.progress.set(track.id,Math.max(0,Math.min(1,listened_seconds/duration)));
     if(state.flow.progress.size>128)state.flow.progress.delete(state.flow.progress.keys().next().value);
   }
 
@@ -221,10 +222,10 @@
   document.addEventListener('awun:play',event=>{
     const track=event.detail.track;state.flow.seen.add(track.id);if(state.flow.seen.size>1500)state.flow.seen.delete(state.flow.seen.values().next().value);
     state.flow.progress.delete(track.id);state.flow.progress.set(track.id,0);if(state.flow.progress.size>128)state.flow.progress.delete(state.flow.progress.keys().next().value);
-    record('play',track);updateFlowUi();
+    state.flow.recent=[...(state.flow.recent||[]),trackSnapshot(track)].slice(-50);if(!event.detail.recovered)record('play',track);updateFlowUi();
     if(state.flow.active&&settings().continuous&&state.queue.length<=LOW_WATER)void fillFlow(false);
   });
-  document.addEventListener('awun:skip',event=>{const track=event.detail.track;if(!track)return;record('skip',track,{progress:Math.round((state.flow.progress.get(track.id)||0)*100)/100})});document.addEventListener('awun:qualified-listen',event=>record('listen30',event.detail.track));document.addEventListener('awun:qualified-complete',event=>record('complete',event.detail.track,{progress:.8}));document.addEventListener('awun:library',updateFlowUi);
+  document.addEventListener('awun:skip',event=>{const track=event.detail.track;if(!track)return;record('skip',track,{progress:Math.round(Number(event.detail.progress??state.flow.progress.get(track.id)??0)*100)/100,listened_seconds:Math.max(0,Number(event.detail.listened_seconds)||0)})});document.addEventListener('awun:qualified-listen',event=>record('listen30',event.detail.track));document.addEventListener('awun:qualified-complete',event=>record('complete',event.detail.track,{progress:.8}));document.addEventListener('awun:library',updateFlowUi);
   document.addEventListener('awun:queue-ended',()=>{if(!state.flow.active)return;if(!settings().continuous){stopFlow(true);return}state.flow.queueEnded=true;if(!state.flow.fetching&&!state.flow.exhausted){void fillFlow(false);return}if(state.flow.exhausted){setFlowStatus('flowQueueEnded',{},'empty');setMessage(t('flowQueueEnded'),'notice')}});
   document.addEventListener('awun:language',updateFlowUi);
   document.addEventListener('songvale:preferences',()=>{if(state.flow.active)refreshFlow()});
@@ -237,4 +238,5 @@
   window.addEventListener('awun:storage-restored',()=>{clearTimeout(profileSaveTimer);profileSaveTimer=null;profileStore.reload();profileOwner=currentOwner();Object.assign(profile,profileStore.get(profileOwner));stopFlow(true)});
   document.addEventListener('awun:search',()=>{if(state.flow.active)stopFlow(true)});
   document.addEventListener('awun:progress',event=>trackProgress(event.detail));updateFlowUi();
+  window.SongvaleFlow={rankCandidates,start:startFlow,reaction:latestReaction,profile};
 })();

@@ -21,6 +21,8 @@ A music player with an on-device library, a personal listening queue and search 
 - Build automatic preference collections with editable rating, artist and source rules.
 - Discover music with continuous My Wave: choose a seed collection, artist separation and familiar/new balance.
 - Import exported CSV, JSON, M3U or TXT collections and match their tracks.
+- Open artists and albums, save releases, import your own audio and keep permitted offline copies.
+- Prepare the next direct track and choose optional crossfades.
 - On Windows, use an always-on-top mini player, tray controls and optional global hotkeys.
 
 ## Install
@@ -36,9 +38,7 @@ Windows beta builds are unsigned unless a signing certificate is configured. Sea
 
 ## Release status
 
-The published Windows release is **2.7.1**. Preview **2.8.0** is in [PR #64](https://github.com/Loro66/AWUN/pull/64) and has not been merged into the public release.
-
-Preview features include artist and album pages, local audio, permitted offline copies, unified recording cards and continuous playback. Check the [changelog](CHANGELOG.md) and the relevant release before expecting a feature in your installed version.
+Version **2.8.0** combines the audited stable player with artist/album pages, local audio, permitted offline copies, unified recording cards and continuous playback. See the [changelog](CHANGELOG.md), [release verification](docs/RELEASE_VALIDATION-2.8.0.md) and the version attached to each [published release](https://github.com/Loro66/AWUN/releases).
 
 ## Build and contribute
 

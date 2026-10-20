@@ -1,1 +1,0 @@
-Security and reliability audit: isolated Wave profiles, protected media proxy, reliable library persistence and corrected feedback. Wave feedback controls are now accessible.

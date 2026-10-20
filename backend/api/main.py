@@ -26,8 +26,11 @@ from backend.core.models import (
 from backend.core.regions import REGION_NAMES, RegionName
 from backend.importers.library_url import LibraryImportError, LibraryUrlImporter
 from backend.metadata.lyrics import TrackDetailsService
+from backend.metadata.catalog import CatalogService, register_catalog_routes
+from backend.search.enrichment import MusicBrainzEnricher
+from backend.library.local_audio import LocalAudioStore, register_local_audio_routes
 from backend.policy.client_capabilities import capabilities_for
-from backend.policy.rights import SOURCE_RIGHTS
+from backend.policy.rights import SOURCE_RIGHTS, offline_decision
 from backend.search.engine import SearchCapacityError, SearchEngine
 from backend.security.media_headers import sanitize_media_headers
 from backend.security.public_dns import PublicMediaResolver
@@ -154,6 +157,10 @@ def _apply_client_policy(response: SearchResponse, client_id: str | None) -> Sea
     for track in response.tracks:
         source_policy = SOURCE_RIGHTS.get(track.source)
         track.rights_terms_url = source_policy.terms_url if source_policy else None
+        offline = offline_decision(track.source, provider_grant=track.offline_grant and bool(track.download_url), preview=track.is_preview, play_store_client=capabilities.is_play_store)
+        track.offline_allowed = offline.allowed
+        track.offline_reason = offline.reason
+        track.offline_url = track.download_url if offline.allowed else None
         if capabilities.is_play_store:
             track.download_url = None
             track.rights_status = "play_store_stream_only"
@@ -213,18 +220,20 @@ async def _open_safe_media(
     raise UnsafeUrl("Media redirect validation failed")
 
 
-def create_app(settings: Settings | None = None) -> FastAPI:
+def create_app(settings: Settings | None = None, *, local_audio_store: LocalAudioStore | None = None) -> FastAPI:
     settings = settings or get_settings()
     media_signer = MediaSigner(settings.media_secret, settings.media_token_ttl_seconds)
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
+        enricher = build_enricher(settings)
+        app.state.catalog = CatalogService(enricher if isinstance(enricher, MusicBrainzEnricher) else None)
         app.state.search_engine = SearchEngine(
             build_adapters(settings),
             timeout_seconds=settings.search_timeout_seconds,
             fast_timeout_seconds=settings.fast_search_timeout_seconds,
             max_limit=settings.max_limit,
-            enricher=build_enricher(settings),
+            enricher=enricher,
             cache_ttl_seconds=settings.search_cache_ttl_seconds,
             cache_max_size=settings.search_cache_max_size,
             enrichment_wait_seconds=settings.query_enrichment_wait_seconds,
@@ -251,6 +260,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             ),
         )
         yield
+        await app.state.catalog.close()
         await app.state.media_session.close()
         await app.state.search_engine.close()
         await app.state.track_details.close()
@@ -281,6 +291,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     Engine = Annotated[SearchEngine, Depends(engine)]
     register_account_routes(app, settings)
+    register_local_audio_routes(app, local_audio_store)
+    register_catalog_routes(app, settings.api_prefix)
 
     frontend_dir = Path(__file__).resolve().parents[2] / "frontend"
     project_dir = frontend_dir.parent
@@ -439,6 +451,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         response = _apply_client_policy(response, request.headers.get("x-awun-client"))
         base_url = str(request.base_url).rstrip("/")
         for track in response.tracks:
+            if track.offline_url:
+                offline_token = media_signer.sign(track.offline_url, track.request_headers, offline=True)
+                track.offline_url = f"{base_url}{settings.api_prefix}/media/{offline_token}?offline=1"
             if track.waveform_url and settings.media_proxy_enabled:
                 waveform_token = media_signer.sign(track.waveform_url)
                 track.waveform_url = f"{base_url}{settings.api_prefix}/media/{waveform_token}"
@@ -532,12 +547,16 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         token: str,
         request: Request,
         download: Annotated[bool, Query()] = False,
+        offline: Annotated[bool, Query()] = False,
         filename: Annotated[str | None, Query(max_length=160)] = None,
     ) -> StreamingResponse:
         try:
             target = media_signer.verify(token)
         except InvalidMediaToken as exc:
             raise HTTPException(403, str(exc)) from exc
+
+        if offline and (not target.offline or capabilities_for(request.headers.get("x-awun-client")).is_play_store):
+            raise HTTPException(403, "This source does not permit offline copies")
 
         outbound_headers = {
             "Accept": "*/*",
@@ -565,7 +584,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
         content_type = upstream.headers.get("content-type", "audio/mpeg")
         if _is_playlist(str(upstream.url), content_type):
-            if download:
+            if download or offline:
                 upstream.release()
                 raise HTTPException(409, "Источник предоставляет потоковый плейлист, а не скачиваемый аудиофайл")
             try:
@@ -612,6 +631,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 f"filename*=UTF-8''{quote(resolved_name)}"
             )
         for header in ("content-length", "content-range", "etag", "last-modified"):
+            if header == "content-length" and upstream.headers.get("content-encoding"):
+                continue
             if value := upstream.headers.get(header):
                 response_headers[header.title()] = value
         return StreamingResponse(

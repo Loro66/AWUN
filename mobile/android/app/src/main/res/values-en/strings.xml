@@ -13,4 +13,5 @@
     <string name="server_error">The SONGVALE server returned error %1$d.</string>
     <string name="web_error">SONGVALE could not be loaded.</string>
     <string name="app_icon_description">SONGVALE logo</string>
+    <string name="file_picker_error">The file picker could not open. Check the Files app on this device.</string>
 </resources>

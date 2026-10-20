@@ -1,16 +1,13 @@
-# SongVale 2.7.1
+# SongVale 2.8.0
 Release date: 2026-10-20
 
-Security and reliability fixes from the full project audit:
-- Reject non-public outbound media addresses, including shared-address space; sandbox any document returned by a media source.
-- Validate external download/annotation links before displaying them.
-- Upgrade aiohttp to 3.14.5 with checked dependency hashes.
-- Load fragmented account-library responses completely within the size budget.
-- Preserve library owner, dirty revision and backup-restore guards across Windows restarts; exclude disposable caches from native snapshots.
-- Separate Wave history/settings/blocked artists by owner. Preserve legacy unowned history as a guest profile.
-- Apply likes/dislikes to a recording across sources. Seeking to the end no longer records a completed listen.
-- Access rating, more/less similar and artist-block actions from Wave's fine tuning on desktop or phone.
-- Pause a rejected track if the queue has no alternative and resume when an active continuous Wave finds new music.
+- Artist and album pages, complete album saves and device-only local audio.
+- Permitted automatic offline copies after a like or three qualified listens; independent owner history and safe shared-file cleanup.
+- Unified recording cards with source choice, remembered working sources and preserved playback position.
+- Separate preparation of the next direct/local track and optional 2/4/6-second crossfades.
+- Ratings, editable preference collections and bounded continuous Wave from 2.7 remain available.
+- All 2.7.1 security and data-recovery fixes retained. Fix prepared-track cancellation, Windows settings persistence, owner changes during downloads and playback-time accounting.
 
-See [the audit report](AUDIT-2026-10-20.md) for reproductions, validation and limitations.
-The separate 2.8.0 preview in PR #64 remains unmerged and is not part of this release.
+YouTube and SoundCloud remain online; downloads require an explicit eligible source grant. Imported audio stays on this device. Store signing/distribution, physical-device behavior and the current Render deployment are not established by controlled CI tests.
+
+See [release validation](RELEASE_VALIDATION-2.8.0.md) and the [changelog](../CHANGELOG.md).

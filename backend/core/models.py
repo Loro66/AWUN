@@ -22,6 +22,11 @@ class Track(BaseModel):
     is_preview: bool = False
     stream_expires_at: int | None = Field(default=None, ge=0, description="Upstream stream expiry as Unix milliseconds")
     download_url: str | None = None
+    offline_grant: bool = Field(default=False, exclude=True)
+    offline_allowed: bool = False
+    offline_url: str | None = None
+    offline_reason: str = "provider_did_not_supply_download"
+    license_url: str | None = None
     score: float = Field(ge=0, le=100)
     thumbnail: str | None = None
     waveform_url: str | None = None

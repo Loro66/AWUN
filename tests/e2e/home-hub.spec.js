@@ -90,7 +90,7 @@ test('home search history survives reload, repeats a query and can be cleared', 
   expect(await page.evaluate(() => localStorage.getItem('awun-search-history-v1'))).toBeNull();
 });
 
-test('home shuffle builds a complete queue and artist shortcuts search by name', async ({ page }) => {
+test('home shuffle builds a complete queue and artist shortcuts open artist pages', async ({ page }) => {
   await seedHome(page, { resume: true });
   await openAwun(page);
   await page.locator('#hubShuffle').click();
@@ -102,10 +102,11 @@ test('home shuffle builds a complete queue and artist shortcuts search by name',
   await page.locator('#hubQueue').click();
   await expect(page.locator('#queueList .queue-item')).toHaveCount(5);
   await page.locator('#queueClose').click();
+  await page.route('**/api/v1/catalog/artists?**',route=>route.fulfill({json:{artists:[]}}));
   const artist = await page.locator('#hubArtists .hub-artist strong').first().textContent();
   await page.locator('#hubArtists .hub-artist').first().click();
-  await expect(page.locator('#searchInput')).toHaveValue(artist);
-  await expect(page.locator('#trackList .track').first()).toBeVisible();
+  await expect(page.locator('#collectionPage')).toBeVisible();
+  await expect(page.locator('#collectionTitle')).toHaveText(artist);
 });
 
 for (const setup of [

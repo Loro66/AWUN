@@ -1,0 +1,1 @@
+SongVale 2.8: local audio and permitted offline copies, artist and album pages, unified recordings and smooth playback. Includes owner isolation, ratings and Wave audit fixes.

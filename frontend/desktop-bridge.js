@@ -5,10 +5,10 @@
   let bridgeReady = false;
   let restoring = false;
   let syncTimer = null;
-  const transientKeys = new Set(['awun-waveforms-v1', 'awun-search-cache-v1', 'awun-runtime-log-v1']);
+  const transientKeys = new Set(['awun-waveforms-v1', 'awun-search-cache-v1', 'awun-runtime-log-v1', 'awun-catalog-cache-v1']);
   const persistentKey = key => typeof key === 'string' && (
     key.startsWith('awun-') && !transientKeys.has(key) ||
-    ['songvale-account-owner-v1', 'songvale-backup-restore-pending-v1'].includes(key) ||
+    ['songvale-account-owner-v1', 'songvale-backup-restore-pending-v1', 'songvale-source-preferences-v1', 'songvale-transitions-v1'].includes(key) ||
     key.startsWith('songvale-account-sync-')
   );
   const originalSetItem = Storage.prototype.setItem;

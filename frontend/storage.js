@@ -9,7 +9,7 @@
   const BACKUP_DATABASE = 'awun-local-backups';
   const BACKUP_STORE = 'snapshots';
   const MAX_IMPORT_BYTES = 4 * 1024 * 1024;
-  const EXCLUDED_BACKUP_KEYS = new Set(['awun-runtime-log-v1', 'awun-waveforms-v1', 'awun-search-cache-v1']);
+  const EXCLUDED_BACKUP_KEYS = new Set(['awun-runtime-log-v1', 'awun-waveforms-v1', 'awun-search-cache-v1', 'awun-catalog-cache-v1', 'awun-offline-jobs-v1','awun-offline-profiles-v2']);
   const ACCOUNT_OWNER_KEY = 'songvale-account-owner-v1';
   const RESTORE_PENDING_KEY = 'songvale-backup-restore-pending-v1';
   let lastError = null;
@@ -163,7 +163,7 @@
     const schema = envelope.schema ?? 1;
     if (!Number.isInteger(schema) || schema < 1 || schema > SCHEMA_VERSION) throw new Error('Unsupported SONGVALE backup version');
     const entries = Object.entries(envelope.data);
-    const objectKeys = new Set(['awun-visual', 'awun-line-comments-v1', 'awun-wave-profile-v2', 'awun-wave-profile-v3', 'awun-preferences-v1', 'awun-flow-profile-v1', 'awun-youtube-failures-v1', META_KEY]);
+    const objectKeys = new Set(['awun-visual', 'awun-line-comments-v1', 'awun-wave-profile-v2', 'awun-wave-profile-v3','awun-albums-v2', 'awun-preferences-v1', 'awun-flow-profile-v1', 'awun-youtube-failures-v1', META_KEY]);
     for (const [key, raw] of entries) {
       if (!key.startsWith(PREFIX) || EXCLUDED_BACKUP_KEYS.has(key) || typeof raw !== 'string') throw new Error('Invalid SONGVALE backup entry');
       if (['awun-library', 'awun-recent', 'awun-queue-v1'].includes(key)) {

@@ -23,8 +23,12 @@ test('seeking to the end does not count as listening or completion in Wave',asyn
   await page.locator('#audio').evaluate(audio=>{audio.currentTime=205;});
   const feedback=()=>page.evaluate(()=>window.awunApp.state.flow.profile.signals.filter(signal=>['listen30','complete'].includes(signal.type)).map(signal=>signal.type));
   expect(await feedback()).toEqual([]);
-  await page.clock.runFor(31_000);expect(await feedback()).toEqual(['listen30']);
-  await page.clock.runFor(142_000);expect(await feedback()).toEqual(['listen30','complete']);
+  await page.clock.runFor(31_000);expect(await feedback()).toEqual([]);
+  await page.evaluate(()=>window.awunApp.state.active.duration=40);
+  await page.evaluate(()=>document.querySelector('#audio').currentTime=0);await page.clock.runFor(1000);
+  const advance=async seconds=>{for(let i=0;i<seconds;i++){await page.evaluate(()=>document.querySelector('#audio').currentTime++);await page.clock.runFor(1000)}};
+  await advance(21);expect(await feedback()).toEqual(['listen30']);
+  await advance(12);expect(await feedback()).toEqual(['listen30','complete']);
 });
 test('untrusted backup download and annotation URLs cannot create script links',async({page})=>{
   await ready(page);

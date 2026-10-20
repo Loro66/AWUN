@@ -4,14 +4,13 @@
 
 ## Current release
 
-The published Windows version is 2.7.1. The 2.8.0 preview remains in
-[PR #64](https://github.com/Loro66/AWUN/pull/64). Its local audio, artist/release
-pages, recording grouping and continuous playback need final device validation
-before a public release.
+Version 2.8.0 integrates local audio, artist/release pages, permitted offline copies,
+recording grouping and continuous playback with the 2.7.1 audit fixes, ratings and
+preference collections. See [release validation](RELEASE_VALIDATION-2.8.0.md).
 
 ## Next work
 
-- Validate the preview on real Windows, Android and iPhone devices.
+- Validate the release on real Windows, Android and iPhone devices.
 - Check playback recovery, library preservation, updates and offline behavior.
 - Arrange Windows signing and mobile distribution before wider release.
 - Resolve provider permissions and catalog reliability for the intended commercial use.
@@ -21,10 +20,8 @@ social features are outside the current product priority.
 
 ## На русском
 
-Опубликована Windows-версия 2.7.1; тестовая 2.8.0 находится в PR #64.
-Перед её выпуском нужны проверки на реальных устройствах: воспроизведение,
-восстановление после ошибок, сохранность медиатеки, обновления и офлайн.
-
-Следующие условия расширения: подпись Windows-сборок, мобильная публикация,
-согласованная модель использования источников и надёжный каталог.
+Версия 2.8.0 объединяет собственные файлы, альбомы, разрешённый офлайн и плавное
+воспроизведение с исправлениями аудита, оценками и библиотеками предпочтений.
+Для расширения выпуска остаются физические проверки устройств, подпись сборок,
+мобильная публикация и подтверждённая модель использования источников.
 Аккаунты и социальные функции сейчас не являются приоритетом.

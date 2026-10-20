@@ -32,6 +32,7 @@ from desktop.controls import DesktopControls
 from desktop.updater import DesktopUpdater
 from desktop.player_identity import identify_youtube_embed, register_process_identity
 from desktop.network_access import DesktopNetworkAccess
+from backend.library.local_audio import LocalAudioStore
 
 
 HOST = "127.0.0.1"
@@ -43,7 +44,7 @@ TRANSIENT_DESKTOP_STATE_KEYS = {"awun-waveforms-v1", "awun-search-cache-v1", "aw
 def persistent_state_key(key: str) -> bool:
     return (
         key.startswith("awun-") and key not in TRANSIENT_DESKTOP_STATE_KEYS
-        or key in {"songvale-account-owner-v1", "songvale-backup-restore-pending-v1"}
+        or key in {"songvale-account-owner-v1", "songvale-backup-restore-pending-v1", "songvale-source-preferences-v1", "songvale-transitions-v1"}
         or key.startswith("songvale-account-sync-")
     )
 REMOTE_API_ENV = "SONGVALE_REMOTE_API_URL"
@@ -104,6 +105,10 @@ class DesktopStateBridge:
         self._controls = None
         self._updater = None
         self._network = None
+        self._local_audio = LocalAudioStore(state_path.parent / "local-music")
+
+    def local_audio_config(self) -> dict:
+        return self._local_audio.config()
 
     def desktop_status(self) -> dict:
         return self._controls.status() if self._controls else {"supported": False}
@@ -239,6 +244,7 @@ class LocalAwunServer:
     """Run FastAPI on an ephemeral loopback port for the lifetime of the window."""
 
     host: str = HOST
+    local_audio_store: LocalAudioStore | None = None
     server: uvicorn.Server | None = field(default=None, init=False)
     thread: threading.Thread | None = field(default=None, init=False)
     listener: socket.socket | None = field(default=None, init=False)
@@ -261,7 +267,7 @@ class LocalAwunServer:
             cors_origins=[self.url],
         )
         config = uvicorn.Config(
-            create_app(settings),
+            create_app(settings, local_audio_store=self.local_audio_store),
             host=self.host,
             port=port,
             loop="asyncio",
@@ -316,8 +322,8 @@ def open_local_app(window: webview.Window, runtime: LocalAwunServer) -> None:
 
 def main() -> None:
     register_process_identity()
-    runtime = LocalAwunServer()
     state_bridge = DesktopStateBridge()
+    runtime = LocalAwunServer(local_audio_store=state_bridge._local_audio)
     window = webview.create_window(
         "SONGVALE — вся музыка сходится здесь",
         html=SPLASH,

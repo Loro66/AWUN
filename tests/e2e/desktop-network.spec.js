@@ -1,5 +1,5 @@
 const {test, expect} = require('@playwright/test');
-const {installApiMocks, installMediaMocks, searchFor} = require('./fixtures');
+const { playSource,installApiMocks, installMediaMocks, searchFor} = require('./fixtures');
 
 async function openNetwork(page, options = {}) {
   await installApiMocks(page);
@@ -77,7 +77,7 @@ test('retry uses the active YouTube track and preserves its queue', async ({page
   await openNetwork(page);
   await page.locator('#themeClose').click();
   await searchFor(page,'midnight signal');
-  await page.locator('#trackList .track[data-source="youtube"]').first().locator('.play').click();
+  await playSource(page,'youtube');
   await page.evaluate(()=>{
     const app=window.awunApp;
     window.networkRetryCalls=[];

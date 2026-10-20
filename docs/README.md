@@ -19,3 +19,5 @@
 [Changelog](../CHANGELOG.md) · [Contributing](../CONTRIBUTING.md) ·
 [Security](../SECURITY.md) · [Support](../SUPPORT.md) ·
 [License](../LICENSE.md) · [EULA](../EULA.md)
+
+- [Release validation 2.8.0](RELEASE_VALIDATION-2.8.0.md) — audit closure, migration and release limits.
