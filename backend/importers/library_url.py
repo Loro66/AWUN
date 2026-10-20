@@ -205,10 +205,12 @@ async def _read_public_page(
                     raise LibraryImportError(f"Страница плейлиста вернула ошибку HTTP {response.status}.")
                 if int(response.headers.get("content-length") or 0) > 2_000_000:
                     raise LibraryImportError("Страница плейлиста слишком большая для безопасного переноса.")
-                raw = await response.content.read(2_000_001)
-                if len(raw) > 2_000_000:
-                    raise LibraryImportError("Страница плейлиста слишком большая для безопасного переноса.")
-                return raw, response.charset or "utf-8", str(response.url)
+                raw = bytearray()
+                async for chunk in response.content.iter_chunked(64 * 1024):
+                    raw.extend(chunk)
+                    if len(raw) > 2_000_000:
+                        raise LibraryImportError("Страница плейлиста слишком большая для безопасного переноса.")
+                return bytes(raw), response.charset or "utf-8", str(response.url)
     raise LibraryImportError("Не удалось безопасно открыть страницу плейлиста.")
 
 

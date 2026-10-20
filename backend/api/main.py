@@ -54,6 +54,9 @@ _PLAYLIST_CONTENT_TYPES = {
 }
 _HLS_URI_PATTERN = re.compile(r'URI="([^"]+)"')
 _MAX_HLS_MANIFEST_BYTES = 512 * 1024
+# Signed media URLs authenticate the target, not its MIME type or contents.
+# A provider's HTML/SVG must never inherit the application's origin privileges.
+_MEDIA_DOCUMENT_POLICY = "sandbox; default-src 'none'; base-uri 'none'; frame-ancestors 'none'"
 
 
 class CacheControlledStaticFiles(StaticFiles):
@@ -585,6 +588,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 headers={
                     "Cache-Control": "private, no-store",
                     "X-Content-Type-Options": "nosniff",
+                    "Content-Security-Policy": _MEDIA_DOCUMENT_POLICY,
                 },
             )
 
@@ -599,6 +603,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "Cache-Control": "private, no-store",
             "Accept-Ranges": "bytes",
             "X-Content-Type-Options": "nosniff",
+            "Content-Security-Policy": _MEDIA_DOCUMENT_POLICY,
         }
         if download:
             resolved_name = _download_filename(filename or "трек SONGVALE", content_type, str(upstream.url))

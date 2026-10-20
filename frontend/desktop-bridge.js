@@ -5,7 +5,12 @@
   let bridgeReady = false;
   let restoring = false;
   let syncTimer = null;
-  const transientKeys = new Set(['awun-waveforms-v1']);
+  const transientKeys = new Set(['awun-waveforms-v1', 'awun-search-cache-v1', 'awun-runtime-log-v1']);
+  const persistentKey = key => typeof key === 'string' && (
+    key.startsWith('awun-') && !transientKeys.has(key) ||
+    ['songvale-account-owner-v1', 'songvale-backup-restore-pending-v1'].includes(key) ||
+    key.startsWith('songvale-account-sync-')
+  );
   const originalSetItem = Storage.prototype.setItem;
   const originalRemoveItem = Storage.prototype.removeItem;
   const originalClear = Storage.prototype.clear;
@@ -14,7 +19,7 @@
     const state = {};
     for (let index = 0; index < localStorage.length; index += 1) {
       const key = localStorage.key(index);
-      if (key?.startsWith('awun-') && !transientKeys.has(key)) state[key] = localStorage.getItem(key);
+      if (persistentKey(key)) state[key] = localStorage.getItem(key);
     }
     return state;
   }
@@ -37,11 +42,11 @@
 
   Storage.prototype.setItem = function setItem(key, value) {
     originalSetItem.call(this, key, value);
-    if (this === localStorage && String(key).startsWith('awun-')) scheduleSync();
+    if (this === localStorage && persistentKey(String(key))) scheduleSync();
   };
   Storage.prototype.removeItem = function removeItem(key) {
     originalRemoveItem.call(this, key);
-    if (this === localStorage && String(key).startsWith('awun-')) scheduleSync();
+    if (this === localStorage && persistentKey(String(key))) scheduleSync();
   };
   Storage.prototype.clear = function clear() {
     originalClear.call(this);
@@ -56,7 +61,7 @@
       if (saved && typeof saved === 'object' && !sessionStorage.getItem('awun-desktop-restored')) {
         restoring = true;
         Object.entries(saved).forEach(([key, value]) => {
-          if (key.startsWith('awun-')) originalSetItem.call(localStorage, key, String(value));
+          if (persistentKey(key)) originalSetItem.call(localStorage, key, String(value));
         });
         originalSetItem.call(sessionStorage, 'awun-desktop-restored', '1');
         restoring = false;

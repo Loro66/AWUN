@@ -17,7 +17,7 @@ WebViews. The Python backend exposes the search, metadata and media APIs.
 | Search diagnostics | `backend/analytics/search_metrics.py` |
 | Media tokens, safe URLs, DNS and headers | `backend/core/media.py` and `backend/security/` |
 | Library matching | `frontend/library-matcher.js` |
-| My Wave and smart playlists | `frontend/flow.js` and `frontend/smart-playlists.js` |
+| My Wave and smart playlists | `frontend/flow.js`, `frontend/wave-profile.js` and `frontend/smart-playlists.js` |
 | Ratings and preference collection rules | `frontend/preferences.js` and `frontend/preferences-ui.js` |
 | Device storage and recovery | `frontend/storage.js` |
 | Desktop process, controls and updates | `desktop/launcher.py`, `controls.py` and `updater.py` |
@@ -84,3 +84,8 @@ recordings (1500), queued tracks (80), results (160), progress entries (128),
 signals (800) and discovery seeds (24) are bounded. Exhaustion/network failures
 stop automatic requests and expose retry. Repeats can return after the recent
 identity window expires; the system does not promise an infinite catalog.
+
+Wave feedback now uses owner-scoped `awun-wave-profile-v3` storage. Legacy
+unowned signals are retained as guest history. Playback-position events describe
+seeking; qualified listening/completion events come from accumulated playing time.
+See the [2026-10-20 audit](AUDIT-2026-10-20.md) for the security boundaries and regressions.

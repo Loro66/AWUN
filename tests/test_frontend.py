@@ -147,7 +147,7 @@ def test_flow_recommendations_are_local_persistent_and_feedback_driven() -> None
         f'data-i18n="{value}"' in html
         for value in ("familiar", "balanced", "newOnly", "mood", "activity", "language", "era")
     )
-    assert "awun-wave-profile-v2" in script
+    assert "songvaleWaveProfile" in script
     assert "candidateScore" in script and "rankCandidates" in script
     assert all(signal in script for signal in ("'play'", "'skip'", "'listen30'", "'complete'", "'like'", "'dislike'"))
     assert "primeLocalFlow" in script and "fast:true" in script and "requestSearch" in script

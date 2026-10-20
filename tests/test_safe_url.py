@@ -19,6 +19,8 @@ def test_public_https_url_is_normalized() -> None:
         "http://127.0.0.1/admin",
         "http://10.0.0.1/audio",
         "http://169.254.169.254/latest/meta-data",
+        "http://100.64.0.1/internal",
+        "http://100.127.255.254/internal",
         "http://[::1]/admin",
         "https://user:password@example.com/audio",
         "https://example.com:22/audio",

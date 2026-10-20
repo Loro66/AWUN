@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.7.1 — 2026-10-20
+
+- Close a non-public IP validation gap and sandbox all proxied media documents. Reject script schemes in download and metadata links.
+- Upgrade aiohttp to 3.14.5 with verified hashes after three dependency advisories.
+- Read complete bounded account-service responses and preserve library ownership/recovery metadata across Windows launches. Exclude regenerable search/log caches from native snapshots.
+- Scope Wave history and blocks by owner, preserve legacy guest history, and make feedback follow recording identity across sources.
+- Require qualified listening time for Wave listening/completion signals; seeking does not count as completion.
+- Make Wave feedback controls accessible in its settings on desktop and phone; pause a rejected last track when no alternative is ready.
+- Add focused regressions and document the audit, live-service limitations and the unmerged 2.8.0 preview blocker.
+
 ## 2.7.0 — 2026-10-17
 
 - Five local rating dimensions (overall, melody, vocals, rhythm, atmosphere), adjustable importance and a weighted score that ignores unrated dimensions.
