@@ -138,7 +138,7 @@ test('offline history, file lookup and clearing remain isolated across profiles 
 test('explicitly importing a cached file creates a shared device import rather than hiding it',async({page})=>{
   await setup(page);await like(page);await ready(page);await changeOwner(page,'owner-b');
   await page.locator('#localAudioInput').setInputFiles({name:'Personal.wav',mimeType:'audio/wav',buffer:wave()});
-  await expect(page.locator('#collectionStatus')).toContainText('Повторы: 1');
+  await expect(page.locator('#collectionStatus')).toContainText('Уже есть: 1');
   expect(await page.evaluate(()=>window.awunApp.localTracks().map(f=>({title:f.title,managed:!!f.managed_download})))).toEqual([{title:'Personal',managed:false}]);
 });
 test('switching owner during a download cannot publish the old copy into the new profile',async({page})=>{

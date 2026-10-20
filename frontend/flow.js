@@ -132,7 +132,9 @@
   }
   async function primeLocalFlow(){
     const local=settings().libraryId?taste.tracks(settings().libraryId):[state.active,...state.tracks,...app.libraryInventory()].filter(Boolean);
-    const ranked=rankCandidates(local);if(!ranked.length)return false;
+    const keys=new Set(local.map(engine.recordingKey));
+    const fresh=state.tracks.filter(track=>keys.has(engine.recordingKey(track)));
+    const ranked=rankCandidates([...local,...fresh]);if(!ranked.length)return false;
     state.tracks=ranked.slice(0,MAX_QUEUE);state.tracks.forEach(track=>issued.add(track));revealFlowResults();replaceQueue(state.tracks,'context');render();
     setFlowStatus('flowPlayingLocalStatus',{},'notice');setMessage(t('flowLive',{count:state.queue.length}),'notice');if(!state.active)void playTrack(state.tracks[0],{preserveQueue:true});return true;
   }

@@ -27,6 +27,11 @@ test('ready lookup cannot select the previous profile while owner change is pend
  assert.equal(manager.jobFor(job('same','owner-b').track,true),undefined);assert.deepEqual(manager.visibleFiles(),[]);
  delete global.SongvaleRecordings;
 });
+test('a queue persistence failure reports a retryable storage error and never stays downloading',async()=>{
+ const queued={...job('queued','guest'),state:'queued'};
+ const manager=Object.assign(Object.create(Manager.prototype),{profileOwner:'guest',owner:()=> 'guest',epoch:'0',generation:0,jobs:[queued],settings:{enabled:true},networkPause:()=>'',persist:()=>false,render:()=>{},running:false});
+ await manager.runQueue();assert.equal(manager.running,false);assert.equal(queued.state,'error');assert.equal(queued.error,'localStorageUnavailable');
+});
 test('a like or three plays qualifies only an eligible full recording',()=>{
  const track={source:'audius',id:'a',offline_allowed:true};
  assert.equal(eligible(track,{plays:2}),false);assert.equal(eligible(track,{plays:3}),true);assert.equal(eligible(track,{liked:true}),true);

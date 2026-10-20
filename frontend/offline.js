@@ -161,7 +161,7 @@
         while(generation===this.generation&&owner===this.owner()&&this.settings.enabled&&!this.networkPause()){
           const job=jobs.find(j=>j.state==='queued');if(!job)break;
           this.controller=new AbortController();const signal=this.controller.signal,timer=setTimeout(()=>this.controller?.abort(),120000);
-          job.state='downloading';if(!persist()){clearTimeout(timer);this.controller=null;break}this.render();
+          job.state='downloading';if(!persist()){clearTimeout(timer);this.controller=null;job.state='error';job.error='localStorageUnavailable';this.render();break}this.render();
           try{
             if(this.store.loadError)throw new Error('localStorageUnavailable');
             let track=await this.refresh(job,signal),file;
