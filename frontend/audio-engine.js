@@ -38,6 +38,7 @@
       this.context=null;this.source=null;this.input=null;this.low=null;this.high=null;
       this.compressor=null;this.limiter=null;this.output=null;this.analyser=null;
       this.timer=null;this.normalizationDb=0;this.samples=null;this.available=false;
+      this.decks=new Map();
     }
     async connect(){
       if(this.context){await this.context.resume();return this.available}
@@ -49,7 +50,7 @@
         const compressor=context.createDynamicsCompressor(),limiter=context.createDynamicsCompressor();
         const output=context.createGain(),analyser=context.createAnalyser();
         low.type='lowshelf';high.type='highshelf';analyser.fftSize=2048;analyser.smoothingTimeConstant=.78;
-        source.connect(input);input.connect(low);low.connect(high);high.connect(compressor);
+        const deck=context.createGain();source.connect(deck);deck.connect(input);this.decks.set(this.media,{source,gain:deck});input.connect(low);low.connect(high);high.connect(compressor);
         compressor.connect(limiter);limiter.connect(output);output.connect(context.destination);
         limiter.threshold.value=-1.2;limiter.knee.value=1.5;limiter.ratio.value=20;
         limiter.attack.value=.002;limiter.release.value=.09;
@@ -68,6 +69,13 @@
       this.low.frequency.value=preset.low.frequency;this.high.frequency.value=preset.high.frequency;
       move(this.low.gain,preset.low.gain);move(this.high.gain,preset.high.gain);
       for(const [key,value] of Object.entries(preset.compressor))this.compressor[key].value=value;
+    }
+    activate(media,duration=0){
+      if(!this.context)return;
+      if(!this.decks.has(media)){const source=this.context.createMediaElementSource(media),gain=this.context.createGain();gain.gain.value=0;source.connect(gain);gain.connect(this.input);this.decks.set(media,{source,gain})}
+      const now=this.context.currentTime;
+      for(const [element,deck] of this.decks){const level=element===media?1:0,param=deck.gain.gain;param.cancelScheduledValues(now);param.setValueAtTime(param.value,now);duration>0?param.linearRampToValueAtTime(level,now+duration):param.setValueAtTime(level,now)}
+      this.media=media;this.source=this.decks.get(media).source;
     }
     setEnabled(enabled,ramp=true){
       this.enabled=Boolean(enabled);if(!this.context)return;

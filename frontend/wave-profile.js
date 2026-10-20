@@ -17,7 +17,7 @@
     clean.blockedArtists = [...new Set((Array.isArray(value.blockedArtists) ? value.blockedArtists : []).filter(item => typeof item === 'string').map(item => item.trim().slice(0, 300)).filter(Boolean))].slice(-200);
     clean.signals = (Array.isArray(value.signals) ? value.signals : []).slice(-800).filter(item => item && typeof item.id === 'string' && item.id && signalTypes.includes(item.type)).map(item => ({
       id: item.id.slice(0, 250), source: String(item.source || '').slice(0, 40), title: String(item.title || '').slice(0, 300), artist: String(item.artist || '').slice(0, 300), type: item.type,
-      at: Math.max(0, Number(item.at) || 0), ...(Number.isFinite(item.progress) ? { progress: Math.min(1, Math.max(0, item.progress)) } : {}),
+      at: Math.max(0, Number(item.at) || 0), ...(Number.isFinite(item.duration) ? {duration:Math.min(86400,Math.max(0,item.duration))} : {}), ...(Number.isFinite(item.listened_seconds) ? {listened_seconds:Math.min(86400,Math.max(0,item.listened_seconds))} : {}), ...(typeof item.recording_key==='string' ? {recording_key:item.recording_key.slice(0,1000)} : {}), ...(Number.isFinite(item.progress) ? { progress: Math.min(1, Math.max(0, item.progress)) } : {}),
     }));
     return clean;
   }

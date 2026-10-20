@@ -15,6 +15,7 @@ class InvalidMediaToken(ValueError):
 class MediaTarget:
     url: str
     headers: dict[str, str]
+    offline: bool = False
 
 
 class MediaSigner:
@@ -22,13 +23,14 @@ class MediaSigner:
         self._secret = secret.encode("utf-8")
         self._ttl = ttl_seconds
 
-    def sign(self, url: str, headers: dict[str, str] | None = None, now: int | None = None) -> str:
+    def sign(self, url: str, headers: dict[str, str] | None = None, now: int | None = None, *, offline: bool = False) -> str:
         self._validate_url(url)
         payload = json.dumps(
             {
                 "url": url,
                 "headers": self._safe_headers(headers or {}),
                 "expires": (now or int(time.time())) + self._ttl,
+                **({"offline": True} if offline else {}),
             },
             separators=(",", ":"),
         ).encode("utf-8")
@@ -48,7 +50,7 @@ class MediaSigner:
                 raise InvalidMediaToken("Ссылка на аудио устарела")
             url = str(payload["url"])
             self._validate_url(url)
-            return MediaTarget(url=url, headers=self._safe_headers(payload.get("headers") or {}))
+            return MediaTarget(url=url, headers=self._safe_headers(payload.get("headers") or {}), offline=payload.get("offline") is True)
         except InvalidMediaToken:
             raise
         except (ValueError, KeyError, TypeError, json.JSONDecodeError) as exc:

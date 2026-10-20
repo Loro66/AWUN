@@ -121,7 +121,7 @@ test('Wave uses a preference collection as its local seed and continuous mode ca
     app.toggleSave(app.state.tracks.find(track => track.source === 'audius'));
     taste.store.rate(app.state.saved[0], { overall: 5 }); taste.store.updateSettings({ continuous: false, libraryId: 'taste-best', artistGap: 4 });
   });
-  let requests = 0; page.on('request', request => { if (new URL(request.url()).pathname === '/api/v1/search') requests++; });
+  let requests = 0; page.on('request', request => { if (new URL(request.url()).pathname === '/api/v1/search' && !request.postDataJSON()?.refresh) requests++; });
   await page.locator('#flowButton').click(); await page.locator('.flow-tuning summary').click();
   await expect(page.locator('#flowContinuous')).not.toBeChecked(); await expect(page.locator('#flowArtistGap')).toHaveValue('4');
   await page.locator('#flowStart').click(); await expect(page.locator('body')).toHaveClass(/flow-active/);

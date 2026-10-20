@@ -89,3 +89,16 @@ Wave feedback now uses owner-scoped `awun-wave-profile-v3` storage. Legacy
 unowned signals are retained as guest history. Playback-position events describe
 seeking; qualified listening/completion events come from accumulated playing time.
 See the [2026-10-20 audit](AUDIT-2026-10-20.md) for the security boundaries and regressions.
+
+## Device audio and profile boundaries
+
+`frontend/recordings.js` groups confident provider copies while retaining versions.
+`continuous-player.js` owns the standby deck; queue changes claim prepared playback
+before emitting the persisted queue update. Qualified listening requires playhead
+advancement and keeps owner and source-change boundaries.
+
+`local-music.js` uses IndexedDB in the browser and token/origin-protected loopback
+routes on Windows. Manual imports are shared device files. Offline jobs use
+owner profiles in `awun-offline-profiles-v2`, a clear epoch and independent job
+lifecycles; shared file hashes protect other owners during clear or eviction.
+Saved album metadata is scoped in `awun-albums-v2`; legacy unowned data stays guest.

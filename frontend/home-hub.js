@@ -11,6 +11,7 @@
   function create(options) {
     const { state, t, language, decodeText, safeImage, formatTime, sourceLabels, actions } = options;
     const storage = window.awunStorage;
+    const savedTracks = () => actions.libraryTracks?.() || state.saved;
     const $ = id => document.getElementById(id);
     const root = $('homeSections');
     const rows = new Map();
@@ -50,7 +51,7 @@
       for (const [id, entry] of rows) {
         if (!ids.has(id)) { entry.row.remove(); rows.delete(id); }
       }
-      const saved = new Set(state.saved.map(track => track.id));
+      const saved = new Set(savedTracks().map(track => track.id));
       visible.forEach((track, index) => {
         const id = String(track.id);
         let entry = rows.get(id);
@@ -85,11 +86,11 @@
       });
       $('hubRecentEmpty').hidden = visible.length > 0;
       $('hubAllRecent').hidden = visible.length === 0;
-      $('continueTitle').textContent = t(state.recents.length ? 'continueListening' : state.saved.length ? 'hubFromLibrary' : 'hubFirstListen');
+      $('continueTitle').textContent = t(state.recents.length ? 'continueListening' : savedTracks().length ? 'hubFromLibrary' : 'hubFirstListen');
     }
 
     function renderArtists() {
-      const uniqueTracks = new Map([...state.recents, ...state.saved].map(track => [track.id, track]));
+      const uniqueTracks = new Map([...state.recents, ...savedTracks()].map(track => [track.id, track]));
       const artists = new Map();
       for (const track of uniqueTracks.values()) {
         const name = decodeText(track.artist).trim();
@@ -176,18 +177,18 @@
 
     function render() {
       if (root.hidden) return;
-      recentSource = state.recents.length ? state.recents : state.saved;
+      recentSource = state.recents.length ? state.recents : savedTracks();
       resumeTrack = state.active || recentSource[0] || null;
       root.classList.toggle('has-resume', Boolean(resumeTrack));
       $('welcomeTitle').textContent = t(resumeTrack ? 'hubWelcomeBack' : 'hubWelcomeTitle');
       $('hubWelcomeBody').textContent = t(resumeTrack ? 'hubWelcomeBackBody' : 'hubWelcomeBody');
-      $('welcomeLibraryCount').textContent = state.saved.length ? t('tracksOnDevice', { count: state.saved.length }) : t(state.accountConnected ? 'hubCloudHint' : 'hubLocalHint');
+      $('welcomeLibraryCount').textContent = savedTracks().length ? t('tracksOnDevice', { count: savedTracks().length }) : t(state.accountConnected ? 'hubCloudHint' : 'hubLocalHint');
       $('hubResumeCard').hidden = !resumeTrack;
       $('hubWave').hidden = Boolean(resumeTrack);
-      $('hubSavedCount').textContent = state.saved.length;
+      $('hubSavedCount').textContent = savedTracks().length;
       $('hubRecentCount').textContent = state.recents.length;
       $('hubQueueCount').textContent = state.queue.length;
-      $('hubShuffle').disabled = !state.saved.length;
+      $('hubShuffle').disabled = !savedTracks().length;
       $('hubRecent').disabled = !state.recents.length;
       $('hubQueue').disabled = !state.queue.length;
       $('hubSourceCount').textContent = t(!state.diagnostics ? 'connecting' : 'hubSourcesCount', { count: state.sources.size });
@@ -213,7 +214,7 @@
       const playlist = event.target.closest('[data-hub-playlist]');
       if (playlist) { actions.showPlaylist(playlist.dataset.hubPlaylist); return; }
       const query = event.target.closest('[data-hub-query]');
-      if (query) { actions.search(query.dataset.hubQuery); return; }
+      if (query) { if(query.classList.contains('hub-artist')&&actions.openArtist)actions.openArtist(query.dataset.hubQuery);else actions.search(query.dataset.hubQuery); return; }
       const button = event.target.closest('[data-hub-action]');
       if (!button) return;
       const entry = rows.get(button.closest('[data-hub-track]').dataset.hubTrack);
@@ -230,7 +231,7 @@
     $('hubSources').addEventListener('click', actions.showSources);
     ['hubWave', 'hubWaveShortcut', 'hubArtistWave'].forEach(id => $(id).addEventListener('click', actions.showWave));
     $('hubShuffle').addEventListener('click', () => {
-      const shuffled = [...state.saved];
+      const shuffled = [...savedTracks()];
       for (let index = shuffled.length - 1; index > 0; index -= 1) {
         const other = Math.floor(Math.random() * (index + 1));
         [shuffled[index], shuffled[other]] = [shuffled[other], shuffled[index]];

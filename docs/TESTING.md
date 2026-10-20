@@ -9,7 +9,7 @@ standalone prototypes and their isolated tests have been removed.
 | --- | --- |
 | Python | Provider adapters, query expansion, search balancing and failures, media security, account gateway, desktop controls and packaging |
 | JavaScript | Audio engine, library matching, smart playlists, rating weights, owner isolation and collection rules |
-| Browser | Search, playback recovery, queue, import, library, ratings, continuous discovery, accounts, offline shell, mobile layouts and desktop controls |
+| Browser | Search, playback recovery, queue, import, ratings, continuous discovery, owner-scoped albums/offline, real WAV preparation/crossfades, accounts, mobile layouts and desktop controls |
 | Visual | Reviewed reference screenshots at 1920, 1280, 1000 and 390 pixels |
 | Store packaging | Current localized text and changelog, shared image dimensions and assembled Play listing |
 

@@ -1,4 +1,5 @@
 import asyncio
+import json
 from collections.abc import Iterable
 from time import monotonic
 from typing import Any, Protocol
@@ -102,12 +103,23 @@ class MusicBrainzEnricher(BasicQueryEnricher):
                 async with (await self._get_session()).get(
                     f"{self.api_url}/{path}", params=params
                 ) as response:
-                    payload = await response.json(content_type=None)
+                    if response.content_length and response.content_length > 4 * 1024 * 1024:
+                        raise RuntimeError("MusicBrainz response is too large")
+                    raw = bytearray()
+                    async for chunk in response.content.iter_chunked(64 * 1024):
+                        raw.extend(chunk)
+                        if len(raw) > 4 * 1024 * 1024:
+                            raise RuntimeError("MusicBrainz response is too large")
+                    payload = json.loads(raw)
                     if response.status != 200 or not isinstance(payload, dict):
                         raise RuntimeError(f"MusicBrainz вернул ошибку HTTP {response.status}")
                     return payload
             finally:
                 self._last_request = monotonic()
+
+    async def get_json(self, path: str, params: dict[str, str]) -> dict[str, Any]:
+        """Share the same rate limit and HTTP session with catalog browsing."""
+        return await self._get(path, params)
 
     async def expand(self, query: str, region: RegionProfile) -> list[str]:
         cache_key = (query.casefold(), region.name, region.language)
