@@ -37,7 +37,15 @@ from desktop.network_access import DesktopNetworkAccess
 HOST = "127.0.0.1"
 STARTUP_TIMEOUT_SECONDS = 25
 MAX_DESKTOP_STATE_BYTES = 4 * 1024 * 1024
-TRANSIENT_DESKTOP_STATE_KEYS = {"awun-waveforms-v1"}
+TRANSIENT_DESKTOP_STATE_KEYS = {"awun-waveforms-v1", "awun-search-cache-v1", "awun-runtime-log-v1"}
+
+
+def persistent_state_key(key: str) -> bool:
+    return (
+        key.startswith("awun-") and key not in TRANSIENT_DESKTOP_STATE_KEYS
+        or key in {"songvale-account-owner-v1", "songvale-backup-restore-pending-v1"}
+        or key.startswith("songvale-account-sync-")
+    )
 REMOTE_API_ENV = "SONGVALE_REMOTE_API_URL"
 LEGACY_REMOTE_API_ENV = "AWUN_REMOTE_API_URL"
 REMOTE_API_FILE = "remote-api.txt"
@@ -143,7 +151,7 @@ class DesktopStateBridge:
                 safe = {
                     str(key): str(value)
                     for key, value in data.items()
-                    if str(key).startswith("awun-") and str(key) not in TRANSIENT_DESKTOP_STATE_KEYS
+                    if persistent_state_key(str(key))
                 }
                 return json.dumps(safe, ensure_ascii=False)
             except (OSError, ValueError, TypeError):
@@ -161,7 +169,7 @@ class DesktopStateBridge:
         safe = {
             str(key): str(value)
             for key, value in data.items()
-            if str(key).startswith("awun-") and str(key) not in TRANSIENT_DESKTOP_STATE_KEYS
+            if persistent_state_key(str(key))
         }
         encoded = json.dumps(safe, ensure_ascii=False, separators=(",", ":"))
         if len(encoded.encode("utf-8")) > MAX_DESKTOP_STATE_BYTES:

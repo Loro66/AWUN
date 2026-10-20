@@ -266,7 +266,7 @@
         <label><span data-i18n="flowLibrary">Основа волны</span><select id="flowLibrary"></select></label>
         <label><span data-i18n="flowArtistGap">Пауза между исполнителями · треков</span><input id="flowArtistGap" type="number" min="0" max="6" step="1" value="2"></label>
         <label class="preference-check"><input id="flowContinuous" type="checkbox" checked><span data-i18n="flowContinuous">Непрерывная выдача · пополнять заранее</span></label>
-      </div><p data-i18n="flowContinuousHelp">Волна чередует запросы по твоим оценкам и предпочтениям, избегает недавних повторов. Если источники исчерпаны, появится кнопка повтора.</p><button id="flowRate" type="button" disabled data-i18n="rateTrack">ОЦЕНИТЬ ТРЕК</button></details>
+      </div><p data-i18n="flowContinuousHelp">Волна чередует запросы по твоим оценкам и предпочтениям, избегает недавних повторов. Если источники исчерпаны, появится кнопка повтора.</p><div class="flow-feedback-actions"><button id="flowRate" type="button" disabled data-i18n="rateTrack">ОЦЕНИТЬ ТРЕК</button><button id="flowLikeAction" type="button" disabled aria-pressed="false" data-i18n="moreLikeTitle">Больше похожего</button><button id="flowDislikeAction" type="button" disabled aria-pressed="false" data-i18n="lessLikeTitle">Меньше похожего</button><button id="flowBlockAction" type="button" disabled data-i18n="blockArtistTitle">Заблокировать исполнителя</button></div></details>
       <div class="flow-start-row">
         <span id="flowSeed" data-i18n="flowSeedDefault">Основа: текущий поиск или твоя медиатека</span>
         <button id="flowStart" type="button" data-i18n="startWave">ЗАПУСТИТЬ МОЮ ВОЛНУ ↗</button>
@@ -549,6 +549,7 @@
   <script src="/static/preferences.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/app.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/preferences-ui.js?v=__AWUN_VERSION__" defer></script>
+  <script src="/static/wave-profile.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/flow.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/desktop-player.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/desktop-network.js?v=__AWUN_VERSION__" defer></script>

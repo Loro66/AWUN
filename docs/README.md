@@ -7,6 +7,7 @@
 | [Development](DEVELOPMENT.md) | Local setup, checks and build entry points |
 | [Architecture](ARCHITECTURE.md) | Components, data flow and trust boundaries |
 | [Technical reference](TECHNICAL_REFERENCE.md) | API, provider configuration and deployment |
+| [Audit — 2026-10-20](AUDIT-2026-10-20.md) | Findings, fixes, reproducible checks and remaining limits |
 | [Testing](TESTING.md) | Test layers, commands and limitations |
 | [Windows](../desktop/README.md) | Desktop controls, packaging and updates |
 | [Mobile](../mobile/README.md) | Android, iPhone and native build status |

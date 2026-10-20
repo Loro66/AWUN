@@ -14,7 +14,8 @@ def public_address_records(host: str, port: int, addresses: list[tuple]) -> list
     for family, _type, _proto, _name, endpoint in addresses:
         raw_ip = endpoint[0].split("%", 1)[0]
         try:
-            public = ip_address(raw_ip).is_global
+            address = ip_address(raw_ip)
+            public = address.is_global and not address.is_multicast
         except ValueError as exc:
             raise UnsafeUrl("Media host returned an invalid address") from exc
         if not public:

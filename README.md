@@ -36,7 +36,7 @@ Windows beta builds are unsigned unless a signing certificate is configured. Sea
 
 ## Release status
 
-The published Windows release is **2.7.0**. Preview **2.8.0** is in [PR #64](https://github.com/Loro66/AWUN/pull/64) and has not been merged into the public release.
+The published Windows release is **2.7.1**. Preview **2.8.0** is in [PR #64](https://github.com/Loro66/AWUN/pull/64) and has not been merged into the public release.
 
 Preview features include artist and album pages, local audio, permitted offline copies, unified recording cards and continuous playback. Check the [changelog](CHANGELOG.md) and the relevant release before expecting a feature in your installed version.
 

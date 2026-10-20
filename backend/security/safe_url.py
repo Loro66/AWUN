@@ -24,6 +24,7 @@ def _is_forbidden_ip(host: str) -> bool:
         return False
     return any(
         (
+            not address.is_global,
             address.is_private,
             address.is_loopback,
             address.is_link_local,

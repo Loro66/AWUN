@@ -6,7 +6,10 @@
   const settings=()=>taste.profile().settings;
   const MAX_QUEUE=80,MAX_RESULTS=160,LOW_WATER=8;
   const issued=engine.createWindow(1500),queried=new Set();
-  const PROFILE_KEY='awun-wave-profile-v2';
+  const waveProfile=window.songvaleWaveProfile;
+  const profileStore=waveProfile.createStore({read:storage.readJSON,write:storage.writeJSON});
+  const currentOwner=()=>storage.readText('songvale-account-owner-v1','')||'guest';
+  let profileOwner=currentOwner();
   const moodTerms={any:'',calm:'calm mellow',energy:'energetic',focus:'focus instrumental',happy:'happy upbeat',sad:'melancholic',night:'night'};
   const activityTerms={any:'',work:'work focus',drive:'driving',training:'workout',relax:'relax'};
   const languageTerms={any:'',ru:'русская музыка',foreign:'international music',instrumental:'instrumental'};
@@ -15,12 +18,8 @@
   const flow=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
   if(ids.some(id=>!flow[id]))return;
 
-  function freshProfile(){return{version:2,discovery:'balanced',mood:'any',activity:'any',language:'any',era:'any',blockedArtists:[],signals:[]}}
-  function loadProfile(){
-    const value=storage?.readJSON?.(PROFILE_KEY,null)||storage?.readJSON?.('awun-flow-profile-v1',null);if(!value||!Array.isArray(value.signals))return freshProfile();
-    return{version:2,discovery:['familiar','balanced','new'].includes(value.discovery)?value.discovery:'balanced',mood:moodTerms[value.mood]!==undefined?value.mood:'any',activity:activityTerms[value.activity]!==undefined?value.activity:'any',language:languageTerms[value.language]!==undefined?value.language:'any',era:eraTerms[value.era]!==undefined?value.era:'any',blockedArtists:Array.isArray(value.blockedArtists)?value.blockedArtists.slice(-200):[],signals:value.signals.slice(-800)};
-  }
-  const profile=loadProfile();
+  const freshProfile=waveProfile.fresh;
+  const profile=profileStore.get(profileOwner);
   state.flow={generation:0,active:false,fetching:false,exhausted:false,queueEnded:false,statusKey:'flowReadyStatus',statusValues:{},statusTone:'idle',baseQuery:'',queryCursor:0,discoverySeeds:[],controller:null,seen:new Set(),progress:new Map(),profile};
 
   function setFlowStatus(key,values={},tone='notice'){
@@ -28,27 +27,33 @@
   }
 
   let profileSaveTimer=null;
-  function flushProfile(){clearTimeout(profileSaveTimer);profileSaveTimer=null;storage?.writeJSON?.(PROFILE_KEY,profile)}
+  function flushProfile(){clearTimeout(profileSaveTimer);profileSaveTimer=null;const saved=profileStore.save(profileOwner,profile);if(!saved)setMessage(t('storageSaveFailed'),'error');return saved}
+  function syncProfileOwner(){
+    const owner=currentOwner();if(owner===profileOwner)return;
+    flushProfile();profileOwner=owner;Object.assign(profile,profileStore.get(owner));
+    state.flow.seen.clear();state.flow.progress.clear();state.flow.discoverySeeds=[];issued.clear();queried.clear();stopFlow(true);
+  }
   function saveProfile(defer=false){if(defer){if(!profileSaveTimer)profileSaveTimer=setTimeout(flushProfile,180)}else flushProfile();updateFlowUi()}
   window.addEventListener('pagehide',flushProfile);
   function trackSnapshot(track){return{id:String(track?.id||''),title:decodeText(track?.title||''),artist:decodeText(track?.artist||''),source:String(track?.source||''),at:Date.now()}}
   function record(type,track,extra={}){
-    if(!track?.id)return;
+    syncProfileOwner();if(!track?.id)return;
     const last=profile.signals.at(-1);if(last&&last.type===type&&last.id===track.id&&Date.now()-last.at<1500)return;
     profile.signals.push({...trackSnapshot(track),type,...extra});profile.signals=profile.signals.slice(-800);saveProfile(type!=='like'&&type!=='dislike');
   }
-  function signalsFor(track){const id=String(track?.id||''),artist=matchText(track?.artist);return profile.signals.filter(signal=>signal.id===id||(!signal.id&&artist&&matchText(signal.artist)===artist))}
+  function signalsFor(track){const key=engine.recordingKey(track);return profile.signals.filter(signal=>engine.recordingKey(signal)===key)}
   function latestReaction(track){return[...signalsFor(track)].reverse().find(signal=>signal.type==='like'||signal.type==='dislike')?.type||''}
-  function knownIds(){return new Set([...profile.signals.map(signal=>signal.id),...state.saved.map(track=>track.id)].filter(Boolean))}
-  function dislikedIds(){const reactions=new Map();for(const signal of profile.signals)if(signal.type==='like'||signal.type==='dislike')reactions.set(signal.id,signal.type);return new Set([...reactions].filter(([,type])=>type==='dislike').map(([id])=>id))}
+  function knownIds(){return new Set([...profile.signals,...state.saved].map(engine.recordingKey))}
+  function dislikedRecordings(){return new Set([...waveProfile.reactions(profile.signals)].filter(([,type])=>type==='dislike').map(([key])=>key))}
   function blockedArtists(){return new Set(profile.blockedArtists.map(matchText).filter(Boolean))}
   function positiveSeeds(){
     const collection=settings().libraryId,inventory=collection?taste.tracks(collection):app.libraryInventory();
     const allowed=collection?new Set(inventory.map(engine.recordingKey)):null;
     const rated=Object.values(taste.profile().ratings).filter(entry=>(engine.score(entry.values,settings().weights)||0)>=3.5).sort((a,b)=>engine.score(b.values,settings().weights)-engine.score(a.values,settings().weights)).map(entry=>entry.track);
-    const liked=[...profile.signals].reverse().filter(signal=>signal.type==='like'||signal.type==='complete');
+    const rejected=dislikedRecordings(),blocked=blockedArtists();
+    const liked=[...profile.signals].reverse().filter(signal=>(signal.type==='like'||signal.type==='complete')&&!rejected.has(engine.recordingKey(signal))&&!blocked.has(matchText(signal.artist)));
     const unique=new Map();
-    [...rated,...liked,...inventory,state.active].filter(Boolean).forEach(item=>{const key=engine.recordingKey(item);if(item.id&&(!allowed||allowed.has(key))&&!unique.has(key))unique.set(key,item)});
+    [...rated,...liked,...inventory,state.active].filter(Boolean).forEach(item=>{const key=engine.recordingKey(item);if(item.id&&!rejected.has(key)&&!blocked.has(matchText(item.artist))&&(!allowed||allowed.has(key))&&!unique.has(key))unique.set(key,item)});
     return [...unique.values()].slice(0,16);
   }
   function artistAffinity(){
@@ -62,14 +67,14 @@
   }
   function stableNoise(track){let hash=2166136261;for(const char of `${track.id}:${profile.signals.length}`){hash^=char.charCodeAt(0);hash=Math.imul(hash,16777619)}return((hash>>>0)%1000)/100}
   function scoringContext(){
-    const reactions=new Map();for(const signal of profile.signals){if(signal.id&&(signal.type==='like'||signal.type==='dislike'))reactions.set(signal.id,signal.type)}
-    return{known:knownIds(),saved:new Set(state.saved.map(track=>track.id)),reactions,artists:artistAffinity(),sources:sourceAffinity(),collectionArtists:new Set((settings().libraryId?taste.tracks(settings().libraryId):[]).map(track=>matchText(track.artist)))};
+    const reactions=waveProfile.reactions(profile.signals);
+    return{known:knownIds(),saved:new Set(state.saved.map(engine.recordingKey)),reactions,artists:artistAffinity(),sources:sourceAffinity(),collectionArtists:new Set((settings().libraryId?taste.tracks(settings().libraryId):[]).map(track=>matchText(track.artist)))};
   }
   function candidateScore(track,context=scoringContext()){
-    const known=context.known.has(track.id),reaction=context.reactions.get(track.id)||'',artist=matchText(track.artist);let score=Number(track.score)||50;
+    const key=engine.recordingKey(track),known=context.known.has(key),reaction=context.reactions.get(key)||'',artist=matchText(track.artist);let score=Number(track.score)||50;
     score+=Math.max(-100,Math.min(100,context.artists.get(artist)||0))+Math.max(-30,Math.min(30,context.sources.get(track.source)||0))+stableNoise(track);
     const rating=taste.score(track);if(rating!==null)score+=(rating-3)*35;if(context.collectionArtists.has(artist))score+=45;
-    if(context.saved.has(track.id))score+=42;
+    if(context.saved.has(key))score+=42;
     if(reaction==='like')score+=70;if(reaction==='dislike')score-=1000;
     score+=profile.discovery==='familiar'?(known?34:-4):profile.discovery==='new'?(known?-55:26):(known?8:12);
     if(state.active&&artist&&artist===matchText(state.active.artist))score+=profile.discovery==='familiar'?24:profile.discovery==='new'?-22:8;
@@ -77,9 +82,9 @@
     if(state.flow.seen.has(track.id))score-=160;return score;
   }
   function rankCandidates(candidates,{allowIssued=false}={}){
-    const blocked=dislikedIds(),blockedArtistKeys=blockedArtists(),context=scoringContext(),unique=new Map();
+    const blocked=dislikedRecordings(),blockedArtistKeys=blockedArtists(),context=scoringContext(),unique=new Map();
     for(const track of candidates){
-      if(!track?.id||!track.stream_url||blocked.has(track.id)||blockedArtistKeys.has(matchText(track.artist))||track.source==='yandex_music'||taste.values(track).overall===1)continue;
+      if(!track?.id||!track.stream_url||blocked.has(engine.recordingKey(track))||blockedArtistKeys.has(matchText(track.artist))||track.source==='yandex_music'||taste.values(track).overall===1)continue;
       if(!allowIssued&&issued.has(track))continue;
       const key=engine.recordingKey(track);if(!unique.has(key))unique.set(key,track);
     }
@@ -182,6 +187,7 @@
   function openPanel(){flow.flowPanel.hidden=false;flow.flowButton.setAttribute('aria-expanded','true');document.body.classList.add('flow-screen-open');flow.flowPanel.classList.add('open');updateFlowUi()}
   function closePanel(){flow.flowPanel.classList.remove('open');flow.flowButton.setAttribute('aria-expanded','false');document.body.classList.remove('flow-screen-open');flow.flowPanel.hidden=true}
   function updateFlowUi(){
+    syncProfileOwner();
     const badge=state.flow.fetching||state.flow.active&&state.flow.statusTone==='loading'?'flowBadgeSearching':state.flow.exhausted?(state.flow.statusTone==='error'?'flowBadgeError':state.flow.statusKey==='flowNoRecommendations'?'flowBadgeEmpty':'flowBadgeExhausted'):state.flow.active?'live':'ready';
     flow.flowBadge.textContent=t(badge);flow.flowButton.dataset.waveState=badge;flow.flowButton.setAttribute('aria-label',`${t('wave')} · ${t(badge)}`);flow.flowStatus.textContent=t(state.flow.statusKey,state.flow.statusValues);flow.flowStatusCard.dataset.tone=state.flow.statusTone;flow.sidebarWaveStatus.textContent=flow.flowStatus.textContent;flow.sidebarWaveStatus.hidden=state.flow.statusTone==='idle'&&!state.flow.active&&!state.flow.exhausted;flow.sidebarWaveStatus.dataset.tone=state.flow.statusTone;flow.flowRetry.hidden=!state.flow.active||!state.flow.exhausted;
     const more=document.getElementById('flowMore');if(more){more.hidden=!state.flow.active||state.library||!settings().continuous;more.disabled=state.flow.fetching||state.queue.length>=MAX_QUEUE;more.textContent=t(state.flow.exhausted?'flowRetry':'flowMore')}
@@ -189,22 +195,25 @@
     flow.flowMood.value=profile.mood;flow.flowActivity.value=profile.activity;flow.flowLanguage.value=profile.language;flow.flowEra.value=profile.era;flow.flowDiscovery.querySelectorAll('[data-flow-discovery]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.flowDiscovery===profile.discovery)));
     const seed=state.active?[decodeText(state.active.artist),decodeText(state.active.title)].filter(Boolean).join(' — '):ui.searchInput.value.trim()||positiveSeeds()[0]?.artist||t('currentSearchOrLibrary');flow.flowSeed.textContent=t('flowSeed',{seed});
     const reaction=state.active?latestReaction(state.active):'';flow.flowLike.classList.toggle('active',reaction==='like');flow.flowDislike.classList.toggle('active',reaction==='dislike');
+    for(const id of ['flowLikeAction','flowDislikeAction','flowBlockAction'])document.getElementById(id).disabled=!state.active;document.getElementById('flowLikeAction').setAttribute('aria-pressed',String(reaction==='like'));document.getElementById('flowDislikeAction').setAttribute('aria-pressed',String(reaction==='dislike'));
   }
   function likeCurrent(){if(!state.active)return;record('like',state.active);if(!state.saved.some(track=>track.id===state.active.id))toggleSave(state.active);updateFlowUi();setMessage(t('liked'),'notice')}
   function dislikeCurrent(){
     if(!state.active)return;const rejected=state.active;record('dislike',rejected);state.tracks=state.tracks.filter(track=>engine.recordingKey(track)!==engine.recordingKey(rejected));
-    replaceQueue(rankCandidates(state.queue.filter(track=>engine.recordingKey(track)!==engine.recordingKey(rejected)),{allowIssued:true}),'context');const next=state.queue[0];render();if(next)void playTrack(next,{preserveQueue:true});if(state.flow.active&&settings().continuous)void fillFlow(false);setMessage(t('disliked'),'notice')
+    replaceQueue(rankCandidates(state.queue.filter(track=>engine.recordingKey(track)!==engine.recordingKey(rejected)),{allowIssued:true}),'context');const next=state.queue[0];render();if(next)void playTrack(next,{preserveQueue:true});else{app.pausePlayback();if(state.flow.active)state.flow.queueEnded=true}if(state.flow.active&&settings().continuous){state.flow.exhausted=false;void fillFlow(false)}setMessage(t('disliked'),'notice')
   }
   function blockCurrentArtist(){
     if(!state.active?.artist)return;const artist=decodeText(state.active.artist),key=matchText(artist);if(!key||profile.blockedArtists.some(value=>matchText(value)===key))return;
-    profile.blockedArtists.push(artist);saveProfile();state.tracks=state.tracks.filter(track=>matchText(track.artist)!==key);replaceQueue(rankCandidates(state.queue,{allowIssued:true}),'context');const next=state.queue[0];render();if(next)void playTrack(next,{preserveQueue:true});if(state.flow.active&&settings().continuous)void fillFlow(false);setMessage(t('artistBlocked',{artist}),'notice');
+    profile.blockedArtists.push(artist);saveProfile();state.tracks=state.tracks.filter(track=>matchText(track.artist)!==key);replaceQueue(rankCandidates(state.queue,{allowIssued:true}),'context');const next=state.queue[0];render();if(next)void playTrack(next,{preserveQueue:true});else{app.pausePlayback();if(state.flow.active)state.flow.queueEnded=true}if(state.flow.active&&settings().continuous){state.flow.exhausted=false;void fillFlow(false)}setMessage(t('artistBlocked',{artist}),'notice');
   }
   function trackProgress({track=state.active,current,duration}={}){
     if(!track||!duration||!Number.isFinite(current))return;
-    const ratio=current/duration,previous=state.flow.progress.get(track.id)||0;state.flow.progress.set(track.id,Math.max(previous,ratio));if(ratio>=.3&&previous<.3)record('listen30',track,{progress:.3});if(ratio>=.8&&previous<.8)record('complete',track,{progress:.8});
+    state.flow.progress.set(track.id,Math.max(0,Math.min(1,current/duration)));
+    if(state.flow.progress.size>128)state.flow.progress.delete(state.flow.progress.keys().next().value);
   }
 
   flow.flowButton.addEventListener('click',()=>flow.flowPanel.hidden?openPanel():closePanel());flow.flowClose.addEventListener('click',closePanel);flow.flowStart.addEventListener('click',startFlow);flow.flowRetry.addEventListener('click',retryFlow);flow.flowLike.addEventListener('click',likeCurrent);flow.flowDislike.addEventListener('click',dislikeCurrent);flow.flowBlockArtist.addEventListener('click',blockCurrentArtist);
+  document.getElementById('flowLikeAction').addEventListener('click',likeCurrent);document.getElementById('flowDislikeAction').addEventListener('click',dislikeCurrent);document.getElementById('flowBlockAction').addEventListener('click',blockCurrentArtist);
   flow.flowMood.addEventListener('change',()=>{profile.mood=flow.flowMood.value;saveProfile();refreshFlow()});flow.flowActivity.addEventListener('change',()=>{profile.activity=flow.flowActivity.value;saveProfile();refreshFlow()});
   flow.flowLanguage.addEventListener('change',()=>{profile.language=flow.flowLanguage.value;saveProfile();refreshFlow()});flow.flowEra.addEventListener('change',()=>{profile.era=flow.flowEra.value;saveProfile();refreshFlow()});
   flow.flowDiscovery.addEventListener('click',event=>{const button=event.target.closest('[data-flow-discovery]');if(!button)return;profile.discovery=button.dataset.flowDiscovery;saveProfile();refreshFlow()});
@@ -215,7 +224,7 @@
     record('play',track);updateFlowUi();
     if(state.flow.active&&settings().continuous&&state.queue.length<=LOW_WATER)void fillFlow(false);
   });
-  document.addEventListener('awun:skip',event=>{const track=event.detail.track;if(!track)return;record('skip',track,{progress:Math.round((state.flow.progress.get(track.id)||0)*100)/100})});document.addEventListener('awun:complete',event=>record('complete',event.detail.track,{progress:1}));document.addEventListener('awun:library',updateFlowUi);
+  document.addEventListener('awun:skip',event=>{const track=event.detail.track;if(!track)return;record('skip',track,{progress:Math.round((state.flow.progress.get(track.id)||0)*100)/100})});document.addEventListener('awun:qualified-listen',event=>record('listen30',event.detail.track));document.addEventListener('awun:qualified-complete',event=>record('complete',event.detail.track,{progress:.8}));document.addEventListener('awun:library',updateFlowUi);
   document.addEventListener('awun:queue-ended',()=>{if(!state.flow.active)return;if(!settings().continuous){stopFlow(true);return}state.flow.queueEnded=true;if(!state.flow.fetching&&!state.flow.exhausted){void fillFlow(false);return}if(state.flow.exhausted){setFlowStatus('flowQueueEnded',{},'empty');setMessage(t('flowQueueEnded'),'notice')}});
   document.addEventListener('awun:language',updateFlowUi);
   document.addEventListener('songvale:preferences',()=>{if(state.flow.active)refreshFlow()});
@@ -223,6 +232,9 @@
   window.addEventListener('scroll',()=>{if(scrollFrame||!state.flow.active||!settings().continuous||state.library||!flow.flowPanel.hidden)return;scrollFrame=requestAnimationFrame(()=>{scrollFrame=null;const bounds=document.getElementById('flowMore').getBoundingClientRect();if(bounds.top>innerHeight+400)return;if((state.visibleTrackLimit||60)<state.tracks.length){state.visibleTrackLimit=Math.min(MAX_RESULTS,(state.visibleTrackLimit||60)+30);render()}else if(state.queue.length<40)void fillFlow(false)})},{passive:true});
   document.getElementById('flowMore')?.addEventListener('click',()=>state.flow.exhausted?retryFlow():fillFlow(false));
   document.addEventListener('awun:render',updateFlowUi);
+  document.addEventListener('awun:account-owner',updateFlowUi);
+  window.addEventListener('storage',event=>{if(event.key===waveProfile.KEY||event.key===null){if(event.key!==null)syncProfileOwner();clearTimeout(profileSaveTimer);profileSaveTimer=null;profileStore.reload();profileOwner=currentOwner();Object.assign(profile,profileStore.get(profileOwner));if(event.key===null)stopFlow(true);else updateFlowUi()}else if(event.key==='songvale-account-owner-v1')updateFlowUi()});
+  window.addEventListener('awun:storage-restored',()=>{clearTimeout(profileSaveTimer);profileSaveTimer=null;profileStore.reload();profileOwner=currentOwner();Object.assign(profile,profileStore.get(profileOwner));stopFlow(true)});
   document.addEventListener('awun:search',()=>{if(state.flow.active)stopFlow(true)});
   document.addEventListener('awun:progress',event=>trackProgress(event.detail));updateFlowUi();
 })();

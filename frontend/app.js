@@ -253,6 +253,7 @@ ui.importFailed=$('importFailed');
 const accountOwnerKey='songvale-account-owner-v1';
 const accountSyncKey=id=>`songvale-account-sync-${id}`;
 const backupRestoreKey='songvale-backup-restore-pending-v1';
+function setAccountOwner(id){const saved=id?writeStoredText(accountOwnerKey,id,{backup:false}):removeStored(accountOwnerKey);if(saved!==false)emitAwun('account-owner');return saved}
 let accountUser=null,accountAvailable=false,accountStatusKey='accountChecking',accountChoice=null,accountRevision=0,accountDirty=false,accountGeneration=0,accountTimer=null,accountBusy=false,accountRetryMs=2000,accountSyncedSignature='',accountEpoch=0;
 let lastAccountRefresh=0;
 let portablePending=null,portableStatusKey='';
@@ -407,11 +408,11 @@ async function connectAccount(user){
     else if(owner===user.id&&accountDirty){
       accountRevision=Number.isInteger(metadata.revision)?metadata.revision:0;
       if(accountRevision!==remote.revision&&sameAccountCopy(remote,local)){
-        accountRevision=remote.revision;accountDirty=false;accountSyncedSignature=librarySignature(local);writeStoredText(accountOwnerKey,user.id,{backup:false});saveAccountMetadata();accountStatus('accountSignedIn');
+        accountRevision=remote.revision;accountDirty=false;accountSyncedSignature=librarySignature(local);setAccountOwner(user.id);saveAccountMetadata();accountStatus('accountSignedIn');
       }else if(accountRevision!==remote.revision)accountChoice='conflict';
-      else{writeStoredText(accountOwnerKey,user.id,{backup:false});saveAccountMetadata();syncAfterConnect=true}
+      else{setAccountOwner(user.id);saveAccountMetadata();syncAfterConnect=true}
     }else if(applyAccountCopy(remote)){
-      writeStoredText(accountOwnerKey,user.id,{backup:false});
+      setAccountOwner(user.id);
       accountSyncedSignature=librarySignature(accountCopy());saveAccountMetadata();accountStatus('accountSignedIn');
     }
     if(accountChoice)accountStatus(accountChoice==='restore'?'accountRestoreChoice':accountChoice==='conflict'?'accountConflict':accountChoice==='other'?'accountOtherChoice':'accountGuestChoice');
@@ -469,7 +470,7 @@ ui.accountMerge.addEventListener('click',async()=>{
     const remote=await accountRequest('library');
     if(epoch!==accountEpoch)return;
     if(!applyAccountCopy(mergeAccountCopies(remote,localAccountCopy())))return;
-    accountRevision=remote.revision;accountChoice=null;writeStoredText(accountOwnerKey,accountUser.id,{backup:false});
+    accountRevision=remote.revision;accountChoice=null;setAccountOwner(accountUser.id);
     accountDirty=true;accountGeneration++;saveAccountMetadata();renderAccountStatus();await syncAccount(prior==='restore');
     if(prior==='restore'&&restorePending()&&!accountChoice){accountChoice='restore';accountStatus('accountRestoreChoice');renderAccountStatus()}
   }catch(error){if(epoch!==accountEpoch)return;accountChoice=prior;accountStatus(error.message==='accountLimit'?'accountLimit':'accountSyncFailed');renderAccountStatus()}
@@ -483,7 +484,7 @@ ui.accountUseCloud.addEventListener('click',async()=>{
     if(!applyAccountCopy(remote))return;
     accountRevision=remote.revision;accountDirty=false;accountChoice=null;
     accountSyncedSignature=librarySignature(accountCopy());
-    writeStoredText(accountOwnerKey,accountUser.id,{backup:false});saveAccountMetadata();clearRestorePending();accountStatus('accountSignedIn');renderAccountStatus();
+    setAccountOwner(accountUser.id);saveAccountMetadata();clearRestorePending();accountStatus('accountSignedIn');renderAccountStatus();
   }catch{if(epoch===accountEpoch)accountStatus('accountSyncFailed')}
 });
 async function leaveAccount(deleteAccount=false){
@@ -508,7 +509,7 @@ async function leaveAccount(deleteAccount=false){
     state.recents=[];persistRecents();state.queue=[];persistQueue();
     latestImportReport=null;removeStored('songvale-import-session-v1');
     accountUser=null;accountRevision=0;accountDirty=false;accountChoice=null;accountSyncedSignature='';
-    removeStored(accountOwnerKey);removeStored(accountSyncKey(user.id));
+    setAccountOwner('');removeStored(accountSyncKey(user.id));
     const backupCleared=await storage?.backupNow?.();
     accountStatus(libraryCleared&&playlistsCleared&&backupCleared!==false?'accountGuestStatus':'accountLocalCleanupFailed');renderAccountStatus();
   }catch{accountStatus('accountError')}
@@ -1481,7 +1482,7 @@ function createTrackRow(track,index,saved=selectedIds()){
     const story=document.createElement('button');story.className='story-button';story.type='button';story.textContent=t(state.expanded===track.id?'close':'story');story.setAttribute('aria-expanded',String(state.expanded===track.id));story.onclick=event=>{event.stopPropagation();toggleStory(track)};actions.append(story);
     const save=document.createElement('button');save.className=`save ${saved.has(track.id)?'saved':''}`;save.type='button';save.textContent=t(saved.has(track.id)?'saved':'addLibrary');save.onclick=event=>{event.stopPropagation();toggleSave(track)};actions.append(save);
     const queueMenu=document.createElement('details');queueMenu.className='track-queue-menu';const queueSummary=document.createElement('summary');queueSummary.textContent=t('queue');queueSummary.setAttribute('aria-label',t('queueActionsAria',{track:decodeText(track.title)}));const queueOptions=document.createElement('div');const playNext=document.createElement('button');playNext.type='button';playNext.textContent=t('playNext');playNext.onclick=event=>{event.stopPropagation();queueTrack(track,'next');queueMenu.open=false};const addQueue=document.createElement('button');addQueue.type='button';addQueue.textContent=t('addToQueue');addQueue.onclick=event=>{event.stopPropagation();queueTrack(track,'end');queueMenu.open=false};const rate=document.createElement('button');rate.type='button';rate.dataset.rateTrack='true';rate.textContent=t('rateTrack');rate.onclick=event=>{event.stopPropagation();queueMenu.open=false;document.dispatchEvent(new CustomEvent('songvale:rate',{detail:{track}}))};queueOptions.append(rate,playNext,addQueue);queueMenu.append(queueSummary,queueOptions);queueMenu.addEventListener('toggle',()=>{row.classList.toggle('queue-menu-open',queueMenu.open);if(!queueMenu.open){queueMenu.classList.remove('opens-up');return}queueOptions.querySelectorAll('.playlist-option,.playlist-option-label').forEach(node=>node.remove());if(state.playlists.length){const label=document.createElement('span');label.className='playlist-option-label';label.textContent=t('playlistMenuTitle');queueOptions.append(label);state.playlists.forEach(list=>{const option=document.createElement('button');option.className='playlist-option';option.type='button';const included=list.items.some(item=>trackSessionKey(item.track)===trackSessionKey(track));option.textContent=`${included?'✓ ':''}${list.name}`;option.setAttribute('aria-label',t(included?'removeFromPlaylistAria':'addToPlaylistAria',{name:list.name,track:decodeText(track.title)}));option.onclick=event=>{event.stopPropagation();queueMenu.open=false;togglePlaylistTrack(list.id,track)};queueOptions.append(option)})}document.querySelectorAll('.track-queue-menu[open]').forEach(menu=>{if(menu!==queueMenu)menu.open=false});requestAnimationFrame(()=>{const boundary=ui.results.getBoundingClientRect(),options=queueOptions.getBoundingClientRect();queueMenu.classList.toggle('opens-up',options.bottom>boundary.bottom-8)})});actions.append(queueMenu);
-    if(track.download_url&&!playStoreMode){const download=document.createElement('a');download.className='download';download.href=track.download_url;download.download='';download.rel='noopener';download.textContent=t('download');download.onclick=event=>event.stopPropagation();actions.append(download)}
+    if(safeImage(track.download_url)&&!playStoreMode){const download=document.createElement('a');download.className='download';download.href=safeImage(track.download_url);download.download='';download.rel='noopener';download.textContent=t('download');download.onclick=event=>event.stopPropagation();actions.append(download)}
     const catalog=document.createElement('div');catalog.className='catalog-links';
     [['spotify','SPOTIFY'],['apple_music','APPLE'],['yandex_music','YANDEX']].forEach(([provider,label])=>{const href=safeImage(track.catalog_links?.[provider]);if(!href)return;const link=document.createElement('a');link.className='catalog-link';link.href=href;link.target='_blank';link.rel='noopener noreferrer';link.textContent=`${label} ↗`;link.setAttribute('aria-label',t('findCatalogAria',{title:decodeText(track.title),source:label}));catalog.append(link)});
     if(catalog.childElementCount)actions.append(catalog);
@@ -1524,12 +1525,12 @@ function renderStory(track){
     const text=document.createElement('button');text.type='button';text.className='lyric-text';text.textContent=decodeText(line.text);text.setAttribute('aria-expanded',String(open));text.onclick=()=>toggleLine(track,line);
     const count=document.createElement('button');count.type='button';count.className='annotation-count';count.textContent=`${(line.annotations?.length||0)+comments.length}`;count.setAttribute('aria-label',t('commentCount',{count:(line.annotations?.length||0)+comments.length}));count.onclick=()=>toggleLine(track,line);row.append(time,text,count);
     if(open){const thread=document.createElement('div');thread.className='line-thread';
-      (line.annotations||[]).forEach(annotation=>{const item=document.createElement('blockquote');const body=document.createElement('p');body.textContent=decodeText(annotation.text);const footer=document.createElement('footer');const by=document.createElement('span');by.textContent=`GENIUS${annotation.author?` · ${decodeText(annotation.author)}`:''}${annotation.votes?` · ${t('votes',{count:annotation.votes})}`:''}`;footer.append(by);if(annotation.url){const link=document.createElement('a');link.href=annotation.url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=t('open');footer.append(link)}item.append(body,footer);thread.append(item)});
+      (line.annotations||[]).forEach(annotation=>{const item=document.createElement('blockquote');const body=document.createElement('p');body.textContent=decodeText(annotation.text);const footer=document.createElement('footer');const by=document.createElement('span');by.textContent=`GENIUS${annotation.author?` · ${decodeText(annotation.author)}`:''}${annotation.votes?` · ${t('votes',{count:annotation.votes})}`:''}`;footer.append(by);if(safeImage(annotation.url)){const link=document.createElement('a');link.href=safeImage(annotation.url);link.target='_blank';link.rel='noopener noreferrer';link.textContent=t('open');footer.append(link)}item.append(body,footer);thread.append(item)});
       comments.forEach(comment=>{const item=document.createElement('blockquote');item.className='local-comment';const body=document.createElement('p');body.textContent=comment.text;const footer=document.createElement('footer');const by=document.createElement('span');by.textContent=t('yourNote');const remove=document.createElement('button');remove.type='button';remove.textContent=t('delete');remove.onclick=()=>removeLineComment(track,line,comment.id);footer.append(by,remove);item.append(body,footer);thread.append(item)});
       const form=document.createElement('form');form.className='line-comment-form';const input=document.createElement('input');input.maxLength=500;input.placeholder=t('addNotePlaceholder');input.setAttribute('aria-label',t('addNoteAria'));const submit=document.createElement('button');submit.type='submit';submit.textContent=t('add');form.append(input,submit);form.onsubmit=event=>{event.preventDefault();addLineComment(track,line,input.value)};thread.append(form);row.append(thread)}
     lyrics.append(row)
   });panel.append(lyrics);
-  const footer=document.createElement('footer');footer.className='story-footer';const attribution=document.createElement('span');attribution.textContent=t('lyricsNotice');footer.append(attribution);if(details.genius_url){const link=document.createElement('a');link.href=details.genius_url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=t('viewGenius');footer.append(link)}panel.append(footer);return panel;
+  const footer=document.createElement('footer');footer.className='story-footer';const attribution=document.createElement('span');attribution.textContent=t('lyricsNotice');footer.append(attribution);if(safeImage(details.genius_url)){const link=document.createElement('a');link.href=safeImage(details.genius_url);link.target='_blank';link.rel='noopener noreferrer';link.textContent=t('viewGenius');footer.append(link)}panel.append(footer);return panel;
 }
 
 async function loadStory(track){
@@ -1701,16 +1702,17 @@ function setPlaying(playing){
   ui.playPause.querySelector('span').textContent=next?'Ⅱ':'▶';ui.playPause.setAttribute('aria-label',t(next?'pauseAria':'playAria'));document.body.classList.toggle('is-playing',next);ui.player.classList.toggle('is-playing',next);syncTrackPlayback();
 }
 
-let listeningSession={generation:-1,seconds:0,counted:false,at:performance.now()};
+let listeningSession={generation:-1,seconds:0,counted:false,completed:false,at:performance.now()};
 setInterval(()=>{
   const now=performance.now(),elapsed=Math.min(5,Math.max(0,(now-listeningSession.at)/1000));listeningSession.at=now;
-  if(listeningSession.generation!==state.playbackGeneration)listeningSession={generation:state.playbackGeneration,seconds:0,counted:false,at:now};
+  if(listeningSession.generation!==state.playbackGeneration)listeningSession={generation:state.playbackGeneration,seconds:0,counted:false,completed:false,at:now};
   if(!state.active||!state.isPlaying||state.restoredPlayback)return;
   listeningSession.seconds+=elapsed;
   const duration=Number(state.active.duration)||60,threshold=Math.min(30,Math.max(1,duration/2));
   if(!listeningSession.counted&&listeningSession.seconds>=threshold){
-    if(saveListeningMetadata(smartPlaylists.record(listeningMetadata(),state.active))){listeningSession.counted=true;if(state.library)render()}
+    if(saveListeningMetadata(smartPlaylists.record(listeningMetadata(),state.active))){listeningSession.counted=true;emitAwun('qualified-listen',{track:state.active,seconds:listeningSession.seconds});if(state.library)render()}
   }
+  if(!listeningSession.completed&&listeningSession.seconds>=duration*.8){listeningSession.completed=true;emitAwun('qualified-complete',{track:state.active,seconds:listeningSession.seconds})}
 },1000);
 
 function applyRepeatMode(save=true){

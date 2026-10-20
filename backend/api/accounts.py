@@ -153,9 +153,11 @@ class AccountGateway:
                 async with session.request(method, self.url + path, headers=headers, json=data) as response:
                     if response.content_length and response.content_length > MAX_STATE_BYTES + 4096:
                         raise HTTPException(502, "Account service returned too much data")
-                    raw = await response.content.read(MAX_STATE_BYTES + 4097)
-                    if len(raw) > MAX_STATE_BYTES + 4096:
-                        raise HTTPException(502, "Account service returned too much data")
+                    raw = bytearray()
+                    async for chunk in response.content.iter_chunked(64 * 1024):
+                        raw.extend(chunk)
+                        if len(raw) > MAX_STATE_BYTES + 4096:
+                            raise HTTPException(502, "Account service returned too much data")
                     return response.status, json.loads(raw) if raw else None
         except (aiohttp.ClientError, TimeoutError, ValueError) as exc:
             raise HTTPException(502, "Account service unavailable") from exc

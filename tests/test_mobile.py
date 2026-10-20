@@ -62,7 +62,7 @@ def test_play_client_disables_downloads_and_background_playback() -> None:
     assert '"android-play"' in policy
     assert "X-AWUN-Client" in frontend
     assert "track.download_url = None" in api
-    assert "track.download_url&&!playStoreMode" in frontend
+    assert "safeImage(track.download_url)&&!playStoreMode" in frontend
 
 
 def test_android_shell_is_localized_secure_and_has_owned_fallback() -> None:

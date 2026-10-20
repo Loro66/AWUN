@@ -1462,3 +1462,5 @@ html[data-theme="white"] .site-header .logo img{filter:brightness(0) opacity(.87
 .preference-libraries .playlist-tabs{flex-wrap:wrap;overflow:visible}
 .preference-libraries .playlist-tab{max-width:100%;white-space:normal;overflow-wrap:anywhere;text-align:left}
 .flow-tuning{max-width:920px}
+
+.flow-feedback-actions{display:flex;flex-wrap:wrap;gap:8px}.flow-feedback-actions button[aria-pressed="true"]{border-color:var(--signal);background:var(--signal);color:var(--signal-ink)}
