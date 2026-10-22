@@ -86,6 +86,8 @@ class DesktopControls:
     def set_mini(self, enabled: bool, video: bool = False):
         if not isinstance(enabled, bool) or not isinstance(video, bool):
             return False
+        from desktop.diagnostics import logger
+        logger.info("Mini mode requested: enabled=%s video=%s", enabled, video)
         with self._lock:
             if enabled and not self.mini:
                 self.window.restore()
@@ -98,12 +100,16 @@ class DesktopControls:
                 # YouTube keeps its visible official player at least 200px high.
                 self.window.resize(460, 540 if video else 300)
             elif self.mini:
+                logger.info("Mini restore: clearing topmost")
                 self.window.on_top = False
                 width, height, x, y = self._geometry or (1440, 900, None, None)
+                logger.info("Mini restore: resizing to %sx%s", width, height)
                 self.window.resize(int(round(width)), int(round(height)))
                 if x is not None and y is not None:
+                    logger.info("Mini restore: moving to %s,%s", x, y)
                     self.window.move(int(round(x)), int(round(y)))
             self.mini = enabled
+            logger.info("Mini mode completed: %s", enabled)
         return True
 
     def enqueue(self, action):

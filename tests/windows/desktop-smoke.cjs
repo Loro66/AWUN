@@ -84,7 +84,7 @@ async function cleanup(){
   if(page){
     try { report.native_status=await page.evaluate(()=>Promise.race([window.pywebview.api.desktop_status(),new Promise(resolve=>setTimeout(()=>resolve({timeout:true}),2000))])); } catch {}
     try { await preview('native-final'); } catch {}
-    try{report.ui=await page.evaluate(()=>({url:location.href,classes:document.body.className,notice:document.getElementById('desktopStorageNotice')?.textContent}));}catch{}
+    try{report.ui=await page.evaluate(()=>({url:location.href,classes:document.body.className,notice:document.getElementById('desktopStorageNotice')?.textContent,message:document.getElementById('message')?.textContent,miniTrace:window.nativeMiniTrace,restoreDisabled:document.getElementById('desktopMiniRestore')?.disabled}));}catch{}
     try{await page.screenshot({path:join(output,'native-window.png'),timeout:5000});}catch{}
   }
   if(browser){try{await Promise.race([browser.close(),delay(5000)]);}catch{}browser=null;}
@@ -95,6 +95,7 @@ async function cleanup(){
   try{report.saved_state=JSON.parse(readFileSync(join(profile,'SONGVALE','desktop-state.json'),'utf8'));}catch{}
   try{report.startup_log=readFileSync(join(profile,'Local','SONGVALE','logs','desktop.log'),'utf8').slice(-16000);console.log(report.startup_log);}catch{}
   report.finished_at=new Date().toISOString();writeFileSync(join(output,'report.json'),JSON.stringify(report,null,2));
+  console.log('NATIVE_REPORT:'+JSON.stringify(report));
 }
 async function main(){
   await check('packaged WebView2 starts in the visible work area',launch);
@@ -122,7 +123,19 @@ async function main(){
     await preview('native-playing');
   });
   await check('mini player preserves playback and restores the full window',async()=>{
-    const generation=await page.evaluate(()=>window.awunApp.state.playbackGeneration);
+    const generation=await page.evaluate(()=>{
+      window.nativeMiniTrace=[];
+      const original=window.pywebview.api.desktop_mini;
+      window.pywebview.api.desktop_mini=(...args)=>{
+        window.nativeMiniTrace.push({event:'request',args,at:performance.now()});
+        return original(...args).then(value=>{window.nativeMiniTrace.push({event:'reply',args,value,at:performance.now()});return value;},
+          error=>{window.nativeMiniTrace.push({event:'error',args,error:String(error),at:performance.now()});throw error;});
+      };
+      document.getElementById('desktopMiniRestore').addEventListener('click',()=>{
+        window.nativeMiniTrace.push({event:'restore-click',at:performance.now()});
+      },true);
+      return window.awunApp.state.playbackGeneration;
+    });
     await page.locator('#desktopMini').click();await expect(page.locator('body')).toHaveClass(/desktop-mini/);
     await expect(page.locator('#desktopMiniRestore')).toBeVisible();
     expect(await page.evaluate(()=>window.awunApp.state.playbackGeneration)).toBe(generation);

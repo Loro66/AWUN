@@ -12,7 +12,15 @@ async function setup(page,{real=false,response=null,clock=false}={}){
   return ()=>downloads;
 }
 async function like(page,value=track){await page.evaluate(t=>window.awunApp.toggleSave(t),value)}
-async function ready(page){await expect.poll(()=>page.evaluate(t=>window.SongvaleOffline.stateFor(t),track)).toBe('ready')}
+async function ready(page){
+  try{await expect.poll(()=>page.evaluate(t=>window.SongvaleOffline.stateFor(t),track)).toBe('ready')}
+  catch(error){
+    console.error('OFFLINE_DIAGNOSTICS:'+JSON.stringify(await page.evaluate(()=>({
+      online:navigator.onLine,jobs:window.SongvaleOffline.jobs.map(j=>({state:j.state,error:j.error,progress:j.progress})),
+      storeError:String(window.SongvaleCollections.local.loadError||''),
+    }))));throw error;
+  }
+}
 async function advance(page,seconds){for(let i=0;i<seconds;i++){await page.evaluate(()=>document.querySelector('#audio').currentTime++);await page.clock.runFor(1000)}}
 async function plays(page){return page.evaluate(t=>JSON.parse(localStorage.getItem('awun-listening-v1')||'{}').tracks?.[`${t.source}:${t.id}`]?.plays||0,track)}
 
