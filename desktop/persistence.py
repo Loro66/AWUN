@@ -64,6 +64,14 @@ class DesktopStateStore:
         self._last_good_state = None
         self._read_failed = False
         self._recovered = False
+        self._generation = 0
+        self._sequence = 0
+
+    def desktop_state_session(self) -> int:
+        with self._lock:
+            self._generation += 1
+            self._sequence = 0
+            return self._generation
 
     def _read_file(self, path: Path) -> dict[str, str]:
         with path.open("rb") as source:
@@ -99,7 +107,7 @@ class DesktopStateStore:
             self._last_good_state = "{}"
             return "{}"
 
-    def save_state(self, payload: str) -> bool:
+    def save_state(self, payload: str, generation=None, sequence=None) -> bool:
         try:
             encoded = json.dumps(decode_state(payload), ensure_ascii=False, separators=(",", ":"))
         except (ValueError, TypeError, UnicodeError):
@@ -108,6 +116,12 @@ class DesktopStateStore:
             return False
         with self._lock:
             if self._read_failed:
+                return False
+            if generation is None:
+                if self._generation:
+                    return False
+            elif (type(generation) is not int or type(sequence) is not int
+                  or generation != self._generation or sequence <= self._sequence):
                 return False
             try:
                 if self.state_path.exists():
@@ -118,6 +132,8 @@ class DesktopStateStore:
                             return False
                         previous = self._last_good_state
                     if previous == encoded and not self._recovered:
+                        if generation is not None:
+                            self._sequence = sequence
                         return True
                     atomic_write(self.state_path.with_suffix(".bak"), previous)
                 elif self._last_good_state and self._last_good_state != "{}":
@@ -125,6 +141,8 @@ class DesktopStateStore:
                 atomic_write(self.state_path, encoded)
                 self._last_good_state = encoded
                 self._recovered = False
+                if generation is not None:
+                    self._sequence = sequence
                 return True
             except OSError:
                 return False

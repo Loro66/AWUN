@@ -56,6 +56,8 @@ jobs:
         run: python -m desktop.prepare_network_runtime
       - name: Report available Windows rendering engine
         run: python -c "from webview.platforms.winforms import renderer; print('Windows renderer:', renderer)"
+      - name: Check native UI controller syntax
+        run: node --check tests/windows/desktop-smoke.cjs
       - name: Run release tests
         run: python -m pytest -q
       - name: Build SONGVALE.exe

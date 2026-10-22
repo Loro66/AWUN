@@ -70,3 +70,15 @@ def test_only_one_process_can_own_the_desktop_profile_and_the_mutex_is_released(
         assert second.acquire()
     finally:
         first.close(); second.close(); other.close()
+
+
+def test_an_old_page_or_delayed_snapshot_cannot_overwrite_a_new_page(tmp_path):
+    store = DesktopStateStore(tmp_path / 'desktop-state.json')
+    first = store.desktop_state_session()
+    assert store.save_state('{"awun-library":"first"}', first, 1)
+    second = store.desktop_state_session()
+    assert store.save_state('{"awun-library":"newest"}', second, 2)
+    assert not store.save_state('{"awun-library":"old page"}', first, 100)
+    assert not store.save_state('{"awun-library":"out of order"}', second, 1)
+    assert not store.save_state('{"awun-library":"legacy writer"}')
+    assert json.loads(store.load_state()) == {'awun-library': 'newest'}

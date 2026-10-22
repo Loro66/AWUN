@@ -38,8 +38,6 @@ if __name__ == "__main__":
 import uvicorn
 import webview
 
-from backend.api.main import create_app
-from backend.core.config import Settings
 from backend.core.version import APP_VERSION
 from desktop.controls import DesktopControls
 from desktop.csp_bridge import configure_native_bridge
@@ -64,15 +62,15 @@ LOCAL_REMOTE_VALUES = {"local", "off", "disabled", "none"}
 
 SPLASH = """
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><style>
-*{box-sizing:border-box}body{margin:0;overflow:hidden;background:#09120c;color:#f1f0e8;font-family:"Segoe UI Variable Display","Segoe UI",Arial,sans-serif}
-main{position:relative;height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 78% 18%,rgba(255,107,26,.13),transparent 34%),linear-gradient(145deg,#0d1a12,#071009)}
-main:before{content:"";position:absolute;inset:22px;border:1px solid rgba(241,240,232,.08);border-radius:28px}
-section{position:relative;width:min(720px,82vw);padding:36px;border:1px solid rgba(241,240,232,.12);border-radius:28px;background:rgba(5,13,8,.66);box-shadow:0 28px 90px rgba(0,0,0,.38)}
-.brand{display:flex;align-items:center;gap:24px}.mark{width:92px;height:92px;flex:0 0 auto}h1{margin:0;font-size:54px;font-weight:680;line-height:1;letter-spacing:.15em}
-p{margin:14px 0 0;color:#ff6b1a;font-size:9px;font-weight:750;letter-spacing:2.4px}.meta{display:flex;justify-content:space-between;margin-top:38px;color:#8c9a90;font-size:8px;font-weight:700;letter-spacing:1.3px}
-.line{height:3px;margin-top:14px;border-radius:9px;background:#233128;overflow:hidden}.line:after{content:"";display:block;width:32%;height:100%;border-radius:9px;background:#ff6b1a;box-shadow:0 0 20px rgba(255,107,26,.42);animation:scan 1.2s ease-in-out infinite alternate}
-@keyframes scan{to{transform:translateX(212%)}}
-</style></head><body><main><section><div class="brand"><svg class="mark" viewBox="0 0 128 128" aria-hidden="true"><rect x="4" y="4" width="120" height="120" rx="30" fill="#09120c" stroke="#314338" stroke-width="4"/><g fill="#f1f0e8"><rect x="20" y="42" width="13" height="48" rx="6.5"/><rect x="39" y="29" width="13" height="72" rx="6.5"/><rect x="58" y="18" width="13" height="92" rx="6.5"/><rect x="77" y="29" width="13" height="72" rx="6.5"/><rect x="96" y="42" width="13" height="48" rx="6.5"/></g><path d="M18 52c15 7 23 18 39 23 20 7 31-13 53-23" fill="none" stroke="#ff6b1a" stroke-width="10" stroke-linecap="round"/></svg><div><h1>SONGVALE</h1><p>ВСЯ МУЗЫКА СХОДИТСЯ ЗДЕСЬ</p></div></div><div class="meta"><span>ЛОКАЛЬНАЯ ВЕРСИЯ / __AWUN_VERSION__</span><span>ЗАПУСКАЕМ ПОИСК</span></div><div class="line"></div></section></main></body></html>
+*{box-sizing:border-box}body{margin:0;background:#101410;color:#f1f0e8;font-family:"Segoe UI",Arial,sans-serif}
+main{min-height:100vh;display:grid;align-content:center;justify-content:center;gap:24px;padding:32px}
+.brand{display:flex;align-items:center;gap:18px}.brand strong{font-size:58px;font-weight:600;letter-spacing:-4px}
+.brand span{font-size:21px;letter-spacing:4px}p{margin:0;font-size:17px;line-height:1.5}small{color:#a3ab9c;font-size:12px}
+.line{height:3px;overflow:hidden;background:#30362c}.line:after{content:"";display:block;width:35%;height:100%;background:#b8c1a5;animation:loading 1.3s ease-in-out infinite alternate}
+@keyframes loading{to{transform:translateX(185%)}}@media(prefers-reduced-motion:reduce){.line:after{animation:none;width:100%}}
+</style></head><body><main><div class="brand"><strong>SV</strong><span>SONGVALE</span></div>
+<p>Открываем медиатеку…</p><div class="line" role="progressbar" aria-label="Запуск SONGVALE"></div>
+<small>Версия __AWUN_VERSION__ · Музыка остаётся на этом компьютере</small></main></body></html>
 """.replace("__AWUN_VERSION__", APP_VERSION)
 
 
@@ -211,6 +209,9 @@ class LocalAwunServer:
     url: str = field(default="", init=False)
 
     def start(self, timeout: float = STARTUP_TIMEOUT_SECONDS) -> str:
+        from backend.api.main import create_app
+        from backend.core.config import Settings
+
         if self.thread and self.thread.is_alive():
             return self.url
 
@@ -222,6 +223,7 @@ class LocalAwunServer:
         self.url = f"http://{self.host}:{port}"
 
         settings = Settings(
+            _env_file=None if getattr(sys, "frozen", False) else ".env",
             app_version=APP_VERSION,
             media_secret=secrets.token_urlsafe(32),
             cors_origins=[self.url],

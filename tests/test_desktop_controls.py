@@ -132,3 +132,34 @@ def test_real_windows_loop_registers_and_releases_hotkeys(tmp_path):
     finally:
         controls.stop()
     assert controls.native.hwnd is None and not controls.native.registered
+
+
+def test_a_ready_page_must_finish_saving_before_native_close(tmp_path):
+    window = Window()
+    controls = DesktopControls(window, tmp_path / 'prefs.json', Path('icon'), Native)
+    try:
+        controls.frontend_ready = True
+        controls.preferences['close_to_tray'] = False
+        assert controls.closing() is False
+        assert window.called.wait(2)
+        assert not window.destroyed and 'quit' in window.script
+        window.called.clear()
+        assert controls.finish_close()
+        assert window.called.wait(2) and window.destroyed
+        assert controls.closing() is True
+    finally:
+        controls.stop()
+
+
+def test_failed_save_can_cancel_close_and_request_another_attempt(tmp_path):
+    window = Window()
+    controls = DesktopControls(window, tmp_path / 'prefs.json', Path('icon'), Native)
+    try:
+        controls.frontend_ready = True
+        assert controls.enqueue('quit') and window.called.wait(2)
+        assert controls.cancel_close() and not window.destroyed
+        window.called.clear()
+        assert controls.enqueue('quit') and window.called.wait(2)
+        assert not window.destroyed
+    finally:
+        controls.stop()

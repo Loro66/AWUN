@@ -645,4 +645,18 @@ def create_app(settings: Settings | None = None, *, local_audio_store: LocalAudi
     return app
 
 
-app = create_app()
+# Build the public ASGI entry point on access. Native launchers can import the
+# factory while their splash is visible, without creating an unused second app.
+from threading import Lock as _Lock
+
+_asgi_lock = _Lock()
+__all__ = ["app", "create_app"]
+
+
+def __getattr__(name):
+    if name != "app":
+        raise AttributeError(name)
+    with _asgi_lock:
+        if "app" not in globals():
+            globals()["app"] = create_app()
+        return globals()["app"]

@@ -16,6 +16,7 @@
   };
   let ready = false, restoring = false, initializing = null, syncTimer, notice = null, lastSaved = null;
   let saveTail = Promise.resolve(true);
+  let generation = null, sequence = 0;
 
   function showNotice(key, tone = 'notice') {
     notice = key ? {key,tone} : null;
@@ -65,7 +66,9 @@
       try {
         const payload = JSON.stringify(snapshot());
         if (payload === lastSaved) return true;
-        if (!await nativeCall('save_state',payload)) throw new Error('Desktop state was not saved');
+        const saved = generation === null ? await nativeCall('save_state',payload)
+          : await nativeCall('save_state',payload,generation,++sequence);
+        if (!saved) throw new Error('Desktop state was not saved');
         lastSaved = payload;
         if (notice?.tone === 'error') showNotice(null);
         return true;
@@ -103,6 +106,7 @@
     initializing = (async () => {
       try {
         restoring = true;
+        if (window.pywebview.api.desktop_state_session) generation = await nativeCall('desktop_state_session');
         const saved = JSON.parse(await nativeCall('load_state') || '{}');
         if (!saved || typeof saved !== 'object' || Array.isArray(saved)) throw new Error('Invalid desktop snapshot');
         const entries = Object.entries(saved).filter(([key]) => persistent(key));
@@ -117,8 +121,9 @@
         document.documentElement.classList.remove('desktop-restoring');
         showNotice(null);
         if (window.pywebview.api.desktop_storage_status) {
-          const status = await nativeCall('desktop_storage_status');
-          if (status.recovered) showNotice('desktopRecovered','success');
+          try { const status = await nativeCall('desktop_storage_status');
+            if (status.recovered) showNotice('desktopRecovered','success');
+          } catch { /* Recovery status cannot invalidate a successful restore. */ }
         }
         if (window.pywebview.api.desktop_frontend_ready) void nativeCall('desktop_frontend_ready').catch(saveError);
         scheduleSync();
