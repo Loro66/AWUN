@@ -17,6 +17,7 @@ def install_startup_diagnostics():
         handler = RotatingFileHandler(path, maxBytes=2*1024*1024, backupCount=2, encoding="utf-8")
         handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
         logger.addHandler(handler)
+        logging.getLogger("pywebview").addHandler(handler)
         logger.setLevel(logging.INFO)
     except OSError:
         logger.addHandler(logging.NullHandler())

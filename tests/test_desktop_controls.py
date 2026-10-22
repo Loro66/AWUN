@@ -163,3 +163,24 @@ def test_failed_save_can_cancel_close_and_request_another_attempt(tmp_path):
         assert not window.destroyed
     finally:
         controls.stop()
+
+
+def test_native_float_geometry_is_normalized_for_winforms_resize_and_move(tmp_path):
+    class ScaledWindow(Window):
+        width, height, x, y = 976.0, 672.0, 24.0, 24.0
+        def resize(self, width, height):
+            assert type(width) is int and type(height) is int
+            super().resize(width, height)
+        def move(self, x, y):
+            assert type(x) is int and type(y) is int
+            super().move(x, y)
+
+    window = ScaledWindow()
+    controls = DesktopControls(window, tmp_path / 'prefs.json', Path('icon'), Native)
+    try:
+        assert controls.set_mini(True)
+        assert controls.set_mini(False)
+        assert (window.width, window.height, window.x, window.y) == (976, 672, 24, 24)
+        assert controls.mini is False
+    finally:
+        controls.stop()

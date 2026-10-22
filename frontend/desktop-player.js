@@ -2,6 +2,7 @@
   if (new URLSearchParams(location.search).get('desktop') !== '1') return;
   const app = window.awunApp, $ = id => document.getElementById(id), t = key => window.awunI18n.t(key);
   let native = null, mini = false, changing = false, updateTimer = null, installing = false, closing = false;
+  let modeRevision = 0;
   const api = () => window.pywebview?.api;
   const call = (name,...args) => window.awunDesktopCall(name,...args);
   function applyMode(enabled) {
@@ -23,6 +24,7 @@
   async function refresh() {
     if (!api()?.desktop_status) return;
     try {
+      const revision = modeRevision;
       native = await call('desktop_status');
       const supported = Boolean(native.supported);
       document.body.classList.toggle('desktop-controls', supported);
@@ -35,17 +37,19 @@
       $('desktopCloseToTray').disabled = !native.tray;
       const unavailable = (native.shortcuts || []).filter(item => native.hotkeys && !item.active);
       $('desktopStatus').textContent = !native.tray ? t('desktopTrayUnavailable') : unavailable.length ? `${t('desktopKeyConflict')} ${unavailable.map(item => item.keys).join(', ')}` : t('desktopReady');
-      if (native.mini !== mini) applyMode(Boolean(native.mini));
+      if (!changing && revision === modeRevision && native.mini !== mini) applyMode(Boolean(native.mini));
     } catch { $('desktopStatus').textContent = t('desktopUnavailable'); }
   }
   async function setMini(enabled) {
     if (changing || !api()?.desktop_mini) return;
-    changing = true;
+    changing = true; modeRevision++;
+    $('desktopMini').disabled = $('desktopMiniRestore').disabled = true;
+    $('desktopMiniRestore').setAttribute('aria-busy','true');
     try {
       if (await call('desktop_mini',enabled,app.state.active?.source === 'youtube')) applyMode(enabled);
       else app.setMessage(t('desktopUnavailable'), 'error');
     } catch { app.setMessage(t('desktopUnavailable'), 'error'); }
-    finally { changing = false; }
+    finally { changing = false; $('desktopMini').disabled = $('desktopMiniRestore').disabled = false; $('desktopMiniRestore').removeAttribute('aria-busy'); }
   }
   async function savePreferences() {
     try {
@@ -114,7 +118,7 @@
   window.addEventListener('pywebviewready', () => { void refresh(); setTimeout(refresh, 500); });
   document.addEventListener('awun:language', () => void refresh());
   document.addEventListener('awun:track', () => {
-    if (mini) {
+    if (mini && !changing) {
       document.body.classList.toggle('desktop-mini-video', app.state.active?.source === 'youtube');
       app.ui.youtubeDock.classList.remove('minimized');
       void call('desktop_mini',true,app.state.active?.source === 'youtube').catch(() => app.setMessage(t('desktopUnavailable'),'error'));

@@ -89,7 +89,10 @@ class DesktopControls:
         with self._lock:
             if enabled and not self.mini:
                 self.window.restore()
-                self._geometry = (self.window.width, self.window.height, self.window.x, self.window.y)
+                # WebView2 reports logical sizes/positions as floats on Windows.
+                # WinForms resize/move require Int32 arguments when restoring.
+                self._geometry = tuple(int(round(value)) if value is not None else None
+                                       for value in (self.window.width, self.window.height, self.window.x, self.window.y))
             if enabled:
                 self.window.on_top = True
                 # YouTube keeps its visible official player at least 200px high.
@@ -97,9 +100,9 @@ class DesktopControls:
             elif self.mini:
                 self.window.on_top = False
                 width, height, x, y = self._geometry or (1440, 900, None, None)
-                self.window.resize(width, height)
+                self.window.resize(int(round(width)), int(round(height)))
                 if x is not None and y is not None:
-                    self.window.move(x, y)
+                    self.window.move(int(round(x)), int(round(y)))
             self.mini = enabled
         return True
 

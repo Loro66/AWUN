@@ -82,6 +82,8 @@ async function preview(name){
 async function cleanup(){
   try{execFileSync('powershell.exe',['-NoProfile','-NonInteractive','-File',resolve('tests/windows/capture-desktop.ps1'),'-OutputDirectory',output],{stdio:'ignore',timeout:15000});}catch{}
   if(page){
+    try { report.native_status=await page.evaluate(()=>Promise.race([window.pywebview.api.desktop_status(),new Promise(resolve=>setTimeout(()=>resolve({timeout:true}),2000))])); } catch {}
+    try { await preview('native-final'); } catch {}
     try{report.ui=await page.evaluate(()=>({url:location.href,classes:document.body.className,notice:document.getElementById('desktopStorageNotice')?.textContent}));}catch{}
     try{await page.screenshot({path:join(output,'native-window.png'),timeout:5000});}catch{}
   }
