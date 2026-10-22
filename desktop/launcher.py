@@ -43,6 +43,7 @@ from backend.core.config import Settings
 from backend.core.version import APP_VERSION
 from desktop.controls import DesktopControls
 from desktop.csp_bridge import configure_native_bridge
+from desktop.window_geometry import initial_window_size
 from desktop.persistence import DesktopStateStore
 from desktop.updater import DesktopUpdater
 from desktop.player_identity import identify_youtube_embed, register_process_identity
@@ -286,11 +287,12 @@ def main() -> None:
     register_process_identity()
     state_bridge = DesktopStateBridge()
     runtime = LocalAwunServer(local_audio_store=state_bridge._local_audio)
+    width, height = initial_window_size()
     window = webview.create_window(
         "SONGVALE — вся музыка сходится здесь",
         html=SPLASH,
-        width=1440,
-        height=900,
+        width=width,
+        height=height,
         min_size=(440, 300),
         background_color="#09120c",
         confirm_close=False,
@@ -298,6 +300,10 @@ def main() -> None:
     )
     configure_native_bridge(window)
     webview.settings["ALLOW_DOWNLOADS"] = True
+    if os.getenv("SONGVALE_DIAGNOSTIC_NO_DIALOG") == "1":
+        port = os.getenv("SONGVALE_TEST_CDP_PORT", "")
+        if port.isdecimal() and 1024 <= int(port) <= 65535:
+            webview.settings["REMOTE_DEBUGGING_PORT"] = int(port)
     bundle_root = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parents[1]))
     controls = DesktopControls(window, state_bridge.state_path.with_name("desktop-controls.json"), bundle_root / "desktop" / "assets" / "songvale.ico")
     state_bridge._controls = controls

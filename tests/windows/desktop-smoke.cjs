@@ -6,6 +6,10 @@ const { tmpdir } = require('node:os');
 const { resolve, join } = require('node:path');
 const net = require('node:net');
 
+// The runner may use a proxy for public internet access; CDP stays on loopback.
+process.env.NO_PROXY = [process.env.NO_PROXY,'127.0.0.1','localhost','[::1]'].filter(Boolean).join(',');
+process.env.no_proxy = process.env.NO_PROXY;
+
 const executable = resolve(process.argv[2] || 'dist/SONGVALE.exe');
 const output = resolve('test-results/windows-native');
 mkdirSync(output, { recursive: true });
@@ -26,7 +30,7 @@ async function freePort() {
 
 async function launch() {
   const port = await freePort();
-  child = spawn(executable, [], { env: { ...process.env, APPDATA: profile, LOCALAPPDATA: join(profile,'Local'), SONGVALE_DIAGNOSTIC_NO_DIALOG:'1',
+  child = spawn(executable, [], { env: { ...process.env, APPDATA: profile, LOCALAPPDATA: join(profile,'Local'), SONGVALE_DIAGNOSTIC_NO_DIALOG:'1', SONGVALE_TEST_CDP_PORT:String(port),
     WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${port}`,
   }, stdio: 'ignore' });
   child.once('error', error => { report.launch_error = String(error); });
@@ -34,7 +38,7 @@ async function launch() {
   while (Date.now() < deadline) {
     if (child.exitCode !== null) throw new Error(`Application exited before WebView2 was ready: ${child.exitCode}`);
     try { browser = await chromium.connectOverCDP(`http://127.0.0.1:${port}`, { timeout: 1000 }); break; }
-    catch { await delay(250); }
+    catch (error) { report.cdp_error=String(error.message); await delay(250); }
   }
   if (!browser) throw new Error('The packaged application did not expose a WebView2 window');
   const context = browser.contexts()[0];
