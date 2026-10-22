@@ -122,25 +122,17 @@ async function main(){
     expect(await page.evaluate(()=>window.awunApp.state.active.source)).toBe('local');
     await preview('native-playing');
   });
-  await check('mini player preserves playback and restores the full window',async()=>{
-    const generation=await page.evaluate(()=>{
-      window.nativeMiniTrace=[];
-      const original=window.pywebview.api.desktop_mini;
-      window.pywebview.api.desktop_mini=(...args)=>{
-        window.nativeMiniTrace.push({event:'request',args,at:performance.now()});
-        return original(...args).then(value=>{window.nativeMiniTrace.push({event:'reply',args,value,at:performance.now()});return value;},
-          error=>{window.nativeMiniTrace.push({event:'error',args,error:String(error),at:performance.now()});throw error;});
-      };
-      document.getElementById('desktopMiniRestore').addEventListener('click',()=>{
-        window.nativeMiniTrace.push({event:'restore-click',at:performance.now()});
-      },true);
-      return window.awunApp.state.playbackGeneration;
-    });
-    await page.locator('#desktopMini').click();await expect(page.locator('body')).toHaveClass(/desktop-mini/);
-    await expect(page.locator('#desktopMiniRestore')).toBeVisible();
-    expect(await page.evaluate(()=>window.awunApp.state.playbackGeneration)).toBe(generation);
-    await page.screenshot({path:join(output,'native-mini.png'),timeout:5000});
-    await page.locator('#desktopMiniRestore').click();await expect(page.locator('body')).not.toHaveClass(/desktop-mini/);
+  await check('mini player preserves playback through eight full-window round trips',async()=>{
+    const generation=await page.evaluate(()=>window.awunApp.state.playbackGeneration);
+    for(let attempt=0;attempt<8;attempt++){
+      await page.locator('#desktopMini').click();await expect(page.locator('body')).toHaveClass(/desktop-mini/);
+      await expect(page.locator('#desktopMiniRestore')).toBeVisible();
+      expect(await page.evaluate(()=>window.awunApp.state.playbackGeneration)).toBe(generation);
+      if(attempt===0)await page.screenshot({path:join(output,'native-mini.png'),timeout:5000});
+      await page.locator('#desktopMiniRestore').click();await expect(page.locator('body')).not.toHaveClass(/desktop-mini/);
+      expect(await page.evaluate(()=>window.pywebview.api.desktop_status())).toMatchObject({mini:false});
+    }
+    expect(await page.evaluate(()=>window.awunApp.state.isPlaying)).toBe(true);
   });
   await check('tray audio continues and duplicate launch reuses the running player',async()=>{
     const before=await page.evaluate(()=>window.awunApp.ui.audio.currentTime);

@@ -34,6 +34,8 @@ jobs:
         run: npm run test:unit
       - name: Run browser and screenshot tests
         run: npm run test:e2e
+      - name: Stress offline reconnect and reload
+        run: npx playwright test tests/e2e/offline.spec.js --grep "queue resumes on reconnect" --repeat-each=20 --retries=0
       - name: Upload browser report on failure
         if: failure()
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
