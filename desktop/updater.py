@@ -22,6 +22,14 @@ MAX_INSTALLER_BYTES = 150 * 1024 * 1024
 ALLOWED_DOWNLOAD_HOSTS = {"github.com", "api.github.com", "release-assets.githubusercontent.com", "objects.githubusercontent.com"}
 
 
+def file_digest(path):
+    digest = hashlib.sha256()
+    with path.open("rb") as source:
+        while block := source.read(256 * 1024):
+            digest.update(block)
+    return digest.hexdigest()
+
+
 def version_parts(value):
     if not isinstance(value, str) or not re.fullmatch(r"v?\d{1,5}\.\d{1,5}\.\d{1,5}", value):
         raise ValueError("Invalid stable version")
@@ -129,7 +137,9 @@ class DesktopUpdater:
                     digest.update(block)
                     self._set("downloading", progress=min(99, round(downloaded * 100 / manifest["size"])), version=manifest["version"])
             self._set("verifying", progress=100, version=manifest["version"])
-            if downloaded != manifest["size"] or digest.hexdigest() != expected_hash or part.read_bytes()[:2] != b"MZ":
+            with part.open("rb") as source:
+                executable_header = source.read(2)
+            if downloaded != manifest["size"] or digest.hexdigest() != expected_hash or executable_header != b"MZ":
                 raise ValueError("Installer verification failed")
             installer = part.with_name(INSTALLER_NAME)
             part.rename(installer)
@@ -147,7 +157,7 @@ class DesktopUpdater:
         try:
             # Verify again immediately before execution, and never execute a
             # caller-supplied path, command or URL through the JS bridge.
-            if hashlib.sha256(self._installer.read_bytes()).hexdigest() != self._expected_hash:
+            if file_digest(self._installer) != self._expected_hash:
                 raise ValueError("Installer changed after download")
             args = [str(self._installer), "/SILENT", "/SUPPRESSMSGBOXES", "/NORESTART", "/CLOSEAPPLICATIONS", "/SONGVALEUPDATE=1"]
             if getattr(sys, "frozen", False):

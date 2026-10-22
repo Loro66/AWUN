@@ -38,7 +38,7 @@ bridge._createApi([{func:'nested.echo',params:['value']},{func:'nested.fail',par
   console.log(JSON.stringify({values,error}));
 })().catch(error=>{console.error(error);process.exit(1)});
 '''.replace('SOURCE', json.dumps(API_FACTORY))
-    result = subprocess.run(['node','-e',script],check=True,capture_output=True,text=True)
+    result = subprocess.run(['node','-e',script],check=True,capture_output=True,text=True,encoding='utf-8')
     assert json.loads(result.stdout) == {'values':['Привет',{'value':42}],'error':'denied'}
 
 

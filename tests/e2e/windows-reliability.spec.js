@@ -1,5 +1,5 @@
 const {test,expect} = require('@playwright/test');
-const {installApiMocks,installMediaMocks,TRACKS} = require('./fixtures');
+const {installApiMocks,installMediaMocks,TRACKS,searchFor} = require('./fixtures');
 
 async function openDesktop(page,options={}) {
   const events=[];
@@ -94,4 +94,14 @@ test('the language restored from disk is retained by the native launch URL',asyn
   await openDesktop(page,{saved:{'awun-language':'en'},languageFromDisk:true});
   await expect(page.locator('html')).toHaveAttribute('lang','en');
   await expect(page.locator('#libraryButton')).toHaveAttribute('aria-label','LIBRARY');
+});
+
+test('volume and mute survive a restart without a sudden jump to 82 percent',async({page})=>{
+  await openDesktop(page);await searchFor(page,'midnight signal');
+  await page.locator('#trackList .track[data-source="audius"] .play').first().click();
+  await page.locator('#volume').evaluate(input=>{input.value='23';input.dispatchEvent(new Event('input'));});
+  await page.locator('#muteButton').click();await expect(page.locator('#volume')).toHaveValue('0');
+  await page.reload();await expect(page.locator('#volume')).toHaveValue('0');
+  await expect(page.locator('#muteButton')).toHaveAttribute('aria-pressed','true');
+  await page.locator('#muteButton').click();await expect(page.locator('#volume')).toHaveValue('23');
 });
