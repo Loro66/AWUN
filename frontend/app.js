@@ -223,6 +223,12 @@ function loadPlaylists(){
 function loadRegion(){const value=readStoredText('awun-region','AUTO');return regions.includes(value)?value:'AUTO'}
 function loadResultLimit(){const value=Number(readStoredText('awun-result-limit','60'));return resultLimits.includes(value)?value:60}
 function loadRepeatMode(){const value=readStoredText('awun-repeat-mode','off');return ['off','all','one'].includes(value)?value:'off'}
+function loadVolumePreferences(){
+  const stored=readStoredJson('awun-volume-v1',null);
+  const value=typeof stored?.value==='number'&&Number.isFinite(stored.value)?Math.max(0,Math.min(100,stored.value)):82;
+  const last=typeof stored?.last==='number'&&Number.isFinite(stored.last)&&stored.last>0?Math.min(100,stored.last):value||82;
+  return {value,last};
+}
 function loadRecents(){const value=readStoredJson('awun-recent',[]);return Array.isArray(value)?value.filter(item=>item&&item.id):[]}
 function loadQueueState(){
   const value=readStoredJson('awun-queue-v1',{}),items=Array.isArray(value)?value:value.items;
@@ -246,9 +252,10 @@ function loadPlaybackSession(){
 }
 const visualThemes={black:{labelKey:'themeBlackShort',color:'#101410'},white:{labelKey:'themeWhiteShort',color:'#f4f4ed'},acid:{labelKey:'themeAcidShort',color:'#101410'},ultraviolet:{labelKey:'themeUltravioletShort',color:'#17131b'},cobalt:{labelKey:'themeCobaltShort',color:'#141b20'},ember:{labelKey:'themeEmberShort',color:'#1a1511'}};
 const restoredQueue=loadQueueState();
+const restoredVolume=loadVolumePreferences();
 const state={
   tracks:[],saved:loadLibrary(),playlists:loadPlaylists(),activePlaylistId:null,libraryQuery:'',recents:loadRecents(),queue:restoredQueue.items,queueMode:restoredQueue.mode,available:new Set(),preferredSources,sources:new Set(preferredSources),region:loadRegion(),resultLimit:loadResultLimit(),repeatMode:loadRepeatMode(),library:false,hasSearched:false,active:null,controller:null,
-  youtube:null,youtubeApi:null,youtubeTicker:null,youtubeStartTimer:null,hls:null,hlsApi:null,audioGraph:null,audioEngine:null,waveformCapture:null,waveformCaptureFrame:null,seeking:false,isPlaying:false,timelineSecond:-1,lastPlaybackPersistSecond:-1,restoredPlayback:false,recoveringGeneration:null,sameSourceRefreshGeneration:null,playbackGeneration:0,audioTrackId:null,failedSources:new Set(),failedTrackIds:new Set(),playbackOrigin:null,playbackPosition:0,lastVolume:.82,expanded:null,details:new Map(),detailsController:null,openLines:new Set(),lineComments:loadLineComments(),geniusEnabled:false,diagnostics:null,playbackHealth:{},...loadVisual(),...loadAudioPreferences()
+  youtube:null,youtubeApi:null,youtubeTicker:null,youtubeStartTimer:null,hls:null,hlsApi:null,audioGraph:null,audioEngine:null,waveformCapture:null,waveformCaptureFrame:null,seeking:false,isPlaying:false,timelineSecond:-1,lastPlaybackPersistSecond:-1,restoredPlayback:false,recoveringGeneration:null,sameSourceRefreshGeneration:null,playbackGeneration:0,audioTrackId:null,failedSources:new Set(),failedTrackIds:new Set(),playbackOrigin:null,playbackPosition:0,lastVolume:restoredVolume.last/100,expanded:null,details:new Map(),detailsController:null,openLines:new Set(),lineComments:loadLineComments(),geniusEnabled:false,diagnostics:null,playbackHealth:{},...loadVisual(),...loadAudioPreferences()
 };
 let installPrompt=null;
 let language=i18n.language;
@@ -2320,7 +2327,8 @@ ui.minimizeVideo.addEventListener('click',()=>{ui.youtubeDock.classList.toggle('
 ui.progress.addEventListener('change',()=>{state.seeking=false;const duration=state.active?.source==='youtube'?state.youtube?.getDuration?.():ui.audio.duration;seekTo((Number(ui.progress.value)/1000)*(duration||0),true)});ui.progress.addEventListener('pointercancel',()=>{state.seeking=false});
 ui.progress.addEventListener('pointerdown',()=>{state.seeking=true});ui.progress.addEventListener('pointerup',()=>{state.seeking=false;const duration=state.active?.source==='youtube'?state.youtube?.getDuration?.():ui.audio.duration;seekTo((Number(ui.progress.value)/1000)*(duration||0),true)});ui.progress.addEventListener('input',()=>{setRange(ui.progress,ui.progress.value);const duration=state.active?.source==='youtube'?state.youtube?.getDuration?.():ui.audio.duration;ui.elapsed.textContent=formatTime((Number(ui.progress.value)/1000)*(duration||0))});
 function syncVolumeButton(){const muted=Number(ui.volume.value)===0,label=t(muted?'unmuteAria':'muteAria');ui.muteButton.setAttribute('aria-label',label);ui.muteButton.setAttribute('aria-pressed',String(muted));ui.muteButton.title=label}
-ui.volume.addEventListener('input',()=>{setRange(ui.volume,ui.volume.value);const value=Number(ui.volume.value);if(value>0)state.lastVolume=value/100;if(state.audioEngine?.available){ui.audio.volume=1;state.audioEngine.setOutputLevel(value/100)}else ui.audio.volume=value/100;try{state.youtube?.setVolume(value)}catch{}syncVolumeButton()});
+function applyVolume(save=true){setRange(ui.volume,ui.volume.value);const value=Number(ui.volume.value);if(value>0)state.lastVolume=value/100;if(state.audioEngine?.available){ui.audio.volume=1;state.audioEngine.setOutputLevel(value/100)}else ui.audio.volume=value/100;try{state.youtube?.setVolume(value)}catch{}syncVolumeButton();if(save)writeStoredJson('awun-volume-v1',{value,last:Math.round(state.lastVolume*100)})}
+ui.volume.addEventListener('input',()=>applyVolume());
 ui.muteButton.addEventListener('click',()=>{const muted=Number(ui.volume.value)===0;if(muted)setRange(ui.volume,Math.round(state.lastVolume*100)||82);else{state.lastVolume=Number(ui.volume.value)/100;setRange(ui.volume,0)}ui.volume.dispatchEvent(new Event('input'))});
 const boundMedia=new WeakSet();
 function bindAudio(media){
@@ -2343,7 +2351,7 @@ document.addEventListener('keydown',event=>{if(event.key==='Escape'&&ui.player.c
 async function bootstrap(){
   runtimeLog?.log?.('app.bootstrap',{platform:runtimePlatform,storage_schema:storage?.SCHEMA_VERSION||null});
   const url=runtimeParams,requestedRegion=url.get('region')?.toUpperCase(),requestedLimit=Number(url.get('limit'));if(regions.includes(requestedRegion)){state.region=requestedRegion;writeStoredText('awun-region',state.region)}if(resultLimits.includes(requestedLimit)){state.resultLimit=requestedLimit;writeStoredText('awun-result-limit',String(requestedLimit))}ui.regionSelect.value=state.region;ui.limitSelect.value=String(state.resultLimit);
-  if(!playStoreMode&&'serviceWorker'in navigator)navigator.serviceWorker.register('/service-worker.js').catch(()=>{});ui.player.hidden=false;ui.player.classList.add('player-empty');showIOSInstallGuide();updateLibraryCount();setRange(ui.volume,82);setRange(ui.progress,0);applyLanguage();restorePlaybackSession();syncSourceSelection();
+  if(!playStoreMode&&'serviceWorker'in navigator)navigator.serviceWorker.register('/service-worker.js').catch(()=>{});ui.player.hidden=false;ui.player.classList.add('player-empty');showIOSInstallGuide();updateLibraryCount();setRange(ui.volume,restoredVolume.value);applyVolume(false);setRange(ui.progress,0);applyLanguage();restorePlaybackSession();syncSourceSelection();
   void initializeAccount();
   const status=refreshStatus();
   const query=url.get('q');if(query){ui.searchInput.value=query;void search(query)}

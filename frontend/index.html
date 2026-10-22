@@ -17,8 +17,10 @@
     try{const v=JSON.parse(localStorage.getItem('awun-visual')||'{}');const p=new URLSearchParams(location.search);document.documentElement.dataset.theme=v.theme||'black';document.documentElement.dataset.motion=v.motion||'on';document.documentElement.dataset.decor=v.decor||'full';document.documentElement.dataset.density=v.density||'standard';document.documentElement.lang=p.get('lang')||localStorage.getItem('awun-language')||(navigator.language.toLowerCase().startsWith('ru')?'ru':'en')}catch{}
   </script>
   <link rel="stylesheet" href="/design-system.css?v=__AWUN_VERSION__">
+  <script src="/static/desktop-bridge.js?v=__AWUN_VERSION__"></script>
 </head>
 <body>
+  <div id="desktopStorageNotice" class="desktop-storage-notice" role="status" hidden><span id="desktopStorageMessage"></span><button id="desktopStorageRetry" type="button">Повторить</button></div>
   <a class="skip-link" href="#searchInput" data-i18n="skipSearch">Перейти к поиску</a>
   <div class="ambient" aria-hidden="true"></div>
 
@@ -570,7 +572,6 @@
     </div>
   </aside>
 
-  <script src="/static/desktop-bridge.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/storage.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/runtime-log.js?v=__AWUN_VERSION__" defer></script>
   <script src="/static/update-checker.js?v=__AWUN_VERSION__" defer></script>

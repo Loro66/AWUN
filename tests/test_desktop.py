@@ -35,7 +35,8 @@ def test_desktop_uses_local_backend_before_the_free_remote_fallback() -> None:
     assert 'HOST = "127.0.0.1"' in launcher
     assert "create_app(settings, local_audio_store=self.local_audio_store)" in launcher
     assert "listener.bind((self.host, 0))" in launcher
-    assert "?desktop=1&lang=ru" in launcher
+    assert 'query = "?desktop=1"' in launcher
+    assert "&lang=ru" not in launcher  # A saved language must survive restart.
     assert "SONGVALE_REMOTE_API_URL" in launcher and "AWUN_REMOTE_API_URL" in launcher
     assert "remote-api.txt" in launcher
     assert "quote(remote, safe='')" in launcher
@@ -91,3 +92,16 @@ def test_desktop_reads_legacy_state_until_songvale_state_exists(tmp_path: Path, 
     assert bridge.save_state('{"awun-language":"ru"}') is True
     assert json.loads(bridge.load_state()) == {"awun-language": "ru"}
     assert (tmp_path / "SONGVALE" / "desktop-state.json").exists()
+
+
+def test_frozen_desktop_ignores_an_unrelated_dotenv_in_the_launch_directory(tmp_path, monkeypatch):
+    sys.modules.setdefault("webview", SimpleNamespace())
+    from desktop.launcher import LocalAwunServer
+    (tmp_path / ".env").write_text("AWUN_DEFAULT_LIMIT=not-a-number\n", encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(sys, "frozen", True, raising=False)
+    runtime = LocalAwunServer()
+    try:
+        assert runtime.start(timeout=5).startswith("http://127.0.0.1:")
+    finally:
+        runtime.stop()

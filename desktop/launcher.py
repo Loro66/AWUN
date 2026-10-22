@@ -22,13 +22,27 @@ if __name__ == "__main__" and sys.argv[1:] == ["--songvale-network-check"]:
     from desktop.network_runtime import check_packaged_runtime
     raise SystemExit(check_packaged_runtime())
 
+# Acquire before importing the browser/backend: repeated shortcut clicks must
+# activate the running player without starting another server or state writer.
+from desktop.single_instance import SingleInstance
+
+_instance = None
+if __name__ == "__main__":
+    from desktop.diagnostics import install_startup_diagnostics
+    install_startup_diagnostics()
+    _instance = SingleInstance()
+    if not _instance.acquire():
+        _instance.activate_existing()
+        raise SystemExit(0)
+
 import uvicorn
 import webview
 
-from backend.api.main import create_app
-from backend.core.config import Settings
 from backend.core.version import APP_VERSION
 from desktop.controls import DesktopControls
+from desktop.csp_bridge import configure_native_bridge
+from desktop.window_geometry import initial_window_size
+from desktop.persistence import DesktopStateStore
 from desktop.updater import DesktopUpdater
 from desktop.player_identity import identify_youtube_embed, register_process_identity
 from desktop.network_access import DesktopNetworkAccess
@@ -37,16 +51,6 @@ from backend.library.local_audio import LocalAudioStore
 
 HOST = "127.0.0.1"
 STARTUP_TIMEOUT_SECONDS = 25
-MAX_DESKTOP_STATE_BYTES = 4 * 1024 * 1024
-TRANSIENT_DESKTOP_STATE_KEYS = {"awun-waveforms-v1", "awun-search-cache-v1", "awun-runtime-log-v1"}
-
-
-def persistent_state_key(key: str) -> bool:
-    return (
-        key.startswith("awun-") and key not in TRANSIENT_DESKTOP_STATE_KEYS
-        or key in {"songvale-account-owner-v1", "songvale-backup-restore-pending-v1", "songvale-source-preferences-v1", "songvale-transitions-v1"}
-        or key.startswith("songvale-account-sync-")
-    )
 REMOTE_API_ENV = "SONGVALE_REMOTE_API_URL"
 LEGACY_REMOTE_API_ENV = "AWUN_REMOTE_API_URL"
 REMOTE_API_FILE = "remote-api.txt"
@@ -58,15 +62,15 @@ LOCAL_REMOTE_VALUES = {"local", "off", "disabled", "none"}
 
 SPLASH = """
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><style>
-*{box-sizing:border-box}body{margin:0;overflow:hidden;background:#09120c;color:#f1f0e8;font-family:"Segoe UI Variable Display","Segoe UI",Arial,sans-serif}
-main{position:relative;height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 78% 18%,rgba(255,107,26,.13),transparent 34%),linear-gradient(145deg,#0d1a12,#071009)}
-main:before{content:"";position:absolute;inset:22px;border:1px solid rgba(241,240,232,.08);border-radius:28px}
-section{position:relative;width:min(720px,82vw);padding:36px;border:1px solid rgba(241,240,232,.12);border-radius:28px;background:rgba(5,13,8,.66);box-shadow:0 28px 90px rgba(0,0,0,.38)}
-.brand{display:flex;align-items:center;gap:24px}.mark{width:92px;height:92px;flex:0 0 auto}h1{margin:0;font-size:54px;font-weight:680;line-height:1;letter-spacing:.15em}
-p{margin:14px 0 0;color:#ff6b1a;font-size:9px;font-weight:750;letter-spacing:2.4px}.meta{display:flex;justify-content:space-between;margin-top:38px;color:#8c9a90;font-size:8px;font-weight:700;letter-spacing:1.3px}
-.line{height:3px;margin-top:14px;border-radius:9px;background:#233128;overflow:hidden}.line:after{content:"";display:block;width:32%;height:100%;border-radius:9px;background:#ff6b1a;box-shadow:0 0 20px rgba(255,107,26,.42);animation:scan 1.2s ease-in-out infinite alternate}
-@keyframes scan{to{transform:translateX(212%)}}
-</style></head><body><main><section><div class="brand"><svg class="mark" viewBox="0 0 128 128" aria-hidden="true"><rect x="4" y="4" width="120" height="120" rx="30" fill="#09120c" stroke="#314338" stroke-width="4"/><g fill="#f1f0e8"><rect x="20" y="42" width="13" height="48" rx="6.5"/><rect x="39" y="29" width="13" height="72" rx="6.5"/><rect x="58" y="18" width="13" height="92" rx="6.5"/><rect x="77" y="29" width="13" height="72" rx="6.5"/><rect x="96" y="42" width="13" height="48" rx="6.5"/></g><path d="M18 52c15 7 23 18 39 23 20 7 31-13 53-23" fill="none" stroke="#ff6b1a" stroke-width="10" stroke-linecap="round"/></svg><div><h1>SONGVALE</h1><p>ВСЯ МУЗЫКА СХОДИТСЯ ЗДЕСЬ</p></div></div><div class="meta"><span>ЛОКАЛЬНАЯ ВЕРСИЯ / __AWUN_VERSION__</span><span>ЗАПУСКАЕМ ПОИСК</span></div><div class="line"></div></section></main></body></html>
+*{box-sizing:border-box}body{margin:0;background:#101410;color:#f1f0e8;font-family:"Segoe UI",Arial,sans-serif}
+main{min-height:100vh;display:grid;align-content:center;justify-content:center;gap:24px;padding:32px}
+.brand{display:flex;align-items:center;gap:18px}.brand strong{font-size:58px;font-weight:600;letter-spacing:-4px}
+.brand span{font-size:21px;letter-spacing:4px}p{margin:0;font-size:17px;line-height:1.5}small{color:#a3ab9c;font-size:12px}
+.line{height:3px;overflow:hidden;background:#30362c}.line:after{content:"";display:block;width:35%;height:100%;background:#b8c1a5;animation:loading 1.3s ease-in-out infinite alternate}
+@keyframes loading{to{transform:translateX(185%)}}@media(prefers-reduced-motion:reduce){.line:after{animation:none;width:100%}}
+</style></head><body><main><div class="brand"><strong>SV</strong><span>SONGVALE</span></div>
+<p>Открываем медиатеку…</p><div class="line" role="progressbar" aria-label="Запуск SONGVALE"></div>
+<small>Версия __AWUN_VERSION__ · Музыка остаётся на этом компьютере</small></main></body></html>
 """.replace("__AWUN_VERSION__", APP_VERSION)
 
 
@@ -86,26 +90,15 @@ def startup_error_page(message: str) -> str:
     """
 
 
-class DesktopStateBridge:
+class DesktopStateBridge(DesktopStateStore):
     """Persist localStorage across launches and retain legacy AWUN data."""
 
     def __init__(self, state_path: Path | None = None) -> None:
-        self.legacy_state_path: Path | None = None
-        if state_path is None:
-            app_data = os.getenv("APPDATA")
-            state_dir = Path(app_data) / "SONGVALE" if app_data else Path.home() / ".songvale"
-            state_path = state_dir / "desktop-state.json"
-            self.legacy_state_path = (
-                Path(app_data) / "AWUN" / "desktop-state.json"
-                if app_data
-                else Path.home() / ".awun" / "desktop-state.json"
-            )
-        self.state_path = state_path
-        self._lock = threading.Lock()
+        super().__init__(state_path)
         self._controls = None
         self._updater = None
         self._network = None
-        self._local_audio = LocalAudioStore(state_path.parent / "local-music")
+        self._local_audio = LocalAudioStore(self.state_path.parent / "local-music")
 
     def local_audio_config(self) -> dict:
         return self._local_audio.config()
@@ -122,6 +115,18 @@ class DesktopStateBridge:
     def desktop_command(self, action: str) -> bool:
         return bool(isinstance(action, str) and self._controls and self._controls.enqueue(action))
 
+    def desktop_frontend_ready(self) -> bool:
+        if not self._controls:
+            return False
+        self._controls.frontend_ready = True
+        return True
+
+    def desktop_close_ready(self) -> bool:
+        return bool(self._controls and self._controls.finish_close())
+
+    def desktop_close_cancel(self) -> bool:
+        return bool(self._controls and self._controls.cancel_close())
+
     def desktop_update(self) -> bool:
         return bool(self._updater and self._updater.start())
 
@@ -131,7 +136,7 @@ class DesktopStateBridge:
     def desktop_update_install(self) -> bool:
         if not self._updater or not self._controls or not self._updater.install():
             return False
-        self._controls.enqueue("quit")
+        self._controls.finish_close()
         return True
 
     def desktop_network_status(self) -> dict:
@@ -142,53 +147,6 @@ class DesktopStateBridge:
 
     def desktop_network_stop(self) -> bool:
         return bool(self._network and self._network.stop())
-
-    def load_state(self) -> str:
-        with self._lock:
-            try:
-                source = self.state_path
-                if not source.exists() and self.legacy_state_path and self.legacy_state_path.exists():
-                    source = self.legacy_state_path
-                raw = source.read_text(encoding="utf-8")
-                data = json.loads(raw)
-                if not isinstance(data, dict):
-                    return "{}"
-                safe = {
-                    str(key): str(value)
-                    for key, value in data.items()
-                    if persistent_state_key(str(key))
-                }
-                return json.dumps(safe, ensure_ascii=False)
-            except (OSError, ValueError, TypeError):
-                return "{}"
-
-    def save_state(self, payload: str) -> bool:
-        if not isinstance(payload, str) or len(payload.encode("utf-8")) > MAX_DESKTOP_STATE_BYTES:
-            return False
-        try:
-            data = json.loads(payload)
-        except (ValueError, TypeError):
-            return False
-        if not isinstance(data, dict):
-            return False
-        safe = {
-            str(key): str(value)
-            for key, value in data.items()
-            if persistent_state_key(str(key))
-        }
-        encoded = json.dumps(safe, ensure_ascii=False, separators=(",", ":"))
-        if len(encoded.encode("utf-8")) > MAX_DESKTOP_STATE_BYTES:
-            return False
-        with self._lock:
-            try:
-                self.state_path.parent.mkdir(parents=True, exist_ok=True)
-                temporary = self.state_path.with_suffix(".tmp")
-                temporary.write_text(encoded, encoding="utf-8")
-                temporary.replace(self.state_path)
-                return True
-            except OSError:
-                return False
-
 
 def _normalize_remote_api_url(value: str | None) -> str | None:
     """Accept only an explicit HTTPS API origin (or loopback HTTP for testing)."""
@@ -251,6 +209,9 @@ class LocalAwunServer:
     url: str = field(default="", init=False)
 
     def start(self, timeout: float = STARTUP_TIMEOUT_SECONDS) -> str:
+        from backend.api.main import create_app
+        from backend.core.config import Settings
+
         if self.thread and self.thread.is_alive():
             return self.url
 
@@ -262,6 +223,7 @@ class LocalAwunServer:
         self.url = f"http://{self.host}:{port}"
 
         settings = Settings(
+            _env_file=None if getattr(sys, "frozen", False) else ".env",
             app_version=APP_VERSION,
             media_secret=secrets.token_urlsafe(32),
             cors_origins=[self.url],
@@ -312,28 +274,38 @@ class LocalAwunServer:
 def open_local_app(window: webview.Window, runtime: LocalAwunServer) -> None:
     try:
         local_url = runtime.start()
-        query = "?desktop=1&lang=ru"
+        query = "?desktop=1"
         if remote := remote_api_url():
             query += f"&fallback_api={quote(remote, safe='')}"
         window.load_url(f"{local_url}/{query}")
     except Exception as exc:
+        from desktop.diagnostics import logger
+        logger.exception("Local backend startup failed")
         window.load_html(startup_error_page(str(exc)))
 
 
 def main() -> None:
+    from desktop.diagnostics import logger
     register_process_identity()
     state_bridge = DesktopStateBridge()
     runtime = LocalAwunServer(local_audio_store=state_bridge._local_audio)
+    width, height = initial_window_size()
     window = webview.create_window(
         "SONGVALE — вся музыка сходится здесь",
         html=SPLASH,
-        width=1440,
-        height=900,
+        width=width,
+        height=height,
         min_size=(440, 300),
         background_color="#09120c",
         confirm_close=False,
         js_api=state_bridge,
     )
+    configure_native_bridge(window)
+    webview.settings["ALLOW_DOWNLOADS"] = True
+    if os.getenv("SONGVALE_DIAGNOSTIC_NO_DIALOG") == "1":
+        port = os.getenv("SONGVALE_TEST_CDP_PORT", "")
+        if port.isdecimal() and 1024 <= int(port) <= 65535:
+            webview.settings["REMOTE_DEBUGGING_PORT"] = int(port)
     bundle_root = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parents[1]))
     controls = DesktopControls(window, state_bridge.state_path.with_name("desktop-controls.json"), bundle_root / "desktop" / "assets" / "songvale.ico")
     state_bridge._controls = controls
@@ -343,14 +315,21 @@ def main() -> None:
     state_bridge._network = network
     window.events.request_sent += identify_youtube_embed
     window.events.shown += controls.start
+    window.events.before_load += controls.loading
     window.events.closing += controls.closing
     try:
-        webview.start(open_local_app, (window, runtime), private_mode=False)
+        cache = Path(os.environ["LOCALAPPDATA"]) / "SONGVALE" if os.getenv("LOCALAPPDATA") else state_bridge.state_path.parent
+        profile = cache / "WebView2"
+        logger.info("Starting native WebView2 with a dedicated profile")
+        webview.start(open_local_app, (window, runtime), private_mode=False,
+                      gui="edgechromium" if os.name == "nt" else None, storage_path=str(profile))
     finally:
         network.close()
         controls.stop()
         updater.close()
         runtime.stop()
+        if _instance:
+            _instance.close()
 
 
 if __name__ == "__main__":

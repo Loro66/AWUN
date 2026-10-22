@@ -54,6 +54,10 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Prepare pinned YouTube network component
         run: python -m desktop.prepare_network_runtime
+      - name: Report available Windows rendering engine
+        run: python -c "from webview.platforms.winforms import renderer; print('Windows renderer:', renderer)"
+      - name: Check native UI controller syntax
+        run: node --check tests/windows/desktop-smoke.cjs
       - name: Run release tests
         run: python -m pytest -q
       - name: Build SONGVALE.exe
@@ -66,6 +70,21 @@ jobs:
           if ($check.ExitCode -ne 0) { throw "Bundled runtime check failed: $($check.ExitCode)" }
       - name: Package corresponding third-party sources
         run: python -m desktop.prepare_network_sources
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install native UI test controller
+        run: npm ci --ignore-scripts
+      - name: Verify packaged Windows WebView2 and native bridge
+        run: node tests/windows/desktop-smoke.cjs dist/SONGVALE.exe
+      - name: Upload native Windows diagnostics
+        if: always()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: SONGVALE-Windows-native-diagnostics
+          path: test-results/windows-native
+          if-no-files-found: ignore
       - name: Build per-user Windows installer
         shell: pwsh
         run: |
