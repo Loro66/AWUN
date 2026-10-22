@@ -1,8 +1,9 @@
 (() => {
   if (new URLSearchParams(location.search).get('desktop') !== '1') return;
   const app = window.awunApp, $ = id => document.getElementById(id), t = key => window.awunI18n.t(key);
-  let native = null, mini = false, changing = false, updateTimer = null, installing = false;
+  let native = null, mini = false, changing = false, updateTimer = null, installing = false, closing = false;
   const api = () => window.pywebview?.api;
+  const call = (name,...args) => window.awunDesktopCall(name,...args);
   function applyMode(enabled) {
     mini = enabled;
     document.body.classList.toggle('desktop-mini', mini);
@@ -22,7 +23,7 @@
   async function refresh() {
     if (!api()?.desktop_status) return;
     try {
-      native = await api().desktop_status();
+      native = await call('desktop_status');
       const supported = Boolean(native.supported);
       document.body.classList.toggle('desktop-controls', supported);
       $('desktopSettings').hidden = !supported;
@@ -41,22 +42,38 @@
     if (changing || !api()?.desktop_mini) return;
     changing = true;
     try {
-      if (await api().desktop_mini(enabled, app.state.active?.source === 'youtube')) applyMode(enabled);
+      if (await call('desktop_mini',enabled,app.state.active?.source === 'youtube')) applyMode(enabled);
       else app.setMessage(t('desktopUnavailable'), 'error');
     } catch { app.setMessage(t('desktopUnavailable'), 'error'); }
     finally { changing = false; }
   }
   async function savePreferences() {
     try {
-      if (!await api().desktop_preferences($('desktopHotkeys').checked, $('desktopCloseToTray').checked)) app.setMessage(t('storageSaveFailed'), 'error');
+      if (!await call('desktop_preferences',$('desktopHotkeys').checked,$('desktopCloseToTray').checked)) app.setMessage(t('storageSaveFailed'), 'error');
       await refresh();
       setTimeout(refresh, 200);
     } catch { app.setMessage(t('desktopUnavailable'), 'error'); }
   }
+  async function requestClose() {
+    if (closing) return;
+    closing = true;
+    document.body.classList.add('desktop-saving-exit');
+    try {
+      app.persistPlaybackSession();
+      if (!await window.awunDesktopFlush()) throw new Error('State not saved');
+      const closed = api()?.desktop_close_ready
+        ? await call('desktop_close_ready') : await call('desktop_command','quit');
+      if (!closed) throw new Error('Close was not accepted');
+    } catch (error) {
+      window.awunDesktopStorageError(error);
+      if (api()?.desktop_close_cancel) void call('desktop_close_cancel').catch(() => {});
+    } finally { closing = false; document.body.classList.remove('desktop-saving-exit'); }
+  }
   function dispatch(action) {
     const buttons = { play_pause: 'playPause', previous: 'previousTrack', next: 'nextTrack' };
-    if (buttons[action]) { if (app.state.active) $(buttons[action]).click(); }
-    else if (action === 'mini') { void api()?.desktop_command('show'); void setMini(!mini); }
+    if (buttons[action]) { if (app.state.active) $(buttons[action]).click(); else if (action === 'play_pause') $('sidebarContinue').click(); }
+    else if (action === 'quit') void requestClose();
+    else if (action === 'mini') { void call('desktop_command','show').catch(() => {}); void setMini(!mini); }
     else if (action === 'volume_up' || action === 'volume_down') {
       app.ui.volume.value = String(Math.max(0, Math.min(100, Number(app.ui.volume.value) + (action === 'volume_up' ? 5 : -5))));
       app.ui.volume.dispatchEvent(new Event('input'));
@@ -64,13 +81,13 @@
   }
   $('desktopMini').addEventListener('click', () => void setMini(!mini));
   $('desktopMiniRestore').addEventListener('click', () => void setMini(false));
-  $('desktopTray').addEventListener('click', () => void api()?.desktop_command('hide'));
-  $('desktopQuit').addEventListener('click', () => void api()?.desktop_command('quit'));
+  $('desktopTray').addEventListener('click', () => void call('desktop_command','hide').catch(() => app.setMessage(t('desktopUnavailable'),'error')));
+  $('desktopQuit').addEventListener('click', () => void requestClose());
   $('desktopHotkeys').addEventListener('change', savePreferences);
   $('desktopCloseToTray').addEventListener('change', savePreferences);
   async function pollUpdate() {
     try {
-      const result = await api().desktop_update_status();
+      const result = await call('desktop_update_status');
       const keys = {checking:'updateCheckingNative',downloading:'updateDownloadingNative',verifying:'updateVerifyingNative',ready:'updateVerifyingNative',installing:'updateInstallingNative',current:'updateCurrentNative',error:'updateErrorNative'};
       $('desktopUpdateStatus').textContent = t(keys[result.stage] || 'updateCheckingNative');
       $('desktopUpdateProgress').hidden = !['downloading','verifying'].includes(result.stage);
@@ -79,7 +96,7 @@
         installing = true;
         app.persistPlaybackSession();
         if (!await window.awunDesktopFlush?.()) throw new Error('State not saved');
-        if (!await api().desktop_update_install()) throw new Error('Installer not started');
+        if (!await call('desktop_update_install')) throw new Error('Installer not started');
         $('desktopUpdateStatus').textContent = t('updateInstallingNative');
         return;
       }
@@ -90,7 +107,7 @@
   $('desktopUpdate').addEventListener('click', async () => {
     $('desktopUpdate').disabled = true; installing = false; clearTimeout(updateTimer);
     $('desktopUpdateStatus').textContent = t('updateCheckingNative');
-    try { await api().desktop_update(); void pollUpdate(); }
+    try { await call('desktop_update'); void pollUpdate(); }
     catch { $('desktopUpdateStatus').textContent = t('updateErrorNative'); $('desktopUpdate').disabled = false; }
   });
   window.addEventListener('songvale:desktop-command', event => dispatch(event.detail?.action));
@@ -100,7 +117,7 @@
     if (mini) {
       document.body.classList.toggle('desktop-mini-video', app.state.active?.source === 'youtube');
       app.ui.youtubeDock.classList.remove('minimized');
-      void api()?.desktop_mini(true, app.state.active?.source === 'youtube');
+      void call('desktop_mini',true,app.state.active?.source === 'youtube').catch(() => app.setMessage(t('desktopUnavailable'),'error'));
     }
   });
   document.addEventListener('keydown', event => {

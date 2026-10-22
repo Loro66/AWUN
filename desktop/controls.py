@@ -8,6 +8,8 @@ from pathlib import Path
 import queue
 import threading
 
+from desktop.single_instance import activation_message
+
 
 # CTRL + ALT; Windows delivers WM_HOTKEY only for these combinations.
 HOTKEYS = {
@@ -29,6 +31,8 @@ class DesktopControls:
         self.icon_path = icon_path
         self.mini = False
         self.quitting = False
+        self.frontend_ready = False
+        self._close_pending = False
         self._geometry = None
         self._lock = threading.RLock()
         self.preferences = {"hotkeys": True, "close_to_tray": True}
@@ -45,6 +49,10 @@ class DesktopControls:
     def start(self):
         if self.native:
             self.native.start()
+
+    def loading(self):
+        self.frontend_ready = False
+        self._close_pending = False
 
     def status(self):
         return {
@@ -101,6 +109,17 @@ class DesktopControls:
             return True
         return False
 
+    def finish_close(self):
+        if self.quitting:
+            return False
+        self.quitting = True
+        self._commands.put("_close_ready")
+        return True
+
+    def cancel_close(self):
+        self._close_pending = False
+        return True
+
     def _dispatch_loop(self):
         while True:
             action = self._commands.get()
@@ -108,7 +127,15 @@ class DesktopControls:
                 return
             try:
                 if action == "quit":
-                    self.quitting = True
+                    if self.frontend_ready:
+                        if not self._close_pending:
+                            self._close_pending = True
+                            self.window.show()
+                            self.window.run_js("window.dispatchEvent(new CustomEvent('songvale:desktop-command',{detail:{action:'quit'}}))")
+                    else:
+                        self.quitting = True
+                        self.window.destroy()
+                elif action == "_close_ready":
                     self.window.destroy()
                 elif action == "hide":
                     if self.native and self.native.tray:
@@ -120,11 +147,14 @@ class DesktopControls:
                     self.window.run_js("window.dispatchEvent(new CustomEvent('songvale:desktop-command'," + json.dumps({"detail": {"action": action}}) + "))")
             except Exception:
                 # A shortcut during loading/exit must not kill the message loop.
-                pass
+                self._close_pending = False
 
     def closing(self):
         if not self.quitting and self.preferences["close_to_tray"] and self.native and self.native.tray:
             self.window.hide()
+            return False
+        if not self.quitting and self.frontend_ready:
+            self.enqueue("quit")
             return False
         return True
 
@@ -224,6 +254,7 @@ class WindowsIntegration:
         prototype(user, "SetForegroundWindow", w.BOOL, w.HWND)
         prototype(shell, "Shell_NotifyIconW", w.BOOL, w.DWORD, c.POINTER(IconData))
         taskbar_created = user.RegisterWindowMessageW("TaskbarCreated")
+        activate = user.RegisterWindowMessageW(activation_message(self.owner.preferences_path.parent))
         icon = user.LoadImageW(None, str(self.owner.icon_path), 1, 0, 0, 0x0010 | 0x0040)
         owned_icon = bool(icon)
         icon = icon or user.LoadIconW(None, c.c_void_p(32512))
@@ -267,6 +298,9 @@ class WindowsIntegration:
 
         @callback_type
         def procedure(hwnd, message, wp, lp):
+            if message == activate:
+                self.owner.enqueue("show")
+                return 0
             if message == 0x0312 and int(wp) in HOTKEYS:
                 self.owner.enqueue(HOTKEYS[int(wp)][1])
                 return 0

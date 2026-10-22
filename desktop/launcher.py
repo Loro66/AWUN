@@ -22,6 +22,19 @@ if __name__ == "__main__" and sys.argv[1:] == ["--songvale-network-check"]:
     from desktop.network_runtime import check_packaged_runtime
     raise SystemExit(check_packaged_runtime())
 
+# Acquire before importing the browser/backend: repeated shortcut clicks must
+# activate the running player without starting another server or state writer.
+from desktop.single_instance import SingleInstance
+
+_instance = None
+if __name__ == "__main__":
+    from desktop.diagnostics import install_startup_diagnostics
+    install_startup_diagnostics()
+    _instance = SingleInstance()
+    if not _instance.acquire():
+        _instance.activate_existing()
+        raise SystemExit(0)
+
 import uvicorn
 import webview
 
@@ -29,6 +42,8 @@ from backend.api.main import create_app
 from backend.core.config import Settings
 from backend.core.version import APP_VERSION
 from desktop.controls import DesktopControls
+from desktop.csp_bridge import configure_native_bridge
+from desktop.persistence import DesktopStateStore
 from desktop.updater import DesktopUpdater
 from desktop.player_identity import identify_youtube_embed, register_process_identity
 from desktop.network_access import DesktopNetworkAccess
@@ -37,16 +52,6 @@ from backend.library.local_audio import LocalAudioStore
 
 HOST = "127.0.0.1"
 STARTUP_TIMEOUT_SECONDS = 25
-MAX_DESKTOP_STATE_BYTES = 4 * 1024 * 1024
-TRANSIENT_DESKTOP_STATE_KEYS = {"awun-waveforms-v1", "awun-search-cache-v1", "awun-runtime-log-v1"}
-
-
-def persistent_state_key(key: str) -> bool:
-    return (
-        key.startswith("awun-") and key not in TRANSIENT_DESKTOP_STATE_KEYS
-        or key in {"songvale-account-owner-v1", "songvale-backup-restore-pending-v1", "songvale-source-preferences-v1", "songvale-transitions-v1"}
-        or key.startswith("songvale-account-sync-")
-    )
 REMOTE_API_ENV = "SONGVALE_REMOTE_API_URL"
 LEGACY_REMOTE_API_ENV = "AWUN_REMOTE_API_URL"
 REMOTE_API_FILE = "remote-api.txt"
@@ -86,26 +91,15 @@ def startup_error_page(message: str) -> str:
     """
 
 
-class DesktopStateBridge:
+class DesktopStateBridge(DesktopStateStore):
     """Persist localStorage across launches and retain legacy AWUN data."""
 
     def __init__(self, state_path: Path | None = None) -> None:
-        self.legacy_state_path: Path | None = None
-        if state_path is None:
-            app_data = os.getenv("APPDATA")
-            state_dir = Path(app_data) / "SONGVALE" if app_data else Path.home() / ".songvale"
-            state_path = state_dir / "desktop-state.json"
-            self.legacy_state_path = (
-                Path(app_data) / "AWUN" / "desktop-state.json"
-                if app_data
-                else Path.home() / ".awun" / "desktop-state.json"
-            )
-        self.state_path = state_path
-        self._lock = threading.Lock()
+        super().__init__(state_path)
         self._controls = None
         self._updater = None
         self._network = None
-        self._local_audio = LocalAudioStore(state_path.parent / "local-music")
+        self._local_audio = LocalAudioStore(self.state_path.parent / "local-music")
 
     def local_audio_config(self) -> dict:
         return self._local_audio.config()
@@ -122,6 +116,18 @@ class DesktopStateBridge:
     def desktop_command(self, action: str) -> bool:
         return bool(isinstance(action, str) and self._controls and self._controls.enqueue(action))
 
+    def desktop_frontend_ready(self) -> bool:
+        if not self._controls:
+            return False
+        self._controls.frontend_ready = True
+        return True
+
+    def desktop_close_ready(self) -> bool:
+        return bool(self._controls and self._controls.finish_close())
+
+    def desktop_close_cancel(self) -> bool:
+        return bool(self._controls and self._controls.cancel_close())
+
     def desktop_update(self) -> bool:
         return bool(self._updater and self._updater.start())
 
@@ -131,7 +137,7 @@ class DesktopStateBridge:
     def desktop_update_install(self) -> bool:
         if not self._updater or not self._controls or not self._updater.install():
             return False
-        self._controls.enqueue("quit")
+        self._controls.finish_close()
         return True
 
     def desktop_network_status(self) -> dict:
@@ -142,53 +148,6 @@ class DesktopStateBridge:
 
     def desktop_network_stop(self) -> bool:
         return bool(self._network and self._network.stop())
-
-    def load_state(self) -> str:
-        with self._lock:
-            try:
-                source = self.state_path
-                if not source.exists() and self.legacy_state_path and self.legacy_state_path.exists():
-                    source = self.legacy_state_path
-                raw = source.read_text(encoding="utf-8")
-                data = json.loads(raw)
-                if not isinstance(data, dict):
-                    return "{}"
-                safe = {
-                    str(key): str(value)
-                    for key, value in data.items()
-                    if persistent_state_key(str(key))
-                }
-                return json.dumps(safe, ensure_ascii=False)
-            except (OSError, ValueError, TypeError):
-                return "{}"
-
-    def save_state(self, payload: str) -> bool:
-        if not isinstance(payload, str) or len(payload.encode("utf-8")) > MAX_DESKTOP_STATE_BYTES:
-            return False
-        try:
-            data = json.loads(payload)
-        except (ValueError, TypeError):
-            return False
-        if not isinstance(data, dict):
-            return False
-        safe = {
-            str(key): str(value)
-            for key, value in data.items()
-            if persistent_state_key(str(key))
-        }
-        encoded = json.dumps(safe, ensure_ascii=False, separators=(",", ":"))
-        if len(encoded.encode("utf-8")) > MAX_DESKTOP_STATE_BYTES:
-            return False
-        with self._lock:
-            try:
-                self.state_path.parent.mkdir(parents=True, exist_ok=True)
-                temporary = self.state_path.with_suffix(".tmp")
-                temporary.write_text(encoded, encoding="utf-8")
-                temporary.replace(self.state_path)
-                return True
-            except OSError:
-                return False
-
 
 def _normalize_remote_api_url(value: str | None) -> str | None:
     """Accept only an explicit HTTPS API origin (or loopback HTTP for testing)."""
@@ -312,15 +271,18 @@ class LocalAwunServer:
 def open_local_app(window: webview.Window, runtime: LocalAwunServer) -> None:
     try:
         local_url = runtime.start()
-        query = "?desktop=1&lang=ru"
+        query = "?desktop=1"
         if remote := remote_api_url():
             query += f"&fallback_api={quote(remote, safe='')}"
         window.load_url(f"{local_url}/{query}")
     except Exception as exc:
+        from desktop.diagnostics import logger
+        logger.exception("Local backend startup failed")
         window.load_html(startup_error_page(str(exc)))
 
 
 def main() -> None:
+    from desktop.diagnostics import logger
     register_process_identity()
     state_bridge = DesktopStateBridge()
     runtime = LocalAwunServer(local_audio_store=state_bridge._local_audio)
@@ -334,6 +296,8 @@ def main() -> None:
         confirm_close=False,
         js_api=state_bridge,
     )
+    configure_native_bridge(window)
+    webview.settings["ALLOW_DOWNLOADS"] = True
     bundle_root = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parents[1]))
     controls = DesktopControls(window, state_bridge.state_path.with_name("desktop-controls.json"), bundle_root / "desktop" / "assets" / "songvale.ico")
     state_bridge._controls = controls
@@ -343,14 +307,21 @@ def main() -> None:
     state_bridge._network = network
     window.events.request_sent += identify_youtube_embed
     window.events.shown += controls.start
+    window.events.before_load += controls.loading
     window.events.closing += controls.closing
     try:
-        webview.start(open_local_app, (window, runtime), private_mode=False)
+        cache = Path(os.environ["LOCALAPPDATA"]) / "SONGVALE" if os.getenv("LOCALAPPDATA") else state_bridge.state_path.parent
+        profile = cache / "WebView2"
+        logger.info("Starting native WebView2 with a dedicated profile")
+        webview.start(open_local_app, (window, runtime), private_mode=False,
+                      gui="edgechromium" if os.name == "nt" else None, storage_path=str(profile))
     finally:
         network.close()
         controls.stop()
         updater.close()
         runtime.stop()
+        if _instance:
+            _instance.close()
 
 
 if __name__ == "__main__":

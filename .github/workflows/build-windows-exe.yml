@@ -54,6 +54,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Prepare pinned YouTube network component
         run: python -m desktop.prepare_network_runtime
+      - name: Report available Windows rendering engine
+        run: python -c "from webview.platforms.winforms import renderer; print('Windows renderer:', renderer)"
       - name: Run release tests
         run: python -m pytest -q
       - name: Build SONGVALE.exe

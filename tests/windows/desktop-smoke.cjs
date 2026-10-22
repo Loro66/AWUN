@@ -26,7 +26,7 @@ async function freePort() {
 
 async function launch() {
   const port = await freePort();
-  child = spawn(executable, [], { env: { ...process.env, APPDATA: profile,
+  child = spawn(executable, [], { env: { ...process.env, APPDATA: profile, LOCALAPPDATA: join(profile,'Local'), SONGVALE_DIAGNOSTIC_NO_DIALOG:'1',
     WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS: `--remote-debugging-port=${port}`,
   }, stdio: 'ignore' });
   child.once('error', error => { report.launch_error = String(error); });
@@ -54,12 +54,15 @@ async function check(name, work) {
 }
 
 async function cleanup() {
+  try { execFileSync('powershell.exe',['-NoProfile','-NonInteractive','-File',resolve('tests/windows/capture-desktop.ps1'),'-OutputDirectory',output],{stdio:'ignore',timeout:15000}); } catch {}
+  try { report.processes = readFileSync(join(output,'processes.json'),'utf8');console.log(report.processes); } catch {}
   if (page) { try { await page.screenshot({ path: join(output, 'native-window.png') }); } catch {} }
   if (browser) { try { await browser.close(); } catch {} browser = null; }
   if (child && child.exitCode === null) {
     try { execFileSync('taskkill', ['/PID', String(child.pid), '/T', '/F'], { stdio: 'ignore' }); } catch {}
   }
   try { report.saved_state = JSON.parse(readFileSync(join(profile, 'SONGVALE', 'desktop-state.json'), 'utf8')); } catch {}
+  try { report.startup_log = readFileSync(join(profile,'Local','SONGVALE','logs','desktop.log'),'utf8').slice(-16000); console.log(report.startup_log); } catch {}
   report.finished_at = new Date().toISOString();
   writeFileSync(join(output, 'report.json'), JSON.stringify(report, null, 2));
 }

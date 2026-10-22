@@ -2,6 +2,7 @@
   if (new URLSearchParams(location.search).get('desktop') !== '1') return;
   const app = window.awunApp, $ = id => document.getElementById(id), t = key => window.awunI18n.t(key);
   const api = () => window.pywebview?.api;
+  const call = (name,...args) => window.awunDesktopCall(name,...args);
   let current = null, timer = null, changing = false;
   const busy = new Set(['preparing', 'permission', 'starting', 'stopping']);
   function render() {
@@ -23,7 +24,7 @@
   async function refresh() {
     clearTimeout(timer);
     if (!api()?.desktop_network_status) return;
-    try { current = await api().desktop_network_status(); render(); }
+    try { current = await call('desktop_network_status'); render(); }
     catch {
       if (current) { current = {...current, stage:'error', error:'helper'}; render(); }
     }
@@ -32,14 +33,14 @@
   $('desktopNetworkEnable').addEventListener('click', async () => {
     if (changing || !api()?.desktop_network_start) return;
     changing = true; render();
-    try { await api().desktop_network_start($('desktopNetworkProfile').value); }
+    try { await call('desktop_network_start',$('desktopNetworkProfile').value); }
     catch { current = {...current, stage:'error', error:'helper'}; }
     finally { changing = false; await refresh(); }
   });
   $('desktopNetworkStop').addEventListener('click', async () => {
     if (changing || !api()?.desktop_network_stop) return;
     changing = true; render();
-    try { await api().desktop_network_stop(); }
+    try { await call('desktop_network_stop'); }
     catch { current = {...current, stage:'error', error:'helper'}; }
     finally { changing = false; await refresh(); }
   });
